@@ -1,0 +1,421 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{6d7d514c-590c-43a6-ad4a-1c71511552ab}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>Project1.exe</DCC_DependencyCheckOutputName>
+    <MainSource>Project1.dpr</MainSource>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_Define>DEBUG</DCC_Define>
+    <DCC_UnitSearchPath>tdbf</DCC_UnitSearchPath>
+    <DCC_ResourcePath>tdbf</DCC_ResourcePath>
+    <DCC_ObjPath>tdbf</DCC_ObjPath>
+    <DCC_IncludePath>tdbf</DCC_IncludePath>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">False</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">0</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">1058</VersionInfo><VersionInfo Name="CodePage">1251</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName"></VersionInfoKeys><VersionInfoKeys Name="FileDescription"></VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="InternalName"></VersionInfoKeys><VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys><VersionInfoKeys Name="ProductName"></VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="Comments"></VersionInfoKeys></VersionInfoKeys><Excluded_Packages>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxSkinsCoreRS11.bpl">ExpressSkins Library by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxSkinsDesignHelperRS11.bpl">ExpressSkins Library Uses Clause Auto Fill Helper by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxSkinscxPCPainterRS11.bpl">ExpressSkins Library Uses Clause Auto Fill Helper for PageControl Painter by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\5.0\BPL\dxSkinscxPCPainterRS11.bpl">ExpressSkins Library Painter for PageControl by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxSkinscxScheduler3PainterRS11.bpl">ExpressSkins Library Uses Clause Auto Fill Helper for Scheduler 3 Painter by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\5.0\BPL\dxSkinscxScheduler3PainterRS11.bpl">ExpressSkins Library Painter for Scheduler 3 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxSkinsdxBarsPaintersRS11.bpl">ExpressSkins Library Uses Clause Auto Fill Helper for Bars Painters by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\5.0\BPL\dxSkinsdxRibbonPainterRS11.bpl">ExpressSkins Library Painter for Ribbon by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\5.0\BPL\dxSkinsdxDLPainterRS11.bpl">ExpressSkins Library Painter for Docking Library by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\5.0\BPL\dxSkinsdxBarPainterRS11.bpl">ExpressSkins Library Painter for Bars by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxSkinsdxNavBar2PainterRS11.bpl">ExpressSkins Library Uses Clause Auto Fill Helper for NavBar 2 Painter by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\5.0\BPL\dxSkinsdxNavBar2PainterRS11.bpl">ExpressSkins Library Painter for NavBar 2 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSCoreRS11.bpl">ExpressPrinting System 4 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSLnksRS11.bpl">ExpressPrinting System 4 ReportLinks (Standard) by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPScxCommonRS11.bpl">ExpressPrinting System 4 Cross Platform Library by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPScxExtCommonRS11.bpl">ExpressPrinting System 4 Extended Cross Platform Library by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPScxGrid6LnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressQuantumGrid 6 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPScxPivotGrid2LnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressPivotGrid 2 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPScxScheduler3LnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressScheduler 3 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPScxSSLnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressSpreadSheet by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPScxTL5LnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressQuantumTreeList 5 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPScxVGridLnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressVerticalGrid by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSTeeChartRS11.bpl">ExpressPrinting System 4 ReportLink for TeeChart by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSDBTeeChartRS11.bpl">ExpressPrinting System 4 ReportLink for DBTeeChart by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSdxOCLnkRS11.bpl">ExpressPrinting System 4 ReportLinks for ExpressOrgChart by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSdxDBOCLnkRS11.bpl">ExpressPrinting System 4 ReportLinks for ExpressDBOrgChart by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSdxDBTVLnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressDBTree by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSdxFCLnkRS11.bpl">ExpressPrinting System 4 ReportLinks for ExpressFlowChart by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSdxLC2LnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressLayoutControl 2 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSdxSkinsHelperRS11.bpl">ExpressPrinting System 4 Uses Clause Auto Fill Helper for Skin Painters by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dcldxPSdxMVLnkRS11.bpl">ExpressPrinting System 4 ReportLink for ExpressMasterView by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dxPScxPCProdRS11.bpl">ExpressPrinting System 4 ContainerProducer for ExpressPageControl 2 by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dxPSPrVwAdvRS11.bpl">ExpressPrinting System 4 Advanced Preview Window by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\sasa\Documents\vcl\DevExpress VCL\Library\RS11\dxPSPrVwRibbonRS11.bpl">ExpressPrinting System 4 Ribbon Preview Window by Developer Express Inc.</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\bcboffice2k100.bpl">CodeGear C++Builder Office 2000 Servers Package</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\bcbofficexp100.bpl">CodeGear C++Builder Office XP Servers Package</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\dcloffice2k100.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\dclofficexp100.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+    </Excluded_Packages><Source><Source Name="MainSource">Project1.dpr</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="Project1.dpr">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="Unit1.pas">
+      <Form>Form1</Form>
+    </DCCReference>
+  </ItemGroup>
+</Project>

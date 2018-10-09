@@ -1,0 +1,44 @@
+select note.kl, note.wid,note.schet,note.note1,note.note2,note.note3,note.kl_users,obormes.dolg,kart.fio,kart.idcod,kart.ul,kart.dom,kart.kv,kontrol.fio as kontrol,(select sum(summ) from tmpnach where  note.wid = tmpnach.wid) and (note.schet = tmpnach.schet) group by schet,wid ) as nach1,(select sum(summ) from tmpopl where (note.wid = tmpopl.wid) and (note.schet = tmpopl.schet) group by schet,wid ) as opl,(select sum(summ) from tmpsubs where (note.wid = tmpsubs.wid) and (note.schet = tmpsubs.schet) group by schet,wid ) as subs,(select sum(summ) from tmpuder where (note.wid = tmpuder.wid) and (note.schet = tmpuder.schet) group by schet,wid ) as uder from note inner join obormes on (note.wid = obormes.wid) and (note.schet = obormes.schet) inner join kart on (note.schet = kart.schet) left outer join adres on (kart.dom = adres.dom) and (kart.ul = adres.ul) left outer join kontrol on (adres.kl_kontrol = kontrol.kl) where note.kl_users =:kluser
+
+select 
+note.kl, 
+note.wid,
+note.schet,
+note.note1,
+note.note2,
+note.note3,
+note.kl_users,
+obormes.dolg as dolg,
+0.00 as dolgmes1,
+0.00 as mes1,
+0.00 as dolgmes2,
+0.00 as mes2,
+0.00 as dolgmes3,
+0.00 as mes3,
+0.00 as dolgmes4,
+0.00 as mes4,
+0.00 as dolgmes5,
+0.00 as mes5,
+0.00 as dolgmes6,
+0.00 as mes6,
+kart.fio,
+kart.idcod,
+kart.ul,
+kart.dom,
+kart.kv,
+kontrol.fio as kontrol,
+coalesce((select sum(summ) from tmpnach where (note.wid = tmpnach.wid) and (note.schet = tmpnach.schet) group by schet,wid),0.00) as nach1,
+coalesce((select sum(summ) from tmpopl where (note.wid = tmpopl.wid) and (note.schet = tmpopl.schet) group by schet,wid),0.00) as opl,
+coalesce((select sum(summ) from tmpsubs where (note.wid = tmpsubs.wid) and (note.schet = tmpsubs.schet) group by schet,wid),0.00) as subs,
+coalesce((select sum(summ) from tmpuder where (note.wid = tmpuder.wid) and (note.schet = tmpuder.schet) group by schet,wid),0.00) as uder,
+obormes.dolg+coalesce((select sum(summ) from tmpnach where (note.wid = tmpnach.wid) and (note.schet = tmpnach.schet) group by schet,wid),0.00)-coalesce((select sum(summ) from tmpopl where (note.wid = tmpopl.wid) and (note.schet = tmpopl.schet) group by schet,wid),0.00)-coalesce((select sum(summ) from tmpsubs where (note.wid = tmpsubs.wid) and (note.schet = tmpsubs.schet) group by schet,wid),0.00)-coalesce((select sum(summ) from tmpuder where (note.wid = tmpuder.wid) and (note.schet = tmpuder.schet) group by schet,wid),0.00) as enddolg
+ from note
+ inner join obormes on (note.wid = obormes.wid) and (note.schet = obormes.schet)
+ inner join kart on (note.schet = kart.schet)
+ left outer join adres on (kart.dom = adres.dom) and (kart.ul = adres.ul)
+ left outer join kontrol on (adres.kl_kontrol = kontrol.kl)
+ where note.kl_users =:kluser
+
+
+
+
