@@ -536,7 +536,7 @@ DateKVART:TDate;
 DateKVART1:TDate;
 begin
   try
-    pathDIR:='tmp';
+//    pathDIR:='c:\tmp';
         if not DirectoryExists(pathDIR) then
         begin
           MkDir(pathDIR);
@@ -867,6 +867,7 @@ begin
   log:=iniFile.ReadString('Data','Login',extractfilepath(paramstr(0)));
   pw:=iniFile.ReadString('Data','PW',extractfilepath(paramstr(0)));
   PathKvart:=iniFile.ReadString('DBF','base',extractfilepath(paramstr(0)));
+  PathDIR:=iniFile.ReadString('DBF','tmp',extractfilepath(paramstr(0)));
 //  cur:=iniFile.ReadString('DBF','cur_date',extractfilepath(paramstr(0))+);
 
   IBDatabase1.Connected:=false;

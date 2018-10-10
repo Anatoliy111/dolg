@@ -44,190 +44,13 @@ object Form12: TForm12
       OnClick = cxButton1Click
     end
   end
-  object Panel2: TPanel
-    Left = 0
-    Top = 49
-    Width = 897
-    Height = 168
-    Align = alTop
-    TabOrder = 1
-    object Label2: TLabel
-      Left = 241
-      Top = 8
-      Width = 17
-      Height = 13
-      Alignment = taCenter
-      Caption = #1055#1030#1041
-    end
-    object Label3: TLabel
-      Left = 24
-      Top = 54
-      Width = 52
-      Height = 13
-      Alignment = taCenter
-      Caption = #1030#1076#1077#1085#1090'.'#1082#1086#1076
-    end
-    object Label6: TLabel
-      Left = 84
-      Top = 99
-      Width = 79
-      Height = 13
-      Alignment = taCenter
-      Caption = #1050#1110#1083#1100#1082#1110#1089#1090#1100' '#1087#1088#1086#1078'.'
-    end
-    object Label4: TLabel
-      Left = 337
-      Top = 53
-      Width = 36
-      Height = 13
-      Alignment = taCenter
-      Caption = #1042#1091#1083#1080#1094#1103
-    end
-    object Label5: TLabel
-      Left = 592
-      Top = 53
-      Width = 43
-      Height = 13
-      Alignment = taCenter
-      Caption = #1041#1091#1076#1080#1085#1086#1082
-    end
-    object Label7: TLabel
-      Left = 647
-      Top = 53
-      Width = 49
-      Height = 13
-      Alignment = taCenter
-      Caption = #1050#1074#1072#1088#1090#1080#1088#1072
-    end
-    object Label8: TLabel
-      Left = 24
-      Top = 99
-      Width = 36
-      Height = 13
-      Alignment = taCenter
-      Caption = #1051#1100#1075#1086#1090#1072
-    end
-    object Label9: TLabel
-      Left = 169
-      Top = 99
-      Width = 83
-      Height = 13
-      Alignment = taCenter
-      Caption = #1055#1083#1086#1097#1072' '#1079#1072#1075#1072#1083#1100#1085#1072
-    end
-    object Label10: TLabel
-      Left = 258
-      Top = 99
-      Width = 106
-      Height = 13
-      Alignment = taCenter
-      Caption = #1055#1083#1086#1097#1072' '#1086#1087#1072#1083#1102#1074#1072#1083#1100#1085#1072
-    end
-    object Label11: TLabel
-      Left = 15
-      Top = 149
-      Width = 148
-      Height = 13
-      Alignment = taCenter
-      Caption = #1054#1073#1086#1088#1086#1090#1082#1072' '#1087#1086#1090#1086#1095#1085#1086#1075#1086' '#1087#1077#1088#1110#1086#1076#1091
-    end
-    object Label15: TLabel
-      Left = 24
-      Top = 8
-      Width = 42
-      Height = 13
-      Alignment = taCenter
-      Caption = #1056#1072#1093#1091#1085#1086#1082
-    end
-    object cxDBTextEdit1: TcxDBTextEdit
-      Left = 241
-      Top = 26
-      DataBinding.DataField = 'FIO'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 0
-      Width = 289
-    end
-    object cxDBTextEdit2: TcxDBTextEdit
-      Left = 24
-      Top = 72
-      DataBinding.DataField = 'IDCOD'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 1
-      Width = 289
-    end
-    object cxDBTextEdit5: TcxDBTextEdit
-      Left = 84
-      Top = 118
-      DataBinding.DataField = 'KOLI_P'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 2
-      Width = 79
-    end
-    object cxDBTextEdit3: TcxDBTextEdit
-      Left = 337
-      Top = 72
-      DataBinding.DataField = 'UL'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 3
-      Width = 249
-    end
-    object cxDBTextEdit4: TcxDBTextEdit
-      Left = 24
-      Top = 118
-      DataBinding.DataField = 'LGOTA'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 4
-      Width = 52
-    end
-    object cxDBTextEdit6: TcxDBTextEdit
-      Left = 592
-      Top = 72
-      DataBinding.DataField = 'DOM'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 5
-      Width = 49
-    end
-    object cxDBTextEdit8: TcxDBTextEdit
-      Left = 169
-      Top = 118
-      DataBinding.DataField = 'PLOS_BB'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 6
-      Width = 83
-    end
-    object cxDBTextEdit9: TcxDBTextEdit
-      Left = 258
-      Top = 118
-      DataBinding.DataField = 'PLOS_BB'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 7
-      Width = 106
-    end
-    object cxDBTextEdit10: TcxDBTextEdit
-      Left = 24
-      Top = 27
-      DataBinding.DataField = 'SCHET'
-      DataBinding.DataSource = DSKART
-      Properties.ReadOnly = True
-      TabOrder = 8
-      Width = 201
-    end
-  end
   object cxDBTextEdit7: TcxDBTextEdit
     Left = 647
     Top = 121
     DataBinding.DataField = 'KV'
     DataBinding.DataSource = DSKART
     Properties.ReadOnly = True
-    TabOrder = 2
+    TabOrder = 1
     Width = 49
   end
   object cxGrid1: TcxGrid
@@ -236,7 +59,7 @@ object Form12: TForm12
     Width = 897
     Height = 120
     Align = alTop
-    TabOrder = 3
+    TabOrder = 2
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSKOBORMES
@@ -303,17 +126,19 @@ object Form12: TForm12
     Width = 897
     Height = 111
     Align = alTop
-    TabOrder = 4
+    TabOrder = 3
+    ExplicitLeft = 72
+    ExplicitTop = 347
     object cxGrid2: TcxGrid
       Left = 1
       Top = 14
       Width = 895
-      Height = 829
-      Align = alTop
+      Height = 96
+      Align = alClient
       TabOrder = 0
-      ExplicitLeft = 90
-      ExplicitTop = 20
-      ExplicitWidth = 88
+      ExplicitLeft = 311
+      ExplicitTop = 54
+      ExplicitHeight = 829
       object cxGridDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = DSKTMPOPL
@@ -321,13 +146,6 @@ object Form12: TForm12
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
         OptionsView.GroupByBox = False
-        object cxGridDBTableView1WID: TcxGridDBColumn
-          Caption = #1055#1086#1089#1083#1091#1075#1072
-          DataBinding.FieldName = 'POSLUG'
-          PropertiesClassName = 'TcxTextEditProperties'
-          Properties.ReadOnly = True
-          Width = 80
-        end
         object cxGridDBTableView1DT: TcxGridDBColumn
           Caption = #1044#1072#1090#1072' '#1086#1087#1083#1072#1090#1080
           DataBinding.FieldName = 'DT'
@@ -340,6 +158,16 @@ object Form12: TForm12
           DataBinding.FieldName = 'SUMM'
           PropertiesClassName = 'TcxTextEditProperties'
           Properties.ReadOnly = True
+        end
+        object cxGridDBTableView1Column1: TcxGridDBColumn
+        end
+        object cxGridDBTableView1Column2: TcxGridDBColumn
+        end
+        object cxGridDBTableView1Column3: TcxGridDBColumn
+        end
+        object cxGridDBTableView1Column4: TcxGridDBColumn
+        end
+        object cxGridDBTableView1Column5: TcxGridDBColumn
         end
       end
       object cxGridLevel1: TcxGridLevel
@@ -369,7 +197,7 @@ object Form12: TForm12
     Width = 897
     Height = 16
     Align = alTop
-    TabOrder = 5
+    TabOrder = 4
     object Label13: TLabel
       Left = 18
       Top = 0
@@ -385,7 +213,7 @@ object Form12: TForm12
     Width = 897
     Height = 217
     Align = alClient
-    TabOrder = 6
+    TabOrder = 5
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSKOBOR
@@ -468,6 +296,202 @@ object Form12: TForm12
     end
     object cxGridLevel3: TcxGridLevel
       GridView = cxGridDBTableView3
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 49
+    Width = 897
+    Height = 168
+    Align = alTop
+    TabOrder = 6
+    ExplicitLeft = 118
+    ExplicitTop = 137
+    object Label2: TLabel
+      Left = 241
+      Top = 8
+      Width = 17
+      Height = 13
+      Alignment = taCenter
+      Caption = #1055#1030#1041
+    end
+    object Label3: TLabel
+      Left = 24
+      Top = 54
+      Width = 52
+      Height = 13
+      Alignment = taCenter
+      Caption = #1030#1076#1077#1085#1090'.'#1082#1086#1076
+    end
+    object Label6: TLabel
+      Left = 84
+      Top = 99
+      Width = 92
+      Height = 13
+      Alignment = taCenter
+      Caption = #1050#1110#1083#1100#1082#1110#1089#1090#1100' '#1079#1072#1088#1077#1108#1089#1090'.'
+    end
+    object Label4: TLabel
+      Left = 337
+      Top = 53
+      Width = 36
+      Height = 13
+      Alignment = taCenter
+      Caption = #1042#1091#1083#1080#1094#1103
+    end
+    object Label5: TLabel
+      Left = 592
+      Top = 53
+      Width = 43
+      Height = 13
+      Alignment = taCenter
+      Caption = #1041#1091#1076#1080#1085#1086#1082
+    end
+    object Label7: TLabel
+      Left = 647
+      Top = 53
+      Width = 49
+      Height = 13
+      Alignment = taCenter
+      Caption = #1050#1074#1072#1088#1090#1080#1088#1072
+    end
+    object Label8: TLabel
+      Left = 24
+      Top = 99
+      Width = 36
+      Height = 13
+      Alignment = taCenter
+      Caption = #1051#1100#1075#1086#1090#1072
+    end
+    object Label9: TLabel
+      Left = 268
+      Top = 99
+      Width = 83
+      Height = 13
+      Alignment = taCenter
+      Caption = #1055#1083#1086#1097#1072' '#1079#1072#1075#1072#1083#1100#1085#1072
+    end
+    object Label10: TLabel
+      Left = 357
+      Top = 99
+      Width = 106
+      Height = 13
+      Alignment = taCenter
+      Caption = #1055#1083#1086#1097#1072' '#1086#1087#1072#1083#1102#1074#1072#1083#1100#1085#1072
+    end
+    object Label11: TLabel
+      Left = 15
+      Top = 149
+      Width = 148
+      Height = 13
+      Alignment = taCenter
+      Caption = #1054#1073#1086#1088#1086#1090#1082#1072' '#1087#1086#1090#1086#1095#1085#1086#1075#1086' '#1087#1077#1088#1110#1086#1076#1091
+    end
+    object Label15: TLabel
+      Left = 24
+      Top = 8
+      Width = 42
+      Height = 13
+      Alignment = taCenter
+      Caption = #1056#1072#1093#1091#1085#1086#1082
+    end
+    object Label14: TLabel
+      Left = 181
+      Top = 99
+      Width = 79
+      Height = 13
+      Alignment = taCenter
+      Caption = #1050#1110#1083#1100#1082#1110#1089#1090#1100' '#1087#1088#1086#1078'.'
+    end
+    object cxDBTextEdit1: TcxDBTextEdit
+      Left = 241
+      Top = 26
+      DataBinding.DataField = 'FIO'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 0
+      Width = 289
+    end
+    object cxDBTextEdit2: TcxDBTextEdit
+      Left = 24
+      Top = 72
+      DataBinding.DataField = 'IDCOD'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 1
+      Width = 289
+    end
+    object cxDBTextEdit5: TcxDBTextEdit
+      Left = 84
+      Top = 118
+      DataBinding.DataField = 'KOLI_P'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 2
+      Width = 79
+    end
+    object cxDBTextEdit3: TcxDBTextEdit
+      Left = 337
+      Top = 72
+      DataBinding.DataField = 'UL'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 3
+      Width = 249
+    end
+    object cxDBTextEdit4: TcxDBTextEdit
+      Left = 24
+      Top = 118
+      DataBinding.DataField = 'LGOTA'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 4
+      Width = 52
+    end
+    object cxDBTextEdit6: TcxDBTextEdit
+      Left = 592
+      Top = 72
+      DataBinding.DataField = 'DOM'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 5
+      Width = 49
+    end
+    object cxDBTextEdit8: TcxDBTextEdit
+      Left = 268
+      Top = 118
+      DataBinding.DataField = 'PLOS_OB'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 6
+      Width = 83
+    end
+    object cxDBTextEdit9: TcxDBTextEdit
+      Left = 357
+      Top = 118
+      DataBinding.DataField = 'PLOS_BB'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 7
+      Width = 106
+    end
+    object cxDBTextEdit10: TcxDBTextEdit
+      Left = 24
+      Top = 27
+      DataBinding.DataField = 'SCHET'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 8
+      Width = 201
+    end
+    object cxDBTextEdit11: TcxDBTextEdit
+      Left = 181
+      Top = 120
+      DataBinding.DataField = 'KOLI_P'
+      DataBinding.DataSource = DSKART
+      Properties.ReadOnly = True
+      TabOrder = 9
+      Width = 79
     end
   end
   object IBKART: TIBDataSet
@@ -605,6 +629,10 @@ object Form12: TForm12
     object IBKARTVAL: TIntegerField
       FieldName = 'VAL'
       Origin = '"KART"."VAL"'
+    end
+    object IBKARTKOLI_PF: TIntegerField
+      FieldName = 'KOLI_PF'
+      Origin = '"KART"."KOLI_PF"'
     end
   end
   object DSKART: TDataSource
@@ -752,8 +780,7 @@ object Form12: TForm12
       '  SUMM = :SUMM and'
       '  WID = :WID')
     SelectSQL.Strings = (
-      'select TMPOPL.*,tmpwid.naim as poslug  from  TMPOPL'
-      ' left outer join tmpwid on (TMPOPL.wid = tmpwid.wid)'
+      'select TMPOPL.*  from  TMPOPL'
       ' where TMPOPL.schet =:sch order by dt')
     ModifySQL.Strings = (
       'update TMPOPL'
@@ -775,11 +802,6 @@ object Form12: TForm12
     GeneratorField.Generator = 'GEN_PERIOD_ID'
     Left = 472
     Top = 8
-    object IBKTMPOPLKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"TMPOPL"."KL"'
-      Required = True
-    end
     object IBKTMPOPLSCHET: TIBStringField
       FieldName = 'SCHET'
       Origin = '"TMPOPL"."SCHET"'
@@ -789,20 +811,11 @@ object Form12: TForm12
       FieldName = 'DT'
       Origin = '"TMPOPL"."DT"'
     end
-    object IBKTMPOPLWID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"TMPOPL"."WID"'
-      Size = 10
-    end
     object IBKTMPOPLSUMM: TIBBCDField
       FieldName = 'SUMM'
       Origin = '"TMPOPL"."SUMM"'
       Precision = 18
       Size = 2
-    end
-    object IBKTMPOPLPOSLUG: TIBStringField
-      FieldName = 'POSLUG'
-      Origin = '"TMPWID"."NAIM"'
     end
   end
   object DSKTMPOPL: TDataSource
@@ -1143,5 +1156,12 @@ object Form12: TForm12
     DataSet = IBDataSet5
     Left = 672
     Top = 48
+  end
+  object IBQuery1: TIBQuery
+    BufferChunks = 1000
+    CachedUpdates = False
+    ParamCheck = True
+    Left = 536
+    Top = 112
   end
 end

@@ -188,11 +188,14 @@ begin
         begin
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
+               if Form1.ADOWID.FieldByName('fl_nonach').Value<>1 then
+               begin
 
                Form1.IBTMPWID.Insert;
                Form1.IBTMPWIDWID.Value := trim(Form1.ADOWID.FieldByName('wid').AsString);
                Form1.IBTMPWIDNAIM.Value := trim(Form1.ADOWID.FieldByName('naim').AsString);
                Form1.IBTMPWID.Post;
+               end;
 
         Form1.ADOWID.Next;
         end;

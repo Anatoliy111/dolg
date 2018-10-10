@@ -9,12 +9,11 @@ uses
   cxDBEdit, DB, IBCustomDataSet, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxDBData, cxGridLevel, cxClasses, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
-  cxCurrencyEdit, cxDBLookupComboBox, cxNavigator;
+  cxCurrencyEdit, cxDBLookupComboBox, cxNavigator, IBX.IBQuery;
 
 type
   TForm12 = class(TForm)
     Panel1: TPanel;
-    Panel2: TPanel;
     cxTextEdit1: TcxTextEdit;
     cxButton1: TcxButton;
     Label1: TLabel;
@@ -47,28 +46,10 @@ type
     IBKARTPLOS_BB: TIBBCDField;
     IBKARTPRIVAT: TIBStringField;
     IBKARTVAL: TIntegerField;
-    cxDBTextEdit1: TcxDBTextEdit;
-    Label2: TLabel;
-    Label3: TLabel;
-    cxDBTextEdit2: TcxDBTextEdit;
-    Label6: TLabel;
-    cxDBTextEdit5: TcxDBTextEdit;
-    Label4: TLabel;
-    cxDBTextEdit3: TcxDBTextEdit;
-    cxDBTextEdit4: TcxDBTextEdit;
-    cxDBTextEdit6: TcxDBTextEdit;
-    Label5: TLabel;
     cxDBTextEdit7: TcxDBTextEdit;
-    Label7: TLabel;
-    Label8: TLabel;
-    cxDBTextEdit8: TcxDBTextEdit;
-    Label9: TLabel;
-    cxDBTextEdit9: TcxDBTextEdit;
-    Label10: TLabel;
     cxGrid1DBTableView1: TcxGridDBTableView;
     cxGrid1Level1: TcxGridLevel;
     cxGrid1: TcxGrid;
-    Label11: TLabel;
     Panel3: TPanel;
     Panel4: TPanel;
     Label13: TLabel;
@@ -95,13 +76,10 @@ type
     cxGrid1DBTableView1SUBS: TcxGridDBColumn;
     cxGrid1DBTableView1UDER: TcxGridDBColumn;
     cxGrid1DBTableView1ENDDOLG: TcxGridDBColumn;
-    IBKTMPOPLKL: TIntegerField;
     IBKTMPOPLSCHET: TIBStringField;
     IBKTMPOPLDT: TDateField;
-    IBKTMPOPLWID: TIBStringField;
     IBKTMPOPLSUMM: TIBBCDField;
     cxGridDBTableView1DT: TcxGridDBColumn;
-    cxGridDBTableView1WID: TcxGridDBColumn;
     cxGridDBTableView1SUMM: TcxGridDBColumn;
     IBKTMPUDERKL: TIntegerField;
     IBKTMPUDERSCHET: TIBStringField;
@@ -138,12 +116,39 @@ type
     cxGridDBTableView3WOZW: TcxGridDBColumn;
     cxGridDBTableView3PERE: TcxGridDBColumn;
     cxGridDBTableView3SAL: TcxGridDBColumn;
-    cxDBTextEdit10: TcxDBTextEdit;
-    Label15: TLabel;
     IBKOBORMESPOSLUG: TIBStringField;
-    IBKTMPOPLPOSLUG: TIBStringField;
     IBKTMPUDERPOSLUG: TIBStringField;
     IBKOBORPOSLUG: TIBStringField;
+    Panel2: TPanel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label6: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label15: TLabel;
+    cxDBTextEdit1: TcxDBTextEdit;
+    cxDBTextEdit2: TcxDBTextEdit;
+    cxDBTextEdit5: TcxDBTextEdit;
+    cxDBTextEdit3: TcxDBTextEdit;
+    cxDBTextEdit4: TcxDBTextEdit;
+    cxDBTextEdit6: TcxDBTextEdit;
+    cxDBTextEdit8: TcxDBTextEdit;
+    cxDBTextEdit9: TcxDBTextEdit;
+    cxDBTextEdit10: TcxDBTextEdit;
+    Label14: TLabel;
+    cxDBTextEdit11: TcxDBTextEdit;
+    IBKARTKOLI_PF: TIntegerField;
+    IBQuery1: TIBQuery;
+    cxGridDBTableView1Column1: TcxGridDBColumn;
+    cxGridDBTableView1Column2: TcxGridDBColumn;
+    cxGridDBTableView1Column3: TcxGridDBColumn;
+    cxGridDBTableView1Column4: TcxGridDBColumn;
+    cxGridDBTableView1Column5: TcxGridDBColumn;
     procedure cxButton1Click(Sender: TObject);
   private
     { Private declarations }
@@ -168,6 +173,8 @@ end;
 
 
 procedure TForm12.Find();
+var sql:string;
+    res,i,fl_ins:integer;
 begin
 if cxTextEdit1.EditValue <> null then
 begin
@@ -184,6 +191,70 @@ begin
 
      IBKOBORMES.ParamByName('sch').Value:=IBKARTSCHET.Value;
      IBKTMPOPL.ParamByName('sch').Value:=IBKARTSCHET.Value;
+     IBQuery1.Active:=false;
+//     sql:='select schet ';
+//                Form1.IBTMPWID.First;
+//                while not Form1.IBTMPWID.eof do
+//                begin
+//                       if Form1.IBTMPOPL.FindField('OPL_'+Form1.IBTMPWIDWID.Value)<> nil then
+//                       begin
+//                       Form1.IBTMPOPL.Insert;
+//                       Form1.IBTMPOPL.FieldByName('SCHET').Value := trim(Form1.ADOOPL.FieldByName('schet').Value);
+//                       Form1.IBTMPOPL.FieldByName('DT').Value := Form1.ADOOPL.FieldByName('DT').Value;
+//                       Form1.IBTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value := Form1.ADOOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).AsCurrency;
+//                       Form1.IBTMPOPL.FieldByName('SUMM').Value := Form1.ADOOPL.FieldByName('OPL').AsCurrency;
+//                       Form1.IBTMPOPL.Post;
+//                       end;
+//                Form1.IBTMPWID.Next;
+//                end;
+//     res:=IBKTMPOPL.FieldCount-cxGridDBTableView1.ColumnCount;
+//     if res>0 then
+//     begin
+//       for i := 1 to res do
+//       begin
+//         cxGridDBTableView1.CreateColumn;
+//       end;
+//     end;
+//     res:=IBKTMPOPL.FieldCount-cxGridDBTableView1.ColumnCount;
+//     if res=0 then
+//     begin
+//                Form1.IBTMPWID.First;
+//                while not Form1.IBTMPWID.eof do
+//                begin
+//                   fl_ins:=0;
+//                   for i := 0 to cxGridDBTableView1.ColumnCount-1 do
+//                   begin
+//                     if cxGridDBTableView1.Columns[i].DataBinding.FieldName=Form1.IBTMPWIDWID  then
+//                        fl_ins:=1;
+//                     if
+//
+//                     cxGridDBTableView1.Columns[i].DataBinding.FieldName:='opl_ub';
+//                   end;
+//
+//
+//
+////                       if Form1.IBTMPOPL.FindField('OPL_'+Form1.IBTMPWIDWID.Value)<> nil then
+////                       begin
+////                       Form1.IBTMPOPL.Insert;
+////                       Form1.IBTMPOPL.FieldByName('SCHET').Value := trim(Form1.ADOOPL.FieldByName('schet').Value);
+////                       Form1.IBTMPOPL.FieldByName('DT').Value := Form1.ADOOPL.FieldByName('DT').Value;
+////                       Form1.IBTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value := Form1.ADOOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).AsCurrency;
+////                       Form1.IBTMPOPL.FieldByName('SUMM').Value := Form1.ADOOPL.FieldByName('OPL').AsCurrency;
+////                       Form1.IBTMPOPL.Post;
+////                       end;
+//                Form1.IBTMPWID.Next;
+//                end;
+//
+//
+//     end;
+
+     cxGridDBTableView1.Columns[3].DataBinding.FieldName:='opl_ub';
+     cxGridDBTableView1.Columns[3].DataBinding.ValueType:='Currency';
+     cxGridDBTableView1.Columns[3].Visible:=true;
+     cxGridDBTableView1.Columns[3].DataBinding.FieldName:='opl_ub';
+     cxGridDBTableView1.Columns[3].DataBinding.ValueType:='Currency';
+     cxGridDBTableView1.Columns[3].Visible:=true;
+
      IBKTMPUDER.ParamByName('sch').Value:=IBKARTSCHET.Value;
      IBKOBOR.ParamByName('sch').Value:=IBKARTSCHET.Value;
      IBKOBORMES.Active:=true;
