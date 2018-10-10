@@ -510,7 +510,7 @@ type
     DateKVART:TDate;
     UpdateBase:Boolean;
     iniFile:TIniFile;
-    PathKvart,StartSQL:string;
+    PathKvart,StartSQL,PathDir:string;
     procedure DatabaseDate;
     procedure REPORT;
 
@@ -524,8 +524,8 @@ var
 implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
-  Unit5, Unit6, Unit4, Unit11, Unit12;
-
+  Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils;
+//IOUtils - для компонента TDirectory
 {$R *.dfm}
 
 procedure TForm1.DatabaseDate;
@@ -536,11 +536,75 @@ DateKVART:TDate;
 DateKVART1:TDate;
 begin
   try
+    pathDIR:='tmp';
+        if not DirectoryExists(pathDIR) then
+        begin
+          MkDir(pathDIR);
+        end
+        else
+        begin
+//          RenameFile(pathDIR,pathDIR+'1');
+          TDirectory.Delete(pathDIR, True);
+          if not DirectoryExists(pathDIR) then
+             MkDir(pathDIR)
+          else
+          begin
+            TDirectory.Delete(pathDIR, True);
+//            RenameFile(pathDIR,pathDIR+'1');
+            if not DirectoryExists(pathDIR) then
+             MkDir(pathDIR)
+            else
+            begin
+             ShowMessage('Не можу видалити каталог '+pathDIR);
+             Form1.Close;
+             exit;
+            end;
+          end;
+        end;
 
-       AssignFile(f, PathKvart+'\cur_date.mem');
-FileMode := fmOpenRead;
-  Reset(f);
+        if DirectoryExists(pathDIR) and DirectoryExists(PathKvart) then
+        begin
+          CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'),PChar(pathDIR+'\obor.dbf'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\obor.cdx'),PChar(pathDIR+'\obor.cdx'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\kart.dbf'),PChar(pathDIR+'\kart.dbf'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\kart.cdx'),PChar(pathDIR+'\kart.cdx'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'),PChar(pathDIR+'\wids.dbf'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\wids.cdx'),PChar(pathDIR+'\wids.cdx'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'),PChar(pathDIR+'\opl.dbf'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\opl.cdx'),PChar(pathDIR+'\opl.cdx'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\uder.dbf'),PChar(pathDIR+'\uder.dbf'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\uder.cdx'),PChar(pathDIR+'\uder.cdx'),true);
+          CopyFile(PChar(Form1.PathKvart+'cur_date.mem'),PChar(pathDIR+'\cur_date.mem'),true);
+        end
+        else
+        begin
+           messagedlg('Помилка при підключенні до квартплати!!! '+PathKvart,mtError,[mbCancel],0);
+           Application.Terminate;
+        end;
+
+
+     except
+   on E : Exception do
+   begin
+    messagedlg('Помилка при підключенні до квартплати!!! - '+E.Message,mtError,[mbOK],0);
+    Application.Terminate;
+    end;
+   end;
+
+  try
+    AssignFile(f, pathDIR+'\cur_date.mem');
+    FileMode := fmOpenRead;
+    Reset(f);
     Readln(f, stroka);
+
+    except
+    on E : Exception do
+   begin
+     messagedlg('Дані для завантаження не знайдено '+pathDIR+'\cur_date.mem '+E.Message,mtError,[mbCancel],0);
+     Application.Terminate;
+   end;
+  end;
+
     strmes:=trim(Copy(stroka, 33, 2));
     strye:=trim(Copy(stroka, 36, 4));
 
@@ -569,15 +633,9 @@ FileMode := fmOpenRead;
        UpdateBase:=false;
 
 
-     except
-   on E : Exception do
-   begin
-    messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
-    Application.Terminate;
-   end;
 
 
-  end;
+
 
 end;
 

@@ -35,7 +35,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, mytools, IOUtils;
+uses Unit1, Unit3, mytools;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -96,7 +96,7 @@ end;
 
 
 procedure TForm2.UpdateBase;
-var pathDBF,pathARC,dateimport,strmes,strye,pathDIR:string;
+var pathDBF,pathARC,dateimport,strmes,strye:string;
     adostr,copy1,copy2:WideString;
     Y ,M, D: Word;
     DateUPD:TDateTime;
@@ -108,45 +108,6 @@ begin
    Form1.Enabled:=false;
    Label1.Caption:='Завантаження поточних даних.Зачекайте...';
    Label2.visible:=true;
-  pathDIR:='tmp';
-  if not DirectoryExists(pathDIR) then
-  begin
-    MkDir(pathDIR);
-  end
-  else
-  begin
-    TDirectory.Delete(pathDIR, True);
-    if not DirectoryExists(pathDIR) then
-       MkDir(pathDIR)
-    else
-    begin
-      TDirectory.Delete(pathDIR, True);
-      if not DirectoryExists(pathDIR) then
-       MkDir(pathDIR)
-      else
-      begin
-       ShowMessage('Не можу видалити каталог '+pathDIR);
-       Form1.Close;
-       exit;
-      end;
-    end;
-  end;
-
-  if DirectoryExists(pathDIR) then
-  begin
-    copy1:=Form1.PathKvart+'dbf\obor.dbf';
-    CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'),PChar(pathDIR+'\obor.dbf'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\obor.cdx'),PChar(pathDIR+'\obor.cdx'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\kart.dbf'),PChar(pathDIR+'\kart.dbf'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\kart.cdx'),PChar(pathDIR+'\kart.cdx'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'),PChar(pathDIR+'\wids.dbf'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\wids.cdx'),PChar(pathDIR+'\wids.cdx'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'),PChar(pathDIR+'\opl.dbf'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\opl.cdx'),PChar(pathDIR+'\opl.cdx'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\uder.dbf'),PChar(pathDIR+'\uder.dbf'),true);
-    CopyFile(PChar(Form1.PathKvart+'dbf\uder.cdx'),PChar(pathDIR+'\uder.cdx'),true);
-  end;
-
 
 
    Form1.DSTMPKART.Enabled:=false;
@@ -163,7 +124,7 @@ begin
   Form1.ADOConnectionDBF.Connected:=false;
   pathDBF:=Form1.PathKvart+'dbf';
   adostr:='Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source='+
-            pathDIR+';Mode=Read;Jet OLEDB:System database="";Jet OLEDB:Registry Path="";'+
+            Form1.pathDIR+';Mode=Read;Jet OLEDB:System database="";Jet OLEDB:Registry Path="";'+
             'Jet OLEDB:Database Password="";Jet OLEDB:Engine Type=16;Jet OLEDB:Database Locking Mode=0;'+
             'Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Global Bulk Transactions=1;'+
             'Jet OLEDB:New Database Password="";Jet OLEDB:Create System Database=False;'+
@@ -207,13 +168,20 @@ begin
         Form1.IBDatabase1.Close;
         Form1.IBDatabase1.Open;
         Form1.IBTransaction1.Active:=true;
+        Form1.IBTransaction2.Active:=true;
+
 
         Form1.ADOWID.Active:=true;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOWID.RecordCount-1;
 
+        Form1.IBQuery1.Close;
+        Form1.IBQuery1.SQL.Text:='delete from tmpwid';
+        Form1.IBQuery1.ExecSQL;
+
         Form1.IBTMPOPL.Active:=true;
+        Form1.IBTMPWID.Active:=false;
         Form1.IBTMPWID.Active:=true;
         Form1.ADOWID.First;
         while not Form1.ADOWID.eof do
@@ -297,9 +265,7 @@ begin
 //        end;
 
 
-  Form1.IBQuery1.Close;
-  Form1.IBQuery1.SQL.Text:='delete from tmpwid';
-  Form1.IBQuery1.ExecSQL;
+
 
          Label2.Caption:='Оплата';
                 cxProgressBar2.Position:=cxProgressBar2.Position+1;
@@ -372,7 +338,8 @@ begin
 //
 //        Form1.ADOUDER.Next;
 //        end;
-
+        Label2.Caption:='Картки';
+        Form1.IBKART.Active:=true;
         cxProgressBar2.Position:=cxProgressBar2.Position+1;
         Application.ProcessMessages;
 
@@ -422,8 +389,10 @@ begin
 
        Form1.IBPERIOD.Active:=false;
        Form1.IBPERIOD.Active:=true;
+       Form1.IBTMPDATE.Active:=true;
 
        Form1.IBPERIOD.Last;
+
        Form1.IBTMPDATE.Edit;
        Form1.IBTMPDATEPERIOD.Value:=Form1.IBPERIODPERIOD.Value;
        Form1.IBTMPDATE.post;

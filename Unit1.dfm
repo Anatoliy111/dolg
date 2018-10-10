@@ -3043,6 +3043,7 @@ object Form1: TForm1
     Top = 192
   end
   object ADOConnectionDBF: TADOConnection
+    Connected = True
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=d:\WO' +
       'RK\KOMUN\kvpl\dbf\;Mode=Read;Jet OLEDB:System database="";Jet OL' +
@@ -3685,6 +3686,7 @@ object Form1: TForm1
     Top = 296
   end
   object ADOOBORMES: TADODataSet
+    AutoCalcFields = False
     Connection = ADOConnectionDBF
     CursorType = ctStatic
     CommandText = 'select * from obor order by schet, wid'
