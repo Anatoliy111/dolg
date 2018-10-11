@@ -81,12 +81,12 @@ begin
  else
  begin
      UpdateBase;
-//     Form1.IBREPD.Active:=false;
+//     Form1.IBREPD.close;
 //     Form1.IBREPD.ParamByName('kluser').Value:=Form1.IBUSERKL.Value;
-//     Form1.IBREPD.Active:=true;
+//     Form1.IBREPD.open;
 //     Form1.DSREPD.Enabled:=true;
        Form1.Enabled:=true;
-       Form1.IBSP_ADRES.Active:=true;
+       Form1.IBSP_ADRES.open;
        Form1.DSSPRADRES.Enabled:=true;
      Form2.Close;
  end;
@@ -96,12 +96,12 @@ end;
 
 
 procedure TForm2.UpdateBase;
-var pathDBF,pathARC,dateimport,strmes,strye:string;
+var pathDBF,pathARC,dateimport,strmes,strye,strfield1,strfield2:string;
     adostr,copy1,copy2:WideString;
     Y ,M, D: Word;
     DateUPD:TDateTime;
     DateUPDD,FilterDATE:Tdate;
-    ii,cou:integer;
+    ii,cou,posstr,fl_insfield:integer;
     vArray:variant;
 begin
    try
@@ -139,14 +139,15 @@ begin
           Label2.Caption:='Оновлення послуг';
           Application.ProcessMessages;
 
-        Form1.ADOWID.Active:=true;
+        Form1.ADOWID.open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOWID.RecordCount-1;
 
-        Form1.IBTMPOPL.Active:=true;
-        Form1.IBTMPWID.Active:=true;
+        Form1.IBTMPOPL.open;
+        Form1.IBTMPWID.open;
         Form1.ADOWID.First;
+        fl_insfield:=0;
         while not Form1.ADOWID.eof do
         begin
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
@@ -155,23 +156,85 @@ begin
                begin
                        if Form1.IBTMPOPL.FindField('OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString))= nil then
                        begin
+
                           Form1.IBQuery1.Close;
                           Form1.IBQuery1.SQL.Text:='ALTER TABLE tmpopl ADD OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString)+' Numeric(15,2)';
                           Form1.IBQuery1.ExecSQL;
+                          fl_insfield:=1;
                        end;
                end;
 
 
         Form1.ADOWID.Next;
         end;
+
+        Form1.IBTMPOPL.InsertSQL.Clear;
+        Form1.IBTMPOPL.ModifySQL.Clear;
+        Form1.IBTMPOPL.InsertSQL.Add('insert into TMPOPL');
+        Form1.IBTMPOPL.ModifySQL.Add('update TMPOPL');
+        Form1.IBTMPOPL.ModifySQL.Add('set');
+        Form1.IBTMPOPL.ModifySQL.Add('DT = :DT,');
+        Form1.IBTMPOPL.ModifySQL.Add('KL = :KL,');
+        Form1.IBTMPOPL.ModifySQL.Add('SCHET = :SCHET,');
+        Form1.IBTMPOPL.ModifySQL.Add('SUMM = :SUMM,');
+
+
+        Form1.ADOWID.First;
+            while not Form1.ADOWID.eof do
+            begin
+                   if Form1.ADOWID.FieldByName('fl_nonach').Value<>1 then
+                   begin
+                     strfield1:=strfield1+', OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString);
+                     strfield2:=strfield2+', :OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString);
+                     Form1.IBTMPOPL.ModifySQL.Add('OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString)+' = :'+'OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString+','));
+                   end;
+
+
+            Form1.ADOWID.Next;
+            end;
+        Form1.IBTMPOPL.InsertSQL.Add('  (DT, KL, SCHET, SUMM, WID'+strfield1+')');
+        Form1.IBTMPOPL.InsertSQL.Add('values');
+        Form1.IBTMPOPL.InsertSQL.Add('  (:DT, :KL, :SCHET, :SUMM, :WID'+strfield2+')');
+
+        Form1.IBTMPOPL.ModifySQL.Add('WID = :WID');
+        Form1.IBTMPOPL.ModifySQL.Add('where');
+        Form1.IBTMPOPL.ModifySQL.Add('KL = :OLD_KL');
+
+
+
+
+
+
         Form1.IBTransaction1.CommitRetaining;
         Form1.IBDatabase1.Close;
         Form1.IBDatabase1.Open;
-        Form1.IBTransaction1.Active:=true;
-        Form1.IBTransaction2.Active:=true;
+        Form1.IBTransaction1.StartTransaction;
+        Form1.IBTransaction2.StartTransaction;
 
 
-        Form1.ADOWID.Active:=true;
+  Form1.IBKONTROL.open;
+  Form1.IBUSER.open;
+  Form1.IBADRES.open;
+  Form1.IBNOTE.open;
+  Form1.IBNOTE1.open;
+  Form1.IBNOTE2.open;
+  Form1.IBKART.open;
+  Form1.IBOBOR.open;
+  Form1.IBOBORMES.open;
+  Form1.IBSPRADRES.open;
+  Form1.IBSP_ADRES.open;
+  Form1.IBSERVICES.open;
+  Form1.IBPERIOD.open;
+
+
+  Form1.IBTMPDATE.open;
+  Form1.IBTMPNACH.open;
+  Form1.IBTMPOPL.open;
+  Form1.IBTMPSUBS.open;
+  Form1.IBTMPUDER.open;
+  Form1.IBTMPWID.open;
+
+        Form1.ADOWID.open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOWID.RecordCount-1;
@@ -180,9 +243,9 @@ begin
         Form1.IBQuery1.SQL.Text:='delete from tmpwid';
         Form1.IBQuery1.ExecSQL;
 
-        Form1.IBTMPOPL.Active:=true;
-        Form1.IBTMPWID.Active:=false;
-        Form1.IBTMPWID.Active:=true;
+        Form1.IBTMPOPL.open;
+        Form1.IBTMPWID.close;
+        Form1.IBTMPWID.open;
         Form1.ADOWID.First;
         while not Form1.ADOWID.eof do
         begin
@@ -210,8 +273,8 @@ begin
   Form1.IBQuery1.SQL.Text:='delete from obormes';
   Form1.IBQuery1.ExecSQL;
 
-         Form1.IBOBORMES.Active:=true;
-         Form1.ADOOBORMES.Active:=true;
+         Form1.IBOBORMES.open;
+         Form1.ADOOBORMES.open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOOBORMES.RecordCount-1;
@@ -251,7 +314,7 @@ begin
 
 
           Updatenote;
-//          Form1.ADOOBORREC.Active:=true;
+//          Form1.ADOOBORREC.open;
 //        cxProgressBar1.Position:=0;
 //        cxProgressBar1.Properties.Min:=0;
 //       cxProgressBar1.Properties.Max:=Form1.ADOOBORREC.RecordCount-1;
@@ -273,9 +336,9 @@ begin
          Label2.Caption:='Оплата';
                 cxProgressBar2.Position:=cxProgressBar2.Position+1;
         Application.ProcessMessages;
-          Form1.IBTMPWID.Active:=true;
-          Form1.IBTMPOPL.Active:=true;
-          Form1.ADOOPL.Active:=true;
+          Form1.IBTMPWID.open;
+          Form1.IBTMPOPL.open;
+          Form1.ADOOPL.open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOOPL.RecordCount-1;
@@ -312,7 +375,7 @@ begin
 //                cxProgressBar2.Position:=cxProgressBar2.Position+1;
 //        Application.ProcessMessages;
 //
-//          Form1.ADOUDER.Active:=true;
+//          Form1.ADOUDER.open;
 //        cxProgressBar1.Position:=0;
 //        cxProgressBar1.Properties.Min:=0;
 //       cxProgressBar1.Properties.Max:=Form1.ADOUDER.RecordCount-1;
@@ -342,7 +405,7 @@ begin
 //        Form1.ADOUDER.Next;
 //        end;
         Label2.Caption:='Картки';
-        Form1.IBKART.Active:=true;
+        Form1.IBKART.open;
         cxProgressBar2.Position:=cxProgressBar2.Position+1;
         Application.ProcessMessages;
 
@@ -355,8 +418,8 @@ begin
                   Form1.IBQuery1.ExecSQL;
 
 
-                    Form1.IBKART.Active:=true;
-                    Form1.ADOKART.Active:=true;
+                    Form1.IBKART.open;
+                    Form1.ADOKART.open;
                 cxProgressBar1.Position:=0;
                 cxProgressBar1.Properties.Min:=0;
                cxProgressBar1.Properties.Max:=Form1.ADOKART.RecordCount-1;
@@ -390,9 +453,9 @@ begin
 
        end;
 
-       Form1.IBPERIOD.Active:=false;
-       Form1.IBPERIOD.Active:=true;
-       Form1.IBTMPDATE.Active:=true;
+       Form1.IBPERIOD.close;
+       Form1.IBPERIOD.open;
+       Form1.IBTMPDATE.open;
 
        Form1.IBPERIOD.Last;
 
@@ -478,7 +541,7 @@ begin
                   if  res = null then
                   begin
 
-                           Form1.ADOKART.Active:=true;
+                           Form1.ADOKART.open;
                            if Form1.ADOKART.Locate('schet',Form1.IBQuery1.FieldByName('schet').Value,[]) then
                            begin
                                   Form1.IBKART.Insert;
@@ -508,7 +571,7 @@ procedure TForm2.UpdateKART;
 var res:Variant;
 begin
 
-               Form1.ADOKART.Active:=true;
+               Form1.ADOKART.open;
                 cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOKART.RecordCount-1;
@@ -618,7 +681,7 @@ begin
 
   Form1.ADOConnectionDBF.Connected:=true;
   end;
-  Form1.ADOOBORREC.Active:=true;
+  Form1.ADOOBORREC.open;
 
 
 
@@ -654,7 +717,7 @@ begin
       Form1.IBQuery1.ParamByName('dd').Value:=DateUPD;
       Form1.IBQuery1.ExecSQL;
 
-      Form1.IBQuery1.Active:=false;
+      Form1.IBQuery1.close;
 
 
 
@@ -662,7 +725,7 @@ begin
 
 
 
-          Form1.ADOOBOR.Active:=true;
+          Form1.ADOOBOR.open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOOBOR.RecordCount-1;
@@ -759,7 +822,7 @@ begin
 
 
 
-            Form1.ADOKART.Active:=true;
+            Form1.ADOKART.open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOKART.RecordCount-1;
@@ -797,9 +860,9 @@ begin
 
 
 
-//        Form1.IBSP_ADRES.Active:=false;
-//        Form1.IBSP_ADRES.Active:=true;
-//        Form1.IBSPRADRES.Active:=true;
+//        Form1.IBSP_ADRES.close;
+//        Form1.IBSP_ADRES.open;
+//        Form1.IBSPRADRES.open;
 //        Form1.IBSP_ADRES.Last;
 //        cxProgressBar1.Position:=0;
 //        cxProgressBar1.Properties.Min:=0;

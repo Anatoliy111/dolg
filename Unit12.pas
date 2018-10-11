@@ -76,11 +76,6 @@ type
     cxGrid1DBTableView1SUBS: TcxGridDBColumn;
     cxGrid1DBTableView1UDER: TcxGridDBColumn;
     cxGrid1DBTableView1ENDDOLG: TcxGridDBColumn;
-    IBKTMPOPLSCHET: TIBStringField;
-    IBKTMPOPLDT: TDateField;
-    IBKTMPOPLSUMM: TIBBCDField;
-    cxGridDBTableView1DT: TcxGridDBColumn;
-    cxGridDBTableView1SUMM: TcxGridDBColumn;
     IBKTMPUDERKL: TIntegerField;
     IBKTMPUDERSCHET: TIBStringField;
     IBKTMPUDERWID: TIBStringField;
@@ -144,11 +139,6 @@ type
     cxDBTextEdit11: TcxDBTextEdit;
     IBKARTKOLI_PF: TIntegerField;
     IBQuery1: TIBQuery;
-    cxGridDBTableView1Column1: TcxGridDBColumn;
-    cxGridDBTableView1Column2: TcxGridDBColumn;
-    cxGridDBTableView1Column3: TcxGridDBColumn;
-    cxGridDBTableView1Column4: TcxGridDBColumn;
-    cxGridDBTableView1Column5: TcxGridDBColumn;
     procedure cxButton1Click(Sender: TObject);
   private
     { Private declarations }
@@ -175,23 +165,25 @@ end;
 procedure TForm12.Find();
 var sql:string;
     res,i,fl_ins:integer;
+    colum:TcxGridColumn;
+    AColumn: TcxGridDBColumn;
 begin
 if cxTextEdit1.EditValue <> null then
 begin
 
-     IBKART.Active:=true;
+     IBKART.Open;
      if IBKART.Locate('schet',cxTextEdit1.EditValue,[]) then
      begin
-     IBKOBORMES.Active:=false;
-     IBKTMPOPL.Active:=false;
-     IBKTMPUDER.Active:=false;
-     IBKOBOR.Active:=false;
+     IBKOBORMES.Close;
+     IBKTMPOPL.Close;
+     IBKTMPUDER.Close;
+     IBKOBOR.Close;
 
 
 
      IBKOBORMES.ParamByName('sch').Value:=IBKARTSCHET.Value;
      IBKTMPOPL.ParamByName('sch').Value:=IBKARTSCHET.Value;
-     IBQuery1.Active:=false;
+
 //     sql:='select schet ';
 //                Form1.IBTMPWID.First;
 //                while not Form1.IBTMPWID.eof do
@@ -248,19 +240,88 @@ begin
 //
 //     end;
 
-     cxGridDBTableView1.Columns[3].DataBinding.FieldName:='opl_ub';
-     cxGridDBTableView1.Columns[3].DataBinding.ValueType:='Currency';
-     cxGridDBTableView1.Columns[3].Visible:=true;
-     cxGridDBTableView1.Columns[3].DataBinding.FieldName:='opl_ub';
-     cxGridDBTableView1.Columns[3].DataBinding.ValueType:='Currency';
-     cxGridDBTableView1.Columns[3].Visible:=true;
+//     cxGridDBTableView1.Columns[3].DataBinding.FieldName:='opl_ub';
+//     cxGridDBTableView1.Columns[3].DataBinding.ValueType:='Currency';
+//     cxGridDBTableView1.Columns[3].Visible:=true;
+//cxGridDBTableView1.DataController.CreateAllItems;
+//     colum:=cxGridDBTableView1.CreateColumn;
+//     colum.DataBinding.FieldName:='DT';
+//     colum.DataBinding.ValueType:='DateTime';
+
+
+
+//     cxGridDBTableView1.Columns[2].DataBinding.FieldName:='OPL_sn';
+//     cxGridDBTableView1.Columns[2].DataBinding.ValueType:='Currency';
+//     cxGridDBTableView1.Columns[2].Visible:=true;
 
      IBKTMPUDER.ParamByName('sch').Value:=IBKARTSCHET.Value;
      IBKOBOR.ParamByName('sch').Value:=IBKARTSCHET.Value;
-     IBKOBORMES.Active:=true;
-     IBKTMPOPL.Active:=true;
-     IBKTMPUDER.Active:=true;
-     IBKOBOR.Active:=true;
+     IBKOBORMES.Open;
+     IBKTMPOPL.Open;
+
+      cxGridDBTableView1.ClearItems;
+
+      acolumn:=cxGridDBTableView1.CreateColumn;
+      cxGridDBTableView1.BeginUpdate;
+      acolumn.DataBinding.FieldName:='DT';
+      acolumn.DataBinding.valuetype:='DateTime';
+      cxGridDBTableView1.EndUpdate;
+
+      //AColumn.Summary.GroupFooterKind := skSum;
+
+      acolumn.Caption:='Дата';
+
+      acolumn:=cxGridDBTableView1.CreateColumn;
+      cxGridDBTableView1.BeginUpdate;
+      acolumn.DataBinding.FieldName:='SUMM';
+      acolumn.DataBinding.valuetype:='Currency';
+      cxGridDBTableView1.EndUpdate;
+
+      AColumn.Summary.GroupFooterKind := skSum;
+
+      acolumn.Caption:='Сума';
+
+      IBKTMPOPL.First;
+      while not IBKTMPOPL.eof do
+      begin
+                Form1.IBTMPWID.First;
+                while not Form1.IBTMPWID.eof do
+                begin
+                       fl_ins:=0;
+                       if IBKTMPOPL.FindField('OPL_'+Form1.IBTMPWIDWID.Value)<> nil then
+                       begin
+                         if (IBKTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value <> 0) and (IBKTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value <> null) then
+                         begin
+                           for I := 0 to cxGridDBTableView1.ColumnCount-1 do
+                           begin
+                             if cxGridDBTableView1.Columns[i].DataBinding.FieldName = 'OPL_'+Form1.IBTMPWIDWID.Value then
+                                fl_ins:=1;
+                           end;
+                           if fl_ins=0 then
+                           begin
+                              acolumn:=cxGridDBTableView1.CreateColumn;
+                              cxGridDBTableView1.BeginUpdate;
+                              acolumn.DataBinding.FieldName:='OPL_'+Form1.IBTMPWIDWID.Value;
+                              acolumn.DataBinding.valuetype:='Currency';
+                              cxGridDBTableView1.EndUpdate;
+
+                              AColumn.Summary.GroupFooterKind := skSum;
+
+                              acolumn.Caption:=Form1.IBTMPWIDNAIM.Value;
+                           end;
+
+                         end;
+
+                      end;
+                Form1.IBTMPWID.Next;
+                end;
+      IBKTMPOPL.Next;
+      end;
+
+
+
+     IBKTMPUDER.Open;
+     IBKOBOR.Open;
      end
      else
      begin

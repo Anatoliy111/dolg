@@ -536,6 +536,8 @@ DateKVART:TDate;
 DateKVART1:TDate;
 begin
   try
+  ADOConnectionARC.Close;
+  ADOConnectionDBF.Close;
 //    pathDIR:='c:\tmp';
         if not DirectoryExists(pathDIR) then
         begin
@@ -543,14 +545,14 @@ begin
         end
         else
         begin
-//          RenameFile(pathDIR,pathDIR+'1');
+          RenameFile(pathDIR,pathDIR+'1');
           TDirectory.Delete(pathDIR, True);
           if not DirectoryExists(pathDIR) then
              MkDir(pathDIR)
           else
           begin
             TDirectory.Delete(pathDIR, True);
-//            RenameFile(pathDIR,pathDIR+'1');
+            RenameFile(pathDIR,pathDIR+'1');
             if not DirectoryExists(pathDIR) then
              MkDir(pathDIR)
             else
@@ -596,7 +598,7 @@ begin
     FileMode := fmOpenRead;
     Reset(f);
     Readln(f, stroka);
-
+    CloseFile(f);
     except
     on E : Exception do
    begin
@@ -616,16 +618,19 @@ begin
     else
       strmes:=int2str(str2int(strmes)-1);
 
-    if str2int(strmes) < 10 then
+    if (str2int(strmes) < 10) and (str2int(strmes) > 0) then
        strmes:='0'+strmes
     else
        strmes:=strmes;
+    IBPERIOD.Last;
+    if (str2int(strmes)<=0) and (str2int(strye)<=0) then
+        Form1.DateKVART := IBPERIODPERIOD.Value
+    else
+        Form1.DateKVART := StrToDate('01.'+strmes+'.'+strye);
 
-     Form1.DateKVART := StrToDate('01.'+strmes+'.'+strye);
      DateKVART1:=IncMonth(IBPERIODPERIOD.Value);
 //         DateKVART := StrToDate('01.02.2018');
     cxLabel4.Caption:=mon_slovo(strtoint(trim(Copy(stroka, 33, 2))))+' '+Copy(stroka, 36, 4);
-    CloseFile(f);
     IBPERIOD.Last;
     if IBPERIODPERIOD.Value <> Form1.DateKVART then
        UpdateBase:=true
@@ -681,7 +686,7 @@ str1:ShortString;
 FilterDATE:TDate;
 begin
      Form1.DSREPD.Enabled:=false;
-     Form1.IBREPD.Active:=false;
+     Form1.IBREPD.close;
      cxGrid1DBTableView1DOLGMES1.Visible:=false;
      cxGrid1DBTableView1DOLGMES2.Visible:=false;
      cxGrid1DBTableView1DOLGMES3.Visible:=false;
@@ -734,7 +739,7 @@ begin
 
      Form1.IBREPD.SelectSQL.Text:=StrSQL+sql2+' order by note.schet,note.wid';
      Form1.IBREPD.ParamByName('kluser').Value:=Form1.ActiveUser;
-     Form1.IBREPD.Active:=true;
+     Form1.IBREPD.open;
      Form1.DSREPD.Enabled:=true;
 end;
 
@@ -878,38 +883,38 @@ begin
   IBDatabase1.Params.Add('password='+pw);
   cxPropertiesStore1.RestoreFrom;
    IBDatabase1.Connected:=TRUE;
-   IBTransaction1.Active:=true;
-   IBTransaction2.Active:=true;
-   IBSERVICES.Active:=true;
-   IBPERIOD.Active:=true;
+   IBTransaction1.StartTransaction;
+   IBTransaction2.StartTransaction;
+   IBSERVICES.open;
+   IBPERIOD.open;
 ADOConnectionDBF.Connected:=false;
 ADOConnectionARC.Connected:=false;
 
-  IBREPD.Active:=false;
+  IBREPD.close;
   StartSQL:=IBREPD.SelectSQL.Text;
-  IBKONTROL.Active:=true;
-  IBUSER.Active:=true;
-  IBADRES.Active:=true;
-  IBNOTE.Active:=true;
-  IBNOTE1.Active:=true;
-  IBNOTE2.Active:=true;
-  IBKART.Active:=true;
-  IBOBOR.Active:=true;
-  IBOBORMES.Active:=true;  
-  IBSPRADRES.Active:=true;
-  IBSP_ADRES.Active:=true;
-  IBSERVICES.Active:=true;
-  IBPERIOD.Active:=true;
+  IBKONTROL.open;
+  IBUSER.open;
+  IBADRES.open;
+  IBNOTE.open;
+  IBNOTE1.open;
+  IBNOTE2.open;
+  IBKART.open;
+  IBOBOR.open;
+  IBOBORMES.open;
+  IBSPRADRES.open;
+  IBSP_ADRES.open;
+  IBSERVICES.open;
+  IBPERIOD.open;
 
 
-  IBTMPDATE.Active:=true;
-  IBTMPNACH.Active:=true;
-  IBTMPOPL.Active:=true;
-  IBTMPSUBS.Active:=true;
-  IBTMPUDER.Active:=true;
-  IBTMPWID.Active:=true;
+  IBTMPDATE.open;
+  IBTMPNACH.open;
+  IBTMPOPL.open;
+  IBTMPSUBS.open;
+  IBTMPUDER.open;
+  IBTMPWID.open;
   
-     IBREPD.Active:=false;
+     IBREPD.close;
      DSREPD.Enabled:=false;
 
 

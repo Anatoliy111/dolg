@@ -127,8 +127,6 @@ object Form12: TForm12
     Height = 111
     Align = alTop
     TabOrder = 3
-    ExplicitLeft = 72
-    ExplicitTop = 347
     object cxGrid2: TcxGrid
       Left = 1
       Top = 14
@@ -136,9 +134,6 @@ object Form12: TForm12
       Height = 96
       Align = alClient
       TabOrder = 0
-      ExplicitLeft = 311
-      ExplicitTop = 54
-      ExplicitHeight = 829
       object cxGridDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = DSKTMPOPL
@@ -146,29 +141,6 @@ object Form12: TForm12
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
         OptionsView.GroupByBox = False
-        object cxGridDBTableView1DT: TcxGridDBColumn
-          Caption = #1044#1072#1090#1072' '#1086#1087#1083#1072#1090#1080
-          DataBinding.FieldName = 'DT'
-          PropertiesClassName = 'TcxTextEditProperties'
-          Properties.ReadOnly = True
-          Width = 88
-        end
-        object cxGridDBTableView1SUMM: TcxGridDBColumn
-          Caption = #1057#1091#1084#1072
-          DataBinding.FieldName = 'SUMM'
-          PropertiesClassName = 'TcxTextEditProperties'
-          Properties.ReadOnly = True
-        end
-        object cxGridDBTableView1Column1: TcxGridDBColumn
-        end
-        object cxGridDBTableView1Column2: TcxGridDBColumn
-        end
-        object cxGridDBTableView1Column3: TcxGridDBColumn
-        end
-        object cxGridDBTableView1Column4: TcxGridDBColumn
-        end
-        object cxGridDBTableView1Column5: TcxGridDBColumn
-        end
       end
       object cxGridLevel1: TcxGridLevel
         GridView = cxGridDBTableView1
@@ -305,8 +277,6 @@ object Form12: TForm12
     Height = 168
     Align = alTop
     TabOrder = 6
-    ExplicitLeft = 118
-    ExplicitTop = 137
     object Label2: TLabel
       Left = 241
       Top = 8
@@ -802,21 +772,6 @@ object Form12: TForm12
     GeneratorField.Generator = 'GEN_PERIOD_ID'
     Left = 472
     Top = 8
-    object IBKTMPOPLSCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"TMPOPL"."SCHET"'
-      Size = 10
-    end
-    object IBKTMPOPLDT: TDateField
-      FieldName = 'DT'
-      Origin = '"TMPOPL"."DT"'
-    end
-    object IBKTMPOPLSUMM: TIBBCDField
-      FieldName = 'SUMM'
-      Origin = '"TMPOPL"."SUMM"'
-      Precision = 18
-      Size = 2
-    end
   end
   object DSKTMPOPL: TDataSource
     DataSet = IBKTMPOPL
