@@ -8,7 +8,7 @@ uses
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
   cxClasses, cxGridCustomView, cxGrid, DBCtrls, ExtCtrls, Menus, cxContainer,
-  cxProgressBar, StdCtrls, cxButtons;
+  cxProgressBar, StdCtrls, cxButtons, cxNavigator;
 
 type
   TForm6 = class(TForm)
@@ -24,7 +24,14 @@ type
     cxProgressBar1: TcxProgressBar;
     cxButton1: TcxButton;
     OpenDialog1: TOpenDialog;
+    cxGrid2: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
+    cxGridDBTableView1KL: TcxGridDBColumn;
+    cxGridDBTableView1WID: TcxGridDBColumn;
+    cxGridDBTableView1NAIM: TcxGridDBColumn;
     procedure cxButton2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
 
   private
     { Private declarations }
@@ -147,5 +154,11 @@ begin
   end;
 end;
 
+
+procedure TForm6.FormShow(Sender: TObject);
+begin
+  Form1.IBTMPWID.Close;
+  Form1.IBTMPWID.open;
+end;
 
 end.

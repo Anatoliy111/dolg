@@ -11,6 +11,7 @@ object Form6: TForm6
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -55,13 +56,13 @@ object Form6: TForm6
   object cxGrid1: TcxGrid
     Left = 0
     Top = 161
-    Width = 719
+    Width = 337
     Height = 334
-    Align = alClient
+    Align = alLeft
     TabOrder = 1
     LookAndFeel.NativeStyle = False
     object cxGrid1DBTableView1: TcxGridDBTableView
-      NavigatorButtons.ConfirmDelete = False
+      Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = Form1.DSUSER
       DataController.DetailKeyFieldNames = 'KL'
       DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
@@ -90,6 +91,43 @@ object Form6: TForm6
     end
     object cxGrid1Level1: TcxGridLevel
       GridView = cxGrid1DBTableView1
+    end
+  end
+  object cxGrid2: TcxGrid
+    Left = 337
+    Top = 161
+    Width = 374
+    Height = 334
+    Align = alLeft
+    TabOrder = 2
+    LookAndFeel.NativeStyle = False
+    object cxGridDBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.DataSource = Form1.DSTMPWID
+      DataController.DetailKeyFieldNames = 'KL'
+      DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsView.CellEndEllipsis = True
+      OptionsView.CellAutoHeight = True
+      OptionsView.ColumnAutoWidth = True
+      OptionsView.Footer = True
+      OptionsView.FooterMultiSummaries = True
+      OptionsView.Indicator = True
+      Preview.AutoHeight = False
+      object cxGridDBTableView1KL: TcxGridDBColumn
+        DataBinding.FieldName = 'KL'
+      end
+      object cxGridDBTableView1WID: TcxGridDBColumn
+        DataBinding.FieldName = 'WID'
+      end
+      object cxGridDBTableView1NAIM: TcxGridDBColumn
+        DataBinding.FieldName = 'NAIM'
+      end
+    end
+    object cxGridLevel1: TcxGridLevel
+      GridView = cxGridDBTableView1
     end
   end
   object OpenDialog1: TOpenDialog

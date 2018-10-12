@@ -251,7 +251,7 @@ begin
         begin
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
-               if Form1.ADOWID.FieldByName('fl_nonach').Value<>1 then
+               if Form1.ADOWID.FieldByName('fl_vtch').Value<>1 then
                begin
 
                Form1.IBTMPWID.Insert;

@@ -741,6 +741,7 @@ begin
      Form1.IBREPD.ParamByName('kluser').Value:=Form1.ActiveUser;
      Form1.IBREPD.open;
      Form1.DSREPD.Enabled:=true;
+     Form1.DSTMPWID.Enabled:=true;
 end;
 
 procedure TForm1.cxButton3Click(Sender: TObject);

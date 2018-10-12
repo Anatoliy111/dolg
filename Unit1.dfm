@@ -4123,9 +4123,9 @@ object Form1: TForm1
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
       'insert into TMPWID'
-      '  (KL, NAIM, WID)'
+      '  (KL, WID, NAIM)'
       'values'
-      '  (:KL, :NAIM, :WID)')
+      '  (:KL, :WID, :NAIM)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
@@ -4140,8 +4140,8 @@ object Form1: TForm1
       'update TMPWID'
       'set'
       '  KL = :KL,'
-      '  NAIM = :NAIM,'
-      '  WID = :WID'
+      '  WID = :WID,'
+      '  NAIM = :NAIM'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
