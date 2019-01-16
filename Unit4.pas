@@ -8,7 +8,7 @@ uses
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, DB, cxDBData,
   cxCheckBox, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   StdCtrls, cxGridLevel, cxClasses, cxGridCustomView, cxGrid, ExtCtrls,
-  cxContainer, cxLabel;
+  cxContainer, cxLabel, cxNavigator;
 
 type
   TForm4 = class(TForm)

@@ -13,7 +13,7 @@ uses
   IBConnectionBroker, IBSQLMonitor, IBDatabaseInfo, cxLabel, cxBlobEdit,
   cxButtonEdit, cxBarEditItem, dxBar, DBTables, cxContainer, Menus, cxButtons,
   cxCheckBox, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
-  cxGroupBox, cxNavigator;
+  cxGroupBox, cxNavigator, IBX.IBScript, IBX.IBSQL;
 
 type
   TForm1 = class(TForm)
@@ -252,7 +252,6 @@ type
     IBOBORWOZW: TIBBCDField;
     IBOBORMOVW: TIBBCDField;
     IBOBORPERE: TIBBCDField;
-    IBOBORFULLOPL: TIBBCDField;
     IBOBORSAL: TIBBCDField;
     ADOOBOR: TADODataSet;
     DataSourceOBOR: TDataSource;
@@ -273,22 +272,6 @@ type
     IBSP_ADRESUL: TIBStringField;
     IBKARTVAL: TIntegerField;
     ADOConnectionDBF: TADOConnection;
-    IBTMPKART: TIBDataSet;
-    DSTMPKART: TDataSource;
-    IBTMPKARTKL: TIntegerField;
-    IBTMPKARTSCHET: TIBStringField;
-    IBTMPKARTWID: TIBStringField;
-    IBTMPKARTFIO: TIBStringField;
-    IBTMPKARTIDCOD: TIBStringField;
-    IBTMPKARTUL: TIBStringField;
-    IBTMPKARTDOM: TIBStringField;
-    IBTMPKARTKV: TIBStringField;
-    IBTMPKARTLGOTA: TIBStringField;
-    IBTMPKARTKOLI_P: TIntegerField;
-    IBTMPKARTPLOS_OB: TIBBCDField;
-    IBTMPKARTPLOS_BB: TIBBCDField;
-    IBTMPKARTPRIVAT: TIBStringField;
-    IBTMPKARTVAL: TIntegerField;
     IBTMPNACH: TIBDataSet;
     DSTMPNACH: TDataSource;
     IBOBORMES: TIBDataSet;
@@ -349,6 +332,67 @@ type
     IBTransaction2: TIBTransaction;
     ADOOBORREC: TADODataSet;
     DSADOOBORREC: TDataSource;
+    IBTMPDATE: TIBDataSet;
+    DSTMPDATE: TDataSource;
+    IBTMPDATEKL: TIntegerField;
+    IBTMPDATEPERIOD: TDateField;
+    dxBarButton118: TdxBarButton;
+    IBSPRADRESUL: TIBStringField;
+    IBSPRADRESDOM: TIBStringField;
+    IBDataSet2: TIBDataSet;
+    DataSource2: TDataSource;
+    IBDataSet2KL: TIntegerField;
+    IBDataSet2SCHET: TIBStringField;
+    IBDataSet2WID: TIBStringField;
+    IBDataSet2FIO: TIBStringField;
+    IBDataSet2LGOTA: TIBStringField;
+    IBDataSet2TARIF: TIBBCDField;
+    IBDataSet2SUMM: TIBBCDField;
+    cxGrid1DBTableView1SCHET: TcxGridDBColumn;
+    cxGrid1DBTableView1NOTE1: TcxGridDBColumn;
+    cxGrid1DBTableView1NOTE2: TcxGridDBColumn;
+    cxGrid1DBTableView1NOTE3: TcxGridDBColumn;
+    cxGrid1DBTableView1FIO: TcxGridDBColumn;
+    cxGrid1DBTableView1IDCOD: TcxGridDBColumn;
+    cxGrid1DBTableView1UL: TcxGridDBColumn;
+    cxGrid1DBTableView1DOM: TcxGridDBColumn;
+    cxGrid1DBTableView1KV: TcxGridDBColumn;
+    cxGrid1DBTableView1KONTROL: TcxGridDBColumn;
+    cxGrid1DBTableView1NACH1: TcxGridDBColumn;
+    cxGrid1DBTableView1OPL: TcxGridDBColumn;
+    cxGrid1DBTableView1SUBS: TcxGridDBColumn;
+    cxGrid1DBTableView1UDER: TcxGridDBColumn;
+    cxGrid1DBTableView1ENDDOLG: TcxGridDBColumn;
+    cxGroupBox1: TcxGroupBox;
+    cxLabel2: TcxLabel;
+    cxCheckBox2: TcxCheckBox;
+    cxLabel3: TcxLabel;
+    cxLabel4: TcxLabel;
+    cxButton1: TcxButton;
+    ADOWID: TADODataSet;
+    DSADOWID: TDataSource;
+    IBWID: TIBDataSet;
+    DSTMPWID: TDataSource;
+    cxGrid1DBTableView1KOMP: TcxGridDBColumn;
+    cxGrid1DBTableView1WZMZ: TcxGridDBColumn;
+    cxGrid1DBTableView1WOZW: TcxGridDBColumn;
+    cxGrid1DBTableView1PERE: TcxGridDBColumn;
+    cxGrid1DBTableView1Column1: TcxGridDBColumn;
+    ADOQuery1: TADOQuery;
+    DSADOQuery1: TDataSource;
+    cxButton4: TcxButton;
+    cxGrid1DBTableView1KOLI_P: TcxGridDBColumn;
+    IBKARTKOLI_PF: TIntegerField;
+    cxGrid1DBTableView1KOLI_PF: TcxGridDBColumn;
+    cxGrid1DBTableView1WID: TcxGridDBColumn;
+    cxGrid1DBTableView1POSLUG: TcxGridDBColumn;
+    cxButton2: TcxButton;
+    cxTextEdit1: TcxTextEdit;
+    cxComboBox1: TcxComboBox;
+    cxLabel1: TcxLabel;
+    cxCheckBox1: TcxCheckBox;
+    cxComboBox2: TcxComboBox;
+    cxTextEdit2: TcxTextEdit;
     IBOBORMESKL: TIntegerField;
     IBOBORMESSCHET: TIBStringField;
     IBOBORMESWID: TIBStringField;
@@ -367,22 +411,6 @@ type
     IBOBORMESPERE: TIBBCDField;
     IBOBORMESFULLOPL: TIBBCDField;
     IBOBORMESSAL: TIBBCDField;
-    IBTMPDATE: TIBDataSet;
-    DSTMPDATE: TDataSource;
-    IBTMPDATEKL: TIntegerField;
-    IBTMPDATEPERIOD: TDateField;
-    dxBarButton118: TdxBarButton;
-    IBSPRADRESUL: TIBStringField;
-    IBSPRADRESDOM: TIBStringField;
-    IBDataSet2: TIBDataSet;
-    DataSource2: TDataSource;
-    IBDataSet2KL: TIntegerField;
-    IBDataSet2SCHET: TIBStringField;
-    IBDataSet2WID: TIBStringField;
-    IBDataSet2FIO: TIBStringField;
-    IBDataSet2LGOTA: TIBStringField;
-    IBDataSet2TARIF: TIBBCDField;
-    IBDataSet2SUMM: TIBBCDField;
     IBREPDKL: TIntegerField;
     IBREPDWID: TIBStringField;
     IBREPDSCHET: TIBStringField;
@@ -390,99 +418,52 @@ type
     IBREPDNOTE2: TIntegerField;
     IBREPDNOTE3: TIBStringField;
     IBREPDKL_USERS: TIntegerField;
+    IBREPDPOSLUG: TIBStringField;
     IBREPDDOLG: TIBBCDField;
     IBREPDFIO: TIBStringField;
     IBREPDIDCOD: TIBStringField;
     IBREPDUL: TIBStringField;
     IBREPDDOM: TIBStringField;
     IBREPDKV: TIBStringField;
+    IBREPDKOLI_P: TIntegerField;
+    IBREPDKOLI_PF: TIntegerField;
     IBREPDKONTROL: TIBStringField;
     IBREPDNACH1: TIBBCDField;
     IBREPDOPL: TIBBCDField;
     IBREPDSUBS: TIBBCDField;
     IBREPDUDER: TIBBCDField;
-    cxGrid1DBTableView1SCHET: TcxGridDBColumn;
-    cxGrid1DBTableView1NOTE1: TcxGridDBColumn;
-    cxGrid1DBTableView1NOTE2: TcxGridDBColumn;
-    cxGrid1DBTableView1NOTE3: TcxGridDBColumn;
-    cxGrid1DBTableView1DOLG: TcxGridDBColumn;
-    cxGrid1DBTableView1FIO: TcxGridDBColumn;
-    cxGrid1DBTableView1IDCOD: TcxGridDBColumn;
-    cxGrid1DBTableView1UL: TcxGridDBColumn;
-    cxGrid1DBTableView1DOM: TcxGridDBColumn;
-    cxGrid1DBTableView1KV: TcxGridDBColumn;
-    cxGrid1DBTableView1KONTROL: TcxGridDBColumn;
-    cxGrid1DBTableView1NACH1: TcxGridDBColumn;
-    cxGrid1DBTableView1OPL: TcxGridDBColumn;
-    cxGrid1DBTableView1SUBS: TcxGridDBColumn;
-    cxGrid1DBTableView1UDER: TcxGridDBColumn;
-    IBREPDENDDOLG: TIBBCDField;
-    cxGrid1DBTableView1ENDDOLG: TcxGridDBColumn;
-    cxGroupBox1: TcxGroupBox;
-    cxLookupComboBox1: TcxLookupComboBox;
-    cxCheckBox1: TcxCheckBox;
-    cxLabel1: TcxLabel;
-    cxLabel2: TcxLabel;
-    cxCheckBox2: TcxCheckBox;
-    cxTextEdit1: TcxTextEdit;
-    cxLabel3: TcxLabel;
-    cxLabel4: TcxLabel;
-    cxButton1: TcxButton;
-    cxButton2: TcxButton;
-    cxComboBox1: TcxComboBox;
-    IBREPDMES1: TIBBCDField;
-    IBREPDMES2: TIBBCDField;
-    IBREPDMES3: TIBBCDField;
-    IBREPDMES4: TIBBCDField;
-    IBREPDMES5: TIBBCDField;
-    IBREPDMES6: TIBBCDField;
-    cxGrid1DBTableView1MES1: TcxGridDBColumn;
-    cxGrid1DBTableView1MES2: TcxGridDBColumn;
-    cxGrid1DBTableView1MES3: TcxGridDBColumn;
-    cxGrid1DBTableView1MES4: TcxGridDBColumn;
-    cxGrid1DBTableView1MES5: TcxGridDBColumn;
-    cxGrid1DBTableView1MES6: TcxGridDBColumn;
-    cxButton3: TcxButton;
-    IBREPDDOLGMES1: TIBBCDField;
-    IBREPDDOLGMES2: TIBBCDField;
-    IBREPDDOLGMES3: TIBBCDField;
-    IBREPDDOLGMES4: TIBBCDField;
-    IBREPDDOLGMES5: TIBBCDField;
-    IBREPDDOLGMES6: TIBBCDField;
-    cxGrid1DBTableView1DOLGMES1: TcxGridDBColumn;
-    cxGrid1DBTableView1DOLGMES2: TcxGridDBColumn;
-    cxGrid1DBTableView1DOLGMES3: TcxGridDBColumn;
-    cxGrid1DBTableView1DOLGMES4: TcxGridDBColumn;
-    cxGrid1DBTableView1DOLGMES5: TcxGridDBColumn;
-    cxGrid1DBTableView1DOLGMES6: TcxGridDBColumn;
-    ADOWID: TADODataSet;
-    DSADOWID: TDataSource;
-    IBTMPWID: TIBDataSet;
-    DSTMPWID: TDataSource;
-    IBTMPWIDKL: TIntegerField;
-    IBTMPWIDWID: TIBStringField;
-    IBTMPWIDNAIM: TIBStringField;
-    IBREPDPOSLUG: TIBStringField;
     IBREPDKOMP: TIBBCDField;
     IBREPDWZMZ: TIBBCDField;
     IBREPDWOZW: TIBBCDField;
     IBREPDMOVW: TIBBCDField;
     IBREPDPERE: TIBBCDField;
-    cxGrid1DBTableView1KOMP: TcxGridDBColumn;
-    cxGrid1DBTableView1WZMZ: TcxGridDBColumn;
-    cxGrid1DBTableView1WOZW: TcxGridDBColumn;
-    cxGrid1DBTableView1PERE: TcxGridDBColumn;
-    cxGrid1DBTableView1Column1: TcxGridDBColumn;
-    ADOQuery1: TADOQuery;
-    DSADOQuery1: TDataSource;
-    cxButton4: TcxButton;
-    IBREPDKOLI_P: TIntegerField;
-    cxGrid1DBTableView1KOLI_P: TcxGridDBColumn;
-    IBKARTKOLI_PF: TIntegerField;
-    IBREPDKOLI_PF: TIntegerField;
-    cxGrid1DBTableView1KOLI_PF: TcxGridDBColumn;
-    cxGrid1DBTableView1WID: TcxGridDBColumn;
-    cxGrid1DBTableView1POSLUG: TcxGridDBColumn;
+    IBREPDENDDOLG: TIBBCDField;
+    cxButton5: TcxButton;
+    cxButton6: TcxButton;
+    cxButton7: TcxButton;
+    cxButton8: TcxButton;
+    IBADRESKOL_KV: TIntegerField;
+    IBWIDKL: TIntegerField;
+    IBWIDWID: TIBStringField;
+    IBWIDNAIM: TIBStringField;
+    ADOORGAN: TADODataSet;
+    DSADOORGAN: TDataSource;
+    IBORGAN: TIBDataSet;
+    DSORGAN: TDataSource;
+    IBORGANKL: TIntegerField;
+    IBORGANORG: TIntegerField;
+    IBORGANNAME: TIBStringField;
+    IBKARTORG: TIntegerField;
+    IBREPDORGNAME: TIBStringField;
+    cxGrid1DBTableView1DOLG: TcxGridDBColumn;
+    cxGrid1DBTableView1ORGNAME: TcxGridDBColumn;
+    cxButton3: TcxButton;
+    cxTextEdit3: TcxTextEdit;
+    cxButton9: TcxButton;
+    cxLabel5: TcxLabel;
+    cxLabel6: TcxLabel;
+    cxTextEdit4: TcxTextEdit;
+    cxButton10: TcxButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -499,9 +480,14 @@ type
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure cxButton4Click(Sender: TObject);
+    procedure cxButton6Click(Sender: TObject);
+    procedure cxButton7Click(Sender: TObject);
+    procedure IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+    procedure cxButton5Click(Sender: TObject);
+    procedure cxButton10Click(Sender: TObject);
   private
     { Private declarations }
-        procedure ExportGrid(AGrid: TcxGrid;Filename:string='Table.xls');
+
 
 
   public
@@ -510,9 +496,10 @@ type
     DateKVART:TDate;
     UpdateBase:Boolean;
     iniFile:TIniFile;
-    PathKvart,StartSQL,PathDir:string;
+    PathKvart,StartSQL,PathDir,ORG:string;
     procedure DatabaseDate;
     procedure REPORT;
+    procedure ExportGrid(AGrid: TcxGrid;Filename:string='Table.xls');
 
   end;
 
@@ -524,7 +511,7 @@ var
 implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
-  Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils;
+  Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -542,41 +529,43 @@ begin
         if not DirectoryExists(pathDIR) then
         begin
           MkDir(pathDIR);
-        end
-        else
-        begin
-          RenameFile(pathDIR,pathDIR+'1');
-          TDirectory.Delete(pathDIR, True);
-          if not DirectoryExists(pathDIR) then
-             MkDir(pathDIR)
-          else
-          begin
-            TDirectory.Delete(pathDIR, True);
-            RenameFile(pathDIR,pathDIR+'1');
-            if not DirectoryExists(pathDIR) then
-             MkDir(pathDIR)
-            else
-            begin
-             ShowMessage('Не можу видалити каталог '+pathDIR);
-             Form1.Close;
-             exit;
-            end;
-          end;
         end;
+//        else
+//        begin
+//          RenameFile(pathDIR,pathDIR+'1');
+//          TDirectory.Delete(pathDIR, True);
+//          if not DirectoryExists(pathDIR) then
+//             MkDir(pathDIR)
+//          else
+//          begin
+//            TDirectory.Delete(pathDIR, True);
+//            RenameFile(pathDIR,pathDIR+'1');
+//            if not DirectoryExists(pathDIR) then
+//             MkDir(pathDIR)
+//            else
+//            begin
+//             ShowMessage('Не можу видалити каталог '+pathDIR);
+//             Form1.Close;
+//             exit;
+//            end;
+//          end;
+//        end;
 
         if DirectoryExists(pathDIR) and DirectoryExists(PathKvart) then
         begin
-          CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'),PChar(pathDIR+'\obor.dbf'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\obor.cdx'),PChar(pathDIR+'\obor.cdx'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\kart.dbf'),PChar(pathDIR+'\kart.dbf'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\kart.cdx'),PChar(pathDIR+'\kart.cdx'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'),PChar(pathDIR+'\wids.dbf'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\wids.cdx'),PChar(pathDIR+'\wids.cdx'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'),PChar(pathDIR+'\opl.dbf'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\opl.cdx'),PChar(pathDIR+'\opl.cdx'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\uder.dbf'),PChar(pathDIR+'\uder.dbf'),true);
-          CopyFile(PChar(Form1.PathKvart+'dbf\uder.cdx'),PChar(pathDIR+'\uder.cdx'),true);
-          CopyFile(PChar(Form1.PathKvart+'cur_date.mem'),PChar(pathDIR+'\cur_date.mem'),true);
+          CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'),PChar(pathDIR+'\obor.dbf'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\obor.cdx'),PChar(pathDIR+'\obor.cdx'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\kart.dbf'),PChar(pathDIR+'\kart.dbf'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\kart.cdx'),PChar(pathDIR+'\kart.cdx'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'),PChar(pathDIR+'\wids.dbf'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\wids.cdx'),PChar(pathDIR+'\wids.cdx'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'),PChar(pathDIR+'\opl.dbf'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\opl.cdx'),PChar(pathDIR+'\opl.cdx'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\uder.dbf'),PChar(pathDIR+'\uder.dbf'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\uder.cdx'),PChar(pathDIR+'\uder.cdx'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\organ.dbf'),PChar(pathDIR+'\organ.dbf'),false);
+          CopyFile(PChar(Form1.PathKvart+'dbf\organ.cdx'),PChar(pathDIR+'\organ.cdx'),false);
+          CopyFile(PChar(Form1.PathKvart+'cur_date.mem'),PChar(pathDIR+'\cur_date.mem'),false);
         end
         else
         begin
@@ -669,6 +658,11 @@ begin
 Form3.Show;
 end;
 
+procedure TForm1.cxButton10Click(Sender: TObject);
+begin
+IBREPD.LocateNext('schet',cxTextEdit4.Text,[]);
+end;
+
 procedure TForm1.cxButton1Click(Sender: TObject);
 begin
 Form2.Timer1.Enabled:= true;
@@ -687,55 +681,20 @@ FilterDATE:TDate;
 begin
      Form1.DSREPD.Enabled:=false;
      Form1.IBREPD.close;
-     cxGrid1DBTableView1DOLGMES1.Visible:=false;
-     cxGrid1DBTableView1DOLGMES2.Visible:=false;
-     cxGrid1DBTableView1DOLGMES3.Visible:=false;
-     cxGrid1DBTableView1DOLGMES4.Visible:=false;
-     cxGrid1DBTableView1DOLGMES5.Visible:=false;
-     cxGrid1DBTableView1DOLGMES6.Visible:=false;
-     cxGrid1DBTableView1MES1.Visible:=false;
-     cxGrid1DBTableView1MES2.Visible:=false;
-     cxGrid1DBTableView1MES3.Visible:=false;
-     cxGrid1DBTableView1MES4.Visible:=false;
-     cxGrid1DBTableView1MES5.Visible:=false;
-     cxGrid1DBTableView1MES6.Visible:=false;
 
      StrSQL:=StartSQL;
+
      if cxCheckBox1.Checked then
-     begin
-       i:=0;
-       IBPERIOD.First;
-       while not IBPERIOD.Eof do
-       begin
-         if IBPERIODPERIOD.Value>=cxLookupComboBox1.EditValue then
-         begin
-         inc(i);
-           StrSQL:=StringReplace(StrSQL,'0.00 as dolgmes'+int2str(i),'(select sum(dolgmes) as dolgmes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then dolg else 0.00 end dolgmes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as dolgmes'+int2str(i),[]);
-           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Visible:=true;
-           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Caption:='Борг на '+DateTimeToStr(IBPERIODPERIOD.Value);
-
-         StrSQL:=StringReplace(StrSQL,'0.00 as mes'+int2str(i),'(select sum(mes) as mes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then fullopl else 0.00 end mes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as mes'+int2str(i),[]);
-//         cxGrid1DBTableView1MES+int2str(i).Visible:=true;
-         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Visible:=true;
-         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Caption:='Оплата '+DateTimeToStr(IBPERIODPERIOD.Value);
-
-         end;
-
-       IBPERIOD.Next;
-       end;
-
-     end;
-     if cxCheckBox2.Checked then
      begin
            sql2:=' and dolg'+cxComboBox1.EditValue+cxTextEdit1.EditValue
      end;
 
-//     if cxCheckBox3.Checked then
-//     begin
-//
-//     sql2:=' and enddolg'+cxComboBox1.EditValue+cxTextEdit1.EditValue;
-//
-//     end;
+     if cxCheckBox2.Checked then
+     begin
+           sql2:=' and sal'+cxComboBox2.EditValue+cxTextEdit2.EditValue
+     end;
+
+
 
      Form1.IBREPD.SelectSQL.Text:=StrSQL+sql2+' order by note.schet,note.wid';
      Form1.IBREPD.ParamByName('kluser').Value:=Form1.ActiveUser;
@@ -760,6 +719,76 @@ Form2.Close;
 Form1.REPORT;
 end;
 
+procedure TForm1.cxButton5Click(Sender: TObject);
+begin
+if cxTextEdit3.Text='' then
+   IBREPD.Filtered:=false
+else
+begin
+  if IBREPD.Filtered then
+  begin
+  IBREPD.Filtered:=false;
+  IBREPD.Filtered:=true;
+  end
+  else
+  IBREPD.Filtered:=true;
+
+end;
+
+
+
+
+
+end;
+
+procedure TForm1.cxButton6Click(Sender: TObject);
+begin
+Form13.Caption:=cxButton6.Caption;
+Form13.show;
+end;
+
+procedure TForm1.cxButton7Click(Sender: TObject);
+begin
+//     cxGrid1DBTableView1DOLGMES1.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES2.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES3.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES4.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES5.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES6.Visible:=false;
+//     cxGrid1DBTableView1MES1.Visible:=false;
+//     cxGrid1DBTableView1MES2.Visible:=false;
+//     cxGrid1DBTableView1MES3.Visible:=false;
+//     cxGrid1DBTableView1MES4.Visible:=false;
+//     cxGrid1DBTableView1MES5.Visible:=false;
+//     cxGrid1DBTableView1MES6.Visible:=false;
+//
+//     StrSQL:=StartSQL;
+//     if cxCheckBox1.Checked then
+//     begin
+//       i:=0;
+////       IBPERIOD.First;
+////       while not IBPERIOD.Eof do
+////       begin
+////         if IBPERIODPERIOD.Value>=cxLookupComboBox1.EditValue then
+////         begin
+////         inc(i);
+////           StrSQL:=StringReplace(StrSQL,'0.00 as dolgmes'+int2str(i),'(select sum(dolgmes) as dolgmes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then dolg else 0.00 end dolgmes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as dolgmes'+int2str(i),[]);
+////           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Visible:=true;
+////           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Caption:='Борг на '+DateTimeToStr(IBPERIODPERIOD.Value);
+////
+////         StrSQL:=StringReplace(StrSQL,'0.00 as mes'+int2str(i),'(select sum(mes) as mes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then fullopl else 0.00 end mes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as mes'+int2str(i),[]);
+//////         cxGrid1DBTableView1MES+int2str(i).Visible:=true;
+////         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Visible:=true;
+////         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Caption:='Оплата '+DateTimeToStr(IBPERIODPERIOD.Value);
+////
+////         end;
+////
+////       IBPERIOD.Next;
+////       end;
+//
+//     end;
+end;
+
 procedure TForm1.cxGrid1DBTableView1Column1PropertiesButtonClick(
   Sender: TObject; AButtonIndex: Integer);
 begin
@@ -776,7 +805,7 @@ var
   sd:TSaveDialog;
   Excel: Variant;
   Reg: TRegistry;
-  path:string;
+  path,dname:string;
   i:integer;
 begin
   Reg := TRegistry.Create;
@@ -801,6 +830,11 @@ begin
       DateTimeToString(Filename,'dd mm yyyy',now);
 
       Filename:='Звіт '+Filename+'.xls'
+    end
+    else
+    begin
+      DateTimeToString(dname,'dd mm yyyy',now);
+      Filename:=Filename+' '+dname+'.xls'
     end;
     sd.FileName := path + Filename;
     sd.Filter := 'Excel files (*.xls)|*.XLS';
@@ -872,8 +906,10 @@ begin
   s:=iniFile.ReadString('Data','Database',extractfilepath(paramstr(0))+'DOLG.GDB');
   log:=iniFile.ReadString('Data','Login',extractfilepath(paramstr(0)));
   pw:=iniFile.ReadString('Data','PW',extractfilepath(paramstr(0)));
+  ORG:=iniFile.ReadString('Data','org',extractfilepath(paramstr(0)));
   PathKvart:=iniFile.ReadString('DBF','base',extractfilepath(paramstr(0)));
   PathDIR:=iniFile.ReadString('DBF','tmp',extractfilepath(paramstr(0)));
+
 //  cur:=iniFile.ReadString('DBF','cur_date',extractfilepath(paramstr(0))+);
 
   IBDatabase1.Connected:=false;
@@ -913,7 +949,7 @@ ADOConnectionARC.Connected:=false;
   IBTMPOPL.open;
   IBTMPSUBS.open;
   IBTMPUDER.open;
-  IBTMPWID.open;
+  IBWID.open;
   
      IBREPD.close;
      DSREPD.Enabled:=false;
@@ -943,6 +979,14 @@ Form1.IBQuery1.ParamByName('kll').Value:=IBKONTROLKL.Value;
 Form1.IBQuery1.ExecSQL;
 Form1.IBTransaction1.CommitRetaining;
 Form1.IBQuery1.close;
+end;
+
+procedure TForm1.IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+begin
+
+Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0);
+// and
+//(DataSet.FieldByName('LastName').asString < 'B');
 end;
 
 procedure TForm1.IBUSERAfterInsert(DataSet: TDataSet);

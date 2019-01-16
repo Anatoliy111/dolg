@@ -39,10 +39,8 @@ object Form4: TForm4
     Align = alClient
     TabOrder = 1
     LookAndFeel.NativeStyle = False
-    ExplicitTop = 128
-    ExplicitHeight = 340
     object cxGridDBTableView1: TcxGridDBTableView
-      NavigatorButtons.ConfirmDelete = False
+      Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = Form1.DSSP_ADRES
       DataController.MasterKeyFieldNames = 'KL'
       DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
@@ -91,8 +89,6 @@ object Form4: TForm4
     Height = 57
     Align = alTop
     TabOrder = 2
-    ExplicitLeft = -8
-    ExplicitTop = 227
     object cxLabel1: TcxLabel
       Left = 16
       Top = 16

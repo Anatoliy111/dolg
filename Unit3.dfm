@@ -11,6 +11,7 @@ object Form3: TForm3
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -38,7 +39,7 @@ object Form3: TForm3
     TabOrder = 1
     LookAndFeel.NativeStyle = False
     object cxGrid1DBTableView1: TcxGridDBTableView
-      NavigatorButtons.ConfirmDelete = False
+      Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = Form1.DSKONTROL
       DataController.DetailKeyFieldNames = 'KL'
       DataController.KeyFieldNames = 'KL'
@@ -79,7 +80,7 @@ object Form3: TForm3
     TabOrder = 3
     LookAndFeel.NativeStyle = False
     object cxGridDBTableView1: TcxGridDBTableView
-      NavigatorButtons.ConfirmDelete = False
+      Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = Form1.DSADRES
       DataController.DetailKeyFieldNames = 'KL_KONTROL'
       DataController.MasterKeyFieldNames = 'KL'
@@ -103,6 +104,10 @@ object Form3: TForm3
         Caption = #1041#1091#1076#1080#1085#1086#1082
         DataBinding.FieldName = 'DOM'
         Width = 82
+      end
+      object cxGridDBTableView1KOL_KV: TcxGridDBColumn
+        Caption = #1050#1110#1083#1100'. '#1082#1074
+        DataBinding.FieldName = 'KOL_KV'
       end
     end
     object cxGridLevel1: TcxGridLevel

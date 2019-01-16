@@ -52,6 +52,15 @@ object Form6: TForm6
       Caption = #1055#1072#1088#1089#1077#1088' DBF'
       TabOrder = 3
     end
+    object cxButton3: TcxButton
+      Left = 514
+      Top = 18
+      Width = 173
+      Height = 25
+      Caption = #1044#1080#1079#1072#1081#1085#1077#1088
+      TabOrder = 4
+      OnClick = cxButton3Click
+    end
   end
   object cxGrid1: TcxGrid
     Left = 0
@@ -134,5 +143,48 @@ object Form6: TForm6
     Filter = #1060#1072#1081#1083#1099' DBF|*.dbf'
     Left = 456
     Top = 16
+  end
+  object frxDesigner1: TfrxDesigner
+    DefaultScriptLanguage = 'PascalScript'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = -13
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultLeftMargin = 10.000000000000000000
+    DefaultRightMargin = 10.000000000000000000
+    DefaultTopMargin = 10.000000000000000000
+    DefaultBottomMargin = 10.000000000000000000
+    DefaultPaperSize = 9
+    DefaultOrientation = poPortrait
+    GradientEnd = 11982554
+    GradientStart = clWindow
+    TemplatesExt = 'fr3'
+    Restrictions = []
+    RTLLanguage = False
+    MemoParentFont = False
+    Left = 544
+    Top = 88
+  end
+  object frxReport1: TfrxReport
+    Version = '5.3.16'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 43480.378313912030000000
+    ReportOptions.LastChange = 43480.378313912030000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'begin'
+      ''
+      'end.')
+    Left = 608
+    Top = 96
+    Datasets = <>
+    Variables = <>
+    Style = <>
   end
 end

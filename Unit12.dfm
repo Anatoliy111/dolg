@@ -528,6 +528,7 @@ object Form12: TForm12
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_KART_ID'
+    Active = True
     Left = 376
     Top = 8
     object IBKARTKL: TIntegerField
@@ -637,7 +638,7 @@ object Form12: TForm12
       'select'
       'obormes.schet,'
       'obormes.wid, '
-      'tmpwid.naim as poslug,'
+      'wid.naim as poslug,'
       'obormes.dolg as dolg,'
       'obormes.nach as nach1,'
       'obormes.opl,'
@@ -645,7 +646,7 @@ object Form12: TForm12
       'obormes.uder,'
       'obormes.sal as enddolg'
       ' from obormes '
-      ' left outer join tmpwid on (obormes .wid = tmpwid.wid)'
+      ' left outer join wid on (obormes .wid = wid.wid)'
       'where schet=:sch')
     ModifySQL.Strings = (
       'update obormes'
@@ -659,6 +660,7 @@ object Form12: TForm12
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_PERIOD_ID'
+    Active = True
     Left = 424
     Top = 8
     object IBKOBORMESSCHET: TIBStringField
@@ -671,6 +673,10 @@ object Form12: TForm12
       Origin = '"OBORMES"."WID"'
       Size = 10
     end
+    object IBKOBORMESPOSLUG: TIBStringField
+      FieldName = 'POSLUG'
+      Origin = '"TMPWID"."NAIM"'
+    end
     object IBKOBORMESDOLG: TIBBCDField
       FieldName = 'DOLG'
       Origin = '"OBORMES"."DOLG"'
@@ -679,37 +685,33 @@ object Form12: TForm12
     end
     object IBKOBORMESNACH1: TIBBCDField
       FieldName = 'NACH1'
-      ProviderFlags = []
+      Origin = '"OBORMES"."NACH"'
       Precision = 18
       Size = 2
     end
     object IBKOBORMESOPL: TIBBCDField
       FieldName = 'OPL'
-      ProviderFlags = []
+      Origin = '"OBORMES"."OPL"'
       Precision = 18
       Size = 2
     end
     object IBKOBORMESSUBS: TIBBCDField
       FieldName = 'SUBS'
-      ProviderFlags = []
+      Origin = '"OBORMES"."SUBS"'
       Precision = 18
       Size = 2
     end
     object IBKOBORMESUDER: TIBBCDField
       FieldName = 'UDER'
-      ProviderFlags = []
+      Origin = '"OBORMES"."UDER"'
       Precision = 18
       Size = 2
     end
     object IBKOBORMESENDDOLG: TIBBCDField
       FieldName = 'ENDDOLG'
-      ProviderFlags = []
+      Origin = '"OBORMES"."SAL"'
       Precision = 18
       Size = 2
-    end
-    object IBKOBORMESPOSLUG: TIBStringField
-      FieldName = 'POSLUG'
-      Origin = '"TMPWID"."NAIM"'
     end
   end
   object DSKOBORMES: TDataSource
@@ -770,6 +772,7 @@ object Form12: TForm12
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_PERIOD_ID'
+    Active = True
     Left = 472
     Top = 8
   end
@@ -808,8 +811,8 @@ object Form12: TForm12
       '  SUMM = :SUMM and'
       '  WID = :WID')
     SelectSQL.Strings = (
-      'select TMPUDER.*,tmpwid.naim as poslug  from TMPUDER'
-      ' left join tmpwid on (TMPUDER.wid = tmpwid.wid) '
+      'select TMPUDER.*,wid.naim as poslug  from TMPUDER'
+      ' left join wid on (TMPUDER.wid = wid.wid) '
       'where TMPUDER.schet =:sch')
     ModifySQL.Strings = (
       'update TMPUDER'
@@ -827,6 +830,7 @@ object Form12: TForm12
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_PERIOD_ID'
+    Active = True
     Left = 544
     object IBKTMPUDERKL: TIntegerField
       FieldName = 'KL'
@@ -865,22 +869,20 @@ object Form12: TForm12
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
-      'delete from OBOR'
+      'delete from VW_OBOR'
       'where'
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
-      'insert into OBOR'
+      'insert into VW_OBOR'
       
-        '  (D_DOG, DOLG, FULLOPL, KL, KOMP, MOVW, N_DOG, NACH, OPL, PERE,' +
-        ' PERIOD, '
-      '   SAL, SCHET, SUBS, TARIF, UDER, WID, WOZW, WZMZ)'
+        '  (KL, PERIOD, SCHET, WID, N_DOG, D_DOG, TARIF, DOLG, NACH, SUBS' +
+        ', OPL, '
+      '   UDER, KOMP, WZMZ, WOZW, MOVW, PERE, SAL)'
       'values'
       
-        '  (:D_DOG, :DOLG, :FULLOPL, :KL, :KOMP, :MOVW, :N_DOG, :NACH, :O' +
-        'PL, :PERE, '
-      
-        '   :PERIOD, :SAL, :SCHET, :SUBS, :TARIF, :UDER, :WID, :WOZW, :WZ' +
-        'MZ)')
+        '  (:KL, :PERIOD, :SCHET, :WID, :N_DOG, :D_DOG, :TARIF, :DOLG, :N' +
+        'ACH, :SUBS, '
+      '   :OPL, :UDER, :KOMP, :WZMZ, :WOZW, :MOVW, :PERE, :SAL)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
@@ -900,37 +902,41 @@ object Form12: TForm12
       '  WOZW,'
       '  MOVW,'
       '  PERE,'
+      '  SAL,'
+      '  BGST,'
+      '  PRST,'
+      '  BGEND,'
+      '  PREND,'
       '  FULLOPL,'
-      '  SAL'
-      'from OBOR '
+      '  OPLNOTSUBS'
+      'from VW_OBOR '
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select OBOR.*,tmpwid.naim as poslug  from OBOR '
-      ' left outer join tmpwid on (OBOR.wid = tmpwid.wid) '
-      'where OBOR.schet=:sch order by period')
+      'select VW_OBOR.*,wid.naim as poslug  from VW_OBOR'
+      ' left outer join wid on (VW_OBOR.wid = wid.wid) '
+      'where VW_OBOR.schet=:sch order by period')
     ModifySQL.Strings = (
-      'update OBOR'
+      'update VW_OBOR'
       'set'
-      '  D_DOG = :D_DOG,'
-      '  DOLG = :DOLG,'
-      '  FULLOPL = :FULLOPL,'
       '  KL = :KL,'
-      '  KOMP = :KOMP,'
-      '  MOVW = :MOVW,'
-      '  N_DOG = :N_DOG,'
-      '  NACH = :NACH,'
-      '  OPL = :OPL,'
-      '  PERE = :PERE,'
       '  PERIOD = :PERIOD,'
-      '  SAL = :SAL,'
       '  SCHET = :SCHET,'
-      '  SUBS = :SUBS,'
-      '  TARIF = :TARIF,'
-      '  UDER = :UDER,'
       '  WID = :WID,'
+      '  N_DOG = :N_DOG,'
+      '  D_DOG = :D_DOG,'
+      '  TARIF = :TARIF,'
+      '  DOLG = :DOLG,'
+      '  NACH = :NACH,'
+      '  SUBS = :SUBS,'
+      '  OPL = :OPL,'
+      '  UDER = :UDER,'
+      '  KOMP = :KOMP,'
+      '  WZMZ = :WZMZ,'
       '  WOZW = :WOZW,'
-      '  WZMZ = :WZMZ'
+      '  MOVW = :MOVW,'
+      '  PERE = :PERE,'
+      '  SAL = :SAL'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -940,114 +946,161 @@ object Form12: TForm12
     Left = 592
     object IBKOBORKL: TIntegerField
       FieldName = 'KL'
-      Origin = '"OBOR"."KL"'
-      Required = True
+      Origin = '"VW_OBOR"."KL"'
     end
     object IBKOBORPERIOD: TDateField
       FieldName = 'PERIOD'
-      Origin = '"OBOR"."PERIOD"'
+      Origin = '"VW_OBOR"."PERIOD"'
     end
     object IBKOBORSCHET: TIBStringField
       FieldName = 'SCHET'
-      Origin = '"OBOR"."SCHET"'
+      Origin = '"VW_OBOR"."SCHET"'
       Size = 10
     end
     object IBKOBORWID: TIBStringField
       FieldName = 'WID'
-      Origin = '"OBOR"."WID"'
+      Origin = '"VW_OBOR"."WID"'
       Size = 10
     end
     object IBKOBORN_DOG: TIBStringField
       FieldName = 'N_DOG'
-      Origin = '"OBOR"."N_DOG"'
+      Origin = '"VW_OBOR"."N_DOG"'
       Size = 10
     end
     object IBKOBORD_DOG: TIBStringField
       FieldName = 'D_DOG'
-      Origin = '"OBOR"."D_DOG"'
+      Origin = '"VW_OBOR"."D_DOG"'
       Size = 10
     end
     object IBKOBORTARIF: TIBBCDField
       FieldName = 'TARIF'
-      Origin = '"OBOR"."TARIF"'
+      Origin = '"VW_OBOR"."TARIF"'
       Precision = 18
       Size = 2
     end
     object IBKOBORDOLG: TIBBCDField
       FieldName = 'DOLG'
-      Origin = '"OBOR"."DOLG"'
+      Origin = '"VW_OBOR"."DOLG"'
       Precision = 18
       Size = 2
     end
     object IBKOBORNACH: TIBBCDField
       FieldName = 'NACH'
-      Origin = '"OBOR"."NACH"'
+      Origin = '"VW_OBOR"."NACH"'
       Precision = 18
       Size = 2
     end
     object IBKOBORSUBS: TIBBCDField
       FieldName = 'SUBS'
-      Origin = '"OBOR"."SUBS"'
+      Origin = '"VW_OBOR"."SUBS"'
       Precision = 18
       Size = 2
     end
     object IBKOBOROPL: TIBBCDField
       FieldName = 'OPL'
-      Origin = '"OBOR"."OPL"'
+      Origin = '"VW_OBOR"."OPL"'
       Precision = 18
       Size = 2
     end
     object IBKOBORUDER: TIBBCDField
       FieldName = 'UDER'
-      Origin = '"OBOR"."UDER"'
+      Origin = '"VW_OBOR"."UDER"'
       Precision = 18
       Size = 2
     end
     object IBKOBORKOMP: TIBBCDField
       FieldName = 'KOMP'
-      Origin = '"OBOR"."KOMP"'
+      Origin = '"VW_OBOR"."KOMP"'
       Precision = 18
       Size = 2
     end
     object IBKOBORWZMZ: TIBBCDField
       FieldName = 'WZMZ'
-      Origin = '"OBOR"."WZMZ"'
+      Origin = '"VW_OBOR"."WZMZ"'
       Precision = 18
       Size = 2
     end
     object IBKOBORWOZW: TIBBCDField
       FieldName = 'WOZW'
-      Origin = '"OBOR"."WOZW"'
+      Origin = '"VW_OBOR"."WOZW"'
       Precision = 18
       Size = 2
     end
     object IBKOBORMOVW: TIBBCDField
       FieldName = 'MOVW'
-      Origin = '"OBOR"."MOVW"'
+      Origin = '"VW_OBOR"."MOVW"'
       Precision = 18
       Size = 2
     end
     object IBKOBORPERE: TIBBCDField
       FieldName = 'PERE'
-      Origin = '"OBOR"."PERE"'
-      Precision = 18
-      Size = 2
-    end
-    object IBKOBORFULLOPL: TIBBCDField
-      FieldName = 'FULLOPL'
-      Origin = '"OBOR"."FULLOPL"'
+      Origin = '"VW_OBOR"."PERE"'
       Precision = 18
       Size = 2
     end
     object IBKOBORSAL: TIBBCDField
       FieldName = 'SAL'
-      Origin = '"OBOR"."SAL"'
+      Origin = '"VW_OBOR"."SAL"'
+      Precision = 18
+      Size = 2
+    end
+    object IBKOBORBGST: TIBBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'BGST'
+      Origin = '"VW_OBOR"."BGST"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object IBKOBORPRST: TIBBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'PRST'
+      Origin = '"VW_OBOR"."PRST"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object IBKOBORBGEND: TIBBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'BGEND'
+      Origin = '"VW_OBOR"."BGEND"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object IBKOBORPREND: TIBBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'PREND'
+      Origin = '"VW_OBOR"."PREND"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object IBKOBORFULLOPL: TIBBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'FULLOPL'
+      Origin = '"VW_OBOR"."FULLOPL"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object IBKOBOROPLNOTSUBS: TIBBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'OPLNOTSUBS'
+      Origin = '"VW_OBOR"."OPLNOTSUBS"'
+      ProviderFlags = []
+      ReadOnly = True
       Precision = 18
       Size = 2
     end
     object IBKOBORPOSLUG: TIBStringField
       FieldName = 'POSLUG'
-      Origin = '"TMPWID"."NAIM"'
+      Origin = '"WID"."NAIM"'
     end
   end
   object DSKOBOR: TDataSource

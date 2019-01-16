@@ -87,6 +87,7 @@ function var2currency(v:variant):currency;
 procedure ReindexTable(Table: TTable);
 function date_slovo(date:TDate):string;
 function mon_slovo(mon:integer):string;
+function mon_slovoDt(date:TDate):string;
 
 implementation
 
@@ -1143,6 +1144,34 @@ begin
   result:=0;
   if vartype(v) in [varSmallint,varInteger,varSingle,varDouble,varCurrency] then
     result:=v;
+end;
+
+
+function mon_slovoDt(date:TDate):string;
+var s,s1:string;
+begin
+
+s:=date2str(date,'ddMMyyyy');
+s1:=inttostr(strtoint(copy(s,1,2)));
+
+case strtoint(copy(s,3,2)) of
+01:s1:='січень';
+02:s1:='лютий';
+03:s1:='березень';
+04:s1:='квітень';
+05:s1:='травень';
+06:s1:='червень';
+07:s1:='липень';
+08:s1:='серпень';
+09:s1:='вересень';
+10:s1:='жовтень';
+11:s1:='листопад';
+12:s1:='грудень';
+
+end;
+
+result:=s1+' '+copy(s,5,4);
+
 end;
 
 procedure ReindexTable(Table: TTable);

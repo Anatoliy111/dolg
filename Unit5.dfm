@@ -30,7 +30,7 @@ object Form5: TForm5
     TabOrder = 1
     LookAndFeel.NativeStyle = False
     object cxGridDBTableView1: TcxGridDBTableView
-      NavigatorButtons.ConfirmDelete = False
+      Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = Form1.DSNOTE2
       DataController.DetailKeyFieldNames = 'KL'
       DataController.MasterKeyFieldNames = 'KL'
@@ -63,7 +63,7 @@ object Form5: TForm5
     TabOrder = 2
     LookAndFeel.NativeStyle = False
     object cxGrid1DBTableView1: TcxGridDBTableView
-      NavigatorButtons.ConfirmDelete = False
+      Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = Form1.DSNOTE1
       DataController.DetailKeyFieldNames = 'KL'
       DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]

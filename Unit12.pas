@@ -61,14 +61,6 @@ type
     cxGridLevel1: TcxGridLevel;
     Panel5: TPanel;
     Label12: TLabel;
-    IBKOBORMESSCHET: TIBStringField;
-    IBKOBORMESWID: TIBStringField;
-    IBKOBORMESDOLG: TIBBCDField;
-    IBKOBORMESNACH1: TIBBCDField;
-    IBKOBORMESOPL: TIBBCDField;
-    IBKOBORMESSUBS: TIBBCDField;
-    IBKOBORMESUDER: TIBBCDField;
-    IBKOBORMESENDDOLG: TIBBCDField;
     cxGrid1DBTableView1WID: TcxGridDBColumn;
     cxGrid1DBTableView1DOLG: TcxGridDBColumn;
     cxGrid1DBTableView1NACH1: TcxGridDBColumn;
@@ -80,25 +72,6 @@ type
     IBKTMPUDERSCHET: TIBStringField;
     IBKTMPUDERWID: TIBStringField;
     IBKTMPUDERSUMM: TIBBCDField;
-    IBKOBORKL: TIntegerField;
-    IBKOBORPERIOD: TDateField;
-    IBKOBORSCHET: TIBStringField;
-    IBKOBORWID: TIBStringField;
-    IBKOBORN_DOG: TIBStringField;
-    IBKOBORD_DOG: TIBStringField;
-    IBKOBORTARIF: TIBBCDField;
-    IBKOBORDOLG: TIBBCDField;
-    IBKOBORNACH: TIBBCDField;
-    IBKOBORSUBS: TIBBCDField;
-    IBKOBOROPL: TIBBCDField;
-    IBKOBORUDER: TIBBCDField;
-    IBKOBORKOMP: TIBBCDField;
-    IBKOBORWZMZ: TIBBCDField;
-    IBKOBORWOZW: TIBBCDField;
-    IBKOBORMOVW: TIBBCDField;
-    IBKOBORPERE: TIBBCDField;
-    IBKOBORFULLOPL: TIBBCDField;
-    IBKOBORSAL: TIBBCDField;
     cxGridDBTableView3PERIOD: TcxGridDBColumn;
     cxGridDBTableView3WID: TcxGridDBColumn;
     cxGridDBTableView3DOLG: TcxGridDBColumn;
@@ -111,9 +84,7 @@ type
     cxGridDBTableView3WOZW: TcxGridDBColumn;
     cxGridDBTableView3PERE: TcxGridDBColumn;
     cxGridDBTableView3SAL: TcxGridDBColumn;
-    IBKOBORMESPOSLUG: TIBStringField;
     IBKTMPUDERPOSLUG: TIBStringField;
-    IBKOBORPOSLUG: TIBStringField;
     Panel2: TPanel;
     Label2: TLabel;
     Label3: TLabel;
@@ -139,6 +110,40 @@ type
     cxDBTextEdit11: TcxDBTextEdit;
     IBKARTKOLI_PF: TIntegerField;
     IBQuery1: TIBQuery;
+    IBKOBORMESSCHET: TIBStringField;
+    IBKOBORMESWID: TIBStringField;
+    IBKOBORMESPOSLUG: TIBStringField;
+    IBKOBORMESDOLG: TIBBCDField;
+    IBKOBORMESNACH1: TIBBCDField;
+    IBKOBORMESOPL: TIBBCDField;
+    IBKOBORMESSUBS: TIBBCDField;
+    IBKOBORMESUDER: TIBBCDField;
+    IBKOBORMESENDDOLG: TIBBCDField;
+    IBKOBORKL: TIntegerField;
+    IBKOBORPERIOD: TDateField;
+    IBKOBORSCHET: TIBStringField;
+    IBKOBORWID: TIBStringField;
+    IBKOBORN_DOG: TIBStringField;
+    IBKOBORD_DOG: TIBStringField;
+    IBKOBORTARIF: TIBBCDField;
+    IBKOBORDOLG: TIBBCDField;
+    IBKOBORNACH: TIBBCDField;
+    IBKOBORSUBS: TIBBCDField;
+    IBKOBOROPL: TIBBCDField;
+    IBKOBORUDER: TIBBCDField;
+    IBKOBORKOMP: TIBBCDField;
+    IBKOBORWZMZ: TIBBCDField;
+    IBKOBORWOZW: TIBBCDField;
+    IBKOBORMOVW: TIBBCDField;
+    IBKOBORPERE: TIBBCDField;
+    IBKOBORSAL: TIBBCDField;
+    IBKOBORBGST: TIBBCDField;
+    IBKOBORPRST: TIBBCDField;
+    IBKOBORBGEND: TIBBCDField;
+    IBKOBORPREND: TIBBCDField;
+    IBKOBORFULLOPL: TIBBCDField;
+    IBKOBOROPLNOTSUBS: TIBBCDField;
+    IBKOBORPOSLUG: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
   private
     { Private declarations }
@@ -284,36 +289,36 @@ begin
       IBKTMPOPL.First;
       while not IBKTMPOPL.eof do
       begin
-                Form1.IBTMPWID.First;
-                while not Form1.IBTMPWID.eof do
+                Form1.IBWID.First;
+                while not Form1.IBWID.eof do
                 begin
                        fl_ins:=0;
-                       if IBKTMPOPL.FindField('OPL_'+Form1.IBTMPWIDWID.Value)<> nil then
+                       if IBKTMPOPL.FindField('OPL_'+Form1.IBWIDWID.Value)<> nil then
                        begin
-                         if (IBKTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value <> 0) and (IBKTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value <> null) then
+                         if (IBKTMPOPL.FieldByName('OPL_'+Form1.IBWIDWID.Value).Value <> 0) and (IBKTMPOPL.FieldByName('OPL_'+Form1.IBWIDWID.Value).Value <> null) then
                          begin
                            for I := 0 to cxGridDBTableView1.ColumnCount-1 do
                            begin
-                             if cxGridDBTableView1.Columns[i].DataBinding.FieldName = 'OPL_'+Form1.IBTMPWIDWID.Value then
+                             if cxGridDBTableView1.Columns[i].DataBinding.FieldName = 'OPL_'+Form1.IBWIDWID.Value then
                                 fl_ins:=1;
                            end;
                            if fl_ins=0 then
                            begin
                               acolumn:=cxGridDBTableView1.CreateColumn;
                               cxGridDBTableView1.BeginUpdate;
-                              acolumn.DataBinding.FieldName:='OPL_'+Form1.IBTMPWIDWID.Value;
+                              acolumn.DataBinding.FieldName:='OPL_'+Form1.IBWIDWID.Value;
                               acolumn.DataBinding.valuetype:='Currency';
                               cxGridDBTableView1.EndUpdate;
 
                               AColumn.Summary.GroupFooterKind := skSum;
 
-                              acolumn.Caption:=Form1.IBTMPWIDNAIM.Value;
+                              acolumn.Caption:=Form1.IBWIDNAIM.Value;
                            end;
 
                          end;
 
                       end;
-                Form1.IBTMPWID.Next;
+                Form1.IBWID.Next;
                 end;
       IBKTMPOPL.Next;
       end;

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs,ExtCtrls, StdCtrls, cxGraphics, cxControls, cxLookAndFeels,
-  cxLookAndFeelPainters, cxContainer, cxEdit, cxProgressBar;
+  cxLookAndFeelPainters, cxContainer, cxEdit, cxProgressBar, ShellAPI;
 
 type
   TForm2 = class(TForm)
@@ -101,8 +101,11 @@ var pathDBF,pathARC,dateimport,strmes,strye,strfield1,strfield2:string;
     Y ,M, D: Word;
     DateUPD:TDateTime;
     DateUPDD,FilterDATE:Tdate;
-    ii,cou,posstr,fl_insfield:integer;
+    ii,cou,posstr,fl_insfield,apprec,rec4:integer;
     vArray:variant;
+  SI: _STARTUPINFOW;
+  PI: _PROCESS_INFORMATION;
+  RarParam : String;
 begin
    try
    Form1.Enabled:=false;
@@ -110,7 +113,7 @@ begin
    Label2.visible:=true;
 
 
-   Form1.DSTMPKART.Enabled:=false;
+
 
         cxProgressBar2.Visible:=true;
         cxProgressBar2.Position:=0;
@@ -145,7 +148,7 @@ begin
        cxProgressBar1.Properties.Max:=Form1.ADOWID.RecordCount-1;
 
         Form1.IBTMPOPL.open;
-        Form1.IBTMPWID.open;
+        Form1.IBWID.open;
         Form1.ADOWID.First;
         fl_insfield:=0;
         while not Form1.ADOWID.eof do
@@ -232,20 +235,16 @@ begin
   Form1.IBTMPOPL.open;
   Form1.IBTMPSUBS.open;
   Form1.IBTMPUDER.open;
-  Form1.IBTMPWID.open;
+  Form1.IBWID.open;
 
         Form1.ADOWID.open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOWID.RecordCount-1;
 
-        Form1.IBQuery1.Close;
-        Form1.IBQuery1.SQL.Text:='delete from tmpwid';
-        Form1.IBQuery1.ExecSQL;
-
         Form1.IBTMPOPL.open;
-        Form1.IBTMPWID.close;
-        Form1.IBTMPWID.open;
+        Form1.IBWID.close;
+        Form1.IBWID.open;
         Form1.ADOWID.First;
         while not Form1.ADOWID.eof do
         begin
@@ -253,14 +252,89 @@ begin
         Application.ProcessMessages;
                if Form1.ADOWID.FieldByName('fl_vtch').Value<>1 then
                begin
-
-               Form1.IBTMPWID.Insert;
-               Form1.IBTMPWIDWID.Value := trim(Form1.ADOWID.FieldByName('wid').AsString);
-               Form1.IBTMPWIDNAIM.Value := trim(Form1.ADOWID.FieldByName('naim').AsString);
-               Form1.IBTMPWID.Post;
+               Form1.IBWID.First;
+                 if Form1.IBWID.Locate('wid',Form1.ADOWID.FieldByName('wid').Value,[]) then
+                 begin
+                 Form1.IBWID.Edit;
+                 Form1.IBWIDNAIM.Value := trim(Form1.ADOWID.FieldByName('naim').AsString);
+                 Form1.IBWID.Post;
+                 end
+                 else
+                 begin
+                 Form1.IBWID.Insert;
+                 Form1.IBWIDWID.Value := trim(Form1.ADOWID.FieldByName('wid').AsString);
+                 Form1.IBWIDNAIM.Value := trim(Form1.ADOWID.FieldByName('naim').AsString);
+                 Form1.IBWID.Post;
+                 end;
                end;
 
         Form1.ADOWID.Next;
+        end;
+
+        Form1.ADOWID.open;
+        cxProgressBar1.Position:=0;
+        cxProgressBar1.Properties.Min:=0;
+       cxProgressBar1.Properties.Max:=Form1.ADOWID.RecordCount-1;
+
+        Form1.IBTMPOPL.open;
+        Form1.IBWID.close;
+        Form1.IBWID.open;
+        Form1.ADOWID.First;
+        while not Form1.ADOWID.eof do
+        begin
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
+               if Form1.ADOWID.FieldByName('fl_vtch').Value<>1 then
+               begin
+               Form1.IBWID.First;
+                 if Form1.IBWID.Locate('wid',Form1.ADOWID.FieldByName('wid').Value,[]) then
+                 begin
+                 Form1.IBWID.Edit;
+                 Form1.IBWIDNAIM.Value := trim(Form1.ADOWID.FieldByName('naim').AsString);
+                 Form1.IBWID.Post;
+                 end
+                 else
+                 begin
+                 Form1.IBWID.Insert;
+                 Form1.IBWIDWID.Value := trim(Form1.ADOWID.FieldByName('wid').AsString);
+                 Form1.IBWIDNAIM.Value := trim(Form1.ADOWID.FieldByName('naim').AsString);
+                 Form1.IBWID.Post;
+                 end;
+               end;
+
+        Form1.ADOWID.Next;
+        end;
+
+        Form1.ADOORGAN.open;
+        cxProgressBar1.Position:=0;
+        cxProgressBar1.Properties.Min:=0;
+       cxProgressBar1.Properties.Max:=Form1.ADOORGAN.RecordCount-1;
+
+
+        Form1.IBORGAN.close;
+        Form1.IBORGAN.open;
+        Form1.ADOORGAN.First;
+        while not Form1.ADOORGAN.eof do
+        begin
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
+               Form1.IBORGAN.First;
+                 if Form1.IBORGAN.Locate('org',Form1.ADOORGAN.FieldByName('org').Value,[]) then
+                 begin
+                 Form1.IBORGAN.Edit;
+                 Form1.IBORGANNAME.Value := trim(Form1.ADOORGAN.FieldByName('name').AsString);
+                 Form1.IBORGAN.Post;
+                 end
+                 else
+                 begin
+                 Form1.IBORGAN.Insert;
+                 Form1.IBORGANORG.Value := Form1.ADOORGAN.FieldByName('org').Value;
+                 Form1.IBORGANNAME.Value := trim(Form1.ADOORGAN.FieldByName('name').AsString);
+                 Form1.IBORGAN.Post;
+                 end;
+
+
+        Form1.ADOORGAN.Next;
         end;
 
      Label2.Caption:='Оновлення оборотки абонентів';
@@ -272,18 +346,26 @@ begin
   Form1.IBQuery1.Close;
   Form1.IBQuery1.SQL.Text:='delete from obormes';
   Form1.IBQuery1.ExecSQL;
+//
+         Form1.IBOBORMES.Close;
+         Form1.IBOBORMES.Transaction:=Form1.IBTransaction2;
 
          Form1.IBOBORMES.open;
          Form1.ADOOBORMES.open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOOBORMES.RecordCount-1;
-
+       rec4:= trunc(Form1.ADOOBORMES.RecordCount/4);
+       apprec:=rec4;
         Form1.ADOOBORMES.First;
         while not Form1.ADOOBORMES.eof do
         begin
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
-        Application.ProcessMessages;
+        if cxProgressBar1.Position>apprec then
+        begin
+           Application.ProcessMessages;
+           apprec:=apprec+rec4;
+        end;
 
                Form1.IBOBORMES.Insert;
                Form1.IBOBORMESSCHET.Value := trim(Form1.ADOOBORMES.FieldByName('SCHET').AsString);
@@ -301,7 +383,6 @@ begin
                Form1.IBOBORMESWOZW.Value := Form1.ADOOBORMES.FieldByName('WOZW').AsCurrency;
                Form1.IBOBORMESMOVW.Value := Form1.ADOOBORMES.FieldByName('MOVW').AsCurrency;
                Form1.IBOBORMESPERE.Value := Form1.ADOOBORMES.FieldByName('PERE').AsCurrency;
-               Form1.IBOBORMESFULLOPL.Value := Form1.IBOBORSUBS.Value+Form1.IBOBOROPL.Value+Form1.IBOBORUDER.Value+Form1.IBOBORKOMP.Value+Form1.IBOBORWZMZ.Value;
                Form1.IBOBORMESSAL.Value := Form1.ADOOBORMES.FieldByName('SAL').AsCurrency;
 
                Form1.IBOBORMES.Post;
@@ -311,7 +392,41 @@ begin
         Form1.ADOOBORMES.Next;
         end;
 
+        Form1.IBTransaction2.CommitRetaining;
+//
+         Form1.IBOBORMES.Close;
+         Form1.IBOBORMES.Transaction:=Form1.IBTransaction1;
+//         ShellExecute(0, nil,'obor.bat',nil,nil,1);
+//         WinExec(PAnsiChar('d:\WORK\KOMUN\dolg\Script\obor.bat'),SW_NORMAL);
+//         WinExec(PAnsiChar('cmd /c d:\WORK\KOMUN\dolg\Script\IBEScript.exe "d:\WORK\KOMUN\dolg\Script\obor.ibb" -Dd:\WORK\KOMUN\dolg\dolg.gdb -USYSDBA -Pmasterkey'),SW_HIDE);
+       //   AppToRun:='cmd /c';
 
+     //     CommandLine:=' d:\WORK\KOMUN\dolg\Script\IBEScript.exe "d:\WORK\KOMUN\dolg\Script\obor.ibb" -Dd:\WORK\KOMUN\dolg\dolg.gdb -USYSDBA -Pmasterkey';
+//          ShellExecute(Handle,'open',pchar('C:\send.bat'),pchar(bb),nil,SW_HIDE);
+//         RarParam := 'd:\WORK\KOMUN\dolg\Script\IBEScript.exe "d:\WORK\KOMUN\dolg\Script\obor.ibb" -Dd:\WORK\KOMUN\dolg\dolg.gdb -USYSDBA -Pmasterkey';
+//        FillChar(SI, sizeof(SI), #0);
+//        SI.cb:=sizeof(SI);
+//        FillChar(PI, sizeof(PI), #0);
+
+//               ShellExecute(Handle,'open',pchar('d:\WORK\KOMUN\dolg\Script\obor.bat'),pchar(RarParam),nil,SW_NORMAL);
+//               MessageBox(Handle,'good', 'info', 64);
+
+//        CreateProcess(nil,PWideChar(RarParam),nil,nil,false,0,nil,nil,SI,PI);
+//        WaitForInputIdle(PI.hProcess, INFINITE);
+//        WaitForSingleObject(PI.hProcess,INFINITE);
+//        ShowMessage('Finish');
+
+//          FillChar( Si, SizeOf( Si ) , 0 );
+//          with Si do begin
+//          cb := SizeOf( Si);
+//          dwFlags := startf_UseShowWindow;
+//          wShowWindow := 1;
+//          end;
+//
+//        CreateProcess(nil,PChar(RarParam),nil,nil,false, Create_default_error_mode,nil,nil,si,pi);
+//        Waitforsingleobject(pi.hProcess,infinite);
+         Form1.IBOBORMES.close;
+         Form1.IBOBORMES.Open;
 
           Updatenote;
 //          Form1.ADOOBORREC.open;
@@ -336,9 +451,12 @@ begin
          Label2.Caption:='Оплата';
                 cxProgressBar2.Position:=cxProgressBar2.Position+1;
         Application.ProcessMessages;
-          Form1.IBTMPWID.open;
-          Form1.IBTMPOPL.open;
+          Form1.IBWID.open;
+//          Form1.IBTMPOPL.open;
           Form1.ADOOPL.open;
+         Form1.IBTMPOPL.Close;
+         Form1.IBTMPOPL.Transaction:=Form1.IBTransaction2;
+         Form1.IBTMPOPL.Open;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
        cxProgressBar1.Properties.Max:=Form1.ADOOPL.RecordCount-1;
@@ -347,30 +465,34 @@ begin
         while not Form1.ADOOPL.eof do
         begin
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
-        Application.ProcessMessages;
-                Form1.IBTMPWID.First;
-                while not Form1.IBTMPWID.eof do
+//        Application.ProcessMessages;
+                Form1.IBWID.First;
+                while not Form1.IBWID.eof do
                 begin
-                   if Form1.ADOOPL.FindField('OPL_'+Form1.IBTMPWIDWID.Value)<> nil then
-                   if Form1.ADOOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).AsCurrency <> 0  then
+                   if Form1.ADOOPL.FindField('OPL_'+Form1.IBWIDWID.Value)<> nil then
+                   if Form1.ADOOPL.FieldByName('OPL_'+Form1.IBWIDWID.Value).AsCurrency <> 0  then
                    begin
-                       if Form1.IBTMPOPL.FindField('OPL_'+Form1.IBTMPWIDWID.Value)<> nil then
+                       if Form1.IBTMPOPL.FindField('OPL_'+Form1.IBWIDWID.Value)<> nil then
                        begin
                        Form1.IBTMPOPL.Insert;
                        Form1.IBTMPOPL.FieldByName('SCHET').Value := trim(Form1.ADOOPL.FieldByName('schet').Value);
                        Form1.IBTMPOPL.FieldByName('DT').Value := Form1.ADOOPL.FieldByName('DT').Value;
-                       Form1.IBTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value := Form1.ADOOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).AsCurrency;
+                       Form1.IBTMPOPL.FieldByName('OPL_'+Form1.IBWIDWID.Value).Value := Form1.ADOOPL.FieldByName('OPL_'+Form1.IBWIDWID.Value).AsCurrency;
                        Form1.IBTMPOPL.FieldByName('SUMM').Value := Form1.ADOOPL.FieldByName('OPL').AsCurrency;
                        Form1.IBTMPOPL.Post;
                        end;
                    end;
-                Form1.IBTMPWID.Next;
+                Form1.IBWID.Next;
                 end;
 
         Form1.ADOOPL.Next;
         end;
 
+        Form1.IBTransaction2.CommitRetaining;
 
+         Form1.IBTMPOPL.Close;
+         Form1.IBTMPOPL.Transaction:=Form1.IBTransaction1;
+         Form1.IBTMPOPL.Open;
 //         Label2.Caption:='Утримання';
 //                cxProgressBar2.Position:=cxProgressBar2.Position+1;
 //        Application.ProcessMessages;
@@ -387,19 +509,19 @@ begin
 //        Application.ProcessMessages;
 //
 //
-//                Form1.IBTMPWID.First;
-//                while not Form1.IBTMPWID.eof do
+//                Form1.IBWID.First;
+//                while not Form1.IBWID.eof do
 //                begin
-//                   if Form1.ADOOPL.FindField('SUM_'+Form1.IBTMPWIDWID.Value)<> nil then
-//                   if Form1.ADOUDER.FieldByName('SUM_'+Form1.IBTMPWIDWID.Value).AsCurrency <> 0  then
+//                   if Form1.ADOOPL.FindField('SUM_'+Form1.IBWIDWID.Value)<> nil then
+//                   if Form1.ADOUDER.FieldByName('SUM_'+Form1.IBWIDWID.Value).AsCurrency <> 0  then
 //                   begin
 //                       Form1.IBTMPUDER.Insert;
 //                       Form1.IBTMPUDERSCHET.Value := trim(Form1.ADOUDER.FieldByName('SCHET').Value);
-//                       Form1.IBTMPUDERWID.Value := Form1.IBTMPWIDWID.Value;
-//                       Form1.IBTMPUDERSUMM.Value := Form1.ADOUDER.FieldByName('SUM_'+Form1.IBTMPWIDWID.Value).AsCurrency;
+//                       Form1.IBTMPUDERWID.Value := Form1.IBWIDWID.Value;
+//                       Form1.IBTMPUDERSUMM.Value := Form1.ADOUDER.FieldByName('SUM_'+Form1.IBWIDWID.Value).AsCurrency;
 //                       Form1.IBTMPUDER.Post;
 //                   end;
-//                Form1.IBTMPWID.Next;
+//                Form1.IBWID.Next;
 //                end;
 //
 //        Form1.ADOUDER.Next;
@@ -445,6 +567,7 @@ begin
                        Form1.IBKARTPLOS_BB.Value := Form1.ADOKART.FieldByName('PLOS_BB').AsCurrency;
                        Form1.IBKARTPRIVAT.Value := trim(Form1.ADOKART.FieldByName('PRIV').AsString);
                        Form1.IBKARTLGOTA.Value := trim(Form1.ADOKART.FieldByName('LGOTA').AsString);
+                       Form1.IBKARTORG.Value := Form1.ADOKART.FieldByName('ORG').AsInteger;
                        Form1.IBKARTVAL.Value := Form1.ADOKART.FieldByName('VAL').AsInteger;
                        Form1.IBKART.Post;
 
@@ -502,7 +625,7 @@ begin
 
 
 
- 
+
 
 //               Form1.IBNOTE.First;
 //               res:= Form1.IBNOTE.Lookup('schet;wid', VarArrayOf([schet,wid]),'schet');
@@ -557,6 +680,7 @@ begin
                                   Form1.IBKARTPLOS_BB.Value := Form1.ADOKART.FieldByName('PLOS_BB').AsCurrency;
                                   Form1.IBKARTPRIVAT.Value := trim(Form1.ADOKART.FieldByName('PRIV').AsString);
                                   Form1.IBKARTLGOTA.Value := trim(Form1.ADOKART.FieldByName('LGOTA').AsString);
+                                  Form1.IBKARTORG.Value := Form1.ADOKART.FieldByName('ORG').AsInteger;
                                   Form1.IBKARTVAL.Value := Form1.ADOKART.FieldByName('VAL').AsInteger;
                                   Form1.IBKART.Post;
                            end;
@@ -596,6 +720,7 @@ begin
                                      Form1.IBKARTPLOS_BB.Value := Form1.ADOKART.FieldByName('PLOS_BB').AsCurrency;
                                      Form1.IBKARTPRIVAT.Value := trim(Form1.ADOKART.FieldByName('PRIV').AsString);
                                      Form1.IBKARTLGOTA.Value := trim(Form1.ADOKART.FieldByName('LGOTA').AsString);
+                                     Form1.IBKARTORG.Value := Form1.ADOKART.FieldByName('ORG').AsInteger;
                                      Form1.IBKARTVAL.Value := Form1.ADOKART.FieldByName('VAL').AsInteger;
                                      Form1.IBKART.Post;
                      end
@@ -613,6 +738,7 @@ begin
                                      Form1.IBKARTPLOS_BB.Value := Form1.ADOKART.FieldByName('PLOS_BB').AsCurrency;
                                      Form1.IBKARTPRIVAT.Value := trim(Form1.ADOKART.FieldByName('PRIV').AsString);
                                      Form1.IBKARTLGOTA.Value := trim(Form1.ADOKART.FieldByName('LGOTA').AsString);
+                                     Form1.IBKARTORG.Value := Form1.ADOKART.FieldByName('ORG').AsInteger;
                                      Form1.IBKARTVAL.Value := Form1.ADOKART.FieldByName('VAL').AsInteger;
                                      Form1.IBKART.Post;
 
@@ -753,7 +879,6 @@ begin
                Form1.IBOBORWOZW.Value := Form1.ADOOBOR.FieldByName('WOZW').AsCurrency;
                Form1.IBOBORMOVW.Value := Form1.ADOOBOR.FieldByName('MOVW').AsCurrency;
                Form1.IBOBORPERE.Value := Form1.ADOOBOR.FieldByName('PERE').AsCurrency;
-               Form1.IBOBORFULLOPL.Value := Form1.IBOBORSUBS.Value+Form1.IBOBOROPL.Value+Form1.IBOBORUDER.Value+Form1.IBOBORKOMP.Value+Form1.IBOBORWZMZ.Value;
                Form1.IBOBORSAL.Value := Form1.ADOOBOR.FieldByName('SAL').AsCurrency;
 
                Form1.IBOBOR.Post;
@@ -848,6 +973,7 @@ begin
                Form1.IBKARTPLOS_BB.Value := Form1.ADOKART.FieldByName('PLOS_BB').AsCurrency;
                Form1.IBKARTPRIVAT.Value := trim(Form1.ADOKART.FieldByName('PRIV').AsString);
                Form1.IBKARTLGOTA.Value := trim(Form1.ADOKART.FieldByName('LGOTA').AsString);
+               Form1.IBKARTORG.Value := Form1.ADOKART.FieldByName('ORG').AsInteger;
                Form1.IBKARTVAL.Value := Form1.ADOKART.FieldByName('VAL').AsInteger;
                Form1.IBKART.Post;
 //

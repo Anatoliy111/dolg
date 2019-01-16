@@ -7,7 +7,7 @@ uses
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, DB, cxDBData,
   DBCtrls, cxGridLevel, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, ExtCtrls;
+  cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, ExtCtrls, cxNavigator;
 
 type
   TForm5 = class(TForm)
