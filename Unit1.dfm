@@ -248,18 +248,6 @@ object Form1: TForm1
         Properties.ReadOnly = True
         Width = 197
       end
-      object cxGrid1DBTableView1NOTE1: TcxGridDBColumn
-        Caption = #1053#1086#1090#1072#1090#1082#1080'1'
-        DataBinding.FieldName = 'NOTE1'
-        PropertiesClassName = 'TcxLookupComboBoxProperties'
-        Properties.KeyFieldNames = 'KL'
-        Properties.ListColumns = <
-          item
-            FieldName = 'NOTE'
-          end>
-        Properties.ListSource = DSNOTE1
-        Width = 99
-      end
       object cxGrid1DBTableView1DOM: TcxGridDBColumn
         Caption = #1041#1091#1076#1080#1085#1086#1082
         DataBinding.FieldName = 'DOM'
@@ -343,6 +331,18 @@ object Form1: TForm1
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.00;-,0.00'
         Properties.ReadOnly = True
+      end
+      object cxGrid1DBTableView1NOTE1: TcxGridDBColumn
+        Caption = #1053#1086#1090#1072#1090#1082#1080'1'
+        DataBinding.FieldName = 'NOTE1'
+        PropertiesClassName = 'TcxLookupComboBoxProperties'
+        Properties.KeyFieldNames = 'KL'
+        Properties.ListColumns = <
+          item
+            FieldName = 'NOTE'
+          end>
+        Properties.ListSource = DSNOTE1
+        Width = 99
       end
       object cxGrid1DBTableView1NOTE2: TcxGridDBColumn
         Caption = #1053#1086#1090#1072#1090#1082#1080'2'

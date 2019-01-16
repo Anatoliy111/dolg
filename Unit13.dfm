@@ -384,8 +384,6 @@ object Form13: TForm13
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
-        ExplicitTop = 65
-        ExplicitHeight = 549
         object cxGridDBTableView2: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDER
@@ -647,8 +645,6 @@ object Form13: TForm13
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
-        ExplicitTop = 65
-        ExplicitHeight = 549
         object cxGridDBTableView3: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDERMES
@@ -1198,7 +1194,7 @@ object Form13: TForm13
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 43425.596407557900000000
-    ReportOptions.LastChange = 43481.246443692130000000
+    ReportOptions.LastChange = 43481.537918611110000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -1515,7 +1511,7 @@ object Form13: TForm13
         Width = 1046.929810000000000000
         Condition = 'frxDBDataset1."FIO"'
         object Memo2: TfrxMemoView
-          Top = 15.118119999999890000
+          Top = 15.118119999999900000
           Width = 884.410020000000000000
           Height = 26.456710000000000000
           DataSet = frxDBDataset1
@@ -1772,7 +1768,6 @@ object Form13: TForm13
           Width = 196.535560000000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
-          DataField = 'PERIOD'
           DataSet = frxDBDataset3
           DataSetName = 'frxDBDataset1'
           Font.Charset = DEFAULT_CHARSET
@@ -1790,7 +1785,7 @@ object Form13: TForm13
       object GroupFooter1: TfrxGroupFooter
         FillType = ftBrush
         Height = 18.897650000000000000
-        Top = 529.134199999999900000
+        Top = 529.134200000000000000
         Width = 1046.929810000000000000
         Stretched = True
         object frxDBDataset1VID1: TfrxMemoView
@@ -1824,7 +1819,9 @@ object Form13: TForm13
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8W = (
-            '[SUM(<frxDBDataset1."DOLG">,MasterData1)]')
+            
+              '[IIF(<frxDBDataset1."PERIOD">=min(<frxDBDataset1."PERIOD">,Maste' +
+              'rData1),SUM(<frxDBDataset1."DOLG">,MasterData1),0)]         ')
           ParentFont = False
           VAlign = vaCenter
         end
@@ -2100,7 +2097,7 @@ object Form13: TForm13
         Stretched = True
         object Memo10: TfrxMemoView
           Left = 3.779530000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 192.756030000000000000
           Height = 18.897650000000000000
           DataSet = frxDBDataset1
@@ -2116,7 +2113,7 @@ object Form13: TForm13
         end
         object Memo11: TfrxMemoView
           Left = 196.535560000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000000000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2130,13 +2127,15 @@ object Form13: TForm13
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8W = (
-            '[SUM(<frxDBDataset1."DOLG">,MasterData1)]')
+            
+              '[IIF(<frxDBDataset1."PERIOD">=min(<frxDBDataset1."PERIOD">,Maste' +
+              'rData1),SUM(<frxDBDataset1."DOLG">,MasterData1),0)]         ')
           ParentFont = False
           VAlign = vaCenter
         end
         object Memo12: TfrxMemoView
           Left = 272.126160000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2156,7 +2155,7 @@ object Form13: TForm13
         end
         object Memo18: TfrxMemoView
           Left = 347.716760000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2176,7 +2175,7 @@ object Form13: TForm13
         end
         object Memo35: TfrxMemoView
           Left = 423.307360000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2196,7 +2195,7 @@ object Form13: TForm13
         end
         object Memo36: TfrxMemoView
           Left = 498.897960000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2221,7 +2220,7 @@ object Form13: TForm13
         end
         object Memo37: TfrxMemoView
           Left = 574.488560000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2246,7 +2245,7 @@ object Form13: TForm13
         end
         object Memo38: TfrxMemoView
           Left = 650.079160000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2271,7 +2270,7 @@ object Form13: TForm13
         end
         object Memo39: TfrxMemoView
           Left = 725.669760000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2296,7 +2295,7 @@ object Form13: TForm13
         end
         object Memo40: TfrxMemoView
           Left = 801.260360000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2321,7 +2320,7 @@ object Form13: TForm13
         end
         object Memo41: TfrxMemoView
           Left = 876.850960000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2346,7 +2345,7 @@ object Form13: TForm13
         end
         object Memo42: TfrxMemoView
           Left = 952.441560000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000100000
           Width = 52.913371180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2371,7 +2370,7 @@ object Form13: TForm13
         end
         object Line1: TfrxLineView
           Left = 15.118120000000000000
-          Top = 15.118119999999980000
+          Top = 15.118120000000000000
           Width = 1001.575450000000000000
           Color = clBlack
           Frame.Style = fsDash
@@ -2379,7 +2378,7 @@ object Form13: TForm13
         end
         object Memo59: TfrxMemoView
           Left = 1005.354980000000000000
-          Top = 22.677180000000020000
+          Top = 22.677180000000000000
           Width = 41.574830000000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2419,7 +2418,7 @@ object Form13: TForm13
         Condition = 'frxDBDataset1."DOM"'
         object Memo13: TfrxMemoView
           Left = 37.795300000000000000
-          Top = 11.338590000000010000
+          Top = 11.338590000000000000
           Width = 1009.134510000000000000
           Height = 18.897650000000000000
           DataSet = frxDBDataset1
@@ -2482,7 +2481,9 @@ object Form13: TForm13
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8W = (
-            '[SUM(<frxDBDataset1."DOLG">,MasterData1)]')
+            
+              '[IIF(<frxDBDataset1."PERIOD">=min(<frxDBDataset1."PERIOD">,Maste' +
+              'rData1),SUM(<frxDBDataset1."DOLG">,MasterData1),0)]         ')
           ParentFont = False
           VAlign = vaCenter
         end
@@ -2733,7 +2734,7 @@ object Form13: TForm13
         Width = 1046.929810000000000000
         Condition = 'frxDBDataset1."POSL"'
         object frxDBDataset1UL: TfrxMemoView
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 1035.591220000000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2794,7 +2795,9 @@ object Form13: TForm13
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8W = (
-            '[SUM(<frxDBDataset1."DOLG">,MasterData1)]')
+            
+              '[IIF(<frxDBDataset1."PERIOD">=min(<frxDBDataset1."PERIOD">,Maste' +
+              'rData1),<frxDBDataset1."DOLG">,0)]         ')
           ParentFont = False
           VAlign = vaCenter
         end
