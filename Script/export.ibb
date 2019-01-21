@@ -139,6 +139,11 @@ begin
   		    -- Deleting records from the target table
                         DELETE from ul where upd=1 and kl in (select kl from ul where upd is null);
                         update UL set upd=1 where upd is null;
+                        update ADRES set ADRES.ul = (select ul from UL T1 where T1.kl=ADRES.kl_ul);
+                        update kart set kart.kl_ul = (select kl from UL T1 where T1.ul=kart.ulnaim) where kart.kl_ul is null;
+                        UPDATE kart SET nomdom = REPLACE(nomdom, 'Â','â');
+			UPDATE kart SET nomdom = REPLACE(nomdom, 'Á','á');
+                        INSERT INTO adres (UL, dom, kl_ul) select ulnaim, nomdom, kl_ul from kart where not exists (select ul,dom,kl_ul from adres  where kart.ulnaim = adres.ul and kart.nomdom = adres.dom and kart.kl_ul = adres.kl_ul) and kl_ul is not null group by ulnaim, nomdom, kl_ul;
                         commit;
                     end;
 

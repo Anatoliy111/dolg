@@ -2,6 +2,7 @@
    SQLDialect: 3. ODS: 11.1. Forced writes: On. Sweep interval: 20000.
    Page size: 16384. Cache pages: 2048 (32768 Kb). Read-only: False. */
 SET CLIENTLIB 'C:\Windows\System32\gds32.dll';
+
 SET NAMES WIN1251;
 
 SET SQL DIALECT 3;
