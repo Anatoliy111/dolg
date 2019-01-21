@@ -82,9 +82,9 @@ begin
                     if (Res is not null) then
                     begin
   		    -- Deleting records from the target table
-                        delete from KART where upd=1;
-                        update KART set upd=1 where upd is null;
-                        commit;
+                       DELETE from kart where upd=1 and schet in (select schet from kart k1 where upd is null);
+                       update KART set upd=1 where upd is null;
+                       commit;
                     end;
 
 
@@ -137,7 +137,7 @@ begin
                     if (Res is not null) then
                     begin
   		    -- Deleting records from the target table
-                        delete from UL where upd=1;
+                        DELETE from ul where upd=1 and kl in (select kl from ul where upd is null);
                         update UL set upd=1 where upd is null;
                         commit;
                     end;
@@ -166,7 +166,7 @@ begin
                     if (Res is not null) then
                     begin
   		    -- Deleting records from the target table
-                        delete from ORGAN where upd=1;
+                        DELETE from ORGAN where upd=1 and org in (select org from ORGAN where upd is null);
                         update ORGAN set upd=1 where upd is null;
                         commit;
                     end;
