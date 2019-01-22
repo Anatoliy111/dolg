@@ -1,0 +1,127 @@
+execute ibeblock
+as
+begin
+    startDate='01.01.2017';
+	 enddate=startDate;
+    arcdir='D:\WORK\KOMUN\kvpl\arc\';
+    dir='D:\WORK\KOMUN\kvpl\';
+	 base='"D:\WORK\KOMUN\dolg\DOLG.GDB"';
+    cur_file = dir+'cur_date.txt';
+
+  if(ibec_FileExists(:cur_file)) then
+  begin
+	 -- файл открываем
+	 cur_fs = ibec_fs_OpenFile(:cur_file, __fmOpenRead); 
+	    if (not cur_fs is NULL) then
+	    begin
+              MyStr = ibec_fs_ReadString(cur_fs, 10);
+            end;
+            ibec_fs_CloseFile(cur_fs);
+
+
+
+	
+
+
+		  
+		  DB = ibec_CreateConnection(__ctFirebird, 'DBName='+Base+';
+		                                            ClientLib=C:\Windows\System32\gds32.dll;
+		                                            User=sysdba; Password=masterkey; Names=WIN1251; SqlDialect=3;');
+		  try
+		    ibec_UseConnection(DB);
+			 ibec_Progress(MyStr);
+			 ibec_Progress(enddate);
+			 
+			 
+					while (MyStr <> enddate) do
+					begin
+					
+					  ibec_Progress(enddate);
+
+					  delete from OBOR where upd is null;
+					  delete from OBOR where period=:enddate;
+					  commit;
+					  
+
+
+						stmes = SUBSTRING(enddate from 4 for 2);
+						styear = SUBSTRING(enddate from 7 for 4);
+
+                  mes1=cast(stmes as int);
+						year1=cast(styear as int);
+						
+
+					  
+						 Res = ibec_ImportData(DB, 'OBOR', __impDBase, arcdir+styear+stmes+'\obor.DBF', '', 
+													  'RowFirst=1;
+														DateOrder=DMY; DateSeparator="."; TimeSeparator=":"; DecimalSeparator=","; OemToAnsi;', '', cbb);
+
+														
+						 if (Res is not null) then
+						 begin
+							 -- Deleting records from the target table
+												update OBOR set period=:enddate where period is null;
+												commit;
+												update OBOR set upd=1 where upd is null;
+												commit;
+												ibec_Progress('commit obor '+enddate);
+						end
+						else
+						  ibec_Progress(enddate+' OBOR is eeeeeeeeeeeeeeeeeeeeeeeeeeemmpty');
+														
+									
+
+		  delete from KART where upd is null;
+		  commit;
+		  delete from KART where schet is null;
+		  commit;		  
+
+
+		    Res = ibec_ImportData(DB, 'KART', __impDBase, arcdir+styear+stmes+'\KART.DBF', '', 
+		                          'RowFirst=1;
+		                           DateOrder=DMY; DateSeparator="."; TimeSeparator=":"; DecimalSeparator=","; OemToAnsi;', '', cbb);
+
+		  
+                    if (Res is not null) then
+                    begin
+  		    -- Deleting records from the target table
+                       DELETE from kart where upd=1 and schet in (select schet from kart k1 where upd is null);
+							  commit;
+                       update KART set upd=1 where upd is null;
+                       commit;
+     							ibec_Progress('commit kart '+enddate);
+
+						end
+						else
+						  ibec_Progress(enddate+' KART is eeeeeeeeeeeeeeeeeeeeeeeeeeemmpty');
+
+									
+														
+						mes1 = mes1+1;
+						
+						if (mes1 > 12) then
+							begin
+								mes1 = 1;
+								year1 = year1 + 1;
+							end;	
+
+						mm = cast(mes1 as varchar(2));
+                  yy = cast(year1 as varchar(4));
+						
+						if (mes1 < 10) then
+						  enddate='01.0'+mm+'.'+yy;
+						else	
+						  enddate='01.'+mm+'.'+yy;
+					end;
+			 
+			 
+
+		  finally
+		    ibec_CloseConnection(DB);
+		 end;
+
+
+  end;  
+
+
+end

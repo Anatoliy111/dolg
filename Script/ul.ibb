@@ -1,8 +1,12 @@
 execute ibeblock
 as
 begin
-
-    cur_file = 'D:\WORK\KOMUN\kvpl\cur_date.txt';
+    startDate='01.01.2018';
+	 enddate=startDate;
+    arcdir='D:\WORK\KOMUN\kvpl\arc\';
+    dir='D:\WORK\KOMUN\kvpl\';
+	 base='"D:\WORK\KOMUN\dolg\DOLG.GDB"';
+    cur_file = dir+'cur_date.txt';
 
   if(ibec_FileExists(:cur_file)) then
   begin
@@ -25,7 +29,7 @@ begin
 		             ibec_Progress(RecCount || '' export to program DOLG.'');
 		         end;';
 		  
-		  DB = ibec_CreateConnection(__ctFirebird, 'DBName="D:\WORK\KOMUN\dolg\DOLG.GDB";
+		  DB = ibec_CreateConnection(__ctFirebird, 'DBName='+Base+';
 		                                            ClientLib=C:\Windows\System32\gds32.dll;
 		                                            User=sysdba; Password=masterkey; Names=WIN1251; SqlDialect=3;');
 		  try
@@ -43,7 +47,7 @@ begin
 		  commit;
 
 
-		    Res = ibec_ImportData(DB, 'UL', __impDBase, 'D:\WORK\KOMUN\kvpl\dbf\UL.DBF', '', 
+		    Res = ibec_ImportData(DB, 'UL', __impDBase, dir+'dbf\UL.DBF', '', 
 		                          'RowFirst=1;
 		                           DateOrder=DMY; DateSeparator="."; TimeSeparator=":"; DecimalSeparator=","; OemToAnsi;', '', cbb);
 
@@ -52,20 +56,38 @@ begin
                     begin
   		    -- Deleting records from the target table
                         DELETE from ul where upd=1 and kl in (select kl from ul where upd is null);
+								commit;
                         update UL set upd=1 where upd is null;
+								commit;
                         update ADRES set ADRES.kl_ul = (select kl from UL T1 where T1.ul=ADRES.ul);
+								commit;
                         update ADRES set ADRES.kl_ul = 23 where ADRES.UL='вул.Лазарева';
+								commit;
                         update ADRES set ADRES.ul = (select ul from UL T1 where T1.kl=ADRES.kl_ul);
+								commit;
                         UPDATE ADRES SET dom = REPLACE(dom, 'В','в');
-			UPDATE ADRES SET dom = REPLACE(dom, 'Б','б');
+								commit;
+			               UPDATE ADRES SET dom = REPLACE(dom, 'Б','б');
                         commit;
+								
+                        update KART set KART.kl_ul = (select kl from UL T1 where T1.ul=KART.ulnaim);
+								commit;
+                        update KART set KART.kl_ul = 23 where KART.ULNAIM='вул.Лазарева';
+								commit;
+                        update KART set KART.ulnaim = (select ul from UL T1 where T1.kl=KART.kl_ul);
+								commit;
+                        UPDATE KART SET nomdom = REPLACE(dom, 'В','в');
+								commit;
+			               UPDATE KART SET dom = REPLACE(dom, 'Б','б');
+                        commit;
+								
                     end;
 
 
 
 		  finally
 		    ibec_CloseConnection(DB);
-		  end;
+		 end;
 
 
   end;  

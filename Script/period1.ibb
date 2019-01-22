@@ -1,0 +1,65 @@
+execute ibeblock
+as
+begin
+    startDate='01.01.2018';
+	 enddate=startDate;
+    arcdir='D:\WORK\KOMUN\kvpl\arc\';
+    dir='D:\WORK\KOMUN\kvpl\';
+	 base='"D:\WORK\KOMUN\dolg\DOLG.GDB"';
+    cur_file = dir+'cur_date.txt';
+
+  if(ibec_FileExists(:cur_file)) then
+  begin
+	 -- файл открываем
+	 cur_fs = ibec_fs_OpenFile(:cur_file, __fmOpenRead); 
+	    if (not cur_fs is NULL) then
+	    begin
+              MyStr = ibec_fs_ReadString(cur_fs, 10);
+       end;
+            ibec_fs_CloseFile(cur_fs);
+
+
+		  DB = ibec_CreateConnection(__ctFirebird, 'DBName='+Base+';
+		                                            ClientLib=C:\Windows\System32\gds32.dll;
+		                                            User=sysdba; Password=masterkey; Names=WIN1251; SqlDialect=3;');
+		    ibec_UseConnection(DB);
+
+	
+
+
+
+						stmes = SUBSTRING(:enddate from 4 for 2);
+						styear = SUBSTRING(:enddate from 7 for 4);
+
+						ibec_Progress(stmes);
+						ibec_Progress(styear);
+						
+						
+                  mes1=cast(stmes as int);
+						year1=cast(styear as int);
+						
+						ibec_Progress(mes1);
+						ibec_Progress(year1);		
+
+						--str = mes1+' '+year1;
+						
+						mm = cast(mes1 as varchar(2));
+                  yy = cast(year1 as varchar(4));
+						
+						
+						
+--						date1='01.0'+cast(mes1 as char(2))+'.'+cast(year1 as char(4));
+						ibec_Progress('000 '+mm);
+						ibec_Progress(yy);
+						
+--						mes=cast(SUBSTRING(enddate from 4 for 2) as int);
+-- 					-year=cast(SUBSTRING(enddate from 7 for 4) as int);
+
+					  
+
+
+
+  end;  
+
+
+end
