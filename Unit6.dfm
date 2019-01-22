@@ -36,7 +36,6 @@ object Form6: TForm6
       Height = 25
       Caption = #1055#1077#1088#1077#1079#1072#1087#1080#1089#1072#1090#1080' '#1082#1072#1088#1090#1082#1080
       TabOrder = 1
-      OnClick = cxButton2Click
     end
     object cxProgressBar1: TcxProgressBar
       Left = 152

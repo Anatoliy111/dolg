@@ -540,21 +540,12 @@ object Form1: TForm1
     end
     object cxButton1: TcxButton
       Left = 632
-      Top = 50
+      Top = 97
       Width = 173
       Height = 25
       Caption = #1054#1085#1086#1074#1080#1090#1080' '#1087#1086#1090#1086#1095#1085#1110' '#1076#1072#1085#1110
       TabOrder = 3
       OnClick = cxButton1Click
-    end
-    object cxButton4: TcxButton
-      Left = 632
-      Top = 81
-      Width = 173
-      Height = 25
-      Caption = #1054#1085#1086#1074#1080#1090#1080' '#1082#1072#1088#1090#1082#1080
-      TabOrder = 4
-      OnClick = cxButton4Click
     end
     object cxButton3: TcxButton
       Left = 731
@@ -562,11 +553,27 @@ object Form1: TForm1
       Width = 74
       Height = 25
       Caption = #1042' '#1045#1082#1089#1077#1083#1100
-      TabOrder = 5
+      TabOrder = 4
       OnClick = cxButton3Click
+    end
+    object cxLookupComboBox1: TcxLookupComboBox
+      Left = 632
+      Top = 42
+      Properties.ListColumns = <>
+      TabOrder = 5
+      Width = 169
+    end
+    object cxButton4: TcxButton
+      Left = 632
+      Top = 66
+      Width = 173
+      Height = 25
+      Caption = #1055#1077#1088#1077#1081#1090#1080
+      TabOrder = 6
     end
   end
   object IBDatabase1: TIBDatabase
+    Connected = True
     DatabaseName = 'D:\WORK\KOMUN\DOLG\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'
@@ -1080,7 +1087,6 @@ object Form1: TForm1
     end
   end
   object DSADOKART: TDataSource
-    DataSet = ADOKART
     Enabled = False
     Left = 136
     Top = 288
@@ -1100,32 +1106,6 @@ object Form1: TForm1
     DataSet = IBQuery1
     Left = 792
     Top = 360
-  end
-  object ADOKART: TADODataSet
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    LockType = ltBatchOptimistic
-    CommandText = 'select * from kart order by schet'
-    Parameters = <>
-    Left = 136
-    Top = 232
-  end
-  object ADOConnectionARC: TADOConnection
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=d:\WO' +
-      'RK\KOMUN\kvpl\arc\201812\;Mode=Read;Persist Security Info=False;' +
-      'Jet OLEDB:System database="";Jet OLEDB:Registry Path="";Jet OLED' +
-      'B:Database Password="";Jet OLEDB:Engine Type=16;Jet OLEDB:Databa' +
-      'se Locking Mode=0;Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:' +
-      'Global Bulk Transactions=1;Jet OLEDB:New Database Password="";Je' +
-      't OLEDB:Create System Database=False;Jet OLEDB:Encrypt Database=' +
-      'False;Jet OLEDB:Don'#39't Copy Locale on Compact=False;Jet OLEDB:Com' +
-      'pact Without Replica Repair=False;Jet OLEDB:SFP=False;'
-    LoginPrompt = False
-    Mode = cmRead
-    Provider = 'Microsoft.Jet.OLEDB.4.0'
-    Left = 560
-    Top = 176
   end
   object DSSP_ADRES: TDataSource
     DataSet = IBSP_ADRES
@@ -2959,310 +2939,10 @@ object Form1: TForm1
     Left = 160
     Top = 520
   end
-  object ADOOBOR: TADODataSet
-    Connection = ADOConnectionARC
-    CursorType = ctStatic
-    CommandText = 'select * from obor order by schet, wid'
-    Parameters = <>
-    Left = 632
-    Top = 240
-  end
   object DataSourceOBOR: TDataSource
-    DataSet = ADOOBOR
     Enabled = False
     Left = 672
     Top = 192
-  end
-  object ADOConnectionDBF: TADOConnection
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=d:\WO' +
-      'RK\KOMUN\kvpl\dbf\;Mode=Read;Jet OLEDB:System database="";Jet OL' +
-      'EDB:Registry Path="";Jet OLEDB:Database Password="";Jet OLEDB:En' +
-      'gine Type=16;Jet OLEDB:Database Locking Mode=0;Jet OLEDB:Global ' +
-      'Partial Bulk Ops=2;Jet OLEDB:Global Bulk Transactions=1;Jet OLED' +
-      'B:New Database Password="";Jet OLEDB:Create System Database=Fals' +
-      'e;Jet OLEDB:Encrypt Database=False;Jet OLEDB:Don'#39't Copy Locale o' +
-      'n Compact=False;Jet OLEDB:Compact Without Replica Repair=False;J' +
-      'et OLEDB:SFP=False;'
-    LoginPrompt = False
-    Mode = cmRead
-    Provider = 'Microsoft.Jet.OLEDB.4.0'
-    Left = 464
-    Top = 200
-  end
-  object IBTMPNACH: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from TMPNACH'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into TMPNACH'
-      '  (FIO, KL, LGOTA, SCHET, SUMM, TARIF, WID)'
-      'values'
-      '  (:FIO, :KL, :LGOTA, :SCHET, :SUMM, :TARIF, :WID)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  SCHET,'
-      '  WID,'
-      '  FIO,'
-      '  LGOTA,'
-      '  TARIF,'
-      '  SUMM'
-      'from TMPNACH '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      ' select * from TMPNACH')
-    ModifySQL.Strings = (
-      'update TMPNACH'
-      'set'
-      '  FIO = :FIO,'
-      '  KL = :KL,'
-      '  LGOTA = :LGOTA,'
-      '  SCHET = :SCHET,'
-      '  SUMM = :SUMM,'
-      '  TARIF = :TARIF,'
-      '  WID = :WID'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_TMPNACH_ID'
-    Left = 360
-    Top = 472
-    object IBTMPNACHKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"TMPNACH"."KL"'
-      Required = True
-    end
-    object IBTMPNACHSCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"TMPNACH"."SCHET"'
-      Size = 10
-    end
-    object IBTMPNACHWID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"TMPNACH"."WID"'
-      Size = 10
-    end
-    object IBTMPNACHFIO: TIBStringField
-      FieldName = 'FIO'
-      Origin = '"TMPNACH"."FIO"'
-      Size = 70
-    end
-    object IBTMPNACHLGOTA: TIBStringField
-      FieldName = 'LGOTA'
-      Origin = '"TMPNACH"."LGOTA"'
-      Size = 10
-    end
-    object IBTMPNACHTARIF: TIBBCDField
-      FieldName = 'TARIF'
-      Origin = '"TMPNACH"."TARIF"'
-      Precision = 18
-      Size = 2
-    end
-    object IBTMPNACHSUMM: TIBBCDField
-      FieldName = 'SUMM'
-      Origin = '"TMPNACH"."SUMM"'
-      Precision = 18
-      Size = 2
-    end
-  end
-  object DSTMPNACH: TDataSource
-    DataSet = IBTMPNACH
-    Enabled = False
-    Left = 360
-    Top = 520
-  end
-  object IBOBORMES: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from OBORMES'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into OBORMES'
-      
-        '  (KL, SCHET, WID, N_DOG, D_DOG, TARIF, DOLG, NACH, SUBS, OPL, U' +
-        'DER, KOMP, '
-      '   WZMZ, WOZW, MOVW, PERE, FULLOPL, SAL)'
-      'values'
-      
-        '  (:KL, :SCHET, :WID, :N_DOG, :D_DOG, :TARIF, :DOLG, :NACH, :SUB' +
-        'S, :OPL, '
-      '   :UDER, :KOMP, :WZMZ, :WOZW, :MOVW, :PERE, :FULLOPL, :SAL)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  SCHET,'
-      '  WID,'
-      '  N_DOG,'
-      '  D_DOG,'
-      '  TARIF,'
-      '  DOLG,'
-      '  NACH,'
-      '  SUBS,'
-      '  OPL,'
-      '  UDER,'
-      '  KOMP,'
-      '  WZMZ,'
-      '  WOZW,'
-      '  MOVW,'
-      '  PERE,'
-      '  FULLOPL,'
-      '  SAL'
-      'from OBORMES '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      ' select * from OBORMES')
-    ModifySQL.Strings = (
-      'update OBORMES'
-      'set'
-      '  KL = :KL,'
-      '  SCHET = :SCHET,'
-      '  WID = :WID,'
-      '  N_DOG = :N_DOG,'
-      '  D_DOG = :D_DOG,'
-      '  TARIF = :TARIF,'
-      '  DOLG = :DOLG,'
-      '  NACH = :NACH,'
-      '  SUBS = :SUBS,'
-      '  OPL = :OPL,'
-      '  UDER = :UDER,'
-      '  KOMP = :KOMP,'
-      '  WZMZ = :WZMZ,'
-      '  WOZW = :WOZW,'
-      '  MOVW = :MOVW,'
-      '  PERE = :PERE,'
-      '  FULLOPL = :FULLOPL,'
-      '  SAL = :SAL'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_OBORMES_ID'
-    Left = 216
-    Top = 472
-    object IBOBORMESKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"OBORMES"."KL"'
-      Required = True
-    end
-    object IBOBORMESSCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"OBORMES"."SCHET"'
-      Size = 10
-    end
-    object IBOBORMESWID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"OBORMES"."WID"'
-      Size = 10
-    end
-    object IBOBORMESN_DOG: TIBStringField
-      FieldName = 'N_DOG'
-      Origin = '"OBORMES"."N_DOG"'
-      Size = 10
-    end
-    object IBOBORMESD_DOG: TIBStringField
-      FieldName = 'D_DOG'
-      Origin = '"OBORMES"."D_DOG"'
-      Size = 10
-    end
-    object IBOBORMESTARIF: TIBBCDField
-      FieldName = 'TARIF'
-      Origin = '"OBORMES"."TARIF"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESDOLG: TIBBCDField
-      FieldName = 'DOLG'
-      Origin = '"OBORMES"."DOLG"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESNACH: TIBBCDField
-      FieldName = 'NACH'
-      Origin = '"OBORMES"."NACH"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESSUBS: TIBBCDField
-      FieldName = 'SUBS'
-      Origin = '"OBORMES"."SUBS"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESOPL: TIBBCDField
-      FieldName = 'OPL'
-      Origin = '"OBORMES"."OPL"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESUDER: TIBBCDField
-      FieldName = 'UDER'
-      Origin = '"OBORMES"."UDER"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESKOMP: TIBBCDField
-      FieldName = 'KOMP'
-      Origin = '"OBORMES"."KOMP"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESWZMZ: TIBBCDField
-      FieldName = 'WZMZ'
-      Origin = '"OBORMES"."WZMZ"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESWOZW: TIBBCDField
-      FieldName = 'WOZW'
-      Origin = '"OBORMES"."WOZW"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESMOVW: TIBBCDField
-      FieldName = 'MOVW'
-      Origin = '"OBORMES"."MOVW"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESPERE: TIBBCDField
-      FieldName = 'PERE'
-      Origin = '"OBORMES"."PERE"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESFULLOPL: TIBBCDField
-      FieldName = 'FULLOPL'
-      Origin = '"OBORMES"."FULLOPL"'
-      Precision = 18
-      Size = 2
-    end
-    object IBOBORMESSAL: TIBBCDField
-      FieldName = 'SAL'
-      Origin = '"OBORMES"."SAL"'
-      Precision = 18
-      Size = 2
-    end
-  end
-  object DSOBORMES: TDataSource
-    DataSet = IBOBORMES
-    Enabled = False
-    Left = 216
-    Top = 520
   end
   object IBTMPOPL: TIBDataSet
     Database = IBDatabase1
@@ -3311,82 +2991,6 @@ object Form1: TForm1
     DataSet = IBTMPOPL
     Enabled = False
     Left = 432
-    Top = 520
-  end
-  object IBTMPSUBS: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from TMPSUBS'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into TMPSUBS'
-      '  (KL, OB, SCHET, SUMM, WID)'
-      'values'
-      '  (:KL, :OB, :SCHET, :SUMM, :WID)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  SCHET,'
-      '  WID,'
-      '  SUMM,'
-      '  OB'
-      'from TMPSUBS '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      ' select * from TMPSUBS')
-    ModifySQL.Strings = (
-      'update TMPSUBS'
-      'set'
-      '  KL = :KL,'
-      '  OB = :OB,'
-      '  SCHET = :SCHET,'
-      '  SUMM = :SUMM,'
-      '  WID = :WID'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_TMPSUBS_ID'
-    Left = 488
-    Top = 472
-    object IBTMPSUBSKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"TMPSUBS"."KL"'
-      Required = True
-    end
-    object IBTMPSUBSSCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"TMPSUBS"."SCHET"'
-      Size = 10
-    end
-    object IBTMPSUBSWID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"TMPSUBS"."WID"'
-      Size = 10
-    end
-    object IBTMPSUBSSUMM: TIBBCDField
-      FieldName = 'SUMM'
-      Origin = '"TMPSUBS"."SUMM"'
-      Precision = 18
-      Size = 2
-    end
-    object IBTMPSUBSOB: TIBBCDField
-      FieldName = 'OB'
-      Origin = '"TMPSUBS"."OB"'
-      Precision = 18
-      Size = 2
-    end
-  end
-  object DSTMPSUBS: TDataSource
-    DataSet = IBTMPSUBS
-    Enabled = False
-    Left = 488
     Top = 520
   end
   object IBTMPUDER: TIBDataSet
@@ -3457,259 +3061,33 @@ object Form1: TForm1
     Left = 552
     Top = 520
   end
-  object ADONACH: TADODataSet
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    CommandText = 'select * from  NACH where sum<>0 order by schet,wid'
-    Parameters = <>
-    Left = 336
-    Top = 240
-  end
   object DSADONACH: TDataSource
-    DataSet = ADONACH
     Enabled = False
     Left = 336
     Top = 280
   end
-  object ADOOBORMES: TADODataSet
-    AutoCalcFields = False
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    CommandText = 'select * from obor order by schet, wid'
-    Parameters = <>
-    Left = 200
-    Top = 232
-  end
   object DSADOOBORMES: TDataSource
-    DataSet = ADOOBORMES
     Enabled = False
     Left = 200
     Top = 288
-  end
-  object ADOOPL: TADODataSet
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    CommandText = 'select *  from OPL order by schet'
-    Parameters = <>
-    Left = 392
-    Top = 240
   end
   object DSADOOPL: TDataSource
-    DataSet = ADOOPL
     Enabled = False
     Left = 392
     Top = 288
   end
-  object ADOSUBS: TADODataSet
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    CommandText = 'select *  from SUBS order by schet'
-    Parameters = <>
-    Left = 456
-    Top = 240
-  end
   object DSADOSUBS: TDataSource
-    DataSet = ADOSUBS
     Enabled = False
     Left = 456
     Top = 296
-  end
-  object ADOUDER: TADODataSet
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    CommandText = 'select *  from UDER  where sum<>0 order by schet'
-    Parameters = <>
-    Left = 504
-    Top = 248
   end
   object DSADOUDER: TDataSource
-    DataSet = ADOUDER
     Enabled = False
     Left = 504
     Top = 296
   end
-  object IBDataSet1: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from TMPOBOR'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into TMPOBOR'
-      
-        '  (D_DOG, DOLG, FULLOPL, KL, KOMP, MOVW, N_DOG, NACH, OPL, PERE,' +
-        ' SAL, SCHET, '
-      '   SUBS, TARIF, UDER, WID, WOZW, WZMZ)'
-      'values'
-      
-        '  (:D_DOG, :DOLG, :FULLOPL, :KL, :KOMP, :MOVW, :N_DOG, :NACH, :O' +
-        'PL, :PERE, '
-      '   :SAL, :SCHET, :SUBS, :TARIF, :UDER, :WID, :WOZW, :WZMZ)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  SCHET,'
-      '  WID,'
-      '  N_DOG,'
-      '  D_DOG,'
-      '  TARIF,'
-      '  DOLG,'
-      '  NACH,'
-      '  SUBS,'
-      '  OPL,'
-      '  UDER,'
-      '  KOMP,'
-      '  WZMZ,'
-      '  WOZW,'
-      '  MOVW,'
-      '  PERE,'
-      '  FULLOPL,'
-      '  SAL'
-      'from TMPOBOR '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      'select * from TMPOBOR')
-    ModifySQL.Strings = (
-      'update TMPOBOR'
-      'set'
-      '  D_DOG = :D_DOG,'
-      '  DOLG = :DOLG,'
-      '  FULLOPL = :FULLOPL,'
-      '  KL = :KL,'
-      '  KOMP = :KOMP,'
-      '  MOVW = :MOVW,'
-      '  N_DOG = :N_DOG,'
-      '  NACH = :NACH,'
-      '  OPL = :OPL,'
-      '  PERE = :PERE,'
-      '  SAL = :SAL,'
-      '  SCHET = :SCHET,'
-      '  SUBS = :SUBS,'
-      '  TARIF = :TARIF,'
-      '  UDER = :UDER,'
-      '  WID = :WID,'
-      '  WOZW = :WOZW,'
-      '  WZMZ = :WZMZ'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    Left = 416
-    Top = 360
-    object IBDataSet1KL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"TMPOBOR"."KL"'
-      Required = True
-    end
-    object IBDataSet1SCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"TMPOBOR"."SCHET"'
-      Size = 10
-    end
-    object IBDataSet1WID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"TMPOBOR"."WID"'
-      Size = 10
-    end
-    object IBDataSet1N_DOG: TIBStringField
-      FieldName = 'N_DOG'
-      Origin = '"TMPOBOR"."N_DOG"'
-      Size = 10
-    end
-    object IBDataSet1D_DOG: TIBStringField
-      FieldName = 'D_DOG'
-      Origin = '"TMPOBOR"."D_DOG"'
-      Size = 10
-    end
-    object IBDataSet1TARIF: TIBBCDField
-      FieldName = 'TARIF'
-      Origin = '"TMPOBOR"."TARIF"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1DOLG: TIBBCDField
-      FieldName = 'DOLG'
-      Origin = '"TMPOBOR"."DOLG"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1NACH: TIBBCDField
-      FieldName = 'NACH'
-      Origin = '"TMPOBOR"."NACH"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1SUBS: TIBBCDField
-      FieldName = 'SUBS'
-      Origin = '"TMPOBOR"."SUBS"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1OPL: TIBBCDField
-      FieldName = 'OPL'
-      Origin = '"TMPOBOR"."OPL"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1UDER: TIBBCDField
-      FieldName = 'UDER'
-      Origin = '"TMPOBOR"."UDER"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1KOMP: TIBBCDField
-      FieldName = 'KOMP'
-      Origin = '"TMPOBOR"."KOMP"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1WZMZ: TIBBCDField
-      FieldName = 'WZMZ'
-      Origin = '"TMPOBOR"."WZMZ"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1WOZW: TIBBCDField
-      FieldName = 'WOZW'
-      Origin = '"TMPOBOR"."WOZW"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1MOVW: TIBBCDField
-      FieldName = 'MOVW'
-      Origin = '"TMPOBOR"."MOVW"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1PERE: TIBBCDField
-      FieldName = 'PERE'
-      Origin = '"TMPOBOR"."PERE"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1FULLOPL: TIBBCDField
-      FieldName = 'FULLOPL'
-      Origin = '"TMPOBOR"."FULLOPL"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet1SAL: TIBBCDField
-      FieldName = 'SAL'
-      Origin = '"TMPOBOR"."SAL"'
-      Precision = 18
-      Size = 2
-    end
-  end
-  object DataSource1: TDataSource
-    DataSet = IBDataSet1
-    Left = 416
-    Top = 416
-  end
   object IBTransaction1: TIBTransaction
+    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (
@@ -3726,16 +3104,7 @@ object Form1: TForm1
     Left = 16
     Top = 296
   end
-  object ADOOBORREC: TADODataSet
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    CommandText = 'select * from obor where obor.newrec=0 order by schet, wid'
-    Parameters = <>
-    Left = 272
-    Top = 240
-  end
   object DSADOOBORREC: TDataSource
-    DataSet = ADOOBORREC
     Enabled = False
     Left = 272
     Top = 288
@@ -3792,107 +3161,7 @@ object Form1: TForm1
     Left = 616
     Top = 520
   end
-  object IBDataSet2: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from NACH'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into NACH'
-      '  (FIO, KL, LGOTA, SCHET, SUMM, TARIF, WID)'
-      'values'
-      '  (:FIO, :KL, :LGOTA, :SCHET, :SUMM, :TARIF, :WID)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  SCHET,'
-      '  WID,'
-      '  FIO,'
-      '  LGOTA,'
-      '  TARIF,'
-      '  SUMM'
-      'from NACH '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      ' select * from NACH')
-    ModifySQL.Strings = (
-      'update NACH'
-      'set'
-      '  FIO = :FIO,'
-      '  KL = :KL,'
-      '  LGOTA = :LGOTA,'
-      '  SCHET = :SCHET,'
-      '  SUMM = :SUMM,'
-      '  TARIF = :TARIF,'
-      '  WID = :WID'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_NACH_ID'
-    Left = 680
-    Top = 472
-    object IBDataSet2KL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"NACH"."KL"'
-      Required = True
-    end
-    object IBDataSet2SCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"NACH"."SCHET"'
-      Size = 10
-    end
-    object IBDataSet2WID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"NACH"."WID"'
-      Size = 10
-    end
-    object IBDataSet2FIO: TIBStringField
-      FieldName = 'FIO'
-      Origin = '"NACH"."FIO"'
-      Size = 70
-    end
-    object IBDataSet2LGOTA: TIBStringField
-      FieldName = 'LGOTA'
-      Origin = '"NACH"."LGOTA"'
-      Size = 10
-    end
-    object IBDataSet2TARIF: TIBBCDField
-      FieldName = 'TARIF'
-      Origin = '"NACH"."TARIF"'
-      Precision = 18
-      Size = 2
-    end
-    object IBDataSet2SUMM: TIBBCDField
-      FieldName = 'SUMM'
-      Origin = '"NACH"."SUMM"'
-      Precision = 18
-      Size = 2
-    end
-  end
-  object DataSource2: TDataSource
-    DataSet = IBDataSet2
-    Enabled = False
-    Left = 680
-    Top = 520
-  end
-  object ADOWID: TADODataSet
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    LockType = ltBatchOptimistic
-    CommandText = 'select *  from WIDS'
-    Parameters = <>
-    Left = 560
-    Top = 248
-  end
   object DSADOWID: TDataSource
-    DataSet = ADOWID
     Enabled = False
     Left = 560
     Top = 296
@@ -3956,30 +3225,7 @@ object Form1: TForm1
     Left = 744
     Top = 520
   end
-  object ADOQuery1: TADOQuery
-    AutoCalcFields = False
-    Connection = ADOConnectionDBF
-    Parameters = <>
-    Left = 304
-    Top = 176
-  end
-  object DSADOQuery1: TDataSource
-    DataSet = ADOQuery1
-    Enabled = False
-    Left = 384
-    Top = 176
-  end
-  object ADOORGAN: TADODataSet
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    LockType = ltBatchOptimistic
-    CommandText = 'select *  from organ'
-    Parameters = <>
-    Left = 688
-    Top = 248
-  end
   object DSADOORGAN: TDataSource
-    DataSet = ADOORGAN
     Enabled = False
     Left = 688
     Top = 296

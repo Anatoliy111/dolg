@@ -38,8 +38,6 @@ type
     DSADOKART: TDataSource;
     IBQuery1: TIBQuery;
     DSQuery1: TDataSource;
-    ADOKART: TADODataSet;
-    ADOConnectionARC: TADOConnection;
     IBNOTEWID: TIBStringField;
     IBNOTESCHET: TIBStringField;
     IBNOTEKL: TIntegerField;
@@ -253,7 +251,6 @@ type
     IBOBORMOVW: TIBBCDField;
     IBOBORPERE: TIBBCDField;
     IBOBORSAL: TIBBCDField;
-    ADOOBOR: TADODataSet;
     DataSourceOBOR: TDataSource;
     IBKARTKL: TIntegerField;
     IBKARTSCHET: TIBStringField;
@@ -271,66 +268,21 @@ type
     IBADRESUL: TIBStringField;
     IBSP_ADRESUL: TIBStringField;
     IBKARTVAL: TIntegerField;
-    ADOConnectionDBF: TADOConnection;
-    IBTMPNACH: TIBDataSet;
-    DSTMPNACH: TDataSource;
-    IBOBORMES: TIBDataSet;
-    DSOBORMES: TDataSource;
     IBTMPOPL: TIBDataSet;
     DSTMPOPL: TDataSource;
-    IBTMPSUBS: TIBDataSet;
-    DSTMPSUBS: TDataSource;
     IBTMPUDER: TIBDataSet;
     DSTMPUDER: TDataSource;
-    IBTMPNACHKL: TIntegerField;
-    IBTMPNACHSCHET: TIBStringField;
-    IBTMPNACHWID: TIBStringField;
-    IBTMPNACHFIO: TIBStringField;
-    IBTMPNACHLGOTA: TIBStringField;
-    IBTMPNACHTARIF: TIBBCDField;
-    IBTMPNACHSUMM: TIBBCDField;
-    IBTMPSUBSKL: TIntegerField;
-    IBTMPSUBSSCHET: TIBStringField;
-    IBTMPSUBSWID: TIBStringField;
-    IBTMPSUBSSUMM: TIBBCDField;
-    IBTMPSUBSOB: TIBBCDField;
     IBTMPUDERKL: TIntegerField;
     IBTMPUDERSCHET: TIBStringField;
     IBTMPUDERWID: TIBStringField;
     IBTMPUDERSUMM: TIBBCDField;
-    ADONACH: TADODataSet;
     DSADONACH: TDataSource;
-    ADOOBORMES: TADODataSet;
     DSADOOBORMES: TDataSource;
-    ADOOPL: TADODataSet;
     DSADOOPL: TDataSource;
-    ADOSUBS: TADODataSet;
     DSADOSUBS: TDataSource;
-    ADOUDER: TADODataSet;
     DSADOUDER: TDataSource;
-    IBDataSet1: TIBDataSet;
-    DataSource1: TDataSource;
-    IBDataSet1KL: TIntegerField;
-    IBDataSet1SCHET: TIBStringField;
-    IBDataSet1WID: TIBStringField;
-    IBDataSet1N_DOG: TIBStringField;
-    IBDataSet1D_DOG: TIBStringField;
-    IBDataSet1TARIF: TIBBCDField;
-    IBDataSet1DOLG: TIBBCDField;
-    IBDataSet1NACH: TIBBCDField;
-    IBDataSet1SUBS: TIBBCDField;
-    IBDataSet1OPL: TIBBCDField;
-    IBDataSet1UDER: TIBBCDField;
-    IBDataSet1KOMP: TIBBCDField;
-    IBDataSet1WZMZ: TIBBCDField;
-    IBDataSet1WOZW: TIBBCDField;
-    IBDataSet1MOVW: TIBBCDField;
-    IBDataSet1PERE: TIBBCDField;
-    IBDataSet1FULLOPL: TIBBCDField;
-    IBDataSet1SAL: TIBBCDField;
     IBTransaction1: TIBTransaction;
     IBTransaction2: TIBTransaction;
-    ADOOBORREC: TADODataSet;
     DSADOOBORREC: TDataSource;
     IBTMPDATE: TIBDataSet;
     DSTMPDATE: TDataSource;
@@ -339,15 +291,6 @@ type
     dxBarButton118: TdxBarButton;
     IBSPRADRESUL: TIBStringField;
     IBSPRADRESDOM: TIBStringField;
-    IBDataSet2: TIBDataSet;
-    DataSource2: TDataSource;
-    IBDataSet2KL: TIntegerField;
-    IBDataSet2SCHET: TIBStringField;
-    IBDataSet2WID: TIBStringField;
-    IBDataSet2FIO: TIBStringField;
-    IBDataSet2LGOTA: TIBStringField;
-    IBDataSet2TARIF: TIBBCDField;
-    IBDataSet2SUMM: TIBBCDField;
     cxGrid1DBTableView1SCHET: TcxGridDBColumn;
     cxGrid1DBTableView1NOTE1: TcxGridDBColumn;
     cxGrid1DBTableView1NOTE2: TcxGridDBColumn;
@@ -369,7 +312,6 @@ type
     cxLabel3: TcxLabel;
     cxLabel4: TcxLabel;
     cxButton1: TcxButton;
-    ADOWID: TADODataSet;
     DSADOWID: TDataSource;
     IBWID: TIBDataSet;
     DSTMPWID: TDataSource;
@@ -378,9 +320,6 @@ type
     cxGrid1DBTableView1WOZW: TcxGridDBColumn;
     cxGrid1DBTableView1PERE: TcxGridDBColumn;
     cxGrid1DBTableView1Column1: TcxGridDBColumn;
-    ADOQuery1: TADOQuery;
-    DSADOQuery1: TDataSource;
-    cxButton4: TcxButton;
     cxGrid1DBTableView1KOLI_P: TcxGridDBColumn;
     IBKARTKOLI_PF: TIntegerField;
     cxGrid1DBTableView1KOLI_PF: TcxGridDBColumn;
@@ -393,24 +332,6 @@ type
     cxCheckBox1: TcxCheckBox;
     cxComboBox2: TcxComboBox;
     cxTextEdit2: TcxTextEdit;
-    IBOBORMESKL: TIntegerField;
-    IBOBORMESSCHET: TIBStringField;
-    IBOBORMESWID: TIBStringField;
-    IBOBORMESN_DOG: TIBStringField;
-    IBOBORMESD_DOG: TIBStringField;
-    IBOBORMESTARIF: TIBBCDField;
-    IBOBORMESDOLG: TIBBCDField;
-    IBOBORMESNACH: TIBBCDField;
-    IBOBORMESSUBS: TIBBCDField;
-    IBOBORMESOPL: TIBBCDField;
-    IBOBORMESUDER: TIBBCDField;
-    IBOBORMESKOMP: TIBBCDField;
-    IBOBORMESWZMZ: TIBBCDField;
-    IBOBORMESWOZW: TIBBCDField;
-    IBOBORMESMOVW: TIBBCDField;
-    IBOBORMESPERE: TIBBCDField;
-    IBOBORMESFULLOPL: TIBBCDField;
-    IBOBORMESSAL: TIBBCDField;
     IBREPDKL: TIntegerField;
     IBREPDWID: TIBStringField;
     IBREPDSCHET: TIBStringField;
@@ -446,7 +367,6 @@ type
     IBWIDKL: TIntegerField;
     IBWIDWID: TIBStringField;
     IBWIDNAIM: TIBStringField;
-    ADOORGAN: TADODataSet;
     DSADOORGAN: TDataSource;
     IBORGAN: TIBDataSet;
     DSORGAN: TDataSource;
@@ -464,6 +384,8 @@ type
     cxLabel6: TcxLabel;
     cxTextEdit4: TcxTextEdit;
     cxButton10: TcxButton;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxButton4: TcxButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -479,7 +401,6 @@ type
     procedure cxButton3Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
-    procedure cxButton4Click(Sender: TObject);
     procedure cxButton6Click(Sender: TObject);
     procedure cxButton7Click(Sender: TObject);
     procedure IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
@@ -497,7 +418,6 @@ type
     UpdateBase:Boolean;
     iniFile:TIniFile;
     PathKvart,StartSQL,PathDir,ORG:string;
-    procedure DatabaseDate;
     procedure REPORT;
     procedure ExportGrid(AGrid: TcxGrid;Filename:string='Table.xls');
 
@@ -515,123 +435,8 @@ uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
-procedure TForm1.DatabaseDate;
-var s,ss,log,pw,cur,stroka,strmes,strye:string;
-f : TextFile;
-mes,ye,year,month,yearmon:integer;
-DateKVART:TDate;
-DateKVART1:TDate;
-begin
-  try
-  ADOConnectionARC.Close;
-  ADOConnectionDBF.Close;
-//    pathDIR:='c:\tmp';
-        if not DirectoryExists(pathDIR) then
-        begin
-          MkDir(pathDIR);
-        end;
-//        else
-//        begin
-//          RenameFile(pathDIR,pathDIR+'1');
-//          TDirectory.Delete(pathDIR, True);
-//          if not DirectoryExists(pathDIR) then
-//             MkDir(pathDIR)
-//          else
-//          begin
-//            TDirectory.Delete(pathDIR, True);
-//            RenameFile(pathDIR,pathDIR+'1');
-//            if not DirectoryExists(pathDIR) then
-//             MkDir(pathDIR)
-//            else
-//            begin
-//             ShowMessage('Не можу видалити каталог '+pathDIR);
-//             Form1.Close;
-//             exit;
-//            end;
-//          end;
-//        end;
-
-        if DirectoryExists(pathDIR) and DirectoryExists(PathKvart) then
-        begin
-          CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'),PChar(pathDIR+'\obor.dbf'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\obor.cdx'),PChar(pathDIR+'\obor.cdx'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\kart.dbf'),PChar(pathDIR+'\kart.dbf'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\kart.cdx'),PChar(pathDIR+'\kart.cdx'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'),PChar(pathDIR+'\wids.dbf'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\wids.cdx'),PChar(pathDIR+'\wids.cdx'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'),PChar(pathDIR+'\opl.dbf'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\opl.cdx'),PChar(pathDIR+'\opl.cdx'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\uder.dbf'),PChar(pathDIR+'\uder.dbf'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\uder.cdx'),PChar(pathDIR+'\uder.cdx'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\organ.dbf'),PChar(pathDIR+'\organ.dbf'),false);
-          CopyFile(PChar(Form1.PathKvart+'dbf\organ.cdx'),PChar(pathDIR+'\organ.cdx'),false);
-          CopyFile(PChar(Form1.PathKvart+'cur_date.mem'),PChar(pathDIR+'\cur_date.mem'),false);
-        end
-        else
-        begin
-           messagedlg('Помилка при підключенні до квартплати!!! '+PathKvart,mtError,[mbCancel],0);
-           Application.Terminate;
-        end;
 
 
-     except
-   on E : Exception do
-   begin
-    messagedlg('Помилка при підключенні до квартплати!!! - '+E.Message,mtError,[mbOK],0);
-    Application.Terminate;
-    end;
-   end;
-
-  try
-    AssignFile(f, pathDIR+'\cur_date.mem');
-    FileMode := fmOpenRead;
-    Reset(f);
-    Readln(f, stroka);
-    CloseFile(f);
-    except
-    on E : Exception do
-   begin
-     messagedlg('Дані для завантаження не знайдено '+pathDIR+'\cur_date.mem '+E.Message,mtError,[mbCancel],0);
-     Application.Terminate;
-   end;
-  end;
-
-    strmes:=trim(Copy(stroka, 33, 2));
-    strye:=trim(Copy(stroka, 36, 4));
-
-    if str2int(strmes) = 1 then
-    begin
-       strmes:='12';
-       strye:=int2str(str2int(strye)-1);
-    end
-    else
-      strmes:=int2str(str2int(strmes)-1);
-
-    if (str2int(strmes) < 10) and (str2int(strmes) > 0) then
-       strmes:='0'+strmes
-    else
-       strmes:=strmes;
-    IBPERIOD.Last;
-    if (str2int(strmes)<=0) and (str2int(strye)<=0) then
-        Form1.DateKVART := IBPERIODPERIOD.Value
-    else
-        Form1.DateKVART := StrToDate('01.'+strmes+'.'+strye);
-
-     DateKVART1:=IncMonth(IBPERIODPERIOD.Value);
-//         DateKVART := StrToDate('01.02.2018');
-    cxLabel4.Caption:=mon_slovo(strtoint(trim(Copy(stroka, 33, 2))))+' '+Copy(stroka, 36, 4);
-    IBPERIOD.Last;
-    if IBPERIODPERIOD.Value <> Form1.DateKVART then
-       UpdateBase:=true
-    else
-       UpdateBase:=false;
-
-
-
-
-
-
-end;
 
 procedure TForm1.dxBarButton101Click(Sender: TObject);
 begin
@@ -708,16 +513,6 @@ begin
   ExportGrid(cxGrid1);
 end;
 
-procedure TForm1.cxButton4Click(Sender: TObject);
-var res:Variant;
-begin
-Form2.Show;
-Form1.Enabled:=false;
-Form2.UpdateKART;
-Form1.Enabled:=true;
-Form2.Close;
-Form1.REPORT;
-end;
 
 procedure TForm1.cxButton5Click(Sender: TObject);
 begin
@@ -898,8 +693,7 @@ DateKVART:TDate;
 DateKVART1:TDate;
 begin
   try
-  ADOConnectionARC.Connected:=false;
-  ADOConnectionDBF.Connected:=false;
+
 
   IBDatabase1.Connected:=false;
   iniFile:=TIniFile.Create(extractfilepath(paramstr(0))+'dolg.ini');
@@ -924,8 +718,7 @@ begin
    IBTransaction2.StartTransaction;
    IBSERVICES.open;
    IBPERIOD.open;
-ADOConnectionDBF.Connected:=false;
-ADOConnectionARC.Connected:=false;
+
 
   IBREPD.close;
   StartSQL:=IBREPD.SelectSQL.Text;
@@ -937,7 +730,7 @@ ADOConnectionARC.Connected:=false;
   IBNOTE2.open;
   IBKART.open;
   IBOBOR.open;
-  IBOBORMES.open;
+
   IBSPRADRES.open;
   IBSP_ADRES.open;
   IBSERVICES.open;
@@ -945,9 +738,9 @@ ADOConnectionARC.Connected:=false;
 
 
   IBTMPDATE.open;
-  IBTMPNACH.open;
+
   IBTMPOPL.open;
-  IBTMPSUBS.open;
+
   IBTMPUDER.open;
   IBWID.open;
   
@@ -991,32 +784,13 @@ end;
 
 procedure TForm1.IBUSERAfterInsert(DataSet: TDataSet);
 begin
-Form1.IBQuery1.SQL.Text:='SELECT * FROM note WHERE kl_users = :kll';
+//Form1.IBQuery1.SQL.Text:='SELECT * FROM note WHERE kl_users = :kll';
+Form1.IBQuery1.SQL.Text:='INSERT INTO note (wid, schet,NOTE1,NOTE2,NOTE3,KL_USERS) select wid, schet,null,null,null,:kl2 from note where kl_users= :kl1';
 Form1.IBQuery1.ParamByName('kll').Value:=ActiveUser;
-Form1.IBQuery1.open;
-Form1.IBQuery1.Last;
-       Form2.cxProgressBar1.Position:=0;
-       Form2.cxProgressBar1.Properties.Min:=0;
-       Form2.cxProgressBar1.Properties.Max:=Form1.IBQuery1.RecordCount-1;
-       Form1.IBQuery1.First;
-       Form2.Label1.Caption:='Оновлення користувача';
-Form2.Show;
-       Application.ProcessMessages;
-
-while not Form1.IBQuery1.Eof do
-begin
-  Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
-  Application.ProcessMessages;
-  Form1.IBNOTE.Insert;
-  Form1.IBNOTESCHET.Value:=Form1.IBQuery1.FieldByName('schet').Value;
-  Form1.IBNOTEWID.Value:=Form1.IBQuery1.FieldByName('wid').Value;
-  Form1.IBNOTEKL_USERS.Value:=IBUSERKL.Value;
-  Form1.IBNOTE.Post;
-  Form1.IBQuery1.Next;
-end;
+Form1.IBQuery1.ParamByName('kl2').Value:=IBUSERKL.Value;
+Form1.IBQuery1.ExecSQL;
 Form1.IBTransaction1.CommitRetaining;
 Form1.IBQuery1.close;
-Form2.Close;
 
 end;
 

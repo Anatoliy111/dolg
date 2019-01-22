@@ -67,7 +67,7 @@ begin
 								commit;
                         UPDATE ADRES SET dom = REPLACE(dom, 'Â','â');
 								commit;
-			               UPDATE ADRES SET dom = REPLACE(dom, 'Á','á');
+			UPDATE ADRES SET dom = REPLACE(dom, 'Á','á');
                         commit;
 								
                         update KART set KART.kl_ul = (select kl from UL T1 where T1.ul=KART.ulnaim);
@@ -76,9 +76,11 @@ begin
 								commit;
                         update KART set KART.ulnaim = (select ul from UL T1 where T1.kl=KART.kl_ul);
 								commit;
+                        UPDATE KART SET nomdom = REPLACE(dom, 'À','à');
+								commit;
                         UPDATE KART SET nomdom = REPLACE(dom, 'Â','â');
 								commit;
-			               UPDATE KART SET dom = REPLACE(dom, 'Á','á');
+                       UPDATE KART SET dom = REPLACE(dom, 'Á','á');
                         commit;
 								
                     end;
