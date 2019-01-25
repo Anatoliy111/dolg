@@ -23,29 +23,10 @@ type
     DSKOBORMES: TDataSource;
     IBKTMPOPL: TIBDataSet;
     DSKTMPOPL: TDataSource;
-    IBKTMPUDER: TIBDataSet;
-    DSKTMPUDER: TDataSource;
     IBKOBOR: TIBDataSet;
     DSKOBOR: TDataSource;
-    IBDataSet5: TIBDataSet;
-    IntegerField9: TIntegerField;
-    DateField5: TDateField;
-    IntegerField10: TIntegerField;
-    DataSource5: TDataSource;
-    IBKARTKL: TIntegerField;
-    IBKARTSCHET: TIBStringField;
-    IBKARTWID: TIBStringField;
-    IBKARTFIO: TIBStringField;
-    IBKARTIDCOD: TIBStringField;
-    IBKARTUL: TIBStringField;
-    IBKARTDOM: TIBStringField;
-    IBKARTKV: TIBStringField;
-    IBKARTLGOTA: TIBStringField;
-    IBKARTKOLI_P: TIntegerField;
-    IBKARTPLOS_OB: TIBBCDField;
-    IBKARTPLOS_BB: TIBBCDField;
-    IBKARTPRIVAT: TIBStringField;
-    IBKARTVAL: TIntegerField;
+    IBPER: TIBDataSet;
+    DSPER: TDataSource;
     cxDBTextEdit7: TcxDBTextEdit;
     cxGrid1DBTableView1: TcxGridDBTableView;
     cxGrid1Level1: TcxGridLevel;
@@ -61,17 +42,6 @@ type
     cxGridLevel1: TcxGridLevel;
     Panel5: TPanel;
     Label12: TLabel;
-    cxGrid1DBTableView1WID: TcxGridDBColumn;
-    cxGrid1DBTableView1DOLG: TcxGridDBColumn;
-    cxGrid1DBTableView1NACH1: TcxGridDBColumn;
-    cxGrid1DBTableView1OPL: TcxGridDBColumn;
-    cxGrid1DBTableView1SUBS: TcxGridDBColumn;
-    cxGrid1DBTableView1UDER: TcxGridDBColumn;
-    cxGrid1DBTableView1ENDDOLG: TcxGridDBColumn;
-    IBKTMPUDERKL: TIntegerField;
-    IBKTMPUDERSCHET: TIBStringField;
-    IBKTMPUDERWID: TIBStringField;
-    IBKTMPUDERSUMM: TIBBCDField;
     cxGridDBTableView3PERIOD: TcxGridDBColumn;
     cxGridDBTableView3WID: TcxGridDBColumn;
     cxGridDBTableView3DOLG: TcxGridDBColumn;
@@ -84,7 +54,6 @@ type
     cxGridDBTableView3WOZW: TcxGridDBColumn;
     cxGridDBTableView3PERE: TcxGridDBColumn;
     cxGridDBTableView3SAL: TcxGridDBColumn;
-    IBKTMPUDERPOSLUG: TIBStringField;
     Panel2: TPanel;
     Label2: TLabel;
     Label3: TLabel;
@@ -108,42 +77,112 @@ type
     cxDBTextEdit10: TcxDBTextEdit;
     Label14: TLabel;
     cxDBTextEdit11: TcxDBTextEdit;
-    IBKARTKOLI_PF: TIntegerField;
     IBQuery1: TIBQuery;
     IBKOBORMESSCHET: TIBStringField;
     IBKOBORMESWID: TIBStringField;
     IBKOBORMESPOSLUG: TIBStringField;
-    IBKOBORMESDOLG: TIBBCDField;
-    IBKOBORMESNACH1: TIBBCDField;
-    IBKOBORMESOPL: TIBBCDField;
-    IBKOBORMESSUBS: TIBBCDField;
-    IBKOBORMESUDER: TIBBCDField;
-    IBKOBORMESENDDOLG: TIBBCDField;
+    IBKOBORMESDOLG: TFloatField;
+    IBKOBORMESNACH: TFloatField;
+    IBKOBORMESOPL: TFloatField;
+    IBKOBORMESSUBS: TFloatField;
+    IBKOBORMESUDER: TFloatField;
+    IBKOBORMESSAL: TFloatField;
     IBKOBORKL: TIntegerField;
     IBKOBORPERIOD: TDateField;
     IBKOBORSCHET: TIBStringField;
     IBKOBORWID: TIBStringField;
     IBKOBORN_DOG: TIBStringField;
     IBKOBORD_DOG: TIBStringField;
-    IBKOBORTARIF: TIBBCDField;
-    IBKOBORDOLG: TIBBCDField;
-    IBKOBORNACH: TIBBCDField;
-    IBKOBORSUBS: TIBBCDField;
-    IBKOBOROPL: TIBBCDField;
-    IBKOBORUDER: TIBBCDField;
-    IBKOBORKOMP: TIBBCDField;
-    IBKOBORWZMZ: TIBBCDField;
-    IBKOBORWOZW: TIBBCDField;
-    IBKOBORMOVW: TIBBCDField;
-    IBKOBORPERE: TIBBCDField;
-    IBKOBORSAL: TIBBCDField;
-    IBKOBORBGST: TIBBCDField;
-    IBKOBORPRST: TIBBCDField;
-    IBKOBORBGEND: TIBBCDField;
-    IBKOBORPREND: TIBBCDField;
-    IBKOBORFULLOPL: TIBBCDField;
-    IBKOBOROPLNOTSUBS: TIBBCDField;
+    IBKOBORTARIF: TFloatField;
+    IBKOBORDOLG: TFloatField;
+    IBKOBORNACH: TFloatField;
+    IBKOBORSUBS: TFloatField;
+    IBKOBOROPL: TFloatField;
+    IBKOBORUDER: TFloatField;
+    IBKOBORKOMP: TFloatField;
+    IBKOBORWZMZ: TFloatField;
+    IBKOBORWOZW: TFloatField;
+    IBKOBORMOVW: TFloatField;
+    IBKOBORPERE: TFloatField;
+    IBKOBORSAL: TFloatField;
+    IBKOBORBGST: TFloatField;
+    IBKOBORPRST: TFloatField;
+    IBKOBORBGEND: TFloatField;
+    IBKOBORPREND: TFloatField;
+    IBKOBORFULLNACH: TFloatField;
+    IBKOBORFULLOPL: TFloatField;
+    IBKOBOROPLNOTSUBS: TFloatField;
     IBKOBORPOSLUG: TIBStringField;
+    Label16: TLabel;
+    Label17: TLabel;
+    IBKARTSCHET: TIBStringField;
+    IBKARTNUMB: TIBStringField;
+    IBKARTFIO: TIBStringField;
+    IBKARTIM: TIBStringField;
+    IBKARTOT: TIBStringField;
+    IBKARTFIO_V: TIBStringField;
+    IBKARTIDCOD: TIBStringField;
+    IBKARTCEX: TIBStringField;
+    IBKARTTABN: TIBStringField;
+    IBKARTFIO_TABN: TIBStringField;
+    IBKARTLG_NOFAM: TIBStringField;
+    IBKARTKOLI_LG: TIBStringField;
+    IBKARTKOLI_P: TFloatField;
+    IBKARTKOLI_PF: TFloatField;
+    IBKARTKOLI_K: TFloatField;
+    IBKARTPLOS_BB: TFloatField;
+    IBKARTPLOS_OB: TFloatField;
+    IBKARTPRIV: TIBStringField;
+    IBKARTETAG: TFloatField;
+    IBKARTLGOTA: TIBStringField;
+    IBKARTLG_POSV: TIBStringField;
+    IBKARTLG_SER: TIBStringField;
+    IBKARTLG_FIO: TIBStringField;
+    IBKARTLG_DATE: TIBStringField;
+    IBKARTLG_KAT: TIBStringField;
+    IBKARTFL_CHERN: TIBStringField;
+    IBKARTFL_LIFTE: TIBStringField;
+    IBKARTFL_LIFTO: TIBStringField;
+    IBKARTFL_KLET: TIBStringField;
+    IBKARTFL_MUSO: TIBStringField;
+    IBKARTFL_OSV: TIBStringField;
+    IBKARTFL_UBOR: TIBStringField;
+    IBKARTFL_VENT: TIBStringField;
+    IBKARTFL_ZIMA: TIBStringField;
+    IBKARTFL_REM: TIBStringField;
+    IBKARTFL_DITM: TIBStringField;
+    IBKARTFL_TUAL: TIBStringField;
+    IBKARTFL_NOLIFT: TIBStringField;
+    IBKARTFL_NOKAN: TIBStringField;
+    IBKARTMAX_UD: TFloatField;
+    IBKARTNOM: TFloatField;
+    IBKARTORG: TFloatField;
+    IBKARTD_DOG: TIBStringField;
+    IBKARTN_DOG: TIBStringField;
+    IBKARTZAYA: TIBStringField;
+    IBKARTRESTR: TIBStringField;
+    IBKARTNOTE: TIBStringField;
+    IBKARTNOTE1: TIBStringField;
+    IBKARTFLAG: TIBStringField;
+    IBKARTWOZW_OT_: TFloatField;
+    IBKARTTELEF: TIBStringField;
+    IBKARTKL_UL: TFloatField;
+    IBKARTULNAIM: TIBStringField;
+    IBKARTNOMDOM: TIBStringField;
+    IBKARTNOMKV: TIBStringField;
+    IBKARTVAL: TFloatField;
+    IBKARTKL: TIntegerField;
+    IBKARTUPD: TIntegerField;
+    IBPERKL: TIntegerField;
+    IBPERPERIOD: TDateField;
+    IBPERAKTIV: TIntegerField;
+    cxGrid1DBTableView1POSLUG: TcxGridDBColumn;
+    cxGrid1DBTableView1DOLG: TcxGridDBColumn;
+    cxGrid1DBTableView1NACH: TcxGridDBColumn;
+    cxGrid1DBTableView1OPL: TcxGridDBColumn;
+    cxGrid1DBTableView1SUBS: TcxGridDBColumn;
+    cxGrid1DBTableView1UDER: TcxGridDBColumn;
+    cxGrid1DBTableView1SAL: TcxGridDBColumn;
     procedure cxButton1Click(Sender: TObject);
   private
     { Private declarations }
@@ -157,7 +196,7 @@ var
 
 implementation
 
-uses Unit1;
+uses Unit1, MyTools;
 
 {$R *.dfm}
 
@@ -172,21 +211,27 @@ var sql:string;
     res,i,fl_ins:integer;
     colum:TcxGridColumn;
     AColumn: TcxGridDBColumn;
+      year,month,Day : Word;
 begin
 if cxTextEdit1.EditValue <> null then
 begin
 
      IBKART.Open;
-     if IBKART.Locate('schet',cxTextEdit1.EditValue,[]) then
+     IBKART.First;
+     if IBKART.Locate('schet',cxTextEdit1.EditValue,[loCaseInsensitive, loPartialKey]) then
      begin
      IBKOBORMES.Close;
      IBKTMPOPL.Close;
-     IBKTMPUDER.Close;
+
      IBKOBOR.Close;
+     IBPER.Close;
+     IBPER.Open;
+
 
 
 
      IBKOBORMES.ParamByName('sch').Value:=IBKARTSCHET.Value;
+     IBKOBORMES.ParamByName('dt').Value:=IBPERPERIOD.Value;
      IBKTMPOPL.ParamByName('sch').Value:=IBKARTSCHET.Value;
 
 //     sql:='select schet ';
@@ -259,9 +304,13 @@ begin
 //     cxGridDBTableView1.Columns[2].DataBinding.ValueType:='Currency';
 //     cxGridDBTableView1.Columns[2].Visible:=true;
 
-     IBKTMPUDER.ParamByName('sch').Value:=IBKARTSCHET.Value;
+
      IBKOBOR.ParamByName('sch').Value:=IBKARTSCHET.Value;
+     IBKOBOR.ParamByName('dt').Value:=IBPERPERIOD.Value;
      IBKOBORMES.Open;
+     DecodeDate(IBPERPERIOD.Value, Year, Month, Day);
+     IBKTMPOPL.ParamByName('mes').Value:=Month;
+     IBKTMPOPL.ParamByName('year').Value:=Year;
      IBKTMPOPL.Open;
 
       cxGridDBTableView1.ClearItems;
@@ -278,7 +327,7 @@ begin
 
       acolumn:=cxGridDBTableView1.CreateColumn;
       cxGridDBTableView1.BeginUpdate;
-      acolumn.DataBinding.FieldName:='SUMM';
+      acolumn.DataBinding.FieldName:='OPL';
       acolumn.DataBinding.valuetype:='Currency';
       cxGridDBTableView1.EndUpdate;
 
@@ -325,8 +374,10 @@ begin
 
 
 
-     IBKTMPUDER.Open;
+
      IBKOBOR.Open;
+     Label17.Caption:=mon_slovoDt(IBPERPERIOD.Value);
+     Form12.Show;
      end
      else
      begin

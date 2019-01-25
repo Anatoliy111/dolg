@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = #1041#1086#1088#1078#1085#1080#1082#1080
   ClientHeight = 638
-  ClientWidth = 832
+  ClientWidth = 817
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,9 +18,9 @@ object Form1: TForm1
   TextHeight = 13
   object cxGrid1: TcxGrid
     Left = 0
-    Top = 187
-    Width = 832
-    Height = 451
+    Top = 209
+    Width = 817
+    Height = 429
     Align = alClient
     TabOrder = 0
     object cxGrid1DBTableView1: TcxGridDBTableView
@@ -29,6 +29,7 @@ object Form1: TForm1
       DataController.DetailKeyFieldNames = 'KL'
       DataController.Summary.DefaultGroupSummaryItems = <
         item
+          Format = '0'
           Kind = skCount
           FieldName = 'NOTE1'
           DisplayText = 'note1'
@@ -88,19 +89,23 @@ object Form1: TForm1
           VisibleForCustomization = False
         end
         item
+          Format = '0'
           Kind = skSum
           Column = cxGrid1DBTableView1KOLI_P
         end
         item
+          Format = '0'
           Kind = skSum
           Column = cxGrid1DBTableView1KOLI_PF
         end
         item
+          Format = '0'
           Kind = skCount
           Position = spFooter
           Column = cxGrid1DBTableView1NOTE1
         end
         item
+          Format = '0'
           Kind = skCount
           Column = cxGrid1DBTableView1NOTE1
         end
@@ -111,11 +116,13 @@ object Form1: TForm1
         end
         item
           Format = '0.00'
+          Kind = skSum
           Position = spFooter
           Column = cxGrid1DBTableView1NACH1
         end
         item
           Format = '0.00'
+          Kind = skSum
           Position = spFooter
           Column = cxGrid1DBTableView1DOLG
         end>
@@ -192,11 +199,15 @@ object Form1: TForm1
       object cxGrid1DBTableView1WID: TcxGridDBColumn
         Caption = #1055#1086#1089#1083#1091#1075#1072
         DataBinding.FieldName = 'WID'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = True
         Width = 33
       end
       object cxGrid1DBTableView1POSLUG: TcxGridDBColumn
         Caption = #1055#1086#1089#1083#1091#1075#1072
         DataBinding.FieldName = 'POSLUG'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = True
       end
       object cxGrid1DBTableView1SCHET: TcxGridDBColumn
         Caption = #1056#1072#1093#1091#1085#1086#1082
@@ -215,6 +226,7 @@ object Form1: TForm1
           end>
         Properties.CaseInsensitive = False
         Properties.HideSelection = False
+        Properties.ReadOnly = False
         Properties.OnButtonClick = cxGrid1DBTableView1Column1PropertiesButtonClick
         Options.ShowEditButtons = isebAlways
         Width = 20
@@ -236,10 +248,14 @@ object Form1: TForm1
       object cxGrid1DBTableView1KOLI_P: TcxGridDBColumn
         Caption = #1047#1072#1088#1077#1077#1089#1090#1088#1086#1074#1072#1085#1086
         DataBinding.FieldName = 'KOLI_P'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = True
       end
       object cxGrid1DBTableView1KOLI_PF: TcxGridDBColumn
         Caption = #1055#1088#1086#1078#1080#1074#1072#1108
         DataBinding.FieldName = 'KOLI_PF'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = True
       end
       object cxGrid1DBTableView1UL: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
@@ -263,11 +279,17 @@ object Form1: TForm1
       object cxGrid1DBTableView1ORGNAME: TcxGridDBColumn
         Caption = #1054#1088#1075#1072#1085#1110#1079#1072#1094#1110#1103
         DataBinding.FieldName = 'ORGNAME'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = True
+        Width = 191
       end
       object cxGrid1DBTableView1DOLG: TcxGridDBColumn
         Caption = #1057#1072#1083#1100#1076#1086' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
         DataBinding.FieldName = 'DOLG'
         PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00'
+        Properties.ReadOnly = True
+        Width = 83
       end
       object cxGrid1DBTableView1NACH1: TcxGridDBColumn
         Caption = #1053#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103
@@ -275,6 +297,7 @@ object Form1: TForm1
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.00;-,0.00'
         Properties.ReadOnly = True
+        Width = 83
       end
       object cxGrid1DBTableView1OPL: TcxGridDBColumn
         Caption = #1054#1087#1083#1072#1090#1072
@@ -331,6 +354,7 @@ object Form1: TForm1
         PropertiesClassName = 'TcxCurrencyEditProperties'
         Properties.DisplayFormat = ',0.00;-,0.00'
         Properties.ReadOnly = True
+        Width = 89
       end
       object cxGrid1DBTableView1NOTE1: TcxGridDBColumn
         Caption = #1053#1086#1090#1072#1090#1082#1080'1'
@@ -369,8 +393,8 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 28
-    Width = 832
-    Height = 159
+    Width = 817
+    Height = 181
     Align = alTop
     TabOrder = 1
     object cxGroupBox1: TcxGroupBox
@@ -379,35 +403,35 @@ object Form1: TForm1
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080' '#1074#1110#1076#1073#1086#1088#1091
       TabOrder = 0
       Height = 145
-      Width = 618
+      Width = 585
       object cxLabel2: TcxLabel
-        Left = 21
-        Top = 20
+        Left = 189
+        Top = 15
         Caption = #1057#1091#1084#1072' '#1087#1086#1095#1072#1090#1082#1086#1074#1086#1075#1086' '#1073#1086#1088#1075#1091
       end
       object cxCheckBox2: TcxCheckBox
-        Left = 21
-        Top = 90
+        Left = 189
+        Top = 85
         TabOrder = 1
       end
       object cxButton2: TcxButton
-        Left = 3
-        Top = 118
+        Left = 19
+        Top = 65
         Width = 129
-        Height = 25
+        Height = 41
         Caption = #1047#1092#1086#1088#1084#1091#1074#1072#1090#1080' '#1079#1074#1110#1090
         TabOrder = 2
         OnClick = cxButton2Click
       end
       object cxTextEdit1: TcxTextEdit
-        Left = 98
-        Top = 43
+        Left = 266
+        Top = 38
         TabOrder = 3
         Width = 121
       end
       object cxComboBox1: TcxComboBox
-        Left = 48
-        Top = 43
+        Left = 216
+        Top = 38
         Properties.Items.Strings = (
           '='
           '<>'
@@ -418,18 +442,18 @@ object Form1: TForm1
         Width = 44
       end
       object cxLabel1: TcxLabel
-        Left = 21
-        Top = 68
+        Left = 189
+        Top = 63
         Caption = #1057#1091#1084#1072' '#1082#1110#1085#1094#1077#1074#1086#1075#1086' '#1073#1086#1088#1075#1091
       end
       object cxCheckBox1: TcxCheckBox
-        Left = 21
-        Top = 43
+        Left = 189
+        Top = 38
         TabOrder = 6
       end
       object cxComboBox2: TcxComboBox
-        Left = 48
-        Top = 91
+        Left = 216
+        Top = 86
         Properties.Items.Strings = (
           '='
           '<>'
@@ -440,136 +464,114 @@ object Form1: TForm1
         Width = 44
       end
       object cxTextEdit2: TcxTextEdit
-        Left = 98
-        Top = 91
+        Left = 266
+        Top = 86
         TabOrder = 8
         Width = 121
       end
       object cxButton5: TcxButton
-        Left = 134
-        Top = 118
+        Left = 3
+        Top = 117
         Width = 85
         Height = 25
         Caption = #1044#1088#1091#1082
         TabOrder = 9
         OnClick = cxButton5Click
       end
-      object cxButton6: TcxButton
-        Left = 424
-        Top = 12
-        Width = 185
-        Height = 25
-        Caption = #1047#1074#1110#1090' '#1082#1086#1085#1090#1088#1086#1083#1077#1088#1072' ('#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1086')'
-        TabOrder = 10
-        OnClick = cxButton6Click
-      end
-      object cxButton7: TcxButton
-        Left = 225
-        Top = 12
-        Width = 185
-        Height = 25
-        Caption = #1040#1085#1072#1083#1110#1079' '#1073#1086#1088#1078#1085#1080#1082#1110#1074' ('#1087#1086#1084#1110#1089#1103#1095#1085#1086')'
-        TabOrder = 11
-        OnClick = cxButton7Click
-      end
-      object cxButton8: TcxButton
-        Left = 424
-        Top = 43
-        Width = 185
-        Height = 25
-        Caption = #1047#1074#1110#1090' '#1082#1086#1085#1090#1088#1086#1083#1077#1088#1072' ('#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084')'
-        TabOrder = 12
-      end
       object cxTextEdit3: TcxTextEdit
-        Left = 411
+        Left = 328
         Top = 121
-        TabOrder = 13
+        TabOrder = 10
         Width = 121
       end
       object cxButton9: TcxButton
-        Left = 538
+        Left = 455
         Top = 120
         Width = 71
         Height = 25
         Caption = #1060#1110#1083#1100#1090#1088
-        TabOrder = 14
+        TabOrder = 11
         OnClick = cxButton5Click
       end
       object cxLabel5: TcxLabel
-        Left = 452
-        Top = 101
-        Caption = #1055#1030#1041
+        Left = 348
+        Top = 105
+        Caption = #1060#1110#1083#1100#1090#1088' '#1087#1086' '#1055#1030#1041
       end
       object cxLabel6: TcxLabel
-        Left = 266
-        Top = 101
-        Caption = #1056#1072#1093#1091#1085#1086#1082
+        Left = 176
+        Top = 105
+        Caption = #1064#1074#1080#1076#1082#1080#1081' '#1087#1086#1096#1091#1082' '#1087#1086' '#1088#1072#1093#1091#1085#1082#1091
       end
       object cxTextEdit4: TcxTextEdit
-        Left = 225
+        Left = 189
         Top = 121
-        TabOrder = 17
+        Properties.OnChange = cxTextEdit4PropertiesChange
+        TabOrder = 14
         Width = 121
       end
-      object cxButton10: TcxButton
-        Left = 347
-        Top = 120
-        Width = 58
+      object cxLookupComboBox1: TcxLookupComboBox
+        Left = 3
+        Top = 38
+        Properties.KeyFieldNames = 'PERIOD'
+        Properties.ListColumns = <
+          item
+            FieldName = 'PERIOD'
+          end>
+        Properties.ListSource = DSPERIOD
+        TabOrder = 15
+        Width = 169
+      end
+      object cxLabel3: TcxLabel
+        Left = 43
+        Top = 15
+        Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1087#1077#1088#1110#1086#1076
+      end
+      object cxButton3: TcxButton
+        Left = 94
+        Top = 117
+        Width = 74
         Height = 25
-        Caption = #1055#1086#1096#1091#1082
-        TabOrder = 18
-        OnClick = cxButton10Click
+        Caption = #1042' '#1045#1082#1089#1077#1083#1100
+        TabOrder = 17
+        OnClick = cxButton3Click
       end
     end
-    object cxLabel3: TcxLabel
-      Left = 664
-      Top = -1
-      Caption = #1055#1086#1090#1086#1095#1085#1080#1081' '#1087#1077#1088#1110#1086#1076
+    object cxButton6: TcxButton
+      Left = 608
+      Top = 19
+      Width = 185
+      Height = 25
+      Caption = #1047#1074#1110#1090' '#1082#1086#1085#1090#1088#1086#1083#1077#1088#1072' ('#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1086')'
+      TabOrder = 1
+      OnClick = cxButton6Click
+    end
+    object cxButton8: TcxButton
+      Left = 608
+      Top = 50
+      Width = 185
+      Height = 25
+      Caption = #1047#1074#1110#1090' '#1082#1086#1085#1090#1088#1086#1083#1077#1088#1072' ('#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084')'
+      TabOrder = 2
+    end
+    object cxButton7: TcxButton
+      Left = 608
+      Top = 81
+      Width = 185
+      Height = 25
+      Caption = #1040#1085#1072#1083#1110#1079' '#1073#1086#1088#1078#1085#1080#1082#1110#1074' ('#1087#1086#1084#1110#1089#1103#1095#1085#1086')'
+      TabOrder = 3
+      OnClick = cxButton7Click
     end
     object cxLabel4: TcxLabel
-      Left = 632
-      Top = 12
-      Caption = #1055#1086#1090#1086#1095#1085#1080#1081' '#1087#1077#1088#1110#1086#1076
-      ParentFont = False
-      Style.Font.Charset = RUSSIAN_CHARSET
-      Style.Font.Color = clWindowText
-      Style.Font.Height = -21
-      Style.Font.Name = 'Arial Unicode MS'
-      Style.Font.Style = []
-      Style.IsFontAssigned = True
+      Left = 263
+      Top = 158
+      Caption = #1047#1074#1110#1090' '#1079#1092#1086#1088#1084#1086#1074#1072#1085#1086' '#1079#1072' '
     end
-    object cxButton1: TcxButton
-      Left = 632
-      Top = 97
-      Width = 173
-      Height = 25
-      Caption = #1054#1085#1086#1074#1080#1090#1080' '#1087#1086#1090#1086#1095#1085#1110' '#1076#1072#1085#1110
-      TabOrder = 3
-      OnClick = cxButton1Click
-    end
-    object cxButton3: TcxButton
-      Left = 731
-      Top = 128
-      Width = 74
-      Height = 25
-      Caption = #1042' '#1045#1082#1089#1077#1083#1100
-      TabOrder = 4
-      OnClick = cxButton3Click
-    end
-    object cxLookupComboBox1: TcxLookupComboBox
-      Left = 632
-      Top = 42
-      Properties.ListColumns = <>
-      TabOrder = 5
-      Width = 169
-    end
-    object cxButton4: TcxButton
-      Left = 632
-      Top = 66
-      Width = 173
-      Height = 25
-      Caption = #1055#1077#1088#1077#1081#1090#1080
-      TabOrder = 6
+    object cxLabel7: TcxLabel
+      Left = 367
+      Top = 158
+      Caption = #1076#1072#1090#1072' '
     end
   end
   object IBDatabase1: TIBDatabase
@@ -622,6 +624,7 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_USERS_ID'
+    Active = True
     Left = 176
     Top = 360
     object IBUSERFIO: TIBStringField
@@ -690,6 +693,7 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_ADRES_ID'
+    Active = True
     DataSource = DSKONTROL
     Left = 96
     Top = 360
@@ -766,6 +770,7 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_NOTE_ID'
+    Active = True
     Left = 248
     Top = 360
     object IBNOTEWID: TIBStringField
@@ -814,47 +819,38 @@ object Form1: TForm1
     DeleteSQL.Strings = (
       'delete from kart'
       'where'
-      '  DOM = :OLD_DOM and'
-      '  UL = :OLD_UL')
+      '  ULNAIM = :OLD_ULNAIM and'
+      '  NOMDOM = :OLD_NOMDOM')
     InsertSQL.Strings = (
       'insert into kart'
-      '  (DOM, UL)'
+      '  (ULNAIM, NOMDOM)'
       'values'
-      '  (:DOM, :UL)')
+      '  (:ULNAIM, :NOMDOM)')
     RefreshSQL.Strings = (
-      'Select '
-      '  UL,'
-      '  DOM'
+      'Select * '
       'from kart '
       'where'
-      '  DOM = :DOM and'
-      '  UL = :UL')
+      '  ULNAIM = :ULNAIM and'
+      '  NOMDOM = :NOMDOM')
     SelectSQL.Strings = (
-      'select ul,dom from kart group by ul,dom order by ul,dom')
+      
+        'select ulnaim,nomdom from kart group by ulnaim,nomdom order by u' +
+        'lnaim,nomdom')
     ModifySQL.Strings = (
       'update kart'
       'set'
-      '  DOM = :DOM,'
-      '  UL = :UL'
+      '  ULNAIM = :ULNAIM,'
+      '  NOMDOM = :NOMDOM'
       'where'
-      '  DOM = :OLD_DOM and'
-      '  UL = :OLD_UL')
+      '  ULNAIM = :OLD_ULNAIM and'
+      '  NOMDOM = :OLD_NOMDOM')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_SPRADRES_ID'
+    Active = True
     Left = 304
     Top = 360
-    object IBSPRADRESUL: TIBStringField
-      FieldName = 'UL'
-      Origin = '"KART"."UL"'
-      Size = 70
-    end
-    object IBSPRADRESDOM: TIBStringField
-      FieldName = 'DOM'
-      Origin = '"KART"."DOM"'
-      Size = 10
-    end
   end
   object DSREPD: TDataSource
     DataSet = IBREPD
@@ -890,37 +886,39 @@ object Form1: TForm1
       'note.note3,'
       'note.kl_users,'
       'wid.naim as poslug,'
-      'obormes.dolg as dolg,'
+      'obor.dolg as dolg,'
       'kart.fio,'
       'kart.idcod,'
-      'kart.ul,'
-      'kart.dom,'
-      'kart.kv,'
+      'kart.ulnaim ul,'
+      'kart.nomdom dom,'
+      'kart.nomkv kv,'
       'kart.koli_p,'
       'kart.koli_pf,'
       'organ.name as orgname,'
       'kontrol.fio as kontrol,'
-      'obormes.nach as nach1,'
-      'obormes.opl,'
-      'obormes.subs,'
-      'obormes.uder,'
-      'obormes.komp,'
-      'obormes.wzmz,'
-      'obormes.wozw,'
-      'obormes.movw,'
-      'obormes.pere,'
-      'obormes.sal as enddolg'
+      'obor.nach as nach1,'
+      'obor.opl,'
+      'obor.subs,'
+      'obor.uder,'
+      'obor.komp,'
+      'obor.wzmz,'
+      'obor.wozw,'
+      'obor.movw,'
+      'obor.pere,'
+      'obor.sal as enddolg'
       ' from note'
       
-        ' inner join obormes on (note.wid = obormes.wid) and (note.schet ' +
-        '= obormes.schet)'
-      ' inner join kart on (note.schet = kart.schet)'
+        ' inner join obor on (note.wid = obor.wid) and (note.schet = obor' +
+        '.schet) and (obor.period=:dt)'
+      ' inner join kart on (note.schet = kart.schet) and (kart.upd = 1)'
       
-        ' left outer join adres on (kart.dom = adres.dom) and (kart.ul = ' +
-        'adres.ul)'
+        ' left outer join adres on (kart.nomdom = adres.dom) and (kart.ul' +
+        'naim = adres.ul)'
       ' left outer join kontrol on (adres.kl_kontrol = kontrol.kl)'
       ' left outer join wid on (note.wid = wid.wid)'
-      ' left outer join organ on (kart.org = organ.org)'
+      
+        ' left outer join organ on (kart.org = organ.org) and (organ.upd ' +
+        '= 1)'
       ' where note.kl_users =:kluser'
       '')
     ModifySQL.Strings = (
@@ -943,6 +941,7 @@ object Form1: TForm1
     object IBREPDKL: TIntegerField
       FieldName = 'KL'
       Origin = '"NOTE"."KL"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object IBREPDWID: TIBStringField
@@ -974,122 +973,96 @@ object Form1: TForm1
     end
     object IBREPDPOSLUG: TIBStringField
       FieldName = 'POSLUG'
-      Origin = '"TMPWID"."NAIM"'
+      Origin = '"WID"."NAIM"'
+      Size = 15
     end
-    object IBREPDDOLG: TIBBCDField
+    object IBREPDDOLG: TFloatField
       FieldName = 'DOLG'
-      Origin = '"OBORMES"."DOLG"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."DOLG"'
     end
     object IBREPDFIO: TIBStringField
       FieldName = 'FIO'
       Origin = '"KART"."FIO"'
-      Size = 70
+      Size = 45
     end
     object IBREPDIDCOD: TIBStringField
       FieldName = 'IDCOD'
       Origin = '"KART"."IDCOD"'
-      Size = 40
+      Size = 32
     end
     object IBREPDUL: TIBStringField
       FieldName = 'UL'
-      Origin = '"KART"."UL"'
-      Size = 70
+      Origin = '"KART"."ULNAIM"'
+      Size = 64
     end
     object IBREPDDOM: TIBStringField
       FieldName = 'DOM'
-      Origin = '"KART"."DOM"'
-      Size = 10
+      Origin = '"KART"."NOMDOM"'
+      Size = 5
     end
     object IBREPDKV: TIBStringField
       FieldName = 'KV'
-      Origin = '"KART"."KV"'
-      Size = 10
+      Origin = '"KART"."NOMKV"'
+      Size = 5
     end
-    object IBREPDKOLI_P: TIntegerField
+    object IBREPDKOLI_P: TFloatField
       FieldName = 'KOLI_P'
       Origin = '"KART"."KOLI_P"'
     end
-    object IBREPDKOLI_PF: TIntegerField
+    object IBREPDKOLI_PF: TFloatField
       FieldName = 'KOLI_PF'
       Origin = '"KART"."KOLI_PF"'
+    end
+    object IBREPDORGNAME: TIBStringField
+      FieldName = 'ORGNAME'
+      Origin = '"ORGAN"."NAME"'
+      Size = 55
     end
     object IBREPDKONTROL: TIBStringField
       FieldName = 'KONTROL'
       Origin = '"KONTROL"."FIO"'
       Size = 40
     end
-    object IBREPDNACH1: TIBBCDField
+    object IBREPDNACH1: TFloatField
       FieldName = 'NACH1'
-      Origin = '"OBORMES"."NACH"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."NACH"'
     end
-    object IBREPDOPL: TIBBCDField
+    object IBREPDOPL: TFloatField
       FieldName = 'OPL'
-      Origin = '"OBORMES"."OPL"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."OPL"'
     end
-    object IBREPDSUBS: TIBBCDField
+    object IBREPDSUBS: TFloatField
       FieldName = 'SUBS'
-      Origin = '"OBORMES"."SUBS"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."SUBS"'
     end
-    object IBREPDUDER: TIBBCDField
+    object IBREPDUDER: TFloatField
       FieldName = 'UDER'
-      Origin = '"OBORMES"."UDER"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."UDER"'
     end
-    object IBREPDKOMP: TIBBCDField
+    object IBREPDKOMP: TFloatField
       FieldName = 'KOMP'
-      Origin = '"OBORMES"."KOMP"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."KOMP"'
     end
-    object IBREPDWZMZ: TIBBCDField
+    object IBREPDWZMZ: TFloatField
       FieldName = 'WZMZ'
-      Origin = '"OBORMES"."WZMZ"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."WZMZ"'
     end
-    object IBREPDWOZW: TIBBCDField
+    object IBREPDWOZW: TFloatField
       FieldName = 'WOZW'
-      Origin = '"OBORMES"."WOZW"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."WOZW"'
     end
-    object IBREPDMOVW: TIBBCDField
+    object IBREPDMOVW: TFloatField
       FieldName = 'MOVW'
-      Origin = '"OBORMES"."MOVW"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."MOVW"'
     end
-    object IBREPDPERE: TIBBCDField
+    object IBREPDPERE: TFloatField
       FieldName = 'PERE'
-      Origin = '"OBORMES"."PERE"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."PERE"'
     end
-    object IBREPDENDDOLG: TIBBCDField
+    object IBREPDENDDOLG: TFloatField
       FieldName = 'ENDDOLG'
-      Origin = '"OBORMES"."SAL"'
-      Precision = 18
-      Size = 2
+      Origin = '"OBOR"."SAL"'
     end
-    object IBREPDORGNAME: TIBStringField
-      FieldName = 'ORGNAME'
-      Origin = '"ORGAN"."NAME"'
-      Size = 50
-    end
-  end
-  object DSADOKART: TDataSource
-    Enabled = False
-    Left = 136
-    Top = 288
   end
   object IBQuery1: TIBQuery
     Database = IBDatabase1
@@ -1136,10 +1109,11 @@ object Form1: TForm1
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select kkk.ul, kkk.dom, 0 as CH'
+      'select kkk.ulnaim ul, kkk.nomdom dom, 0 as CH'
       
-        'FROM (select ul,dom from kart group by ul,dom order by ul,dom) k' +
-        'kk LEFT JOIN ADRES ON kkk.ul = ADRES.ul and kkk.dom = ADRES.dom'
+        'FROM (select ulnaim,nomdom from kart group by ulnaim,nomdom orde' +
+        'r by ulnaim,nomdom) kkk LEFT JOIN ADRES ON kkk.ulnaim = ADRES.ul' +
+        ' and kkk.nomdom = ADRES.dom'
       'WHERE ADRES.ul IS NULL and ADRES.dom IS NULL')
     ModifySQL.Strings = (
       'update SPRADRES'
@@ -1154,12 +1128,13 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_SP_ADRES_ID'
+    Active = True
     Left = 480
     Top = 360
     object IBSP_ADRESDOM: TIBStringField
       FieldName = 'DOM'
       Origin = '"SP_ADRES"."DOM"'
-      Size = 10
+      Size = 5
     end
     object IBSP_ADRESCH: TSmallintField
       FieldName = 'CH'
@@ -1168,7 +1143,7 @@ object Form1: TForm1
     object IBSP_ADRESUL: TIBStringField
       FieldName = 'UL'
       Origin = '"SPRADRES"."UL"'
-      Size = 70
+      Size = 64
     end
   end
   object IBNOTE1: TIBDataSet
@@ -1205,6 +1180,7 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_NOTE1_ID'
+    Active = True
     Left = 544
     Top = 360
     object IBNOTE1KL: TIntegerField
@@ -1257,6 +1233,7 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_NOTE2_ID'
+    Active = True
     Left = 600
     Top = 360
     object IBNOTE2KL: TIntegerField
@@ -1326,6 +1303,7 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_KONTROL_ID'
+    Active = True
     Left = 40
     Top = 360
     object IBKONTROLKL: TIntegerField
@@ -1381,6 +1359,7 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_SERVICES_ID'
+    Active = True
     Left = 664
     Top = 360
     object IBSERVICESKL: TIntegerField
@@ -1427,10 +1406,10 @@ object Form1: TForm1
       DockedLeft = 0
       DockedTop = 0
       DockingStyle = dsTop
-      FloatLeft = 782
-      FloatTop = 8
-      FloatClientWidth = 0
-      FloatClientHeight = 0
+      FloatLeft = 507
+      FloatTop = 0
+      FloatClientWidth = 99
+      FloatClientHeight = 69
       IsMainMenu = True
       ItemLinks = <
         item
@@ -2602,7 +2581,7 @@ object Form1: TForm1
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select * from PERIOD order by PERIOD')
+      'select * from PERIOD order by PERIOD desc')
     ModifySQL.Strings = (
       'update PERIOD'
       'set'
@@ -2648,14 +2627,46 @@ object Form1: TForm1
     InsertSQL.Strings = (
       'insert into kart'
       
-        '  (KL, SCHET, WID, FIO, IDCOD, UL, DOM, KV, LGOTA, KOLI_P, KOLI_' +
-        'PF, PLOS_OB, '
-      '   PLOS_BB, PRIVAT, ORG, VAL)'
+        '  (SCHET, NUMB, FIO, IM, OT, FIO_V, IDCOD, CEX, TABN, FIO_TABN, ' +
+        'LG_NOFAM, '
+      
+        '   KOLI_LG, KOLI_P, KOLI_PF, KOLI_K, PLOS_BB, PLOS_OB, PRIV, ETA' +
+        'G, LGOTA, '
+      
+        '   LG_POSV, LG_SER, LG_FIO, LG_DATE, LG_KAT, FL_CHERN, FL_LIFTE,' +
+        ' FL_LIFTO, '
+      
+        '   FL_KLET, FL_MUSO, FL_OSV, FL_UBOR, FL_VENT, FL_ZIMA, FL_REM, ' +
+        'FL_DITM, '
+      
+        '   FL_TUAL, FL_NOLIFT, FL_NOKAN, MAX_UD, NOM, ORG, D_DOG, N_DOG,' +
+        ' ZAYA, '
+      
+        '   RESTR, NOTE, NOTE1, FLAG, WOZW_OT_, TELEF, KL_UL, ULNAIM, NOM' +
+        'DOM, NOMKV, '
+      '   VAL, KL, UPD)'
       'values'
       
-        '  (:KL, :SCHET, :WID, :FIO, :IDCOD, :UL, :DOM, :KV, :LGOTA, :KOL' +
-        'I_P, :KOLI_PF, '
-      '   :PLOS_OB, :PLOS_BB, :PRIVAT, :ORG, :VAL)')
+        '  (:SCHET, :NUMB, :FIO, :IM, :OT, :FIO_V, :IDCOD, :CEX, :TABN, :' +
+        'FIO_TABN, '
+      
+        '   :LG_NOFAM, :KOLI_LG, :KOLI_P, :KOLI_PF, :KOLI_K, :PLOS_BB, :P' +
+        'LOS_OB, '
+      
+        '   :PRIV, :ETAG, :LGOTA, :LG_POSV, :LG_SER, :LG_FIO, :LG_DATE, :' +
+        'LG_KAT, '
+      
+        '   :FL_CHERN, :FL_LIFTE, :FL_LIFTO, :FL_KLET, :FL_MUSO, :FL_OSV,' +
+        ' :FL_UBOR, '
+      
+        '   :FL_VENT, :FL_ZIMA, :FL_REM, :FL_DITM, :FL_TUAL, :FL_NOLIFT, ' +
+        ':FL_NOKAN, '
+      
+        '   :MAX_UD, :NOM, :ORG, :D_DOG, :N_DOG, :ZAYA, :RESTR, :NOTE, :N' +
+        'OTE1, :FLAG, '
+      
+        '   :WOZW_OT_, :TELEF, :KL_UL, :ULNAIM, :NOMDOM, :NOMKV, :VAL, :K' +
+        'L, :UPD)')
     RefreshSQL.Strings = (
       'Select * '
       'from kart '
@@ -2666,22 +2677,64 @@ object Form1: TForm1
     ModifySQL.Strings = (
       'update kart'
       'set'
-      '  KL = :KL,'
       '  SCHET = :SCHET,'
-      '  WID = :WID,'
+      '  NUMB = :NUMB,'
       '  FIO = :FIO,'
+      '  IM = :IM,'
+      '  OT = :OT,'
+      '  FIO_V = :FIO_V,'
       '  IDCOD = :IDCOD,'
-      '  UL = :UL,'
-      '  DOM = :DOM,'
-      '  KV = :KV,'
-      '  LGOTA = :LGOTA,'
+      '  CEX = :CEX,'
+      '  TABN = :TABN,'
+      '  FIO_TABN = :FIO_TABN,'
+      '  LG_NOFAM = :LG_NOFAM,'
+      '  KOLI_LG = :KOLI_LG,'
       '  KOLI_P = :KOLI_P,'
       '  KOLI_PF = :KOLI_PF,'
-      '  PLOS_OB = :PLOS_OB,'
+      '  KOLI_K = :KOLI_K,'
       '  PLOS_BB = :PLOS_BB,'
-      '  PRIVAT = :PRIVAT,'
+      '  PLOS_OB = :PLOS_OB,'
+      '  PRIV = :PRIV,'
+      '  ETAG = :ETAG,'
+      '  LGOTA = :LGOTA,'
+      '  LG_POSV = :LG_POSV,'
+      '  LG_SER = :LG_SER,'
+      '  LG_FIO = :LG_FIO,'
+      '  LG_DATE = :LG_DATE,'
+      '  LG_KAT = :LG_KAT,'
+      '  FL_CHERN = :FL_CHERN,'
+      '  FL_LIFTE = :FL_LIFTE,'
+      '  FL_LIFTO = :FL_LIFTO,'
+      '  FL_KLET = :FL_KLET,'
+      '  FL_MUSO = :FL_MUSO,'
+      '  FL_OSV = :FL_OSV,'
+      '  FL_UBOR = :FL_UBOR,'
+      '  FL_VENT = :FL_VENT,'
+      '  FL_ZIMA = :FL_ZIMA,'
+      '  FL_REM = :FL_REM,'
+      '  FL_DITM = :FL_DITM,'
+      '  FL_TUAL = :FL_TUAL,'
+      '  FL_NOLIFT = :FL_NOLIFT,'
+      '  FL_NOKAN = :FL_NOKAN,'
+      '  MAX_UD = :MAX_UD,'
+      '  NOM = :NOM,'
       '  ORG = :ORG,'
-      '  VAL = :VAL'
+      '  D_DOG = :D_DOG,'
+      '  N_DOG = :N_DOG,'
+      '  ZAYA = :ZAYA,'
+      '  RESTR = :RESTR,'
+      '  NOTE = :NOTE,'
+      '  NOTE1 = :NOTE1,'
+      '  FLAG = :FLAG,'
+      '  WOZW_OT_ = :WOZW_OT_,'
+      '  TELEF = :TELEF,'
+      '  KL_UL = :KL_UL,'
+      '  ULNAIM = :ULNAIM,'
+      '  NOMDOM = :NOMDOM,'
+      '  NOMKV = :NOMKV,'
+      '  VAL = :VAL,'
+      '  KL = :KL,'
+      '  UPD = :UPD'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -2690,83 +2743,280 @@ object Form1: TForm1
     GeneratorField.Generator = 'GEN_KART_ID'
     Left = 96
     Top = 472
-    object IBKARTKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"KART"."KL"'
-      Required = True
-    end
     object IBKARTSCHET: TIBStringField
       FieldName = 'SCHET'
       Origin = '"KART"."SCHET"'
       Size = 10
     end
-    object IBKARTWID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"KART"."WID"'
-      Size = 10
+    object IBKARTNUMB: TIBStringField
+      FieldName = 'NUMB'
+      Origin = '"KART"."NUMB"'
+      Size = 8
     end
     object IBKARTFIO: TIBStringField
       FieldName = 'FIO'
       Origin = '"KART"."FIO"'
-      Size = 40
+      Size = 45
     end
-    object IBKARTDOM: TIBStringField
-      FieldName = 'DOM'
-      Origin = '"KART"."DOM"'
-      Size = 10
+    object IBKARTIM: TIBStringField
+      FieldName = 'IM'
+      Origin = '"KART"."IM"'
+      Size = 15
     end
-    object IBKARTKV: TIBStringField
-      FieldName = 'KV'
-      Origin = '"KART"."KV"'
-      Size = 10
+    object IBKARTOT: TIBStringField
+      FieldName = 'OT'
+      Origin = '"KART"."OT"'
+      Size = 15
     end
-    object IBKARTLGOTA: TIBStringField
-      FieldName = 'LGOTA'
-      Origin = '"KART"."LGOTA"'
-      Size = 10
-    end
-    object IBKARTKOLI_P: TIntegerField
-      FieldName = 'KOLI_P'
-      Origin = '"KART"."KOLI_P"'
-    end
-    object IBKARTPRIVAT: TIBStringField
-      FieldName = 'PRIVAT'
-      Origin = '"KART"."PRIVAT"'
-      Size = 10
-    end
-    object IBKARTPLOS_OB: TIBBCDField
-      FieldName = 'PLOS_OB'
-      Origin = '"KART"."PLOS_OB"'
-      Precision = 9
-      Size = 2
-    end
-    object IBKARTPLOS_BB: TIBBCDField
-      FieldName = 'PLOS_BB'
-      Origin = '"KART"."PLOS_BB"'
-      Precision = 9
-      Size = 2
+    object IBKARTFIO_V: TIBStringField
+      FieldName = 'FIO_V'
+      Origin = '"KART"."FIO_V"'
+      Size = 35
     end
     object IBKARTIDCOD: TIBStringField
       FieldName = 'IDCOD'
       Origin = '"KART"."IDCOD"'
-      Size = 40
+      Size = 32
     end
-    object IBKARTUL: TIBStringField
-      FieldName = 'UL'
-      Origin = '"KART"."UL"'
-      Size = 70
+    object IBKARTCEX: TIBStringField
+      FieldName = 'CEX'
+      Origin = '"KART"."CEX"'
+      Size = 3
     end
-    object IBKARTVAL: TIntegerField
-      FieldName = 'VAL'
-      Origin = '"KART"."VAL"'
+    object IBKARTTABN: TIBStringField
+      FieldName = 'TABN'
+      Origin = '"KART"."TABN"'
+      Size = 5
     end
-    object IBKARTKOLI_PF: TIntegerField
+    object IBKARTFIO_TABN: TIBStringField
+      FieldName = 'FIO_TABN'
+      Origin = '"KART"."FIO_TABN"'
+    end
+    object IBKARTLG_NOFAM: TIBStringField
+      FieldName = 'LG_NOFAM'
+      Origin = '"KART"."LG_NOFAM"'
+      Size = 1
+    end
+    object IBKARTKOLI_LG: TIBStringField
+      FieldName = 'KOLI_LG'
+      Origin = '"KART"."KOLI_LG"'
+      Size = 8
+    end
+    object IBKARTKOLI_P: TFloatField
+      FieldName = 'KOLI_P'
+      Origin = '"KART"."KOLI_P"'
+    end
+    object IBKARTKOLI_PF: TFloatField
       FieldName = 'KOLI_PF'
       Origin = '"KART"."KOLI_PF"'
     end
-    object IBKARTORG: TIntegerField
+    object IBKARTKOLI_K: TFloatField
+      FieldName = 'KOLI_K'
+      Origin = '"KART"."KOLI_K"'
+    end
+    object IBKARTPLOS_BB: TFloatField
+      FieldName = 'PLOS_BB'
+      Origin = '"KART"."PLOS_BB"'
+    end
+    object IBKARTPLOS_OB: TFloatField
+      FieldName = 'PLOS_OB'
+      Origin = '"KART"."PLOS_OB"'
+    end
+    object IBKARTPRIV: TIBStringField
+      FieldName = 'PRIV'
+      Origin = '"KART"."PRIV"'
+      Size = 1
+    end
+    object IBKARTETAG: TFloatField
+      FieldName = 'ETAG'
+      Origin = '"KART"."ETAG"'
+    end
+    object IBKARTLGOTA: TIBStringField
+      FieldName = 'LGOTA'
+      Origin = '"KART"."LGOTA"'
+      Size = 9
+    end
+    object IBKARTLG_POSV: TIBStringField
+      FieldName = 'LG_POSV'
+      Origin = '"KART"."LG_POSV"'
+      Size = 25
+    end
+    object IBKARTLG_SER: TIBStringField
+      FieldName = 'LG_SER'
+      Origin = '"KART"."LG_SER"'
+      Size = 12
+    end
+    object IBKARTLG_FIO: TIBStringField
+      FieldName = 'LG_FIO'
+      Origin = '"KART"."LG_FIO"'
+      Size = 45
+    end
+    object IBKARTLG_DATE: TIBStringField
+      FieldName = 'LG_DATE'
+      Origin = '"KART"."LG_DATE"'
+      Size = 33
+    end
+    object IBKARTLG_KAT: TIBStringField
+      FieldName = 'LG_KAT'
+      Origin = '"KART"."LG_KAT"'
+      Size = 12
+    end
+    object IBKARTFL_CHERN: TIBStringField
+      FieldName = 'FL_CHERN'
+      Origin = '"KART"."FL_CHERN"'
+      Size = 1
+    end
+    object IBKARTFL_LIFTE: TIBStringField
+      FieldName = 'FL_LIFTE'
+      Origin = '"KART"."FL_LIFTE"'
+      Size = 1
+    end
+    object IBKARTFL_LIFTO: TIBStringField
+      FieldName = 'FL_LIFTO'
+      Origin = '"KART"."FL_LIFTO"'
+      Size = 1
+    end
+    object IBKARTFL_KLET: TIBStringField
+      FieldName = 'FL_KLET'
+      Origin = '"KART"."FL_KLET"'
+      Size = 1
+    end
+    object IBKARTFL_MUSO: TIBStringField
+      FieldName = 'FL_MUSO'
+      Origin = '"KART"."FL_MUSO"'
+      Size = 1
+    end
+    object IBKARTFL_OSV: TIBStringField
+      FieldName = 'FL_OSV'
+      Origin = '"KART"."FL_OSV"'
+      Size = 1
+    end
+    object IBKARTFL_UBOR: TIBStringField
+      FieldName = 'FL_UBOR'
+      Origin = '"KART"."FL_UBOR"'
+      Size = 1
+    end
+    object IBKARTFL_VENT: TIBStringField
+      FieldName = 'FL_VENT'
+      Origin = '"KART"."FL_VENT"'
+      Size = 1
+    end
+    object IBKARTFL_ZIMA: TIBStringField
+      FieldName = 'FL_ZIMA'
+      Origin = '"KART"."FL_ZIMA"'
+      Size = 1
+    end
+    object IBKARTFL_REM: TIBStringField
+      FieldName = 'FL_REM'
+      Origin = '"KART"."FL_REM"'
+      Size = 1
+    end
+    object IBKARTFL_DITM: TIBStringField
+      FieldName = 'FL_DITM'
+      Origin = '"KART"."FL_DITM"'
+      Size = 1
+    end
+    object IBKARTFL_TUAL: TIBStringField
+      FieldName = 'FL_TUAL'
+      Origin = '"KART"."FL_TUAL"'
+      Size = 1
+    end
+    object IBKARTFL_NOLIFT: TIBStringField
+      FieldName = 'FL_NOLIFT'
+      Origin = '"KART"."FL_NOLIFT"'
+      Size = 1
+    end
+    object IBKARTFL_NOKAN: TIBStringField
+      FieldName = 'FL_NOKAN'
+      Origin = '"KART"."FL_NOKAN"'
+      Size = 1
+    end
+    object IBKARTMAX_UD: TFloatField
+      FieldName = 'MAX_UD'
+      Origin = '"KART"."MAX_UD"'
+    end
+    object IBKARTNOM: TFloatField
+      FieldName = 'NOM'
+      Origin = '"KART"."NOM"'
+    end
+    object IBKARTORG: TFloatField
       FieldName = 'ORG'
       Origin = '"KART"."ORG"'
+    end
+    object IBKARTD_DOG: TIBStringField
+      FieldName = 'D_DOG'
+      Origin = '"KART"."D_DOG"'
+      Size = 8
+    end
+    object IBKARTN_DOG: TIBStringField
+      FieldName = 'N_DOG'
+      Origin = '"KART"."N_DOG"'
+    end
+    object IBKARTZAYA: TIBStringField
+      FieldName = 'ZAYA'
+      Origin = '"KART"."ZAYA"'
+      Size = 1
+    end
+    object IBKARTRESTR: TIBStringField
+      FieldName = 'RESTR'
+      Origin = '"KART"."RESTR"'
+      Size = 1
+    end
+    object IBKARTNOTE: TIBStringField
+      FieldName = 'NOTE'
+      Origin = '"KART"."NOTE"'
+      Size = 64
+    end
+    object IBKARTNOTE1: TIBStringField
+      FieldName = 'NOTE1'
+      Origin = '"KART"."NOTE1"'
+      Size = 64
+    end
+    object IBKARTFLAG: TIBStringField
+      FieldName = 'FLAG'
+      Origin = '"KART"."FLAG"'
+      Size = 1
+    end
+    object IBKARTWOZW_OT_: TFloatField
+      FieldName = 'WOZW_OT_'
+      Origin = '"KART"."WOZW_OT_"'
+    end
+    object IBKARTTELEF: TIBStringField
+      FieldName = 'TELEF'
+      Origin = '"KART"."TELEF"'
+    end
+    object IBKARTKL_UL: TFloatField
+      FieldName = 'KL_UL'
+      Origin = '"KART"."KL_UL"'
+    end
+    object IBKARTULNAIM: TIBStringField
+      FieldName = 'ULNAIM'
+      Origin = '"KART"."ULNAIM"'
+      Size = 64
+    end
+    object IBKARTNOMDOM: TIBStringField
+      FieldName = 'NOMDOM'
+      Origin = '"KART"."NOMDOM"'
+      Size = 5
+    end
+    object IBKARTNOMKV: TIBStringField
+      FieldName = 'NOMKV'
+      Origin = '"KART"."NOMKV"'
+      Size = 5
+    end
+    object IBKARTVAL: TFloatField
+      FieldName = 'VAL'
+      Origin = '"KART"."VAL"'
+    end
+    object IBKARTKL: TIntegerField
+      FieldName = 'KL'
+      Origin = '"KART"."KL"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object IBKARTUPD: TIntegerField
+      FieldName = 'UPD'
+      Origin = '"KART"."UPD"'
     end
   end
   object DSKART: TDataSource
@@ -2801,7 +3051,7 @@ object Form1: TForm1
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select *  from obor')
+      'select *  from vw_obor')
     ModifySQL.Strings = (
       'update obor'
       'set'
@@ -2829,108 +3079,133 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_OBOR_ID'
+    Active = True
     Left = 160
     Top = 472
     object IBOBORKL: TIntegerField
       FieldName = 'KL'
-      Origin = '"OBOR"."KL"'
-      Required = True
+      Origin = '"VW_OBOR"."KL"'
     end
     object IBOBORPERIOD: TDateField
       FieldName = 'PERIOD'
-      Origin = '"OBOR"."PERIOD"'
+      Origin = '"VW_OBOR"."PERIOD"'
     end
     object IBOBORSCHET: TIBStringField
       FieldName = 'SCHET'
-      Origin = '"OBOR"."SCHET"'
+      Origin = '"VW_OBOR"."SCHET"'
       Size = 10
     end
     object IBOBORWID: TIBStringField
       FieldName = 'WID'
-      Origin = '"OBOR"."WID"'
-      Size = 10
+      Origin = '"VW_OBOR"."WID"'
+      Size = 2
     end
     object IBOBORN_DOG: TIBStringField
       FieldName = 'N_DOG'
-      Origin = '"OBOR"."N_DOG"'
+      Origin = '"VW_OBOR"."N_DOG"'
       Size = 10
     end
     object IBOBORD_DOG: TIBStringField
       FieldName = 'D_DOG'
-      Origin = '"OBOR"."D_DOG"'
-      Size = 10
+      Origin = '"VW_OBOR"."D_DOG"'
+      Size = 8
     end
-    object IBOBORTARIF: TIBBCDField
+    object IBOBORTARIF: TFloatField
       FieldName = 'TARIF'
-      Origin = '"OBOR"."TARIF"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."TARIF"'
     end
-    object IBOBORDOLG: TIBBCDField
+    object IBOBORDOLG: TFloatField
       FieldName = 'DOLG'
-      Origin = '"OBOR"."DOLG"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."DOLG"'
     end
-    object IBOBORNACH: TIBBCDField
+    object IBOBORNACH: TFloatField
       FieldName = 'NACH'
-      Origin = '"OBOR"."NACH"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."NACH"'
     end
-    object IBOBORSUBS: TIBBCDField
+    object IBOBORSUBS: TFloatField
       FieldName = 'SUBS'
-      Origin = '"OBOR"."SUBS"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."SUBS"'
     end
-    object IBOBOROPL: TIBBCDField
+    object IBOBOROPL: TFloatField
       FieldName = 'OPL'
-      Origin = '"OBOR"."OPL"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."OPL"'
     end
-    object IBOBORUDER: TIBBCDField
+    object IBOBORUDER: TFloatField
       FieldName = 'UDER'
-      Origin = '"OBOR"."UDER"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."UDER"'
     end
-    object IBOBORKOMP: TIBBCDField
+    object IBOBORKOMP: TFloatField
       FieldName = 'KOMP'
-      Origin = '"OBOR"."KOMP"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."KOMP"'
     end
-    object IBOBORWZMZ: TIBBCDField
+    object IBOBORWZMZ: TFloatField
       FieldName = 'WZMZ'
-      Origin = '"OBOR"."WZMZ"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."WZMZ"'
     end
-    object IBOBORWOZW: TIBBCDField
+    object IBOBORWOZW: TFloatField
       FieldName = 'WOZW'
-      Origin = '"OBOR"."WOZW"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."WOZW"'
     end
-    object IBOBORMOVW: TIBBCDField
+    object IBOBORMOVW: TFloatField
       FieldName = 'MOVW'
-      Origin = '"OBOR"."MOVW"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."MOVW"'
     end
-    object IBOBORPERE: TIBBCDField
+    object IBOBORPERE: TFloatField
       FieldName = 'PERE'
-      Origin = '"OBOR"."PERE"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."PERE"'
     end
-    object IBOBORSAL: TIBBCDField
+    object IBOBORSAL: TFloatField
       FieldName = 'SAL'
-      Origin = '"OBOR"."SAL"'
-      Precision = 18
-      Size = 2
+      Origin = '"VW_OBOR"."SAL"'
+    end
+    object IBOBORBGST: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'BGST'
+      Origin = '"VW_OBOR"."BGST"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object IBOBORPRST: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'PRST'
+      Origin = '"VW_OBOR"."PRST"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object IBOBORBGEND: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'BGEND'
+      Origin = '"VW_OBOR"."BGEND"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object IBOBORPREND: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'PREND'
+      Origin = '"VW_OBOR"."PREND"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object IBOBORFULLNACH: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'FULLNACH'
+      Origin = '"VW_OBOR"."FULLNACH"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object IBOBORFULLOPL: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'FULLOPL'
+      Origin = '"VW_OBOR"."FULLOPL"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object IBOBOROPLNOTSUBS: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'OPLNOTSUBS'
+      Origin = '"VW_OBOR"."OPLNOTSUBS"'
+      ProviderFlags = []
+      ReadOnly = True
     end
   end
   object DSOBOR: TDataSource
@@ -2939,45 +3214,38 @@ object Form1: TForm1
     Left = 160
     Top = 520
   end
-  object DataSourceOBOR: TDataSource
-    Enabled = False
-    Left = 672
-    Top = 192
-  end
   object IBTMPOPL: TIBDataSet
     Database = IBDatabase1
     Transaction = IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
-      'delete from TMPOPL'
+      'delete from OPL'
       'where'
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
-      'insert into TMPOPL'
-      '  (DT, KL, SCHET, SUMM, WID)'
+      'insert into OPL'
+      '  (DT, KL, SCHET, OPL)'
       'values'
-      '  (:DT, :KL, :SCHET, :SUMM, :WID)')
+      '  (:DT, :KL, :SCHET, :OPL)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
       '  SCHET,'
       '  DT,'
-      '  WID,'
-      '  SUMM'
-      'from TMPOPL '
+      '  OPL'
+      'from OPL '
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      ' select * from TMPOPL')
+      ' select * from OPL')
     ModifySQL.Strings = (
-      'update TMPOPL'
+      'update OPL'
       'set'
       '  DT = :DT,'
       '  KL = :KL,'
       '  SCHET = :SCHET,'
-      '  SUMM = :SUMM,'
-      '  WID = :WID'
+      ' OPL = :OPL'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -2992,99 +3260,6 @@ object Form1: TForm1
     Enabled = False
     Left = 432
     Top = 520
-  end
-  object IBTMPUDER: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from TMPUDER'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into TMPUDER'
-      '  (KL, SCHET, SUMM, WID)'
-      'values'
-      '  (:KL, :SCHET, :SUMM, :WID)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  SCHET,'
-      '  WID,'
-      '  SUMM'
-      'from TMPUDER '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      ' select * from TMPUDER')
-    ModifySQL.Strings = (
-      'update TMPUDER'
-      'set'
-      '  KL = :KL,'
-      '  SCHET = :SCHET,'
-      '  SUMM = :SUMM,'
-      '  WID = :WID'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_TMPUDER_ID'
-    Left = 552
-    Top = 472
-    object IBTMPUDERKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"TMPUDER"."KL"'
-      Required = True
-    end
-    object IBTMPUDERSCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"TMPUDER"."SCHET"'
-      Size = 10
-    end
-    object IBTMPUDERWID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"TMPUDER"."WID"'
-      Size = 10
-    end
-    object IBTMPUDERSUMM: TIBBCDField
-      FieldName = 'SUMM'
-      Origin = '"TMPUDER"."SUMM"'
-      Precision = 18
-      Size = 2
-    end
-  end
-  object DSTMPUDER: TDataSource
-    DataSet = IBTMPUDER
-    Enabled = False
-    Left = 552
-    Top = 520
-  end
-  object DSADONACH: TDataSource
-    Enabled = False
-    Left = 336
-    Top = 280
-  end
-  object DSADOOBORMES: TDataSource
-    Enabled = False
-    Left = 200
-    Top = 288
-  end
-  object DSADOOPL: TDataSource
-    Enabled = False
-    Left = 392
-    Top = 288
-  end
-  object DSADOSUBS: TDataSource
-    Enabled = False
-    Left = 456
-    Top = 296
-  end
-  object DSADOUDER: TDataSource
-    Enabled = False
-    Left = 504
-    Top = 296
   end
   object IBTransaction1: TIBTransaction
     Active = True
@@ -3104,68 +3279,6 @@ object Form1: TForm1
     Left = 16
     Top = 296
   end
-  object DSADOOBORREC: TDataSource
-    Enabled = False
-    Left = 272
-    Top = 288
-  end
-  object IBTMPDATE: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from TMPDATE'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into TMPDATE'
-      '  (KL, PERIOD)'
-      'values'
-      '  (:KL, :PERIOD)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  PERIOD'
-      'from TMPDATE '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      ' select * from TMPDATE')
-    ModifySQL.Strings = (
-      'update TMPDATE'
-      'set'
-      '  KL = :KL,'
-      '  PERIOD = :PERIOD'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_TMPDATE_ID'
-    Left = 616
-    Top = 472
-    object IBTMPDATEKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"TMPDATE"."KL"'
-      Required = True
-    end
-    object IBTMPDATEPERIOD: TDateField
-      FieldName = 'PERIOD'
-      Origin = '"TMPDATE"."PERIOD"'
-    end
-  end
-  object DSTMPDATE: TDataSource
-    DataSet = IBTMPDATE
-    Enabled = False
-    Left = 616
-    Top = 520
-  end
-  object DSADOWID: TDataSource
-    Enabled = False
-    Left = 560
-    Top = 296
-  end
   object IBWID: TIBDataSet
     Database = IBDatabase1
     Transaction = IBTransaction1
@@ -3174,61 +3287,142 @@ object Form1: TForm1
     DeleteSQL.Strings = (
       'delete from WID'
       'where'
-      '  KL = :OLD_KL')
+      '  WID = :OLD_WID')
     InsertSQL.Strings = (
       'insert into WID'
-      '  (KL, WID, NAIM)'
+      
+        '  (WID, ID_ORG, NAIM, SNAIM, PAR, FL0, FL, NPP, FL_NONACH, FL_NO' +
+        'OPL, FL_VTCH, '
+      '   FL_NOOBOR, FL_GROPL, FL_SUBS, VAL)'
       'values'
-      '  (:KL, :WID, :NAIM)')
+      
+        '  (:WID, :ID_ORG, :NAIM, :SNAIM, :PAR, :FL0, :FL, :NPP, :FL_NONA' +
+        'CH, :FL_NOOPL, '
+      '   :FL_VTCH, :FL_NOOBOR, :FL_GROPL, :FL_SUBS, :VAL)')
     RefreshSQL.Strings = (
       'Select '
-      '  KL,'
       '  WID,'
-      '  NAIM'
+      '  ID_ORG,'
+      '  NAIM,'
+      '  SNAIM,'
+      '  PAR,'
+      '  FL0,'
+      '  FL,'
+      '  NPP,'
+      '  FL_NONACH,'
+      '  FL_NOOPL,'
+      '  FL_VTCH,'
+      '  FL_NOOBOR,'
+      '  FL_GROPL,'
+      '  FL_SUBS,'
+      '  VAL'
       'from WID '
       'where'
-      '  KL = :KL')
+      '  WID = :WID')
     SelectSQL.Strings = (
       ' select * from WID')
     ModifySQL.Strings = (
       'update WID'
       'set'
-      '  KL = :KL,'
       '  WID = :WID,'
-      '  NAIM = :NAIM'
+      '  ID_ORG = :ID_ORG,'
+      '  NAIM = :NAIM,'
+      '  SNAIM = :SNAIM,'
+      '  PAR = :PAR,'
+      '  FL0 = :FL0,'
+      '  FL = :FL,'
+      '  NPP = :NPP,'
+      '  FL_NONACH = :FL_NONACH,'
+      '  FL_NOOPL = :FL_NOOPL,'
+      '  FL_VTCH = :FL_VTCH,'
+      '  FL_NOOBOR = :FL_NOOBOR,'
+      '  FL_GROPL = :FL_GROPL,'
+      '  FL_SUBS = :FL_SUBS,'
+      '  VAL = :VAL'
       'where'
-      '  KL = :OLD_KL')
+      '  WID = :OLD_WID')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_WID_ID'
-    Left = 744
+    Left = 616
     Top = 472
-    object IBWIDKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"WID"."KL"'
-      Required = True
-    end
     object IBWIDWID: TIBStringField
       FieldName = 'WID'
       Origin = '"WID"."WID"'
-      Size = 10
+      Size = 2
+    end
+    object IBWIDID_ORG: TFloatField
+      FieldName = 'ID_ORG'
+      Origin = '"WID"."ID_ORG"'
     end
     object IBWIDNAIM: TIBStringField
       FieldName = 'NAIM'
       Origin = '"WID"."NAIM"'
+      Size = 15
+    end
+    object IBWIDSNAIM: TIBStringField
+      FieldName = 'SNAIM'
+      Origin = '"WID"."SNAIM"'
+      Size = 8
+    end
+    object IBWIDPAR: TIBStringField
+      FieldName = 'PAR'
+      Origin = '"WID"."PAR"'
+      Size = 10
+    end
+    object IBWIDFL0: TIBStringField
+      FieldName = 'FL0'
+      Origin = '"WID"."FL0"'
+      Size = 1
+    end
+    object IBWIDFL: TIBStringField
+      FieldName = 'FL'
+      Origin = '"WID"."FL"'
+      Size = 1
+    end
+    object IBWIDNPP: TFloatField
+      FieldName = 'NPP'
+      Origin = '"WID"."NPP"'
+    end
+    object IBWIDFL_NONACH: TIBStringField
+      FieldName = 'FL_NONACH'
+      Origin = '"WID"."FL_NONACH"'
+      Size = 1
+    end
+    object IBWIDFL_NOOPL: TIBStringField
+      FieldName = 'FL_NOOPL'
+      Origin = '"WID"."FL_NOOPL"'
+      Size = 1
+    end
+    object IBWIDFL_VTCH: TIBStringField
+      FieldName = 'FL_VTCH'
+      Origin = '"WID"."FL_VTCH"'
+      Size = 1
+    end
+    object IBWIDFL_NOOBOR: TIBStringField
+      FieldName = 'FL_NOOBOR'
+      Origin = '"WID"."FL_NOOBOR"'
+      Size = 1
+    end
+    object IBWIDFL_GROPL: TFloatField
+      FieldName = 'FL_GROPL'
+      Origin = '"WID"."FL_GROPL"'
+    end
+    object IBWIDFL_SUBS: TFloatField
+      FieldName = 'FL_SUBS'
+      Origin = '"WID"."FL_SUBS"'
+    end
+    object IBWIDVAL: TFloatField
+      FieldName = 'VAL'
+      Origin = '"WID"."VAL"'
     end
   end
   object DSTMPWID: TDataSource
     DataSet = IBWID
     Enabled = False
-    Left = 744
+    Left = 616
     Top = 520
-  end
-  object DSADOORGAN: TDataSource
-    Enabled = False
-    Left = 688
-    Top = 296
   end
   object IBORGAN: TIBDataSet
     Database = IBDatabase1
@@ -3265,25 +3459,273 @@ object Form1: TForm1
     GeneratorField.Generator = 'GEN_ORGAN_ID'
     Left = 280
     Top = 472
-    object IBORGANKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"ORGAN"."KL"'
-      Required = True
-    end
-    object IBORGANORG: TIntegerField
+    object IBORGANORG: TFloatField
       FieldName = 'ORG'
       Origin = '"ORGAN"."ORG"'
     end
     object IBORGANNAME: TIBStringField
       FieldName = 'NAME'
       Origin = '"ORGAN"."NAME"'
-      Size = 50
+      Size = 55
+    end
+    object IBORGANRUK: TIBStringField
+      FieldName = 'RUK'
+      Origin = '"ORGAN"."RUK"'
+      Size = 35
+    end
+    object IBORGANDOLGR: TIBStringField
+      FieldName = 'DOLGR'
+      Origin = '"ORGAN"."DOLGR"'
+      Size = 15
+    end
+    object IBORGANNAMER: TIBStringField
+      FieldName = 'NAMER'
+      Origin = '"ORGAN"."NAMER"'
+      Size = 55
+    end
+    object IBORGANRUKR: TIBStringField
+      FieldName = 'RUKR'
+      Origin = '"ORGAN"."RUKR"'
+      Size = 25
+    end
+    object IBORGANUD_K: TIBStringField
+      FieldName = 'UD_K'
+      Origin = '"ORGAN"."UD_K"'
+      Size = 1
+    end
+    object IBORGANUD_E: TIBStringField
+      FieldName = 'UD_E'
+      Origin = '"ORGAN"."UD_E"'
+      Size = 1
+    end
+    object IBORGANADR: TIBStringField
+      FieldName = 'ADR'
+      Origin = '"ORGAN"."ADR"'
+      Size = 25
+    end
+    object IBORGANGRP: TFloatField
+      FieldName = 'GRP'
+      Origin = '"ORGAN"."GRP"'
+    end
+    object IBORGANVAL: TFloatField
+      FieldName = 'VAL'
+      Origin = '"ORGAN"."VAL"'
+    end
+    object IBORGANKL: TIntegerField
+      FieldName = 'KL'
+      Origin = '"ORGAN"."KL"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object IBORGANUPD: TIntegerField
+      FieldName = 'UPD'
+      Origin = '"ORGAN"."UPD"'
     end
   end
   object DSORGAN: TDataSource
     DataSet = IBORGAN
     Enabled = False
     Left = 280
+    Top = 520
+  end
+  object IBDataSet1: TIBDataSet
+    Database = IBDatabase1
+    Transaction = IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from obor'
+      'where'
+      '  KL = :OLD_KL')
+    InsertSQL.Strings = (
+      'insert into obor'
+      
+        '  (KL, PERIOD, SCHET, WID, N_DOG, D_DOG, TARIF, DOLG, NACH, SUBS' +
+        ', OPL, '
+      '   UDER, KOMP, WZMZ, WOZW, MOVW, PERE, SAL)'
+      'values'
+      
+        '  (:KL, :PERIOD, :SCHET, :WID, :N_DOG, :D_DOG, :TARIF, :DOLG, :N' +
+        'ACH, :SUBS, '
+      '   :OPL, :UDER, :KOMP, :WZMZ, :WOZW, :MOVW, :PERE, :SAL)')
+    RefreshSQL.Strings = (
+      'Select * '
+      'from obor '
+      'where'
+      '  KL = :KL')
+    SelectSQL.Strings = (
+      'select period,fio,ulnaim,nomdom,nomkv,'
+      
+        'COALESCE(max(case wid when '#39'ot'#39' then dolg else null end),0) as o' +
+        't,'
+      
+        'COALESCE(max(case wid when '#39'ub'#39' then dolg else null end),0) as u' +
+        'b,'
+      
+        'COALESCE(max(case wid when '#39'sn'#39' then dolg else null end),0) as s' +
+        'n'
+      'from vw_oborkart where schet='#39'0092125'#39
+      'group by period,schet,fio,ulnaim,nomdom,nomkv'
+      '')
+    ModifySQL.Strings = (
+      'update obor'
+      'set'
+      '  KL = :KL,'
+      '  PERIOD = :PERIOD,'
+      '  SCHET = :SCHET,'
+      '  WID = :WID,'
+      '  N_DOG = :N_DOG,'
+      '  D_DOG = :D_DOG,'
+      '  TARIF = :TARIF,'
+      '  DOLG = :DOLG,'
+      '  NACH = :NACH,'
+      '  SUBS = :SUBS,'
+      '  OPL = :OPL,'
+      '  UDER = :UDER,'
+      '  KOMP = :KOMP,'
+      '  WZMZ = :WZMZ,'
+      '  WOZW = :WOZW,'
+      '  MOVW = :MOVW,'
+      '  PERE = :PERE,'
+      '  SAL = :SAL'
+      'where'
+      '  KL = :OLD_KL')
+    ParamCheck = True
+    UniDirectional = False
+    GeneratorField.Field = 'KL'
+    GeneratorField.Generator = 'GEN_OBOR_ID'
+    Left = 688
+    Top = 472
+    object IntegerField1: TIntegerField
+      FieldName = 'KL'
+      Origin = '"VW_OBOR"."KL"'
+    end
+    object DateField1: TDateField
+      FieldName = 'PERIOD'
+      Origin = '"VW_OBOR"."PERIOD"'
+    end
+    object IBStringField1: TIBStringField
+      FieldName = 'SCHET'
+      Origin = '"VW_OBOR"."SCHET"'
+      Size = 10
+    end
+    object IBStringField2: TIBStringField
+      FieldName = 'WID'
+      Origin = '"VW_OBOR"."WID"'
+      Size = 2
+    end
+    object IBStringField3: TIBStringField
+      FieldName = 'N_DOG'
+      Origin = '"VW_OBOR"."N_DOG"'
+      Size = 10
+    end
+    object IBStringField4: TIBStringField
+      FieldName = 'D_DOG'
+      Origin = '"VW_OBOR"."D_DOG"'
+      Size = 8
+    end
+    object FloatField1: TFloatField
+      FieldName = 'TARIF'
+      Origin = '"VW_OBOR"."TARIF"'
+    end
+    object FloatField2: TFloatField
+      FieldName = 'DOLG'
+      Origin = '"VW_OBOR"."DOLG"'
+    end
+    object FloatField3: TFloatField
+      FieldName = 'NACH'
+      Origin = '"VW_OBOR"."NACH"'
+    end
+    object FloatField4: TFloatField
+      FieldName = 'SUBS'
+      Origin = '"VW_OBOR"."SUBS"'
+    end
+    object FloatField5: TFloatField
+      FieldName = 'OPL'
+      Origin = '"VW_OBOR"."OPL"'
+    end
+    object FloatField6: TFloatField
+      FieldName = 'UDER'
+      Origin = '"VW_OBOR"."UDER"'
+    end
+    object FloatField7: TFloatField
+      FieldName = 'KOMP'
+      Origin = '"VW_OBOR"."KOMP"'
+    end
+    object FloatField8: TFloatField
+      FieldName = 'WZMZ'
+      Origin = '"VW_OBOR"."WZMZ"'
+    end
+    object FloatField9: TFloatField
+      FieldName = 'WOZW'
+      Origin = '"VW_OBOR"."WOZW"'
+    end
+    object FloatField10: TFloatField
+      FieldName = 'MOVW'
+      Origin = '"VW_OBOR"."MOVW"'
+    end
+    object FloatField11: TFloatField
+      FieldName = 'PERE'
+      Origin = '"VW_OBOR"."PERE"'
+    end
+    object FloatField12: TFloatField
+      FieldName = 'SAL'
+      Origin = '"VW_OBOR"."SAL"'
+    end
+    object FloatField13: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'BGST'
+      Origin = '"VW_OBOR"."BGST"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FloatField14: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'PRST'
+      Origin = '"VW_OBOR"."PRST"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FloatField15: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'BGEND'
+      Origin = '"VW_OBOR"."BGEND"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FloatField16: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'PREND'
+      Origin = '"VW_OBOR"."PREND"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FloatField17: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'FULLNACH'
+      Origin = '"VW_OBOR"."FULLNACH"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FloatField18: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'FULLOPL'
+      Origin = '"VW_OBOR"."FULLOPL"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FloatField19: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'OPLNOTSUBS'
+      Origin = '"VW_OBOR"."OPLNOTSUBS"'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = IBDataSet1
+    Enabled = False
+    Left = 688
     Top = 520
   end
 end

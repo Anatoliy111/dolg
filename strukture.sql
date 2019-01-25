@@ -302,6 +302,72 @@ select
 from obor order by obor.schet
 ;
 
+CREATE VIEW VW_OBORKART(
+    KL,
+    PERIOD,
+    SCHET,
+    WID,
+    FIO,
+    ULNAIM,
+    NOMDOM,
+    NOMKV,
+    N_DOG,
+    D_DOG,
+    TARIF,
+    DOLG,
+    NACH,
+    SUBS,
+    OPL,
+    UDER,
+    KOMP,
+    WZMZ,
+    WOZW,
+    MOVW,
+    PERE,
+    SAL,
+    BGST,
+    PRST,
+    BGEND,
+    PREND,
+    FULLNACH,
+    FULLOPL,
+    OPLNOTSUBS)
+AS
+select
+    obor.kl,
+    obor.period,
+    obor.schet,
+    obor.wid,
+    trim(kart.fio) || ' ' || trim(kart.im) || ' ' || trim(kart.ot) as fio,
+    kart.ulnaim,
+    kart.nomdom,
+    kart.nomkv,
+    obor.n_dog,
+    obor.d_dog,
+    obor.tarif,
+    obor.dolg,
+    obor.nach,
+    obor.subs,
+    obor.opl,
+    obor.uder,
+    obor.komp,
+    obor.wzmz,
+    obor.wozw,
+    obor.movw,
+    obor.pere,
+    obor.sal,
+    case when obor.dolg > 0  then obor.dolg else 0 end AS bgst,
+    case when obor.dolg < 0  then obor.dolg else 0 end AS prst,
+    case when obor.sal > 0  then obor.sal else 0 end AS bgend,
+    case when obor.sal < 0  then obor.sal else 0 end AS prend,
+    obor.nach+obor.pere as fullnach,
+    obor.SUBS+obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as fullopl,
+    obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as oplnotsubs
+from obor
+left join kart on obor.schet=kart.schet
+order by obor.schet
+;
+
 
 
 

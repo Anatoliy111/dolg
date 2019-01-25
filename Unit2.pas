@@ -59,7 +59,7 @@ begin
 
  if Form1.IBDatabase1.Connected then
  begin
-
+     Form2.Show;
      UpdateBase;
 //     Form1.IBREPD.close;
 //     Form1.IBREPD.ParamByName('kluser').Value:=Form1.IBUSERKL.Value;
@@ -86,59 +86,12 @@ var pathDBF,pathARC,dateimport,strmes,strye,strfield1,strfield2:string;
   SI: _STARTUPINFOW;
   PI: _PROCESS_INFORMATION;
   RarParam : String;
+
 begin
    try
    Form1.Enabled:=false;
    Label1.Caption:='Завантаження поточних даних.Зачекайте...';
    Label2.visible:=true;
-
-
-
-
-        cxProgressBar2.Visible:=true;
-        cxProgressBar2.Position:=0;
-        cxProgressBar2.Properties.Min:=0;
-       cxProgressBar2.Properties.Max:=5;
-
-          Label2.Caption:='Оновлення послуг';
-          Application.ProcessMessages;
-
-
-//        Form1.IBTMPOPL.InsertSQL.Clear;
-//        Form1.IBTMPOPL.ModifySQL.Clear;
-//        Form1.IBTMPOPL.InsertSQL.Add('insert into TMPOPL');
-//        Form1.IBTMPOPL.ModifySQL.Add('update TMPOPL');
-//        Form1.IBTMPOPL.ModifySQL.Add('set');
-//        Form1.IBTMPOPL.ModifySQL.Add('DT = :DT,');
-//        Form1.IBTMPOPL.ModifySQL.Add('KL = :KL,');
-//        Form1.IBTMPOPL.ModifySQL.Add('SCHET = :SCHET,');
-//        Form1.IBTMPOPL.ModifySQL.Add('SUMM = :SUMM,');
-//
-//
-//        Form1.ADOWID.First;
-//            while not Form1.ADOWID.eof do
-//            begin
-//                   if Form1.ADOWID.FieldByName('fl_nonach').Value<>1 then
-//                   begin
-//                     strfield1:=strfield1+', OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString);
-//                     strfield2:=strfield2+', :OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString);
-//                     Form1.IBTMPOPL.ModifySQL.Add('OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString)+' = :'+'OPL_'+trim(Form1.ADOWID.FieldByName('wid').AsString+','));
-//                   end;
-//
-//
-//            Form1.ADOWID.Next;
-//            end;
-//        Form1.IBTMPOPL.InsertSQL.Add('  (DT, KL, SCHET, SUMM, WID'+strfield1+')');
-//        Form1.IBTMPOPL.InsertSQL.Add('values');
-//        Form1.IBTMPOPL.InsertSQL.Add('  (:DT, :KL, :SCHET, :SUMM, :WID'+strfield2+')');
-//
-//        Form1.IBTMPOPL.ModifySQL.Add('WID = :WID');
-//        Form1.IBTMPOPL.ModifySQL.Add('where');
-//        Form1.IBTMPOPL.ModifySQL.Add('KL = :OLD_KL');
-//
-
-
-
 
         Form1.IBDatabase1.Close;
         Form1.IBDatabase1.Open;
@@ -161,12 +114,56 @@ begin
   Form1.IBPERIOD.open;
 
 
-  Form1.IBTMPDATE.open;
 
-  Form1.IBTMPOPL.open;
 
-  Form1.IBTMPUDER.open;
   Form1.IBWID.open;
+
+
+//        cxProgressBar2.Visible:=true;
+//        cxProgressBar2.Position:=0;
+//        cxProgressBar2.Properties.Min:=0;
+//       cxProgressBar2.Properties.Max:=5;
+
+//          Label2.Caption:='Оновлення послуг';
+//          Application.ProcessMessages;
+//
+//        Form1.IBTMPOPL.Close;
+//        Form1.IBTMPOPL.InsertSQL.Clear;
+//        Form1.IBTMPOPL.ModifySQL.Clear;
+//        Form1.IBTMPOPL.InsertSQL.Add('insert into OPL');
+//        Form1.IBTMPOPL.ModifySQL.Add('update OPL');
+//        Form1.IBTMPOPL.ModifySQL.Add('set');
+//        Form1.IBTMPOPL.ModifySQL.Add('DT = :DT,');
+//        Form1.IBTMPOPL.ModifySQL.Add('KL = :KL,');
+//        Form1.IBTMPOPL.ModifySQL.Add('SCHET = :SCHET,');
+//        Form1.IBTMPOPL.ModifySQL.Add('OPL = :OPL,');
+//
+//
+//        Form1.IBWID.First;
+//            while not Form1.IBWID.eof do
+//            begin
+//                   if Form1.IBWID.FieldByName('fl_nonach').Value<>1 then
+//                   begin
+//                     strfield1:=strfield1+', OPL_'+trim(Form1.IBWID.FieldByName('wid').AsString);
+//                     strfield2:=strfield2+', :OPL_'+trim(Form1.IBWID.FieldByName('wid').AsString);
+//                     Form1.IBTMPOPL.ModifySQL.Add('OPL_'+trim(Form1.IBWID.FieldByName('wid').AsString)+' = :'+'OPL_'+trim(Form1.IBWID.FieldByName('wid').AsString+','));
+//                   end;
+//
+//
+//            Form1.IBWID.Next;
+//            end;
+//        Form1.IBTMPOPL.InsertSQL.Add('  (DT, KL, SCHET, OPL'+strfield1+')');
+//        Form1.IBTMPOPL.InsertSQL.Add('values');
+//        Form1.IBTMPOPL.InsertSQL.Add('  (:DT, :KL, :SCHET, :OPL'+strfield2+')');
+//
+//        Form1.IBTMPOPL.ModifySQL.Add('where');
+//        Form1.IBTMPOPL.ModifySQL.Add('KL = :OLD_KL');
+////
+
+
+        Form1.IBTMPOPL.open;
+
+
 
 
 //         ShellExecute(0, nil,'obor.bat',nil,nil,1);
@@ -221,22 +218,23 @@ begin
 
        Form1.IBPERIOD.close;
        Form1.IBPERIOD.open;
-       Form1.IBTMPDATE.open;
 
-       Form1.IBPERIOD.Last;
+       Form1.DateKVART:=Form1.IBPERIODPERIOD.Value;
+       if Form1.cxLookupComboBox1.EditValue = null then
+       begin
+          Form1.cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+       end;
 
-       Form1.IBTMPDATE.Edit;
-       Form1.IBTMPDATEPERIOD.Value:=Form1.IBPERIODPERIOD.Value;
-       Form1.IBTMPDATE.post;
+
 
 
 //       FilterDATE:=add_months(Form1.IBPERIODPERIOD.Value, -3);
 
 //       Form1.IBPERIOD.Filter:= 'PERIOD = add_months('+DateToStr(Form1.DateKVART)+', -3)';
 //       Form1.IBPERIOD.Filtered:=true;
-
-        Form1.IBTransaction2.CommitRetaining;
-        Form1.IBTransaction1.CommitRetaining;
+//
+//        Form1.IBTransaction2.CommitRetaining;
+//        Form1.IBTransaction1.CommitRetaining;
 
 
 

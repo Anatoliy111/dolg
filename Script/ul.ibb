@@ -59,16 +59,7 @@ begin
 								commit;
                         update UL set upd=1 where upd is null;
 								commit;
-                        update ADRES set ADRES.kl_ul = (select kl from UL T1 where T1.ul=ADRES.ul);
-								commit;
-                        update ADRES set ADRES.kl_ul = 23 where ADRES.UL='вул.Лазарева';
-								commit;
-                        update ADRES set ADRES.ul = (select ul from UL T1 where T1.kl=ADRES.kl_ul);
-								commit;
-                        UPDATE ADRES SET dom = REPLACE(dom, 'В','в');
-								commit;
-			UPDATE ADRES SET dom = REPLACE(dom, 'Б','б');
-                        commit;
+								ibec_Progress('commit ADRES');
 								
                         update KART set KART.kl_ul = (select kl from UL T1 where T1.ul=KART.ulnaim);
 								commit;
@@ -76,17 +67,28 @@ begin
 								commit;
                         update KART set KART.ulnaim = (select ul from UL T1 where T1.kl=KART.kl_ul);
 								commit;
-                        UPDATE KART SET nomdom = REPLACE(dom, 'А','а');
+                        UPDATE KART SET nomdom = REPLACE(nomdom, 'А','а');
 								commit;
-                        UPDATE KART SET nomdom = REPLACE(dom, 'В','в');
+                        UPDATE KART SET nomdom = REPLACE(nomdom, 'В','в');
 								commit;
-                       UPDATE KART SET dom = REPLACE(dom, 'Б','б');
+                        UPDATE KART SET nomdom = REPLACE(nomdom, 'Б','б');
                         commit;
+								ibec_Progress('commit KART');
 								
                     end;
 
 
+		  delete from WID;
+		  commit;
 
+
+		    Res = ibec_ImportData(DB, 'WID', __impDBase, dir+'dbf\WIDS.DBF', '', 
+		                          'RowFirst=1;
+		                           DateOrder=DMY; DateSeparator="."; TimeSeparator=":"; DecimalSeparator=","; OemToAnsi;', '', cbb);
+
+		  delete from WID where fl_vtch = 1;
+		  commit;
+								
 		  finally
 		    ibec_CloseConnection(DB);
 		 end;
