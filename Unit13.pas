@@ -304,6 +304,7 @@ OrdAlldt1:=cxLookupComboBox3.EditValue;
 OrdAlldt2:=cxLookupComboBox4.EditValue;
 OrdAllbg:=cxCalcEdit1.EditValue;
 IBORDERALL.Open;
+ShowMessage('Звіт зформовано за '+mon_slovoDt(cxLookupComboBox3.EditValue)+' по '+mon_slovoDt(cxLookupComboBox4.EditValue));
 end;
 
 procedure TForm13.cxButton3Click(Sender: TObject);
@@ -364,7 +365,7 @@ Ordposldt1:=cxLookupComboBox1.EditValue;
 Ordposldt2:=cxLookupComboBox2.EditValue;
 Ordposlbg:=cxCalcEdit2.EditValue;
 IBORDER.Open;
-
+ShowMessage('Звіт зформовано за '+mon_slovoDt(cxLookupComboBox1.EditValue)+' по '+mon_slovoDt(cxLookupComboBox2.EditValue));
 end;
 
 procedure TForm13.cxButton6Click(Sender: TObject);
@@ -428,6 +429,7 @@ Ordposlmesdt1:=cxLookupComboBox5.EditValue;
 Ordposlmesdt2:=cxLookupComboBox6.EditValue;
 Ordposlmesbg:=cxCalcEdit3.EditValue;
 IBORDERMES.Open;
+ShowMessage('Звіт зформовано за '+mon_slovoDt(cxLookupComboBox5.EditValue)+' по '+mon_slovoDt(cxLookupComboBox6.EditValue));
 end;
 
 procedure TForm13.cxButton9Click(Sender: TObject);
@@ -443,12 +445,7 @@ SQLORDER:=IBORDER.SelectSQL.Text;
 SQLORDERMES:=IBORDERMES.SelectSQL.Text;
 
 
-cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox5.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox6.EditValue:=Form1.IBPERIODPERIOD.Value;
+
 end;
 
 end.

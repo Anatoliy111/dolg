@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs,ExtCtrls, StdCtrls, cxGraphics, cxControls, cxLookAndFeels,
-  cxLookAndFeelPainters, cxContainer, cxEdit, cxProgressBar, ShellAPI;
+  cxLookAndFeelPainters, cxContainer, cxEdit, cxProgressBar, ShellAPI, Data.DB,
+  IBX.IBCustomDataSet;
 
 type
   TForm2 = class(TForm)
@@ -16,9 +17,15 @@ type
     Timer2: TTimer;
     Label2: TLabel;
     cxProgressBar2: TcxProgressBar;
+    IBPERIOD: TIBDataSet;
+    IBPERIODKL: TIntegerField;
+    IBPERIODPERIOD: TDateField;
+    IBPERIODAKTIV: TIntegerField;
+    DSPERIOD: TDataSource;
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Button11Click(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateBase;
@@ -33,7 +40,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, mytools;
+uses Unit1, Unit3, mytools, Unit14, Unit13;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -75,6 +82,24 @@ begin
 end;
 
 
+procedure TForm2.Timer2Timer(Sender: TObject);
+begin
+IBPERIOD.Close;
+IBPERIOD.Open;
+if Form1.DateKVART < IBPERIODPERIOD.Value then
+begin
+  Form2.Show;
+  Label2.Visible:=false;
+  cxProgressBar1.Visible:=false;
+  cxProgressBar2.Visible:=false;
+  Label1.Caption:='Оновився поточний період. Треба перезапустити програму !!!';
+  Timer2.Enabled:=false;
+  Button11.Visible:=true;
+end;
+
+
+end;
+
 procedure TForm2.UpdateBase;
 var pathDBF,pathARC,dateimport,strmes,strye,strfield1,strfield2:string;
     adostr,copy1,copy2:WideString;
@@ -91,34 +116,59 @@ begin
    try
    Form1.Enabled:=false;
    Label1.Caption:='Завантаження поточних даних.Зачекайте...';
-   Label2.visible:=true;
+//   Label2.visible:=true;
+   Application.ProcessMessages;
+        cxProgressBar1.Position:=0;
+        cxProgressBar1.Properties.Min:=0;
+        cxProgressBar1.Properties.Max:=14;
 
         Form1.IBDatabase1.Close;
         Form1.IBDatabase1.Open;
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
         Form1.IBTransaction1.StartTransaction;
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
         Form1.IBTransaction2.StartTransaction;
 
 
   Form1.IBKONTROL.open;
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
   Form1.IBUSER.open;
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
   Form1.IBADRES.open;
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
   Form1.IBNOTE.open;
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
   Form1.IBNOTE1.open;
   Form1.IBNOTE2.open;
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
   Form1.IBKART.open;
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
   Form1.IBOBOR.open;
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
 
   Form1.IBSPRADRES.open;
   Form1.IBSP_ADRES.open;
   Form1.IBSERVICES.open;
   Form1.IBPERIOD.open;
-
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
 
 
 
   Form1.IBWID.open;
 
 
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
 //        cxProgressBar2.Visible:=true;
 //        cxProgressBar2.Position:=0;
 //        cxProgressBar2.Properties.Min:=0;
@@ -220,13 +270,25 @@ begin
        Form1.IBPERIOD.open;
 
        Form1.DateKVART:=Form1.IBPERIODPERIOD.Value;
+       Form1.Label17.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
+
        if Form1.cxLookupComboBox1.EditValue = null then
        begin
           Form1.cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
        end;
 
+       Form14.cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+       Form14.IBWID.Open;
 
+               cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
 
+       Form13.cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+        Form13.cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
+        Form13.cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
+        Form13.cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
+        Form13.cxLookupComboBox5.EditValue:=Form1.IBPERIODPERIOD.Value;
+        Form13.cxLookupComboBox6.EditValue:=Form1.IBPERIODPERIOD.Value;
 
 //       FilterDATE:=add_months(Form1.IBPERIODPERIOD.Value, -3);
 
@@ -237,6 +299,8 @@ begin
 //        Form1.IBTransaction1.CommitRetaining;
 
 
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
 
         cxProgressBar2.Visible:=false;
         Label2.Visible:=false;
@@ -244,6 +308,10 @@ begin
 
   Form1.REPORT;
 
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
+
+Timer2.Enabled:=true;
 //Button1.Enabled:= true;
 //DBNavigator1.Enabled:= true;
 //Button2.Enabled:= true;

@@ -13,7 +13,7 @@ uses
   IBConnectionBroker, IBSQLMonitor, IBDatabaseInfo, cxLabel, cxBlobEdit,
   cxButtonEdit, cxBarEditItem, dxBar, DBTables, cxContainer, Menus, cxButtons,
   cxCheckBox, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
-  cxGroupBox, cxNavigator, IBX.IBScript, IBX.IBSQL;
+  cxGroupBox, cxNavigator, IBX.IBScript, IBX.IBSQL, cxCalc;
 
 type
   TForm1 = class(TForm)
@@ -269,12 +269,10 @@ type
     cxGrid1DBTableView1WID: TcxGridDBColumn;
     cxGrid1DBTableView1POSLUG: TcxGridDBColumn;
     cxButton2: TcxButton;
-    cxTextEdit1: TcxTextEdit;
     cxComboBox1: TcxComboBox;
     cxLabel1: TcxLabel;
     cxCheckBox1: TcxCheckBox;
     cxComboBox2: TcxComboBox;
-    cxTextEdit2: TcxTextEdit;
     cxButton5: TcxButton;
     IBADRESKOL_KV: TIntegerField;
     IBORGAN: TIBDataSet;
@@ -286,92 +284,6 @@ type
     cxLabel5: TcxLabel;
     cxLabel6: TcxLabel;
     cxTextEdit4: TcxTextEdit;
-    IBREPDKL: TIntegerField;
-    IBREPDWID: TIBStringField;
-    IBREPDSCHET: TIBStringField;
-    IBREPDNOTE1: TIntegerField;
-    IBREPDNOTE2: TIntegerField;
-    IBREPDNOTE3: TIBStringField;
-    IBREPDKL_USERS: TIntegerField;
-    IBREPDPOSLUG: TIBStringField;
-    IBREPDDOLG: TFloatField;
-    IBREPDFIO: TIBStringField;
-    IBREPDIDCOD: TIBStringField;
-    IBREPDUL: TIBStringField;
-    IBREPDDOM: TIBStringField;
-    IBREPDKV: TIBStringField;
-    IBREPDKOLI_P: TFloatField;
-    IBREPDKOLI_PF: TFloatField;
-    IBREPDORGNAME: TIBStringField;
-    IBREPDKONTROL: TIBStringField;
-    IBREPDNACH1: TFloatField;
-    IBREPDOPL: TFloatField;
-    IBREPDSUBS: TFloatField;
-    IBREPDUDER: TFloatField;
-    IBREPDKOMP: TFloatField;
-    IBREPDWZMZ: TFloatField;
-    IBREPDWOZW: TFloatField;
-    IBREPDMOVW: TFloatField;
-    IBREPDPERE: TFloatField;
-    IBREPDENDDOLG: TFloatField;
-    IBKARTSCHET: TIBStringField;
-    IBKARTNUMB: TIBStringField;
-    IBKARTFIO: TIBStringField;
-    IBKARTIM: TIBStringField;
-    IBKARTOT: TIBStringField;
-    IBKARTFIO_V: TIBStringField;
-    IBKARTIDCOD: TIBStringField;
-    IBKARTCEX: TIBStringField;
-    IBKARTTABN: TIBStringField;
-    IBKARTFIO_TABN: TIBStringField;
-    IBKARTLG_NOFAM: TIBStringField;
-    IBKARTKOLI_LG: TIBStringField;
-    IBKARTKOLI_P: TFloatField;
-    IBKARTKOLI_PF: TFloatField;
-    IBKARTKOLI_K: TFloatField;
-    IBKARTPLOS_BB: TFloatField;
-    IBKARTPLOS_OB: TFloatField;
-    IBKARTPRIV: TIBStringField;
-    IBKARTETAG: TFloatField;
-    IBKARTLGOTA: TIBStringField;
-    IBKARTLG_POSV: TIBStringField;
-    IBKARTLG_SER: TIBStringField;
-    IBKARTLG_FIO: TIBStringField;
-    IBKARTLG_DATE: TIBStringField;
-    IBKARTLG_KAT: TIBStringField;
-    IBKARTFL_CHERN: TIBStringField;
-    IBKARTFL_LIFTE: TIBStringField;
-    IBKARTFL_LIFTO: TIBStringField;
-    IBKARTFL_KLET: TIBStringField;
-    IBKARTFL_MUSO: TIBStringField;
-    IBKARTFL_OSV: TIBStringField;
-    IBKARTFL_UBOR: TIBStringField;
-    IBKARTFL_VENT: TIBStringField;
-    IBKARTFL_ZIMA: TIBStringField;
-    IBKARTFL_REM: TIBStringField;
-    IBKARTFL_DITM: TIBStringField;
-    IBKARTFL_TUAL: TIBStringField;
-    IBKARTFL_NOLIFT: TIBStringField;
-    IBKARTFL_NOKAN: TIBStringField;
-    IBKARTMAX_UD: TFloatField;
-    IBKARTNOM: TFloatField;
-    IBKARTORG: TFloatField;
-    IBKARTD_DOG: TIBStringField;
-    IBKARTN_DOG: TIBStringField;
-    IBKARTZAYA: TIBStringField;
-    IBKARTRESTR: TIBStringField;
-    IBKARTNOTE: TIBStringField;
-    IBKARTNOTE1: TIBStringField;
-    IBKARTFLAG: TIBStringField;
-    IBKARTWOZW_OT_: TFloatField;
-    IBKARTTELEF: TIBStringField;
-    IBKARTKL_UL: TFloatField;
-    IBKARTULNAIM: TIBStringField;
-    IBKARTNOMDOM: TIBStringField;
-    IBKARTNOMKV: TIBStringField;
-    IBKARTVAL: TFloatField;
-    IBKARTKL: TIntegerField;
-    IBKARTUPD: TIntegerField;
     IBOBORKL: TIntegerField;
     IBOBORPERIOD: TDateField;
     IBOBORSCHET: TIBStringField;
@@ -460,6 +372,69 @@ type
     FloatField18: TFloatField;
     FloatField19: TFloatField;
     DataSource1: TDataSource;
+    IBREPDKL: TIntegerField;
+    IBREPDWID: TIBStringField;
+    IBREPDSCHET: TIBStringField;
+    IBREPDNOTE1: TIntegerField;
+    IBREPDNOTE2: TIntegerField;
+    IBREPDNOTE3: TIBStringField;
+    IBREPDKL_USERS: TIntegerField;
+    IBREPDPOSLUG: TIBStringField;
+    IBREPDDOLG: TFloatField;
+    IBREPDFIO: TIBStringField;
+    IBREPDIDCOD: TIBStringField;
+    IBREPDUL: TIBStringField;
+    IBREPDDOM: TIBStringField;
+    IBREPDKV: TIBStringField;
+    IBREPDKOLI_P: TFloatField;
+    IBREPDKOLI_PF: TFloatField;
+    IBREPDORGNAME: TIBStringField;
+    IBREPDKONTROL: TIBStringField;
+    IBREPDNACH: TFloatField;
+    IBREPDOPL: TFloatField;
+    IBREPDSUBS: TFloatField;
+    IBREPDUDER: TFloatField;
+    IBREPDKOMP: TFloatField;
+    IBREPDWZMZ: TFloatField;
+    IBREPDWOZW: TFloatField;
+    IBREPDMOVW: TFloatField;
+    IBREPDPERE: TFloatField;
+    IBREPDENDDOLG: TFloatField;
+    cxButton1: TcxButton;
+    cxCalcEdit1: TcxCalcEdit;
+    cxCalcEdit2: TcxCalcEdit;
+    Label16: TLabel;
+    Label17: TLabel;
+    dxBarButton95: TdxBarButton;
+    IBKARTKONTROL: TIBStringField;
+    IBKARTSCHET: TIBStringField;
+    IBKARTFIO: TIBStringField;
+    IBKARTIDCOD: TIBStringField;
+    IBKARTORGAN: TIBStringField;
+    IBKARTLG_NOFAM: TIBStringField;
+    IBKARTKOLI_LG: TIBStringField;
+    IBKARTKOLI_P: TFloatField;
+    IBKARTKOLI_PF: TFloatField;
+    IBKARTKOLI_K: TFloatField;
+    IBKARTPLOS_BB: TFloatField;
+    IBKARTPLOS_OB: TFloatField;
+    IBKARTPRIV: TIBStringField;
+    IBKARTETAG: TFloatField;
+    IBKARTLGOTA: TIBStringField;
+    IBKARTLG_POSV: TIBStringField;
+    IBKARTLG_SER: TIBStringField;
+    IBKARTLG_FIO: TIBStringField;
+    IBKARTLG_DATE: TIBStringField;
+    IBKARTLG_KAT: TIBStringField;
+    IBKARTFL_NOLIFT: TIBStringField;
+    IBKARTORG: TFloatField;
+    IBKARTFLAG: TIBStringField;
+    IBKARTTELEF: TIBStringField;
+    IBKARTKL_UL: TFloatField;
+    IBKARTULNAIM: TIBStringField;
+    IBKARTNOMDOM: TIBStringField;
+    IBKARTNOMKV: TIBStringField;
+    IBKARTLIFT: TFloatField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -481,6 +456,8 @@ type
     procedure cxButton5Click(Sender: TObject);
     procedure cxButton10Click(Sender: TObject);
     procedure cxTextEdit4PropertiesChange(Sender: TObject);
+    procedure cxButton8Click(Sender: TObject);
+    procedure dxBarButton95Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -506,7 +483,7 @@ var
 implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
-  Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13;
+  Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -536,6 +513,14 @@ end;
 procedure TForm1.dxBarButton4Click(Sender: TObject);
 begin
 Form3.Show;
+end;
+
+procedure TForm1.dxBarButton95Click(Sender: TObject);
+begin
+Form15.Caption:=dxBarButton95.Caption;
+IBKART.Close;
+IBKART.Open;
+Form15.show;
 end;
 
 procedure TForm1.cxButton10Click(Sender: TObject);
@@ -569,12 +554,12 @@ begin
 
      if cxCheckBox1.Checked then
      begin
-           sql2:=' and dolg'+cxComboBox1.EditValue+cxTextEdit1.EditValue;
+           sql2:=' and dolg'+cxComboBox1.EditValue+StringReplace(FloatToStr(cxCalcEdit1.EditValue),',','.',[rfReplaceAll, rfIgnoreCase]);
      end;
 
      if cxCheckBox2.Checked then
      begin
-           sql2:=' and sal'+cxComboBox2.EditValue+cxTextEdit2.EditValue;
+           sql2:=' and sal'+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase]);
      end;
 
 
@@ -597,7 +582,7 @@ end;
 
 procedure TForm1.cxButton5Click(Sender: TObject);
 begin
-if cxTextEdit3.Text='' then
+if (cxTextEdit3.Text='') and (cxTextEdit4.Text='') then
    IBREPD.Filtered:=false
 else
 begin
@@ -665,6 +650,12 @@ begin
 //     end;
 end;
 
+procedure TForm1.cxButton8Click(Sender: TObject);
+begin
+Form14.Show;
+Form14.Caption:=cxButton8.Caption;
+end;
+
 procedure TForm1.cxGrid1DBTableView1Column1PropertiesButtonClick(
   Sender: TObject; AButtonIndex: Integer);
 begin
@@ -678,7 +669,7 @@ end;
 
 procedure TForm1.cxTextEdit4PropertiesChange(Sender: TObject);
 begin
-IBREPD.LocateNext('schet',cxTextEdit4.Text,[loCaseInsensitive, loPartialKey]);
+//IBREPD.LocateNext('schet',cxTextEdit4.Text,[loCaseInsensitive, loPartialKey]);
 end;
 
 procedure TForm1.ExportGrid(AGrid: TcxGrid;Filename:string='Table.xls');
@@ -859,9 +850,22 @@ Form1.IBQuery1.close;
 end;
 
 procedure TForm1.IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+//var P: Pointer;
 begin
+//   P:=cxComboBox1.EditValue;
 
-Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0);
+if (cxTextEdit3.Text<>'') and (cxTextEdit4.Text<>'')then
+   Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0) and (Pos(cxTextEdit4.Text, DataSet.FieldByName('schet').AsString) > 0)
+else
+begin
+   if (cxTextEdit3.Text<>'') then
+      Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0);
+   if (cxTextEdit4.Text<>'') then
+      Accept:=(Pos(cxTextEdit4.Text, DataSet.FieldByName('schet').AsString) > 0);
+//   if (cxTextEdit1.Text<>'') then
+//      Accept:=Accept and (DataSet.FieldByName('dolg').AsFloat,StringCodePage(cxComboBox1.EditValue),str2float(cxTextEdit1.Text));
+end;
+
 // and
 //(DataSet.FieldByName('LastName').asString < 'B');
 end;

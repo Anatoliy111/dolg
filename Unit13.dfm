@@ -22,7 +22,7 @@ object Form13: TForm13
     Height = 642
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = cxTabSheet1
+    Properties.ActivePage = cxTabSheet3
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 638
     ClientRectLeft = 4
@@ -665,7 +665,6 @@ object Form13: TForm13
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
-        ExplicitWidth = 90
         object cxGridDBTableView3: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDERMES

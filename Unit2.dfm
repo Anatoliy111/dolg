@@ -11,6 +11,7 @@ object Form2: TForm2
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  FormStyle = fsStayOnTop
   OldCreateOrder = False
   Position = poMainFormCenter
   OnShow = FormShow
@@ -64,9 +65,66 @@ object Form2: TForm2
   end
   object Timer2: TTimer
     Enabled = False
-    Interval = 10
-    OnTimer = Timer1Timer
+    Interval = 360000
+    OnTimer = Timer2Timer
     Left = 48
     Top = 8
+  end
+  object IBPERIOD: TIBDataSet
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from PERIOD'
+      'where'
+      '  KL = :OLD_KL')
+    InsertSQL.Strings = (
+      'insert into PERIOD'
+      '  (AKTIV, KL, PERIOD)'
+      'values'
+      '  (:AKTIV, :KL, :PERIOD)')
+    RefreshSQL.Strings = (
+      'Select '
+      '  KL,'
+      '  PERIOD,'
+      '  AKTIV'
+      'from PERIOD '
+      'where'
+      '  KL = :KL')
+    SelectSQL.Strings = (
+      'select * from PERIOD order by PERIOD desc')
+    ModifySQL.Strings = (
+      'update PERIOD'
+      'set'
+      '  AKTIV = :AKTIV,'
+      '  KL = :KL,'
+      '  PERIOD = :PERIOD'
+      'where'
+      '  KL = :OLD_KL')
+    ParamCheck = True
+    UniDirectional = False
+    GeneratorField.Field = 'KL'
+    GeneratorField.Generator = 'GEN_PERIOD_ID'
+    Left = 32
+    Top = 83
+    object IBPERIODKL: TIntegerField
+      FieldName = 'KL'
+      Origin = '"PERIOD"."KL"'
+      Required = True
+    end
+    object IBPERIODPERIOD: TDateField
+      FieldName = 'PERIOD'
+      Origin = '"PERIOD"."PERIOD"'
+    end
+    object IBPERIODAKTIV: TIntegerField
+      FieldName = 'AKTIV'
+      Origin = '"PERIOD"."AKTIV"'
+    end
+  end
+  object DSPERIOD: TDataSource
+    DataSet = IBPERIOD
+    Left = 32
+    Top = 131
   end
 end

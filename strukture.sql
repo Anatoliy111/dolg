@@ -245,130 +245,6 @@ KL INTEGER NOT NULL,
 PERIOD DATE,
 UPD INTEGER);
 
-/* Create view: VW_OBOR */
-CREATE VIEW VW_OBOR(
-    KL,
-    PERIOD,
-    SCHET,
-    WID,
-    N_DOG,
-    D_DOG,
-    TARIF,
-    DOLG,
-    NACH,
-    SUBS,
-    OPL,
-    UDER,
-    KOMP,
-    WZMZ,
-    WOZW,
-    MOVW,
-    PERE,
-    SAL,
-    BGST,
-    PRST,
-    BGEND,
-    PREND,
-    FULLNACH,
-    FULLOPL,
-    OPLNOTSUBS)
-AS
-select
-    obor.kl,
-    obor.period,
-    obor.schet,
-    obor.wid,
-    obor.n_dog,
-    obor.d_dog,
-    obor.tarif,
-    obor.dolg,
-    obor.nach,
-    obor.subs,
-    obor.opl,
-    obor.uder,
-    obor.komp,
-    obor.wzmz,
-    obor.wozw,
-    obor.movw,
-    obor.pere,
-    obor.sal,
-    case when obor.dolg > 0  then obor.dolg else 0 end AS bgst,
-    case when obor.dolg < 0  then obor.dolg else 0 end AS prst,
-    case when obor.sal > 0  then obor.sal else 0 end AS bgend,
-    case when obor.sal < 0  then obor.sal else 0 end AS prend,
-    obor.nach+obor.pere as fullnach,
-    obor.SUBS+obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as fullopl,
-    obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as oplnotsubs
-from obor order by obor.schet
-;
-
-CREATE VIEW VW_OBORKART(
-    KL,
-    PERIOD,
-    SCHET,
-    WID,
-    FIO,
-    ULNAIM,
-    NOMDOM,
-    NOMKV,
-    N_DOG,
-    D_DOG,
-    TARIF,
-    DOLG,
-    NACH,
-    SUBS,
-    OPL,
-    UDER,
-    KOMP,
-    WZMZ,
-    WOZW,
-    MOVW,
-    PERE,
-    SAL,
-    BGST,
-    PRST,
-    BGEND,
-    PREND,
-    FULLNACH,
-    FULLOPL,
-    OPLNOTSUBS)
-AS
-select
-    obor.kl,
-    obor.period,
-    obor.schet,
-    obor.wid,
-    trim(kart.fio) || ' ' || trim(kart.im) || ' ' || trim(kart.ot) as fio,
-    kart.ulnaim,
-    kart.nomdom,
-    kart.nomkv,
-    obor.n_dog,
-    obor.d_dog,
-    obor.tarif,
-    obor.dolg,
-    obor.nach,
-    obor.subs,
-    obor.opl,
-    obor.uder,
-    obor.komp,
-    obor.wzmz,
-    obor.wozw,
-    obor.movw,
-    obor.pere,
-    obor.sal,
-    case when obor.dolg > 0  then obor.dolg else 0 end AS bgst,
-    case when obor.dolg < 0  then obor.dolg else 0 end AS prst,
-    case when obor.sal > 0  then obor.sal else 0 end AS bgend,
-    case when obor.sal < 0  then obor.sal else 0 end AS prend,
-    obor.nach+obor.pere as fullnach,
-    obor.SUBS+obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as fullopl,
-    obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as oplnotsubs
-from obor
-left join kart on obor.schet=kart.schet
-order by obor.schet
-;
-
-
 
 
 CREATE TABLE OPL(FL DOUBLE PRECISION,
@@ -434,6 +310,220 @@ FL_NOOBOR VARCHAR(1),
 FL_GROPL DOUBLE PRECISION,
 FL_SUBS DOUBLE PRECISION,
 VAL DOUBLE PRECISION);
+
+
+/* Create view */
+CREATE VIEW VW_KART(
+    KONTROL,
+    SCHET,
+    FIO,
+    IDCOD,
+    ORGAN,
+    LG_NOFAM,
+    KOLI_LG,
+    KOLI_P,
+    KOLI_PF,
+    KOLI_K,
+    PLOS_BB,
+    PLOS_OB,
+    PRIV,
+    ETAG,
+    LGOTA,
+    LG_POSV,
+    LG_SER,
+    LG_FIO,
+    LG_DATE,
+    LG_KAT,
+    FL_NOLIFT,
+    ORG,
+    FLAG,
+    TELEF,
+    KL_UL,
+    ULNAIM,
+    NOMDOM,
+    NOMKV,
+    lift)
+AS
+select 
+    kontrol.fio kontrol,
+    kart.schet,
+    coalesce(trim(kart.fio),'') || ' ' || coalesce(trim(kart.im),'') || ' ' || coalesce(trim(kart.ot),'') fio,
+    kart.idcod,
+    organ.name ORGAN,
+    kart.lg_nofam,
+    kart.koli_lg,
+    kart.koli_p,
+    kart.koli_pf,
+    kart.koli_k,
+    kart.plos_bb,
+    kart.plos_ob,
+    kart.priv,
+    kart.etag,
+    kart.lgota,
+    kart.lg_posv,
+    kart.lg_ser,
+    kart.lg_fio,
+    kart.lg_date,
+    kart.lg_kat,
+    kart.fl_nolift,
+    kart.org,
+    kart.flag,
+    kart.telef,
+    kart.kl_ul,
+    kart.ulnaim,
+    kart.nomdom,
+    kart.nomkv,
+    kart.lift
+from kart
+left join adres on (kart.nomdom = adres.dom) and (kart.ulnaim = adres.ul)
+left join kontrol on (adres.kl_kontrol = kontrol.kl)
+left join organ on (kart.org = organ.org) and (organ.upd = 1)
+where kart.upd=1
+order by kart.schet
+;
+
+
+CREATE VIEW VW_OBKR(
+    KL,
+    PERIOD,
+    KONTROL,
+    SCHET,
+    WID,
+    POSLUG,
+    FIO,
+    ULNAIM,
+    NOMDOM,
+    NOMKV,
+    ORG,
+    IDCOD,
+    KOLI_P,
+    KOLI_PF,
+    LGOTA,
+    N_DOG,
+    D_DOG,
+    TARIF,
+    DOLG,
+    NACH,
+    SUBS,
+    OPL,
+    UDER,
+    KOMP,
+    WZMZ,
+    WOZW,
+    MOVW,
+    PERE,
+    SAL,
+    BGST,
+    PRST,
+    BGEND,
+    PREND,
+    FULLNACH,
+    FULLOPL,
+    OPLNOTSUBS)
+AS
+select
+    obor.kl,
+    obor.period,
+    kontrol.fio kontrol, 
+    obor.schet,
+    obor.wid,
+    wid.naim poslug,
+    coalesce(trim(kart.fio),'') || ' ' || coalesce(trim(kart.im),'') || ' ' || coalesce(trim(kart.ot),'') fio,
+    kart.ulnaim,
+    kart.nomdom,
+    kart.nomkv,
+    kart.org,
+    kart.idcod,
+    kart.koli_p,
+    kart.koli_pf,
+    kart.lgota,
+    obor.n_dog,
+    obor.d_dog,
+    obor.tarif,
+    obor.dolg,
+    obor.nach,
+    obor.subs,
+    obor.opl,
+    obor.uder,
+    obor.komp,
+    obor.wzmz,
+    obor.wozw,
+    obor.movw,
+    obor.pere,
+    obor.sal,
+    case when obor.dolg > 0  then obor.dolg else 0 end AS bgst,
+    case when obor.dolg < 0  then obor.dolg else 0 end AS prst,
+    case when obor.sal > 0  then obor.sal else 0 end AS bgend,
+    case when obor.sal < 0  then obor.sal else 0 end AS prend,
+    obor.nach+obor.pere as fullnach,
+    obor.SUBS+obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as fullopl,
+    obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as oplnotsubs
+from obor
+left join kart on (obor.schet=kart.schet) and (kart.upd=1)
+left join wid on (obor.wid=wid.wid)
+left join adres on (kart.nomdom = adres.dom) and (kart.ulnaim = adres.ul)
+left join kontrol on (adres.kl_kontrol = kontrol.kl)
+
+where obor.upd=1
+order by obor.schet
+;
+
+CREATE VIEW VW_OBOR(
+    KL,
+    PERIOD,
+    SCHET,
+    WID,
+    N_DOG,
+    D_DOG,
+    TARIF,
+    DOLG,
+    NACH,
+    SUBS,
+    OPL,
+    UDER,
+    KOMP,
+    WZMZ,
+    WOZW,
+    MOVW,
+    PERE,
+    SAL,
+    BGST,
+    PRST,
+    BGEND,
+    PREND,
+    FULLNACH,
+    FULLOPL,
+    OPLNOTSUBS)
+AS
+select
+    obor.kl,
+    obor.period,
+    obor.schet,
+    obor.wid,
+    obor.n_dog,
+    obor.d_dog,
+    obor.tarif,
+    obor.dolg,
+    obor.nach,
+    obor.subs,
+    obor.opl,
+    obor.uder,
+    obor.komp,
+    obor.wzmz,
+    obor.wozw,
+    obor.movw,
+    obor.pere,
+    obor.sal,
+    case when obor.dolg > 0  then obor.dolg else 0 end AS bgst,
+    case when obor.dolg < 0  then obor.dolg else 0 end AS prst,
+    case when obor.sal > 0  then obor.sal else 0 end AS bgend,
+    case when obor.sal < 0  then obor.sal else 0 end AS prend,
+    obor.nach+obor.pere as fullnach,
+    obor.SUBS+obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as fullopl,
+    obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ as oplnotsubs
+from obor order by obor.schet
+;
+
 
 
 
@@ -566,6 +656,8 @@ GRANT ALL ON WID TO SYSDBA WITH GRANT OPTION;
 
 INSERT INTO note (wid, schet,NOTE1,NOTE2,NOTE3,KL_USERS) select wid, schet,NOTE1,NOTE2,NOTE3,KL_USERS from notetmp;
 drop table NOTETMP;
+
+delete from kart where schet not in (select schet from obor);
 
 /*update ADRES set ADRES.kl_ul = (select kl from UL T1 where T1.ul=ADRES.ul)*/
 
