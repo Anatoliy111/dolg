@@ -678,7 +678,9 @@ var
   Excel: Variant;
   Reg: TRegistry;
   path,dname:string;
-  i:integer;
+  i,Columns:integer;
+  Range, Cell1, Cell2: Variant;
+      View:  TcxGridTableView;
 begin
   Reg := TRegistry.Create;
   try
@@ -750,12 +752,29 @@ begin
 //    Excel.columns[24].NumberFormat:='0,00';
 //    Excel.columns[25].NumberFormat:='0,00';
 
-    Excel.ActiveWindow.View := 2;
-    if Excel.ActiveSheet.VPageBreaks.count <> 0 then
-       Excel.ActiveSheet.VPageBreaks[1].DragOff(Direction:=1, RegionIndex:=1);
-    if Excel.ActiveSheet.HPageBreaks.count <> 0 then
-       Excel.ActiveSheet.HPageBreaks[1].DragOff(Direction:=1, RegionIndex:=1);
-    Excel.ActiveWindow.View := 1;
+//    Excel.ActiveWindow.View := 2;
+//    if Excel.ActiveSheet.VPageBreaks.count <> 0 then
+//       Excel.ActiveSheet.VPageBreaks[1].DragOff(Direction:=1, RegionIndex:=1);
+//    if Excel.ActiveSheet.HPageBreaks.count <> 0 then
+//       Excel.ActiveSheet.HPageBreaks[1].DragOff(Direction:=1, RegionIndex:=1);
+//    Excel.ActiveWindow.View := 1;
+
+//   Excel.WorkBooks[1].WorkSheets[1].PageSetup.Zoom:=False;
+//   Excel.WorkBooks[1].WorkSheets[1].PageSetup.FitToPagesWide := 1;
+
+//Columns := Excel.ActiveSheet.UsedRange.Columns.Count;
+//Excel.ActiveSheet.PageSetup.Orientation := 2;
+
+  if (AGrid.ActiveView as TcxGridDBTableView).ColumnCount > 12 then
+      Excel.ActiveSheet.PageSetup.Orientation := 2;
+
+
+  Excel.ActiveWindow.View := 2;
+
+  Excel.ActiveSheet.VPageBreaks[1].DragOff(1, 1);
+
+  Excel.ActiveWindow.View := 1;
+
 
   except
   end;

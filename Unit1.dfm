@@ -29,12 +29,6 @@ object Form1: TForm1
       DataController.DetailKeyFieldNames = 'KL'
       DataController.Summary.DefaultGroupSummaryItems = <
         item
-          Format = '0'
-          Kind = skCount
-          FieldName = 'NOTE1'
-          DisplayText = 'note1'
-        end
-        item
           Format = '0.00'
           Kind = skSum
           Column = cxGrid1DBTableView1ENDDOLG
@@ -99,17 +93,6 @@ object Form1: TForm1
           Column = cxGrid1DBTableView1KOLI_PF
         end
         item
-          Format = '0'
-          Kind = skCount
-          Position = spFooter
-          Column = cxGrid1DBTableView1NOTE1
-        end
-        item
-          Format = '0'
-          Kind = skCount
-          Column = cxGrid1DBTableView1NOTE1
-        end
-        item
           Format = '0.00'
           Kind = skSum
           Column = cxGrid1DBTableView1DOLG
@@ -125,6 +108,11 @@ object Form1: TForm1
           Kind = skSum
           Position = spFooter
           Column = cxGrid1DBTableView1DOLG
+        end
+        item
+          Format = '0'
+          Kind = skCount
+          Column = cxGrid1DBTableView1SCHET
         end>
       DataController.Summary.FooterSummaryItems = <
         item

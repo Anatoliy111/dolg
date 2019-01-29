@@ -208,6 +208,7 @@ var sql:string;
     colum:TcxGridColumn;
     AColumn: TcxGridDBColumn;
       year,month,Day : Word;
+
 begin
 if cxTextEdit1.EditValue <> null then
 begin

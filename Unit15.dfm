@@ -124,6 +124,19 @@ object Form15: TForm15
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.ReadOnly = True
       end
+      object cxGrid1DBTableView1Column1: TcxGridDBColumn
+        Caption = '...'
+        PropertiesClassName = 'TcxButtonEditProperties'
+        Properties.Buttons = <
+          item
+            Default = True
+            Kind = bkEllipsis
+          end>
+        Properties.OnButtonClick = cxGrid1DBTableView1Column1PropertiesButtonClick
+        Options.ShowEditButtons = isebAlways
+        Options.Sorting = False
+        Width = 24
+      end
       object cxGrid1DBTableView1FIO: TcxGridDBColumn
         Caption = #1055#1030#1041
         DataBinding.FieldName = 'FIO'
