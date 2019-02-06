@@ -9,7 +9,7 @@ uses
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxTextEdit, Vcl.Menus,
   Vcl.StdCtrls, cxButtons, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, Vcl.ExtCtrls,
-  cxButtonEdit;
+  cxButtonEdit, cxCalc, cxMaskEdit;
 
 type
   TForm15 = class(TForm)
@@ -35,12 +35,12 @@ type
     cxGrid1DBTableView1LG_FIO: TcxGridDBColumn;
     cxGrid1DBTableView1LG_DATE: TcxGridDBColumn;
     cxGrid1DBTableView1LG_KAT: TcxGridDBColumn;
-    cxGrid1DBTableView1TELEF: TcxGridDBColumn;
     cxGrid1DBTableView1ULNAIM: TcxGridDBColumn;
     cxGrid1DBTableView1NOMDOM: TcxGridDBColumn;
     cxGrid1DBTableView1NOMKV: TcxGridDBColumn;
     cxGrid1DBTableView1LIFT: TcxGridDBColumn;
     cxGrid1DBTableView1Column1: TcxGridDBColumn;
+    cxGrid1DBTableView1TEL: TcxGridDBColumn;
     procedure cxButton3Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);

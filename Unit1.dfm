@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = #1041#1086#1088#1078#1085#1080#1082#1080
   ClientHeight = 638
-  ClientWidth = 925
+  ClientWidth = 972
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,10 +19,11 @@ object Form1: TForm1
   object cxGrid1: TcxGrid
     Left = 0
     Top = 209
-    Width = 925
+    Width = 972
     Height = 429
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 925
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSREPD
@@ -382,10 +383,11 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 28
-    Width = 925
+    Width = 972
     Height = 181
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 925
     object Label16: TLabel
       Left = 630
       Top = 0
@@ -2649,48 +2651,33 @@ object Form1: TForm1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
-      '')
-    RefreshSQL.Strings = (
-      'Select *'
-      'from vw_kart '
+      'delete from aboninf'
       'where'
-      '  KONTROL = :KONTROL and'
-      '  SCHET = :SCHET and'
-      '  FIO = :FIO and'
-      '  IDCOD = :IDCOD and'
-      '  ORGAN = :ORGAN and'
-      '  LG_NOFAM = :LG_NOFAM and'
-      '  KOLI_LG = :KOLI_LG and'
-      '  KOLI_P = :KOLI_P and'
-      '  KOLI_PF = :KOLI_PF and'
-      '  KOLI_K = :KOLI_K and'
-      '  PLOS_BB = :PLOS_BB and'
-      '  PLOS_OB = :PLOS_OB and'
-      '  PRIV = :PRIV and'
-      '  ETAG = :ETAG and'
-      '  LGOTA = :LGOTA and'
-      '  LG_POSV = :LG_POSV and'
-      '  LG_SER = :LG_SER and'
-      '  LG_FIO = :LG_FIO and'
-      '  LG_DATE = :LG_DATE and'
-      '  LG_KAT = :LG_KAT and'
-      '  FL_NOLIFT = :FL_NOLIFT and'
-      '  ORG = :ORG and'
-      '  FLAG = :FLAG and'
-      '  TELEF = :TELEF and'
-      '  KL_UL = :KL_UL and'
-      '  ULNAIM = :ULNAIM and'
-      '  NOMDOM = :NOMDOM and'
-      '  NOMKV = :NOMKV and'
-      '  LIFT = :LIFT')
+      '  ID = :OLD_ID')
+    InsertSQL.Strings = (
+      'insert into aboninf'
+      '  (TEL)'
+      'values'
+      '  (:TEL)')
+    RefreshSQL.Strings = (
+      'select vw_kart.*,aboninf.id,aboninf.tel from aboninf '
+      'inner join vw_kart on (vw_kart.schet=aboninf.schet)'
+      'where'
+      '  aboninf.ID = :ID')
     SelectSQL.Strings = (
-      'select *  from vw_kart')
+      'select vw_kart.*,aboninf.id,aboninf.tel from aboninf '
+      'inner join vw_kart on (vw_kart.schet=aboninf.schet)')
     ModifySQL.Strings = (
-      '')
+      'update aboninf'
+      'set'
+      '  TEL = :TEL'
+      'where'
+      '  ID = :OLD_ID')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_KART_ID'
+    Active = True
     Left = 96
     Top = 472
     object IBKARTKONTROL: TIBStringField
@@ -2804,10 +2791,6 @@ object Form1: TForm1
       Origin = '"VW_KART"."FLAG"'
       Size = 1
     end
-    object IBKARTTELEF: TIBStringField
-      FieldName = 'TELEF'
-      Origin = '"VW_KART"."TELEF"'
-    end
     object IBKARTKL_UL: TFloatField
       FieldName = 'KL_UL'
       Origin = '"VW_KART"."KL_UL"'
@@ -2830,6 +2813,21 @@ object Form1: TForm1
     object IBKARTLIFT: TFloatField
       FieldName = 'LIFT'
       Origin = '"VW_KART"."LIFT"'
+    end
+    object IBKARTTEL: TIBStringField
+      FieldName = 'TEL'
+      Origin = '"ABONINF"."TEL"'
+      Size = 10
+    end
+    object IBKARTTELEF: TIBStringField
+      FieldName = 'TELEF'
+      Origin = '"VW_KART"."TELEF"'
+    end
+    object IBKARTID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"ABONINF"."ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
     end
   end
   object DSKART: TDataSource

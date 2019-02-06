@@ -42,6 +42,7 @@ object Form15: TForm15
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = Form1.DSKART
       DataController.DetailKeyFieldNames = 'KL'
+      DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
       DataController.Summary.DefaultGroupSummaryItems = <
         item
           Format = '0'
@@ -158,6 +159,13 @@ object Form15: TForm15
         Caption = #1050#1074#1072#1088#1090#1080#1088#1072
         DataBinding.FieldName = 'NOMKV'
       end
+      object cxGrid1DBTableView1TEL: TcxGridDBColumn
+        Caption = #1058#1077#1083#1077#1092#1086#1085
+        DataBinding.FieldName = 'TEL'
+        PropertiesClassName = 'TcxMaskEditProperties'
+        Properties.EditMask = '!\(999\)000-0000;0;_'
+        Width = 169
+      end
       object cxGrid1DBTableView1IDCOD: TcxGridDBColumn
         Caption = #1030#1076#1077#1085#1090'.'#1082#1086#1076
         DataBinding.FieldName = 'IDCOD'
@@ -223,10 +231,6 @@ object Form15: TForm15
       object cxGrid1DBTableView1LG_KAT: TcxGridDBColumn
         Caption = #1050#1072#1090#1077#1075#1086#1088#1110#1103
         DataBinding.FieldName = 'LG_KAT'
-      end
-      object cxGrid1DBTableView1TELEF: TcxGridDBColumn
-        Caption = #1058#1077#1083#1077#1092#1086#1085
-        DataBinding.FieldName = 'TELEF'
       end
       object cxGrid1DBTableView1LIFT: TcxGridDBColumn
         Caption = #1051#1110#1092#1090

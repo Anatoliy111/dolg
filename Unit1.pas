@@ -429,12 +429,14 @@ type
     IBKARTFL_NOLIFT: TIBStringField;
     IBKARTORG: TFloatField;
     IBKARTFLAG: TIBStringField;
-    IBKARTTELEF: TIBStringField;
     IBKARTKL_UL: TFloatField;
     IBKARTULNAIM: TIBStringField;
     IBKARTNOMDOM: TIBStringField;
     IBKARTNOMKV: TIBStringField;
     IBKARTLIFT: TFloatField;
+    IBKARTTEL: TIBStringField;
+    IBKARTTELEF: TIBStringField;
+    IBKARTID: TIntegerField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
