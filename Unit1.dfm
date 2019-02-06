@@ -606,7 +606,6 @@ object Form1: TForm1
     Width = 121
   end
   object IBDatabase1: TIBDatabase
-    Connected = True
     DatabaseName = 'D:\WORK\KOMUN\DOLG\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'
@@ -2677,7 +2676,6 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_KART_ID'
-    Active = True
     Left = 96
     Top = 472
     object IBKARTKONTROL: TIBStringField
@@ -3071,7 +3069,6 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
-    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (

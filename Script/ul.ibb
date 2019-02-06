@@ -3,8 +3,8 @@ as
 begin
     startDate='01.01.2018';
 	 enddate=startDate;
+    arcdir='D:\WORK\KOMUN\kvpl\arc\';
     dir='D:\WORK\KOMUN\kvpl\';
-    arcdir=dir+'arc\';
 	 base='"D:\WORK\KOMUN\dolg\DOLG.GDB"';
     cur_file = dir+'cur_date.txt';
 
@@ -55,26 +55,25 @@ begin
                     if (Res is not null) then
                     begin
   		    -- Deleting records from the target table
-			commit;
                         DELETE from ul where upd=1 and kl in (select kl from ul where upd is null);
-			commit;
+								commit;
                         update UL set upd=1 where upd is null;
-			commit;
-			ibec_Progress('commit ADRES');
+								commit;
+								ibec_Progress('commit ADRES');
 								
                         update KART set KART.kl_ul = (select kl from UL T1 where T1.ul=KART.ulnaim);
-			commit;
+								commit;
                         update KART set KART.kl_ul = 23 where KART.ULNAIM='вул.Лазарева';
-			commit;
+								commit;
                         update KART set KART.ulnaim = (select ul from UL T1 where T1.kl=KART.kl_ul);
-			commit;
+								commit;
                         UPDATE KART SET nomdom = REPLACE(nomdom, 'А','а');
-			commit;
+								commit;
                         UPDATE KART SET nomdom = REPLACE(nomdom, 'В','в');
-			commit;
+								commit;
                         UPDATE KART SET nomdom = REPLACE(nomdom, 'Б','б');
                         commit;
-			ibec_Progress('commit KART');
+								ibec_Progress('commit KART');
 								
                     end;
 
@@ -87,7 +86,6 @@ begin
 		                          'RowFirst=1;
 		                           DateOrder=DMY; DateSeparator="."; TimeSeparator=":"; DecimalSeparator=","; OemToAnsi;', '', cbb);
 
-                  commit;
 		  delete from WID where fl_vtch = 1;
 		  commit;
 								

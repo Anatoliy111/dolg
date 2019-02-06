@@ -1,0 +1,28 @@
+execute ibeblock
+as
+begin
+	 base = '"D:\WORK\KOMUN\dolg\DOLG.GDB"';
+		  
+		  DB = ibec_CreateConnection(__ctFirebird, 'DBName='+Base+';
+		                                            ClientLib=C:\Windows\System32\gds32.dll;
+		                                            User=upd; Password=masterkey; Names=WIN1251; SqlDialect=3;');
+		  try
+			 
+		  ibec_UseConnection(DB);
+
+
+--		        	INSERT INTO NOTE (wid, schet) select wid, schet from obor where not exists(select wid, schet from note where --kl_users=:kl_us) group by wid, schet;
+                       INSERT INTO aboninf (schet) select kart.schet from kart where kart.schet not in (select schet from aboninf);
+                       commit;  
+
+
+
+		  finally
+		    ibec_CloseConnection(DB);
+		  end;
+
+
+
+
+
+end

@@ -1,9 +1,10 @@
 execute ibeblock
 as
 begin
-    enddate='01.03.2018';
+    startDate='01.01.2017';
+	 enddate=startDate;
+    arcdir='D:\WORK\KOMUN\kvpl\arc\';
     dir='D:\WORK\KOMUN\kvpl\';
-    arcdir=dir+'arc\';
 	 base='"D:\WORK\KOMUN\dolg\DOLG.GDB"';
     cur_file = dir+'cur_date.txt';
 
@@ -32,13 +33,12 @@ begin
 			 ibec_Progress(enddate);
 			 
 			 
-	while (MyStr <> enddate) do
-	begin
+					while (MyStr <> enddate) do
+					begin
 					
-					  ibec_Progress('start - '+enddate);
+					  ibec_Progress(enddate);
 
 					  delete from OBOR where upd is null;
-					  commit;	
 					  delete from OBOR where period=:enddate;
 					  commit;
 					  
@@ -47,10 +47,8 @@ begin
 						stmes = SUBSTRING(enddate from 4 for 2);
 						styear = SUBSTRING(enddate from 7 for 4);
 
-				                mes1=cast(stmes as int);
+                  mes1=cast(stmes as int);
 						year1=cast(styear as int);
-						ibec_Progress(styear+stmes);
-						ibec_Progress(arcdir+styear+stmes+'\obor.DBF');
 						
 
 					  
@@ -61,10 +59,12 @@ begin
 														
 						 if (Res is not null) then
 						 begin
-							commit;	
-							update OBOR set period=:enddate, upd=1 where upd is null;
-							commit;
-							ibec_Progress('commit obor '+enddate);
+							 -- Deleting records from the target table
+												update OBOR set period=:enddate where period is null;
+												commit;
+												update OBOR set upd=1 where upd is null;
+												commit;
+												ibec_Progress('commit obor '+enddate);
 						end
 						else
 						  ibec_Progress(enddate+' OBOR is eeeeeeeeeeeeeeeeeeeeeeeeeeemmpty');
@@ -84,18 +84,18 @@ begin
 		  
                     if (Res is not null) then
                     begin
-  		       commit;
+  		    -- Deleting records from the target table
                        DELETE from kart where upd=1 and schet in (select schet from kart k1 where upd is null);
-			commit;				  
+							  commit;
                        update KART set upd=1 where upd is null;
                        commit;
-		       ibec_Progress('commit kart '+enddate);
+     							ibec_Progress('commit kart '+enddate);
 
-		    end
-		    else
-  		    ibec_Progress(enddate+' KART is eeeeeeeeeeeeeeeeeeeeeeeeeeemmpty');
+						end
+						else
+						  ibec_Progress(enddate+' KART is eeeeeeeeeeeeeeeeeeeeeeeeeeemmpty');
+
 									
-		    ibec_Progress('end - '+enddate);
 														
 						mes1 = mes1+1;
 						
@@ -106,15 +106,14 @@ begin
 							end;	
 
 						mm = cast(mes1 as varchar(2));
-				                yy = cast(year1 as varchar(4));
+                  yy = cast(year1 as varchar(4));
 						
 						if (mes1 < 10) then
 						  enddate='01.0'+mm+'.'+yy;
 						else	
 						  enddate='01.'+mm+'.'+yy;
-					
+					end;
 			 
-     end;
 			 
 
 		  finally
