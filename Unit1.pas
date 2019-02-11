@@ -13,7 +13,10 @@ uses
   IBConnectionBroker, IBSQLMonitor, IBDatabaseInfo, cxLabel, cxBlobEdit,
   cxButtonEdit, cxBarEditItem, dxBar, DBTables, cxContainer, Menus, cxButtons,
   cxCheckBox, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
-  cxGroupBox, cxNavigator, IBX.IBScript, IBX.IBSQL, cxCalc;
+  cxGroupBox, cxNavigator, IBX.IBScript, IBX.IBSQL, cxCalc, Data.DBXMySQL,
+  Data.DBXPool, Data.SqlExpr, Soap.InvokeRegistry, Soap.WSDLIntf,
+  Soap.SOAPPasInv, Soap.SOAPHTTPPasInv, Soap.SOAPHTTPDisp, Soap.WebBrokerSOAP,
+  Soap.SOAPDomConv, Soap.OPToSOAPDomConv, Datasnap.DBClient, Soap.SOAPConn;
 
 type
   TForm1 = class(TForm)
@@ -437,6 +440,31 @@ type
     IBKARTTEL: TIBStringField;
     IBKARTTELEF: TIBStringField;
     IBKARTID: TIntegerField;
+    HTTPSoapPascalInvoker1: THTTPSoapPascalInvoker;
+    cxButton4: TcxButton;
+    IBSERVICESSMSLOGIN: TIBStringField;
+    IBSERVICESSMSPW: TIBStringField;
+    IBSERVICESSMSTRANSLIT: TSmallintField;
+    IBTransaction3: TIBTransaction;
+    IBSMSORDEREDS: TIBDataSet;
+    IBSMSORDEREDSID: TIntegerField;
+    IBSMSORDEREDSDATA: TDateTimeField;
+    IBSMSORDEREDSSEND: TIntegerField;
+    IBSMSORDEREDSPERIOD: TDateField;
+    IBSMSORDEREDSDOLG: TFloatField;
+    IBSMSORDEREDSKOL_SENDSMS: TIntegerField;
+    IBSMSORDEREDSKOL_ERRSMS: TIntegerField;
+    IBSMSORDEREDSKOL_DOST: TIntegerField;
+    IBSMSORDEREDSFIO: TIBStringField;
+    IBSMSORDEREDSID_USER: TIntegerField;
+    DSSMSORDEREDS: TDataSource;
+    IBSMSORDEREDSCONTROL: TIntegerField;
+    IBSMSORDEREDSKOL_ROUTE: TIntegerField;
+    IBABONINF: TIBDataSet;
+    DSABONINF: TDataSource;
+    IBABONINFID: TIntegerField;
+    IBABONINFSCHET: TIBStringField;
+    IBABONINFTEL: TIBStringField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -460,6 +488,7 @@ type
     procedure cxTextEdit4PropertiesChange(Sender: TObject);
     procedure cxButton8Click(Sender: TObject);
     procedure dxBarButton95Click(Sender: TObject);
+    procedure cxButton4Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -472,6 +501,10 @@ type
     UpdateBase:Boolean;
     iniFile:TIniFile;
     PathKvart,StartSQL,PathDir,ORG:string;
+    translit,dtsms,alphaname,stsms,poslsms,endsms:string;
+
+
+
     procedure REPORT;
     procedure ExportGrid(AGrid: TcxGrid;Filename:string='Table.xls');
 
@@ -485,7 +518,8 @@ var
 implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
-  Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15;
+  Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
+  Unit16;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -581,6 +615,19 @@ begin
   ExportGrid(cxGrid1);
 end;
 
+
+procedure TForm1.cxButton4Click(Sender: TObject);
+begin
+Form16.show;
+//  // получаем интерфейс
+//  ws := GetServiceSoap();
+//  // вызываем процедуру сервиса
+////  ws.Auth('tsmsb','tsmsb1234');
+//  ws.Auth('tsmsb','tsmsb5678');
+//  with ws do
+//    ShowMessage(ws.GetCreditBalance);
+
+end;
 
 procedure TForm1.cxButton5Click(Sender: TObject);
 begin
@@ -801,6 +848,15 @@ begin
   ORG:=iniFile.ReadString('Data','org',extractfilepath(paramstr(0)));
   PathKvart:=iniFile.ReadString('DBF','base',extractfilepath(paramstr(0)));
   PathDIR:=iniFile.ReadString('DBF','tmp',extractfilepath(paramstr(0)));
+// sms
+
+    alphaname:=iniFile.ReadString('SMS','alphaname',extractfilepath(paramstr(0)));
+    dtsms:=iniFile.ReadString('SMS','dtsms',extractfilepath(paramstr(0)));
+    stsms:=iniFile.ReadString('SMS','stsms',extractfilepath(paramstr(0)));
+    poslsms:=iniFile.ReadString('SMS','poslsms',extractfilepath(paramstr(0)));
+    endsms:=iniFile.ReadString('SMS','endsms',extractfilepath(paramstr(0)));
+    translit:=iniFile.ReadString('SMS','translit',extractfilepath(paramstr(0)));
+
 
 //  cur:=iniFile.ReadString('DBF','cur_date',extractfilepath(paramstr(0))+);
 
@@ -814,8 +870,11 @@ begin
    IBDatabase1.Connected:=TRUE;
    IBTransaction1.StartTransaction;
    IBTransaction2.StartTransaction;
+   IBTransaction3.StartTransaction;
    IBSERVICES.open;
    IBPERIOD.open;
+   IBSMSORDEREDS.Open;
+
 
 
   IBREPD.close;
@@ -833,6 +892,7 @@ begin
   IBSP_ADRES.open;
   IBSERVICES.open;
   IBPERIOD.open;
+
 
 
 

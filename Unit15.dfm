@@ -12,6 +12,7 @@ object Form15: TForm15
   Font.Style = []
   OldCreateOrder = False
   WindowState = wsMaximized
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -153,6 +154,8 @@ object Form15: TForm15
       object cxGrid1DBTableView1NOMDOM: TcxGridDBColumn
         Caption = #1041#1091#1076#1080#1085#1086#1082
         DataBinding.FieldName = 'NOMDOM'
+        PropertiesClassName = 'TcxMaskEditProperties'
+        Properties.EditMask = '!\(999\)000-0000;0;_'
         Width = 49
       end
       object cxGrid1DBTableView1NOMKV: TcxGridDBColumn
@@ -164,6 +167,7 @@ object Form15: TForm15
         DataBinding.FieldName = 'TEL'
         PropertiesClassName = 'TcxMaskEditProperties'
         Properties.EditMask = '!\(999\)000-0000;0;_'
+        Properties.OnValidate = cxGrid1DBTableView1TELPropertiesValidate
         Width = 169
       end
       object cxGrid1DBTableView1IDCOD: TcxGridDBColumn

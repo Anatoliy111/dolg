@@ -11,6 +11,7 @@ object Form6: TForm6
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -29,36 +30,52 @@ object Form6: TForm6
       DataSource = Form1.DSUSER
       TabOrder = 0
     end
-    object cxButton2: TcxButton
-      Left = 10
-      Top = 18
-      Width = 173
-      Height = 25
-      Caption = #1055#1077#1088#1077#1079#1072#1087#1080#1089#1072#1090#1080' '#1082#1072#1088#1090#1082#1080
-      TabOrder = 1
-    end
-    object cxProgressBar1: TcxProgressBar
-      Left = 152
-      Top = 95
-      TabOrder = 2
-      Width = 345
-    end
-    object cxButton1: TcxButton
-      Left = 218
-      Top = 18
-      Width = 173
-      Height = 25
-      Caption = #1055#1072#1088#1089#1077#1088' DBF'
-      TabOrder = 3
-    end
     object cxButton3: TcxButton
       Left = 514
       Top = 18
       Width = 173
       Height = 25
       Caption = #1044#1080#1079#1072#1081#1085#1077#1088
-      TabOrder = 4
+      TabOrder = 1
       OnClick = cxButton3Click
+    end
+    object cxDBTextEdit1: TcxDBTextEdit
+      Left = 32
+      Top = 32
+      DataBinding.DataField = 'SMSLOGIN'
+      DataBinding.DataSource = Form1.DSSERVICES
+      TabOrder = 2
+      Width = 121
+    end
+    object cxDBTextEdit2: TcxDBTextEdit
+      Left = 176
+      Top = 32
+      DataBinding.DataField = 'SMSPW'
+      DataBinding.DataSource = Form1.DSSERVICES
+      TabOrder = 3
+      Width = 121
+    end
+    object cxLabel1: TcxLabel
+      Left = 56
+      Top = 9
+      Caption = #1051#1086#1075#1110#1085' SMS'
+    end
+    object cxLabel2: TcxLabel
+      Left = 200
+      Top = 9
+      Caption = #1055#1072#1088#1086#1083#1100' SMS'
+    end
+    object DBCheckBox1: TDBCheckBox
+      Left = 32
+      Top = 59
+      Width = 97
+      Height = 17
+      Caption = 'SMS '#1058#1088#1072#1085#1089#1083#1080#1090
+      DataField = 'SMSTRANSLIT'
+      DataSource = Form1.DSSERVICES
+      TabOrder = 6
+      ValueChecked = '1'
+      ValueUnchecked = '0'
     end
   end
   object cxGrid1: TcxGrid
@@ -132,6 +149,9 @@ object Form6: TForm6
       end
       object cxGridDBTableView1NAIM: TcxGridDBColumn
         DataBinding.FieldName = 'NAIM'
+      end
+      object cxGridDBTableView1SNAIM: TcxGridDBColumn
+        DataBinding.FieldName = 'SNAIM'
       end
     end
     object cxGridLevel1: TcxGridLevel

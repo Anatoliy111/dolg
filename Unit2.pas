@@ -120,7 +120,7 @@ begin
    Application.ProcessMessages;
         cxProgressBar1.Position:=0;
         cxProgressBar1.Properties.Min:=0;
-        cxProgressBar1.Properties.Max:=14;
+        cxProgressBar1.Properties.Max:=15;
 
         Form1.IBDatabase1.Close;
         Form1.IBDatabase1.Open;
@@ -130,6 +130,9 @@ begin
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
         Form1.IBTransaction2.StartTransaction;
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
+        Form1.IBTransaction3.StartTransaction;
 
 
   Form1.IBKONTROL.open;
@@ -159,6 +162,11 @@ begin
   Form1.IBSP_ADRES.open;
   Form1.IBSERVICES.open;
   Form1.IBPERIOD.open;
+  Form1.IBABONINF.open;
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        Application.ProcessMessages;
+      Form1.IBSMSORDEREDS.Open;
+//    Form1.IBSMSLIST.Open;
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
 

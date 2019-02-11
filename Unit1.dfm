@@ -23,7 +23,6 @@ object Form1: TForm1
     Height = 429
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 925
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSREPD
@@ -387,7 +386,6 @@ object Form1: TForm1
     Height = 181
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 925
     object Label16: TLabel
       Left = 630
       Top = 0
@@ -597,6 +595,15 @@ object Form1: TForm1
       Top = 158
       Caption = #1076#1072#1090#1072' '
     end
+    object cxButton4: TcxButton
+      Left = 608
+      Top = 139
+      Width = 185
+      Height = 25
+      Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' SMS'
+      TabOrder = 6
+      OnClick = cxButton4Click
+    end
   end
   object cxCalcEdit1: TcxCalcEdit
     Left = 274
@@ -606,6 +613,7 @@ object Form1: TForm1
     Width = 121
   end
   object IBDatabase1: TIBDatabase
+    Connected = True
     DatabaseName = 'D:\WORK\KOMUN\DOLG\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'
@@ -1353,14 +1361,17 @@ object Form1: TForm1
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
       'insert into SERVICES'
-      '  (DATA, KL, UPDATES)'
+      '  (KL, DATA, UPDATES, SMSLOGIN, SMSPW, SMSTRANSLIT)'
       'values'
-      '  (:DATA, :KL, :UPDATES)')
+      '  (:KL, :DATA, :UPDATES, :SMSLOGIN, :SMSPW, :SMSTRANSLIT)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
       '  DATA,'
-      '  UPDATES'
+      '  UPDATES,'
+      '  SMSLOGIN,'
+      '  SMSPW,'
+      '  SMSTRANSLIT'
       'from SERVICES '
       'where'
       '  KL = :KL')
@@ -1369,9 +1380,12 @@ object Form1: TForm1
     ModifySQL.Strings = (
       'update SERVICES'
       'set'
-      '  DATA = :DATA,'
       '  KL = :KL,'
-      '  UPDATES = :UPDATES'
+      '  DATA = :DATA,'
+      '  UPDATES = :UPDATES,'
+      '  SMSLOGIN = :SMSLOGIN,'
+      '  SMSPW = :SMSPW,'
+      '  SMSTRANSLIT = :SMSTRANSLIT'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -1392,6 +1406,20 @@ object Form1: TForm1
     object IBSERVICESUPDATES: TIntegerField
       FieldName = 'UPDATES'
       Origin = '"SERVICES"."UPDATES"'
+    end
+    object IBSERVICESSMSLOGIN: TIBStringField
+      FieldName = 'SMSLOGIN'
+      Origin = '"SERVICES"."SMSLOGIN"'
+      Size = 10
+    end
+    object IBSERVICESSMSPW: TIBStringField
+      FieldName = 'SMSPW'
+      Origin = '"SERVICES"."SMSPW"'
+      Size = 10
+    end
+    object IBSERVICESSMSTRANSLIT: TSmallintField
+      FieldName = 'SMSTRANSLIT'
+      Origin = '"SERVICES"."SMSTRANSLIT"'
     end
   end
   object dxBarManager1: TdxBarManager
@@ -3533,5 +3561,183 @@ object Form1: TForm1
     Enabled = False
     Left = 688
     Top = 520
+  end
+  object HTTPSoapPascalInvoker1: THTTPSoapPascalInvoker
+    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
+    Left = 168
+    Top = 280
+  end
+  object IBTransaction3: TIBTransaction
+    Active = True
+    DefaultDatabase = IBDatabase1
+    Params.Strings = (
+      'read_committed'
+      'rec_version'
+      'nowait')
+    Left = 144
+    Top = 240
+  end
+  object IBSMSORDEREDS: TIBDataSet
+    Database = IBDatabase1
+    Transaction = IBTransaction3
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from smsordereds'
+      'where'
+      '  ID = :OLD_ID')
+    InsertSQL.Strings = (
+      'insert into smsordereds'
+      
+        '  (ID, DATA, SEND, CONTROL, PERIOD, DOLG, KOL_SENDSMS, KOL_ERRSM' +
+        'S, KOL_DOST, '
+      '   KOL_ROUTE, ID_USER)'
+      'values'
+      
+        '  (:ID, :DATA, :SEND, :CONTROL, :PERIOD, :DOLG, :KOL_SENDSMS, :K' +
+        'OL_ERRSMS, '
+      '   :KOL_DOST, :KOL_ROUTE, :ID_USER)')
+    RefreshSQL.Strings = (
+      'Select * '
+      'from smsordereds '
+      'where'
+      '  ID = :ID')
+    SelectSQL.Strings = (
+      'select smsordereds.*,users.fio from smsordereds'
+      'left join users on users.kl=smsordereds.id_user'
+      'order by smsordereds.data desc')
+    ModifySQL.Strings = (
+      'update smsordereds'
+      'set'
+      '  ID = :ID,'
+      '  DATA = :DATA,'
+      '  SEND = :SEND,'
+      '  CONTROL = :CONTROL,'
+      '  PERIOD = :PERIOD,'
+      '  DOLG = :DOLG,'
+      '  KOL_SENDSMS = :KOL_SENDSMS,'
+      '  KOL_ERRSMS = :KOL_ERRSMS,'
+      '  KOL_DOST = :KOL_DOST,'
+      '  KOL_ROUTE = :KOL_ROUTE,'
+      '  ID_USER = :ID_USER'
+      'where'
+      '  ID = :OLD_ID')
+    ParamCheck = True
+    UniDirectional = False
+    Left = 800
+    Top = 440
+    object IBSMSORDEREDSID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"SMSORDEREDS"."ID"'
+    end
+    object IBSMSORDEREDSDATA: TDateTimeField
+      FieldName = 'DATA'
+      Origin = '"SMSORDEREDS"."DATA"'
+    end
+    object IBSMSORDEREDSSEND: TIntegerField
+      FieldName = 'SEND'
+      Origin = '"SMSORDEREDS"."SEND"'
+    end
+    object IBSMSORDEREDSPERIOD: TDateField
+      FieldName = 'PERIOD'
+      Origin = '"SMSORDEREDS"."PERIOD"'
+    end
+    object IBSMSORDEREDSDOLG: TFloatField
+      FieldName = 'DOLG'
+      Origin = '"SMSORDEREDS"."DOLG"'
+    end
+    object IBSMSORDEREDSKOL_SENDSMS: TIntegerField
+      FieldName = 'KOL_SENDSMS'
+      Origin = '"SMSORDEREDS"."KOL_SENDSMS"'
+    end
+    object IBSMSORDEREDSKOL_ERRSMS: TIntegerField
+      FieldName = 'KOL_ERRSMS'
+      Origin = '"SMSORDEREDS"."KOL_ERRSMS"'
+    end
+    object IBSMSORDEREDSKOL_DOST: TIntegerField
+      FieldName = 'KOL_DOST'
+      Origin = '"SMSORDEREDS"."KOL_DOST"'
+    end
+    object IBSMSORDEREDSFIO: TIBStringField
+      FieldName = 'FIO'
+      Origin = '"USERS"."FIO"'
+      Size = 30
+    end
+    object IBSMSORDEREDSID_USER: TIntegerField
+      FieldName = 'ID_USER'
+      Origin = '"SMSORDEREDS"."ID_USER"'
+    end
+    object IBSMSORDEREDSCONTROL: TIntegerField
+      FieldName = 'CONTROL'
+      Origin = '"SMSORDEREDS"."CONTROL"'
+    end
+    object IBSMSORDEREDSKOL_ROUTE: TIntegerField
+      FieldName = 'KOL_ROUTE'
+      Origin = '"SMSORDEREDS"."KOL_ROUTE"'
+    end
+  end
+  object DSSMSORDEREDS: TDataSource
+    DataSet = IBSMSORDEREDS
+    Left = 800
+    Top = 488
+  end
+  object IBABONINF: TIBDataSet
+    Database = IBDatabase1
+    Transaction = IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from ABONINF'
+      'where'
+      '  ID = :OLD_ID')
+    InsertSQL.Strings = (
+      'insert into ABONINF'
+      '  (ID, SCHET, TEL)'
+      'values'
+      '  (:ID, :SCHET, :TEL)')
+    RefreshSQL.Strings = (
+      'Select '
+      '  ID,'
+      '  SCHET,'
+      '  TEL'
+      'from ABONINF '
+      'where'
+      '  ID = :ID')
+    SelectSQL.Strings = (
+      'select * from  ABONINF')
+    ModifySQL.Strings = (
+      'update ABONINF'
+      'set'
+      '  ID = :ID,'
+      '  SCHET = :SCHET,'
+      '  TEL = :TEL'
+      'where'
+      '  ID = :OLD_ID')
+    ParamCheck = True
+    UniDirectional = False
+    Left = 896
+    Top = 400
+    object IBABONINFID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"ABONINF"."ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object IBABONINFSCHET: TIBStringField
+      FieldName = 'SCHET'
+      Origin = '"ABONINF"."SCHET"'
+      Required = True
+      Size = 10
+    end
+    object IBABONINFTEL: TIBStringField
+      FieldName = 'TEL'
+      Origin = '"ABONINF"."TEL"'
+      Size = 10
+    end
+  end
+  object DSABONINF: TDataSource
+    DataSet = IBABONINF
+    Left = 896
+    Top = 448
   end
 end

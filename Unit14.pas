@@ -116,7 +116,7 @@ begin
       acolumn.DataBinding.FieldName:='kontrol';
       acolumn.DataBinding.valuetype:='string';
       acolumn.Width:=110;
-      acolumn.Editing:=false;
+      acolumn.Options.Editing:=false;
       cxGridDBTableView1.EndUpdate;
 
       //AColumn.Summary.GroupFooterKind := skSum;
@@ -127,7 +127,7 @@ begin
       cxGridDBTableView1.BeginUpdate;
       acolumn.DataBinding.FieldName:='SCHET';
       acolumn.DataBinding.valuetype:='string';
-      acolumn.Editing:=false;
+      acolumn.Options.Editing:=false;
       cxGridDBTableView1.EndUpdate;
 
       //AColumn.Summary.GroupFooterKind := skSum;
@@ -139,7 +139,7 @@ begin
       acolumn.DataBinding.FieldName:='FIO';
       acolumn.DataBinding.valuetype:='string';
       acolumn.Width:=200;
-      acolumn.Editing:=false;
+      acolumn.Options.Editing:=false;
       cxGridDBTableView1.EndUpdate;
 
       //AColumn.Summary.GroupFooterKind := skSum;
@@ -152,7 +152,7 @@ begin
       acolumn.DataBinding.FieldName:='ULNAIM';
       acolumn.DataBinding.valuetype:='string';
       acolumn.Width:=200;
-      acolumn.Editing:=false;
+      acolumn.Options.Editing:=false;
       cxGridDBTableView1.EndUpdate;
 
       //AColumn.Summary.GroupFooterKind := skSum;
@@ -163,7 +163,7 @@ begin
       cxGridDBTableView1.BeginUpdate;
       acolumn.DataBinding.FieldName:='NOMDOM';
       acolumn.DataBinding.valuetype:='string';
-      acolumn.Editing:=false;
+      acolumn.Options.Editing:=false;
       cxGridDBTableView1.EndUpdate;
 
       //AColumn.Summary.GroupFooterKind := skSum;
@@ -176,7 +176,7 @@ begin
       cxGridDBTableView1.BeginUpdate;
       acolumn.DataBinding.FieldName:='NOMKV';
       acolumn.DataBinding.valuetype:='string';
-      acolumn.Editing:=false;
+      acolumn.Options.Editing:=false;
       cxGridDBTableView1.EndUpdate;
 
       //AColumn.Summary.GroupFooterKind := skSum;
@@ -188,7 +188,7 @@ begin
       acolumn.DataBinding.FieldName:='SAL';
       acolumn.DataBinding.valuetype:='Currency';
       acolumn.Width:=80;
-      acolumn.Editing:=false;
+      acolumn.Options.Editing:=false;
       acolumn.PropertiesClass:=TcxCurrencyEditProperties;
       TcxCurrencyEditProperties(acolumn.Properties).DisplayFormat:= ',0.00;-,0.00';
       cxGrid1DBTableView1.EndUpdate;
@@ -225,7 +225,7 @@ begin
                               acolumn.DataBinding.FieldName:=IBWIDWID.Value;
                               acolumn.DataBinding.valuetype:='Currency';
                               acolumn.Width:=70;
-                              acolumn.Editing:=false;
+                              acolumn.Options.Editing:=false;
                               acolumn.PropertiesClass:=TcxCurrencyEditProperties;
                               TcxCurrencyEditProperties(acolumn.Properties).DisplayFormat:= ',0.00;-,0.00';
                               cxGrid1DBTableView1.EndUpdate;
@@ -240,7 +240,7 @@ begin
                               acolumn.DataBinding.FieldName:='OPL_'+IBWIDWID.Value;
                               acolumn.DataBinding.valuetype:='Currency';
                               acolumn.Width:=70;
-                              acolumn.Editing:=false;
+                              acolumn.Options.Editing:=false;
                               acolumn.PropertiesClass:=TcxCurrencyEditProperties;
                               TcxCurrencyEditProperties(acolumn.Properties).DisplayFormat:= ',0.00;-,0.00';
                               cxGrid1DBTableView1.EndUpdate;

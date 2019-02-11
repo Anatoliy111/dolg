@@ -8,7 +8,8 @@ uses
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, DB, cxDBData,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
   cxClasses, cxGridCustomView, cxGrid, DBCtrls, ExtCtrls, Menus, cxContainer,
-  cxProgressBar, StdCtrls, cxButtons, cxNavigator, frxDesgn, frxClass;
+  cxProgressBar, StdCtrls, cxButtons, cxNavigator, frxDesgn, frxClass, cxLabel,
+  cxTextEdit, cxDBEdit;
 
 type
   TForm6 = class(TForm)
@@ -20,9 +21,6 @@ type
     cxGrid1DBTableView1FIO: TcxGridDBColumn;
     cxGrid1DBTableView1KL: TcxGridDBColumn;
     cxGrid1DBTableView1PW: TcxGridDBColumn;
-    cxButton2: TcxButton;
-    cxProgressBar1: TcxProgressBar;
-    cxButton1: TcxButton;
     OpenDialog1: TOpenDialog;
     cxGrid2: TcxGrid;
     cxGridDBTableView1: TcxGridDBTableView;
@@ -33,8 +31,15 @@ type
     cxButton3: TcxButton;
     frxDesigner1: TfrxDesigner;
     frxReport1: TfrxReport;
+    cxGridDBTableView1SNAIM: TcxGridDBColumn;
+    cxDBTextEdit1: TcxDBTextEdit;
+    cxDBTextEdit2: TcxDBTextEdit;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    DBCheckBox1: TDBCheckBox;
     procedure FormShow(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   private
     { Private declarations }
@@ -55,6 +60,13 @@ procedure TForm6.cxButton3Click(Sender: TObject);
 begin
 
 frxReport1.DesignReport();
+end;
+
+procedure TForm6.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ if Form1.IBSERVICES.State in [dsInsert,dsEdit] then Form1.IBSERVICES.Post;
+ if Form1.IBWID.State in [dsInsert,dsEdit] then Form1.IBWID.Post;
+ if Form1.IBUSER.State in [dsInsert,dsEdit] then Form1.IBUSER.Post;
 end;
 
 procedure TForm6.FormShow(Sender: TObject);

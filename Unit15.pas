@@ -44,6 +44,9 @@ type
     procedure cxButton3Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
+    procedure cxGrid1DBTableView1TELPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -73,6 +76,27 @@ begin
      Form12.Find();
 //     Form12.Show;
   end;
+end;
+
+
+
+procedure TForm15.cxGrid1DBTableView1TELPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+var editstr:string;
+begin
+
+//   editstr:=TcxTextEdit(Sender.ToString).Text;
+  if VarToStr(DisplayValue)[2]<>'0' then
+  begin
+    ShowMessage('Телефон має починатися з 0  - напр.(066)');
+    cxGrid1DBTableView1.DataController.Cancel;
+  end;
+
+end;
+
+procedure TForm15.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+Form1.IBTransaction1.CommitRetaining;
 end;
 
 end.
