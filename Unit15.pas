@@ -9,7 +9,7 @@ uses
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxTextEdit, Vcl.Menus,
   Vcl.StdCtrls, cxButtons, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, Vcl.ExtCtrls,
-  cxButtonEdit, cxCalc, cxMaskEdit;
+  cxButtonEdit, cxCalc, cxMaskEdit, cxContainer, cxLabel;
 
 type
   TForm15 = class(TForm)
@@ -41,12 +41,15 @@ type
     cxGrid1DBTableView1LIFT: TcxGridDBColumn;
     cxGrid1DBTableView1Column1: TcxGridDBColumn;
     cxGrid1DBTableView1TEL: TcxGridDBColumn;
+    cxLabel6: TcxLabel;
+    cxButton1: TcxButton;
     procedure cxButton3Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure cxGrid1DBTableView1TELPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure cxButton1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -61,6 +64,12 @@ implementation
 {$R *.dfm}
 
 uses Unit1, Unit12;
+
+procedure TForm15.cxButton1Click(Sender: TObject);
+begin
+Form1.IBKART.LocateNext('schet',cxTextEdit4.Text,[]);
+
+end;
 
 procedure TForm15.cxButton3Click(Sender: TObject);
 begin

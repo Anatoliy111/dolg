@@ -65,7 +65,7 @@ object Form17: TForm17
       end
       object cxTextEdit4: TcxTextEdit
         Left = 3
-        Top = 146
+        Top = 148
         TabOrder = 4
         Width = 121
       end
@@ -86,7 +86,7 @@ object Form17: TForm17
         Width = 121
       end
       object cxButton5: TcxButton
-        Left = 234
+        Left = 356
         Top = 15
         Width = 87
         Height = 56
@@ -96,7 +96,7 @@ object Form17: TForm17
         OnClick = cxButton5Click
       end
       object cxButton4: TcxButton
-        Left = 351
+        Left = 471
         Top = 15
         Width = 82
         Height = 56
@@ -105,7 +105,7 @@ object Form17: TForm17
         WordWrap = True
       end
       object cxButton6: TcxButton
-        Left = 114
+        Left = 236
         Top = 15
         Width = 92
         Height = 56
@@ -123,8 +123,8 @@ object Form17: TForm17
         Caption = #1055#1077#1088#1077#1074#1110#1088#1082#1072
       end
       object cxLabel3: TcxLabel
-        Left = 248
-        Top = 111
+        Left = 224
+        Top = 147
         Caption = #1055#1077#1088#1077#1074#1110#1088#1082#1072
       end
       object cxLabel5: TcxLabel
@@ -133,12 +133,30 @@ object Form17: TForm17
         Caption = '->'
       end
       object cxLabel7: TcxLabel
-        Left = 212
+        Left = 334
         Top = 33
         Caption = '->'
       end
       object cxLabel10: TcxLabel
-        Left = 329
+        Left = 449
+        Top = 33
+        Caption = '->'
+      end
+      object cxButton7: TcxButton
+        Left = 117
+        Top = 15
+        Width = 92
+        Height = 56
+        BiDiMode = bdLeftToRight
+        Caption = #1042#1080#1076#1072#1083#1080#1090#1080' '#1079#1072#1087#1080#1089#1080' '#1073#1077#1079' '#1090#1077#1083#1077#1092#1086#1085#1110#1074
+        ParentBiDiMode = False
+        PopupAlignment = paCenter
+        TabOrder = 15
+        WordWrap = True
+        OnClick = cxButton6Click
+      end
+      object cxLabel12: TcxLabel
+        Left = 214
         Top = 33
         Caption = '->'
       end
@@ -366,132 +384,8 @@ object Form17: TForm17
       OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
       OnEditValueChanged = cxGrid1DBTableView1EditValueChanged
       DataController.DataSource = DSREP
-      DataController.Summary.DefaultGroupSummaryItems = <
-        item
-          Format = '0'
-          Kind = skCount
-          FieldName = 'NOTE1'
-          DisplayText = 'note1'
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0'
-          Kind = skSum
-        end
-        item
-          Format = '0'
-          Kind = skSum
-        end
-        item
-          Format = '0'
-          Kind = skCount
-          Position = spFooter
-        end
-        item
-          Format = '0'
-          Kind = skCount
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          Position = spFooter
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          Position = spFooter
-        end>
-      DataController.Summary.FooterSummaryItems = <
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skCount
-        end>
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       OptionsView.Footer = True
       OptionsView.FooterMultiSummaries = True
@@ -516,138 +410,15 @@ object Form17: TForm17
       FilterBox.Visible = fvNever
       DataController.DataSource = DSSMSLIST
       DataController.DetailKeyFieldNames = 'ID'
-      DataController.Summary.DefaultGroupSummaryItems = <
-        item
-          Format = '0'
-          Kind = skCount
-          FieldName = 'NOTE1'
-          DisplayText = 'note1'
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          VisibleForCustomization = False
-        end
-        item
-          Format = '0'
-          Kind = skSum
-        end
-        item
-          Format = '0'
-          Kind = skSum
-        end
-        item
-          Format = '0'
-          Kind = skCount
-          Position = spFooter
-        end
-        item
-          Format = '0'
-          Kind = skCount
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          Position = spFooter
-        end
-        item
-          Format = '0.00'
-          Kind = skSum
-          Position = spFooter
-        end>
+      DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skSum
-        end
-        item
-          Kind = skCount
-        end
         item
           Kind = skSum
           Column = cxGridDBTableView2DOLG
         end
         item
           Kind = skSum
+          OnGetText = cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems1GetText
           Column = cxGridDBTableView2KOL_SMS
         end>
       DataController.Summary.SummaryGroups = <>
@@ -657,6 +428,8 @@ object Form17: TForm17
       OptionsCustomize.ColumnFiltering = False
       OptionsCustomize.ColumnGrouping = False
       OptionsData.Editing = False
+      OptionsView.CellAutoHeight = True
+      OptionsView.ColumnAutoWidth = True
       OptionsView.Footer = True
       OptionsView.FooterMultiSummaries = True
       OptionsView.GroupByBox = False

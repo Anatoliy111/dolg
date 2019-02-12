@@ -31,6 +31,22 @@ object Form15: TForm15
       TabOrder = 0
       OnClick = cxButton3Click
     end
+    object cxLabel6: TcxLabel
+      Left = 118
+      Top = 0
+      Caption = #1055#1086#1096#1091#1082' '#1087#1086' '#1088#1072#1093#1091#1085#1082#1091
+      Visible = False
+    end
+    object cxButton1: TcxButton
+      Left = 234
+      Top = 14
+      Width = 71
+      Height = 25
+      Caption = #1055#1086#1096#1091#1082
+      TabOrder = 2
+      WordWrap = True
+      OnClick = cxButton1Click
+    end
   end
   object cxGrid1: TcxGrid
     Left = 0
@@ -41,6 +57,11 @@ object Form15: TForm15
     TabOrder = 1
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      FilterBox.Visible = fvAlways
+      FindPanel.DisplayMode = fpdmAlways
+      FindPanel.FocusViewOnApplyFilter = True
+      FindPanel.InfoText = #1055#1086#1096#1091#1082'...'
+      FindPanel.Position = fppBottom
       DataController.DataSource = Form1.DSKART
       DataController.DetailKeyFieldNames = 'KL'
       DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
@@ -107,6 +128,9 @@ object Form15: TForm15
           Column = cxGrid1DBTableView1LIFT
         end>
       DataController.Summary.SummaryGroups = <>
+      EditForm.DefaultStretch = fsHorizontal
+      Filtering.ColumnFilteredItemsList = True
+      FilterRow.Visible = True
       OptionsView.Footer = True
       OptionsView.FooterMultiSummaries = True
       OptionsView.GroupFooterMultiSummaries = True
