@@ -501,7 +501,7 @@ type
     UpdateBase:Boolean;
     iniFile:TIniFile;
     PathKvart,StartSQL,PathDir,ORG:string;
-    translit,dtsms,alphaname,stsms,poslsms,endsms:string;
+    translit,textsms1,textsms2:string;
 
 
 
@@ -850,11 +850,8 @@ begin
   PathDIR:=iniFile.ReadString('DBF','tmp',extractfilepath(paramstr(0)));
 // sms
 
-    alphaname:=iniFile.ReadString('SMS','alphaname',extractfilepath(paramstr(0)));
-    dtsms:=iniFile.ReadString('SMS','dtsms',extractfilepath(paramstr(0)));
-    stsms:=iniFile.ReadString('SMS','stsms',extractfilepath(paramstr(0)));
-    poslsms:=iniFile.ReadString('SMS','poslsms',extractfilepath(paramstr(0)));
-    endsms:=iniFile.ReadString('SMS','endsms',extractfilepath(paramstr(0)));
+    textsms1:=iniFile.ReadString('SMS','textsms1',extractfilepath(paramstr(0)));
+    textsms2:=iniFile.ReadString('SMS','textsms2',extractfilepath(paramstr(0)));
     translit:=iniFile.ReadString('SMS','translit',extractfilepath(paramstr(0)));
 
 

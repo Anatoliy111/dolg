@@ -144,7 +144,7 @@ object Form15: TForm15
         DataBinding.FieldName = 'FIO'
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.ReadOnly = True
-        Width = 232
+        Width = 173
       end
       object cxGrid1DBTableView1ULNAIM: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103

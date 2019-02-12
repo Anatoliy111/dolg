@@ -26,27 +26,29 @@ object Form17: TForm17
     object cxGroupBox1: TcxGroupBox
       Left = 8
       Top = 8
+      Alignment = alTopCenter
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080' '#1074#1110#1076#1073#1086#1088#1091
       TabOrder = 0
       Height = 172
       Width = 601
       object cxButton2: TcxButton
-        Left = 19
-        Top = 65
-        Width = 150
-        Height = 32
-        Caption = #1047#1072#1074#1072#1085#1090#1072#1078#1080#1090#1080' '#1073#1086#1088#1078#1085#1080#1082#1110#1074
+        Left = 3
+        Top = 15
+        Width = 86
+        Height = 56
+        Caption = #1047#1072#1074#1072#1085#1090#1072#1078'. '#1073#1086#1088#1078#1085#1080#1082#1110#1074
         TabOrder = 0
+        WordWrap = True
         OnClick = cxButton2Click
       end
       object cxLabel1: TcxLabel
-        Left = 19
-        Top = 15
-        Caption = #1057#1091#1084#1072' '#1079#1072#1075#1072#1083#1100#1085#1086#1075#1086' '#1073#1086#1088#1075#1091' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082' '#1087#1086#1090#1086#1095#1085#1086#1075#1086' '#1087#1077#1088#1110#1086#1076#1091
+        Left = 3
+        Top = 77
+        Caption = #1057#1091#1084#1072' '#1079#1072#1075'. '#1073#1086#1088#1075#1091' '#1085#1072' '#1087#1086#1095'. '#1087#1086#1090#1086#1095'. '#1087#1077#1088#1110#1086#1076#1091
       end
       object cxComboBox2: TcxComboBox
         Left = 19
-        Top = 38
+        Top = 100
         Properties.Items.Strings = (
           '='
           '<>'
@@ -57,18 +59,18 @@ object Form17: TForm17
         Width = 44
       end
       object cxLabel6: TcxLabel
-        Left = 248
-        Top = 123
+        Left = 14
+        Top = 127
         Caption = #1055#1086#1096#1091#1082' '#1087#1086' '#1088#1072#1093#1091#1085#1082#1091
       end
       object cxTextEdit4: TcxTextEdit
-        Left = 224
+        Left = 3
         Top = 146
         TabOrder = 4
         Width = 121
       end
       object cxButton1: TcxButton
-        Left = 351
+        Left = 130
         Top = 144
         Width = 71
         Height = 25
@@ -78,46 +80,67 @@ object Form17: TForm17
       end
       object cxCalcEdit2: TcxCalcEdit
         Left = 69
-        Top = 38
+        Top = 100
         EditValue = 0.000000000000000000
         TabOrder = 6
         Width = 121
       end
       object cxButton5: TcxButton
-        Left = 311
-        Top = 56
-        Width = 129
-        Height = 41
-        Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072
+        Left = 234
+        Top = 15
+        Width = 87
+        Height = 56
+        Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' '#1057#1052#1057
         TabOrder = 7
+        WordWrap = True
         OnClick = cxButton5Click
       end
       object cxButton4: TcxButton
-        Left = 446
-        Top = 56
-        Width = 129
-        Height = 41
+        Left = 351
+        Top = 15
+        Width = 82
+        Height = 56
         Caption = #1055#1077#1088#1077#1074#1110#1088#1080#1090#1080' '#1089#1090#1072#1090#1091#1089
         TabOrder = 8
+        WordWrap = True
       end
       object cxButton6: TcxButton
-        Left = 19
-        Top = 123
-        Width = 176
-        Height = 32
+        Left = 114
+        Top = 15
+        Width = 92
+        Height = 56
+        BiDiMode = bdLeftToRight
         Caption = #1055#1077#1088#1077#1074#1110#1088#1080#1090#1080' '#1090#1072' '#1079#1092#1086#1088#1084#1091#1074#1072#1090#1080' '#1057#1052#1057
+        ParentBiDiMode = False
+        PopupAlignment = paCenter
         TabOrder = 9
+        WordWrap = True
         OnClick = cxButton6Click
       end
       object cxLabel2: TcxLabel
-        Left = 26
-        Top = 100
+        Left = 248
+        Top = 88
         Caption = #1055#1077#1088#1077#1074#1110#1088#1082#1072
       end
       object cxLabel3: TcxLabel
-        Left = 311
-        Top = 15
+        Left = 248
+        Top = 111
         Caption = #1055#1077#1088#1077#1074#1110#1088#1082#1072
+      end
+      object cxLabel5: TcxLabel
+        Left = 95
+        Top = 33
+        Caption = '->'
+      end
+      object cxLabel7: TcxLabel
+        Left = 212
+        Top = 33
+        Caption = '->'
+      end
+      object cxLabel10: TcxLabel
+        Left = 329
+        Top = 33
+        Caption = '->'
       end
     end
     object cxLabel4: TcxLabel
@@ -325,6 +348,11 @@ object Form17: TForm17
       OptionsImage.Layout = blGlyphRight
       TabOrder = 7
       OnClick = cxButton8Click
+    end
+    object cxLabel11: TcxLabel
+      Left = 71
+      Top = 185
+      Caption = '-- '#1074#1080#1076#1072#1083#1080#1090#1080' '#1079#1072#1087#1080#1089
     end
   end
   object cxGrid1: TcxGrid

@@ -86,11 +86,26 @@ var editstr:string;
 begin
 
 //   editstr:=TcxTextEdit(Sender.ToString).Text;
-  if VarToStr(DisplayValue)[2]<>'0' then
+  if (VarToStr(DisplayValue)[2]<>'0') and (VarToStr(DisplayValue)<>'(___)___-____') then
   begin
-    ShowMessage('Телефон має починатися з 0  - напр.(066)');
-    cxGrid1DBTableView1.DataController.Cancel;
+//    ShowMessage('Телефон має починатися з 0  - напр.(066)');
+    ErrorText:='Телефон має починатися з 0  - напр.(066)';
+    Error:=true;
+//    cxGrid1DBTableView1.DataController.Cancel;
   end;
+  if VarToStr(DisplayValue)='(___)___-____' then
+  begin
+    Error:=false;
+  end
+  else
+      if pos('_',VarToStr(DisplayValue))>0 then
+      begin
+    //    ShowMessage('Телефон має починатися з 0  - напр.(066)');
+        ErrorText:='Телефон має бути 10 символів';
+        Error:=true;
+    //    Error:=false;
+      end;
+
 
 end;
 

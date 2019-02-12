@@ -83,6 +83,10 @@ type
     IBQuery1: TIBQuery;
     IBWIDSNAIM: TIBStringField;
     IBSMSLISTFIO: TIBStringField;
+    cxLabel5: TcxLabel;
+    cxLabel7: TcxLabel;
+    cxLabel10: TcxLabel;
+    cxLabel11: TcxLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -421,9 +425,10 @@ end;
 
 procedure TForm17.cxButton6Click(Sender: TObject);
 var r:integer;
-    sqlfil,smstext,posl:string;
+    sqlfil,smstext,poslnam1,poslsum1,strposl:string;
     field:tField;
     kol_pos:integer;
+
 begin
 
 
@@ -491,15 +496,19 @@ begin
                       if IBREP.FindField(IBWIDWID.Value).Value<>0 then
                       begin
                        kol_pos:=kol_pos+1;
-                        posl:=trim(IBWIDNAIM.Value);
+                       poslnam1:=trim(IBWIDNAIM.Value);
+                       poslsum1:=FloatToStr(IBREP.FindField(IBWIDWID.Value).Value);
                       end;
                 IBWID.Next;
                 end;
 
            if kol_pos=0 then
               IBREP.Next;
+           if kol_pos=1 then
+              smstext:=Form1.textsms1
+           else
+              smstext:=Form1.textsms2;
 
-           smstext:='';
            IBSMSLIST.Insert;
            IBSMSLIST.Edit;
            IBSMSLISTID_SMSORDER.Value:=Form1.IBSMSORDEREDSID.Value;
@@ -510,30 +519,34 @@ begin
            IBSMSLISTNOMKV.Value:=IBREP.FieldByName('NOMKV').AsString;
            IBSMSLISTTEL.Value:='+38'+IBREP.FieldByName('TEL').AsString;
            IBSMSLISTDOLG.Value:=IBREP.FieldByName('SAL').AsFloat;
-           if Form1.dtsms='1' then
-              smstext:=mon_slovoDt(Form1.IBPERIODPERIOD.Value)+' ';
-           smstext:=smstext+'Рахунок '+trim(IBREP.FieldByName('schet').AsString)+' ';
-           if Length(Form1.stsms)<>0 then
-              if kol_pos=1 then
-              smstext:=smstext+Form1.stsms+' за '+posl+':'+FloatToStr(IBREP.FieldByName('SAL').AsFloat)+' '
-              else
-              smstext:=smstext+Form1.stsms+':'+FloatToStr(IBREP.FieldByName('SAL').AsFloat)+' ';
-
-             if (Length(Form1.poslsms)<>0) and (kol_pos>1) then
+           if pos('[period]', smstext)>0 then
+              smstext:=StringReplace(smstext,'[period]',mon_slovoDt(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
+           if pos('[schet]', smstext)>0 then
+              smstext:=StringReplace(smstext,'[schet]',trim(IBREP.FieldByName('schet').AsString),[rfReplaceAll, rfIgnoreCase]);
+           if kol_pos=1 then
+           begin
+             if pos('[poslnam]', smstext)>0 then
+                smstext:=StringReplace(smstext,'[poslnam]',poslnam1,[rfReplaceAll, rfIgnoreCase]);
+             if pos('[poslsum]', smstext)>0 then
+                smstext:=StringReplace(smstext,'[poslsum]',poslsum1,[rfReplaceAll, rfIgnoreCase]);
+           end
+           else
+           begin
+             if pos('[dolg]', smstext)>0 then
+                smstext:=StringReplace(smstext,'[dolg]',FloatToStr(IBREP.FieldByName('SAL').AsFloat),[rfReplaceAll, rfIgnoreCase]);
+             if pos('[poslnamsum]', smstext)>0 then
              begin
-                  smstext:=smstext+Form1.poslsms+' ';
+             strposl:='';
                   IBWID.First;
                   while not IBWID.eof do
                   begin
                      if (IBREP.FindField(IBWIDWID.Value)<>nil) and (IBREP.FindField(IBWIDWID.Value).Value<>0) then
-                        smstext:=smstext+IBWIDSNAIM.Value+':'+FloatToStr(IBREP.FindField(IBWIDWID.Value).Value)+' ';
+                        strposl:=strposl+IBWIDSNAIM.Value+':'+FloatToStr(IBREP.FindField(IBWIDWID.Value).Value)+' ';
                   IBWID.Next;
                   end;
+                smstext:=StringReplace(smstext,'[poslnamsum]',strposl,[rfReplaceAll, rfIgnoreCase]);
              end;
-
-           if Length(Form1.endsms)<>0 then
-              smstext:=smstext+Form1.endsms+' ';
-
+           end;
 
            smstext:=Trim(smstext);
 
