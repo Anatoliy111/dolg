@@ -3107,12 +3107,6 @@ object Form1: TForm1
     Left = 72
     Top = 240
   end
-  object IBTransaction2: TIBTransaction
-    AllowAutoStart = False
-    DefaultDatabase = IBDatabase1
-    Left = 16
-    Top = 296
-  end
   object IBWID: TIBDataSet
     Database = IBDatabase1
     Transaction = IBTransaction1
@@ -3567,19 +3561,8 @@ object Form1: TForm1
     Left = 168
     Top = 280
   end
-  object IBTransaction3: TIBTransaction
-    Active = True
-    DefaultDatabase = IBDatabase1
-    Params.Strings = (
-      'read_committed'
-      'rec_version'
-      'nowait')
-    Left = 144
-    Top = 240
-  end
   object IBSMSORDEREDS: TIBDataSet
     Database = IBDatabase1
-    Transaction = IBTransaction3
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
@@ -3591,12 +3574,12 @@ object Form1: TForm1
       
         '  (ID, DATA, SEND, CONTROL, PERIOD, DOLG, KOL_SENDSMS, KOL_ERRSM' +
         'S, KOL_DOST, '
-      '   KOL_ROUTE, ID_USER)'
+      '   KOL_ROUTE, ID_USER, POSL, TRANSLIT)'
       'values'
       
         '  (:ID, :DATA, :SEND, :CONTROL, :PERIOD, :DOLG, :KOL_SENDSMS, :K' +
         'OL_ERRSMS, '
-      '   :KOL_DOST, :KOL_ROUTE, :ID_USER)')
+      '   :KOL_DOST, :KOL_ROUTE, :ID_USER, :POSL, :TRANSLIT)')
     RefreshSQL.Strings = (
       'Select * '
       'from smsordereds '
@@ -3619,7 +3602,9 @@ object Form1: TForm1
       '  KOL_ERRSMS = :KOL_ERRSMS,'
       '  KOL_DOST = :KOL_DOST,'
       '  KOL_ROUTE = :KOL_ROUTE,'
-      '  ID_USER = :ID_USER'
+      '  ID_USER = :ID_USER,'
+      '  POSL = :POSL,'
+      '  TRANSLIT = :TRANSLIT'
       'where'
       '  ID = :OLD_ID')
     ParamCheck = True
@@ -3674,6 +3659,15 @@ object Form1: TForm1
     object IBSMSORDEREDSKOL_ROUTE: TIntegerField
       FieldName = 'KOL_ROUTE'
       Origin = '"SMSORDEREDS"."KOL_ROUTE"'
+    end
+    object IBSMSORDEREDSPOSL: TIBStringField
+      FieldName = 'POSL'
+      Origin = '"SMSORDEREDS"."POSL"'
+      Size = 30
+    end
+    object IBSMSORDEREDSTRANSLIT: TIntegerField
+      FieldName = 'TRANSLIT'
+      Origin = '"SMSORDEREDS"."TRANSLIT"'
     end
   end
   object DSSMSORDEREDS: TDataSource

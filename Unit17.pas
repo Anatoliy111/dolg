@@ -10,7 +10,7 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, cxDropDownEdit, cxCalc, cxTextEdit,
   cxMaskEdit, cxLabel, Vcl.StdCtrls, cxButtons, cxGroupBox, Vcl.ExtCtrls,
-  IBX.IBCustomDataSet,cxCurrencyEdit, IBX.IBQuery;
+  IBX.IBCustomDataSet,cxCurrencyEdit, IBX.IBQuery, cxDBEdit;
 
 type
   TForm17 = class(TForm)
@@ -83,12 +83,14 @@ type
     IBQuery1: TIBQuery;
     IBWIDSNAIM: TIBStringField;
     IBSMSLISTFIO: TIBStringField;
-    cxLabel5: TcxLabel;
     cxLabel7: TcxLabel;
     cxLabel10: TcxLabel;
     cxLabel11: TcxLabel;
     cxButton7: TcxButton;
     cxLabel12: TcxLabel;
+    cxLabel14: TcxLabel;
+    IBSMSLISTTEXTNOTTR: TIBStringField;
+    cxDBCheckBox1: TcxDBCheckBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -107,10 +109,11 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
       procedure visible;
     procedure cxButton8Click(Sender: TObject);
-    function genSQL(fil:string):string;
+    function genSQL():string;
     procedure cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems1GetText(
       Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
       var AText: string);
+    procedure cxButton7Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -129,6 +132,8 @@ var
   Form17: TForm17;
   repdt:variant;
   fl_rep:Boolean;
+  posl:string;
+
 
 
 
@@ -189,7 +194,6 @@ var
     ch:integer;
 begin
 
-                cxButton5.Enabled:=false;
                 ch:=0;
                 IBWID.First;
                 while not IBWID.eof do
@@ -203,6 +207,37 @@ begin
                   ShowMessage('Виберіть послугу');
                   exit;
                 end;
+
+
+                IBREP.Close;
+                IBREP.SelectSQL.Text:=genSQL();
+                IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
+                repdt:=Form1.IBPERIODPERIOD.Value;
+
+                IBREP.Open;
+                IBREP.FetchAll;
+                if IBREP.RecordCount=0 then
+                   exit;
+
+                cxButton7.Enabled:=true;
+                cxButton5.Enabled:=false;
+
+
+  cxGrid1.Align:=alClient;
+  cxGrid3.Align:=alNone;
+  cxGrid3.Visible:=false;
+  cxGrid1.Visible:=true;
+  cxButton6.Enabled:=true;
+
+
+
+      if id_orders<>0 then
+      begin
+        IBQuery1.Close;
+        IBQuery1.SQL.Text:='delete from SMSLIST where ID_SMSORDER=:id';
+        IBQuery1.ParamByName('id').Value:=id_orders;
+        IBQuery1.ExecSQL;
+      end;
 
 
       IBREP.Filtered:=false;
@@ -355,21 +390,14 @@ begin
      acolumn.Caption:='СМС';
 
 
-                IBREP.Close;
-                IBREP.SelectSQL.Text:=genSQL('');
-                IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
-                repdt:=Form1.IBPERIODPERIOD.Value;
-
-                IBREP.Open;
 
                 form2.close;
 ShowMessage('Звіт зформовано за '+mon_slovoDt(Form1.IBPERIODPERIOD.Value));
 
 end;
 
-function TForm17.genSQL(fil:string):string;
-var
-    SQL,strSAL,strFIELD,strMAXFIELD,strSUM,strWhere,whereposl:string;
+function TForm17.genSQL():string;
+var SQL,strSAL,strFIELD,strMAXFIELD,strSUM,strWhere,whereposl:string;
 begin
 
       SQL:='select period,kontrol,schet,fio,ulnaim,nomdom,nomkv,tel,';
@@ -379,12 +407,13 @@ begin
       strMAXFIELD:='';
       strFIELD:='';
       whereposl:='';
-
+      posl:='';
                 IBWID.First;
                 while not IBWID.eof do
                 begin
                       if IBWIDCH.Value=1 then
                       begin
+                      posl:=posl+IBWIDWID.Value+',';
                       strSUM:=strSUM+'COALESCE(max('+IBWIDWID.Value+'),0)+';
                       strMAXFIELD:=strMAXFIELD+'COALESCE(max('+IBWIDWID.Value+'),0) '+IBWIDWID.Value+',';
                       strFIELD:=strFIELD+'case wid when '''+IBWIDWID.Value+''' then dolg else null end as '+IBWIDWID.Value+',';
@@ -473,16 +502,230 @@ end;
 
 procedure TForm17.cxButton6Click(Sender: TObject);
 var r:integer;
-    sqlfil,smstext,poslnam1,poslsum1,strposl:string;
+    sqlfil,sql,smstext,poslnam1,poslsum1,strposl:string;
     field:tField;
-    kol_pos:integer;
+    kol_pos,fl_rep:integer;
 
 begin
 
 
-      sqlfil:='and CHAR_LENGTH(tel)>0';
-    if cxGrid1DBTableView1.DataController.Filter.FilterText<>'' then
-      sqlfil:=sqlfil+' and '+cxGrid1DBTableView1.DataController.Filter.FilterText;
+     fl_rep:=0;
+
+     if id_orders=0 then
+        fl_rep:=1
+     else
+     begin
+         IBSMSLIST.Close;
+         IBSMSLIST.ParamByName('idord').Value:=id_orders;
+         IBSMSLIST.Open;
+         IBSMSLIST.FetchAll;
+         if IBSMSLIST.RecordCount=0 then
+            fl_rep:=1;
+     end;
+
+
+
+     if fl_rep=0 then
+     Begin
+       IBSMSLIST.First;
+       while not IBSMSLIST.Eof do
+       begin
+                   IBSMSLIST.Edit;
+                   smstext:=IBSMSLISTTEXTNOTTR.Value;
+                   if Form1.IBSMSORDEREDSTRANSLIT.Value=1 then
+                   begin
+                     if Length(smstext)>70 then
+                     begin
+                        smstext:=Translit2Lat(smstext);
+                        IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1);
+                     end
+                     else
+                        IBSMSLISTKOL_SMS.Value:=1;
+                   end
+                   else
+                   begin
+
+
+                     IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/70))+1);
+                   end;
+
+                   IBSMSLISTTEXT.Value:=smstext;
+                   IBSMSLIST.Post;
+
+       IBSMSLIST.Next;
+       end;
+
+
+     End
+     else
+     begin
+
+            sqlfil:='and CHAR_LENGTH(Trim(tel))>0';
+          if cxGrid1DBTableView1.DataController.Filter.FilterText<>'' then
+            sqlfil:=sqlfil+' and '+cxGrid1DBTableView1.DataController.Filter.FilterText;
+
+          sqlfil:=sqlfil+' group';
+
+
+          IBREP.Close;
+          IBREP.SelectSQL.Text:=StringReplace(IBREP.SelectSQL.Text,'group',sqlfil,[rfReplaceAll, rfIgnoreCase]);
+          IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
+          IBREP.Open;
+
+
+
+
+          IBREP.Last;
+          if IBREP.RecordCount=0 then
+             exit;
+
+
+
+              if id_orders=0 then
+              begin
+              Form1.IBSMSORDEREDS.Insert;
+              Form1.IBSMSORDEREDS.Edit;
+              Form1.IBSMSORDEREDSDATA.Value:=now();
+              Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+              Form1.IBSMSORDEREDSPERIOD.Value:=IBREP.FieldByName('period').Value;
+              Form1.IBSMSORDEREDSCONTROL.Value:=1;
+              Form1.IBSMSORDEREDSPOSL.Value:=posl;
+              if Form1.translit='1' then
+                 Form1.IBSMSORDEREDSTRANSLIT.Value:=1;
+              Form1.IBSMSORDEREDS.Post;
+              Form1.IBSMSORDEREDS.Close;
+              Form1.IBSMSORDEREDS.Open;
+      //        Form1.IBTransaction3.CommitRetaining;
+      //        Form1.IBSMSORDEREDS.FetchAll;
+              id_orders:=Form1.IBSMSORDEREDSID.Value;
+              end
+              else
+              begin
+              Form1.IBSMSORDEREDS.First;
+              Form1.IBSMSORDEREDS.Locate('id',id_orders,[]);
+              Form1.IBSMSORDEREDS.Edit;
+              Form1.IBSMSORDEREDSDATA.Value:=now();
+              Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+              Form1.IBSMSORDEREDSPERIOD.Value:=IBREP.FieldByName('period').Value;
+      //        Form1.IBSMSORDEREDSCONTROL.Value:=1;
+              Form1.IBSMSORDEREDSPOSL.Value:=posl;
+              Form1.IBSMSORDEREDS.Post;
+              IBQuery1.Close;
+              IBQuery1.SQL.Text:='delete from SMSLIST where ID_SMSORDER=:id';
+              IBQuery1.ParamByName('id').Value:=id_orders;
+              IBQuery1.ExecSQL;
+              end;
+      //        Form1.IBTransaction3.CommitRetaining;
+      //        Form1.IBSMSORDEREDS.Close;
+      //        Form1.IBSMSORDEREDS.Open;
+
+
+              IBSMSLIST.open;
+
+
+                  IBREP.First;
+                  while not IBREP.Eof do
+                 begin
+                 kol_pos:=0;
+                 IBWID.First;
+                 while not IBWID.eof do
+                      begin
+                         if IBREP.FindField(IBWIDWID.Value)<>nil then
+                            if IBREP.FindField(IBWIDWID.Value).Value<>0 then
+                            begin
+                             kol_pos:=kol_pos+1;
+                             poslnam1:=trim(IBWIDNAIM.Value);
+                             poslsum1:=FloatToStr(IBREP.FindField(IBWIDWID.Value).Value);
+                            end;
+                      IBWID.Next;
+                      end;
+
+                 if kol_pos=0 then
+                    IBREP.Next;
+                 if kol_pos=1 then
+                    smstext:=Form1.textsms1
+                 else
+                    smstext:=Form1.textsms2;
+
+                 IBSMSLIST.Insert;
+                 IBSMSLIST.Edit;
+                 IBSMSLISTID_SMSORDER.Value:=Form1.IBSMSORDEREDSID.Value;
+                 IBSMSLISTSCHET.Value:=IBREP.FieldByName('schet').AsString;
+                 IBSMSLISTFIO.Value:=IBREP.FieldByName('FIO').AsString;
+                 IBSMSLISTULNAIM.Value:=IBREP.FieldByName('ULNAIM').AsString;
+                 IBSMSLISTNOMDOM.Value:=IBREP.FieldByName('NOMDOM').AsString;
+                 IBSMSLISTNOMKV.Value:=IBREP.FieldByName('NOMKV').AsString;
+                 IBSMSLISTTEL.Value:='+38'+IBREP.FieldByName('TEL').AsString;
+                 IBSMSLISTDOLG.Value:=IBREP.FieldByName('SAL').AsFloat;
+                 if pos('[period]', smstext)>0 then
+                    smstext:=StringReplace(smstext,'[period]',mon_slovoDt(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
+                 if pos('[schet]', smstext)>0 then
+                    smstext:=StringReplace(smstext,'[schet]',trim(IBREP.FieldByName('schet').AsString),[rfReplaceAll, rfIgnoreCase]);
+                 if kol_pos=1 then
+                 begin
+                   if pos('[poslnam]', smstext)>0 then
+                      smstext:=StringReplace(smstext,'[poslnam]',poslnam1,[rfReplaceAll, rfIgnoreCase]);
+                   if pos('[poslsum]', smstext)>0 then
+                      smstext:=StringReplace(smstext,'[poslsum]',poslsum1,[rfReplaceAll, rfIgnoreCase]);
+                 end
+                 else
+                 begin
+                   if pos('[dolg]', smstext)>0 then
+                      smstext:=StringReplace(smstext,'[dolg]',FloatToStr(IBREP.FieldByName('SAL').AsFloat),[rfReplaceAll, rfIgnoreCase]);
+                   if pos('[poslnamsum]', smstext)>0 then
+                   begin
+                   strposl:='';
+                        IBWID.First;
+                        while not IBWID.eof do
+                        begin
+                           if (IBREP.FindField(IBWIDWID.Value)<>nil) and (IBREP.FindField(IBWIDWID.Value).Value<>0) then
+                              strposl:=strposl+IBWIDSNAIM.Value+':'+FloatToStr(IBREP.FindField(IBWIDWID.Value).Value)+' ';
+                        IBWID.Next;
+                        end;
+                      smstext:=StringReplace(smstext,'[poslnamsum]',strposl,[rfReplaceAll, rfIgnoreCase]);
+                   end;
+                 end;
+
+                 smstext:=Trim(smstext);
+
+                 IBSMSLISTTEXTNOTTR.Value:=smstext;
+
+                 if Form1.IBSMSORDEREDSTRANSLIT.Value=1 then
+                 begin
+                   if Length(smstext)>70 then
+                   begin
+                      smstext:=Translit2Lat(smstext);
+                      IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1);
+                   end
+                   else
+                      IBSMSLISTKOL_SMS.Value:=1;
+                 end
+                 else
+                   IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/70))+1);
+
+                 IBSMSLISTTEXT.Value:=smstext;
+
+                 IBSMSLIST.Post;
+                 IBREP.Next;
+                 end;
+      //         Form1.IBTransaction3.CommitRetaining;
+
+               visible;
+     end;
+
+        ShowMessage('Перевірка пройдена - дозволена відправка');
+
+
+
+
+end;
+
+procedure TForm17.cxButton7Click(Sender: TObject);
+var sqlfil:string;
+begin
+      sqlfil:='and CHAR_LENGTH(Trim(tel))>0';
+//    if cxGrid1DBTableView1.DataController.Filter.FilterText<>'' then
+//      sqlfil:=sqlfil+' and '+cxGrid1DBTableView1.DataController.Filter.FilterText;
 
     sqlfil:=sqlfil+' group';
 
@@ -491,139 +734,6 @@ begin
     IBREP.SelectSQL.Text:=StringReplace(IBREP.SelectSQL.Text,'group',sqlfil,[rfReplaceAll, rfIgnoreCase]);
     IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
     IBREP.Open;
-
-
-
-
-    IBREP.Last;
-    if IBREP.RecordCount=0 then
-       exit;
-
-
-
-        if id_orders=0 then
-        begin
-        Form1.IBSMSORDEREDS.Insert;
-        Form1.IBSMSORDEREDS.Edit;
-        Form1.IBSMSORDEREDSDATA.Value:=now();
-        Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-        Form1.IBSMSORDEREDSPERIOD.Value:=IBREP.FieldByName('period').Value;
-        Form1.IBSMSORDEREDSCONTROL.Value:=1;
-        Form1.IBSMSORDEREDS.Post;
-        end
-        else
-        begin
-        Form1.IBSMSORDEREDS.First;
-        Form1.IBSMSORDEREDS.Locate('id',id_orders,[]);
-        Form1.IBSMSORDEREDS.Edit;
-        Form1.IBSMSORDEREDSDATA.Value:=now();
-        Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-        Form1.IBSMSORDEREDSPERIOD.Value:=IBREP.FieldByName('period').Value;
-        Form1.IBSMSORDEREDSCONTROL.Value:=1;
-        Form1.IBSMSORDEREDS.Post;
-        end;
-//        Form1.IBTransaction3.CommitRetaining;
-//        Form1.IBSMSORDEREDS.Close;
-//        Form1.IBSMSORDEREDS.Open;
-        IBQuery1.Close;
-        IBQuery1.SQL.Text:='delete from SMSLIST where ID_SMSORDER=:id';
-        IBQuery1.ParamByName('id').Value:=id_orders;
-        IBQuery1.ExecSQL;
-
-        IBSMSLIST.open;
-
-
-            IBREP.First;
-            while not IBREP.Eof do
-           begin
-           kol_pos:=0;
-           IBWID.First;
-           while not IBWID.eof do
-                begin
-                   if IBREP.FindField(IBWIDWID.Value)<>nil then
-                      if IBREP.FindField(IBWIDWID.Value).Value<>0 then
-                      begin
-                       kol_pos:=kol_pos+1;
-                       poslnam1:=trim(IBWIDNAIM.Value);
-                       poslsum1:=FloatToStr(IBREP.FindField(IBWIDWID.Value).Value);
-                      end;
-                IBWID.Next;
-                end;
-
-           if kol_pos=0 then
-              IBREP.Next;
-           if kol_pos=1 then
-              smstext:=Form1.textsms1
-           else
-              smstext:=Form1.textsms2;
-
-           IBSMSLIST.Insert;
-           IBSMSLIST.Edit;
-           IBSMSLISTID_SMSORDER.Value:=Form1.IBSMSORDEREDSID.Value;
-           IBSMSLISTSCHET.Value:=IBREP.FieldByName('schet').AsString;
-           IBSMSLISTFIO.Value:=IBREP.FieldByName('FIO').AsString;
-           IBSMSLISTULNAIM.Value:=IBREP.FieldByName('ULNAIM').AsString;
-           IBSMSLISTNOMDOM.Value:=IBREP.FieldByName('NOMDOM').AsString;
-           IBSMSLISTNOMKV.Value:=IBREP.FieldByName('NOMKV').AsString;
-           IBSMSLISTTEL.Value:='+38'+IBREP.FieldByName('TEL').AsString;
-           IBSMSLISTDOLG.Value:=IBREP.FieldByName('SAL').AsFloat;
-           if pos('[period]', smstext)>0 then
-              smstext:=StringReplace(smstext,'[period]',mon_slovoDt(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
-           if pos('[schet]', smstext)>0 then
-              smstext:=StringReplace(smstext,'[schet]',trim(IBREP.FieldByName('schet').AsString),[rfReplaceAll, rfIgnoreCase]);
-           if kol_pos=1 then
-           begin
-             if pos('[poslnam]', smstext)>0 then
-                smstext:=StringReplace(smstext,'[poslnam]',poslnam1,[rfReplaceAll, rfIgnoreCase]);
-             if pos('[poslsum]', smstext)>0 then
-                smstext:=StringReplace(smstext,'[poslsum]',poslsum1,[rfReplaceAll, rfIgnoreCase]);
-           end
-           else
-           begin
-             if pos('[dolg]', smstext)>0 then
-                smstext:=StringReplace(smstext,'[dolg]',FloatToStr(IBREP.FieldByName('SAL').AsFloat),[rfReplaceAll, rfIgnoreCase]);
-             if pos('[poslnamsum]', smstext)>0 then
-             begin
-             strposl:='';
-                  IBWID.First;
-                  while not IBWID.eof do
-                  begin
-                     if (IBREP.FindField(IBWIDWID.Value)<>nil) and (IBREP.FindField(IBWIDWID.Value).Value<>0) then
-                        strposl:=strposl+IBWIDSNAIM.Value+':'+FloatToStr(IBREP.FindField(IBWIDWID.Value).Value)+' ';
-                  IBWID.Next;
-                  end;
-                smstext:=StringReplace(smstext,'[poslnamsum]',strposl,[rfReplaceAll, rfIgnoreCase]);
-             end;
-           end;
-
-           smstext:=Trim(smstext);
-
-           if Form1.translit='1' then
-           begin
-             if Length(smstext)>70 then
-             begin
-                smstext:=Translit2Lat(smstext);
-                IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=160,1,Trunc(Length(smstext)/160));
-             end
-             else
-                IBSMSLISTKOL_SMS.Value:=1;
-           end
-           else
-             IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=70,1,Trunc(Length(smstext)/70));
-
-           IBSMSLISTTEXT.Value:=smstext;
-
-           IBSMSLIST.Post;
-           IBREP.Next;
-           end;
-//         Form1.IBTransaction3.CommitRetaining;
-         fl_new:=false;
-         visible;
-
-        ShowMessage('Перевірка пройдена - дозволена відправка');
-
-
-
 
 end;
 
@@ -754,67 +864,97 @@ procedure TForm17.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 
 IBREP.Close;
+ if IBSMSLIST.State in [dsInsert,dsEdit] then IBSMSLIST.Post;
+IBSMSLIST.Close;
 
 
 
 end;
 
 procedure TForm17.visible;
-begin
-if not fl_new then
+var strposl:string;
 begin
 
-  if Form1.IBSMSORDEREDSSEND.Value=1 then
+  cxGrid3.Visible:=true;
+  cxGrid1.Visible:=false;
+  cxGrid1.Align:=alNone;
+  cxGrid3.Align:=alClient;
+
+cxButton7.Enabled:=false;
+cxButton4.Enabled:=false;
+cxButton6.Enabled:=false;
+
+
+if id_orders<>0 then
+begin
+   strposl:=Form1.IBSMSORDEREDS.Lookup('id',id_orders,'posl');
+
+                IBWID.First;
+                while not IBWID.eof do
+                begin
+                  if pos(IBWIDWID.Value,strposl)>0 then
+                  begin
+
+                  IBWID.Edit;
+                  IBWIDCH.Value:=1;
+                  IBWID.Post;
+                  end;
+
+                IBWID.Next;
+                end;
+                IBWID.First;
+
+  if var2int(Form1.IBSMSORDEREDS.Lookup('id',id_orders,'send'))=1 then
   begin
      cxButton5.Enabled:=false;
      cxButton8.Enabled:=false;
+     cxGrid2.Enabled:=false;
+  cxCheckBox3.Enabled:=false;
+  cxButton2.Enabled:=false;
+
+  cxButton4.Enabled:=true;
+  cxCalcEdit2.Enabled:=false;
+
   end
   else
   begin
      cxButton5.Enabled:=true;
      cxButton8.Enabled:=true;
-
+     cxGrid2.Enabled:=true;
+     cxCheckBox3.Enabled:=true;
+     cxButton2.Enabled:=true;
+     cxButton6.Enabled:=true;
+     cxCalcEdit2.Enabled:=true;
   end;
 
-   cxButton3.Enabled:=true;
-  cxGrid2.Enabled:=false;
-  cxCheckBox3.Enabled:=false;
-  cxButton2.Enabled:=false;
-  cxButton6.Enabled:=false;
-
-
-  cxCalcEdit2.Enabled:=false;
-  cxGrid3.Visible:=true;
-  cxGrid1.Visible:=false;
-  cxGrid1.Align:=alNone;
-  cxGrid3.Align:=alClient;
   Form17.IBSMSLIST.Close;
   Form17.IBSMSLIST.ParamByName('idord').Value:=id_orders;
   Form17.IBSMSLIST.Open;
   cxLabel9.Caption:=mon_slovoDt(Form1.IBSMSORDEREDSPERIOD.Value);
 
+  Caption:='Пачка №'+int2str(id_orders)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
+
 end
 else
 begin
 
-
-  cxButton3.Enabled:=false;
-  cxGrid2.Enabled:=true;
   cxCheckBox3.Enabled:=true;
   cxButton2.Enabled:=true;
-  cxButton6.Enabled:=true;
   cxButton5.Enabled:=false;
   cxButton4.Enabled:=false;
   cxCalcEdit2.Enabled:=true;
-  cxGrid1.Align:=alClient;
-  cxGrid3.Align:=alNone;
-  cxGrid3.Visible:=false;
-  cxGrid1.Visible:=true;
   IBWID.Close;
   IBWID.Open;
   cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
 
 end;
+
+if cxGrid3.visible then
+   cxButton3.Enabled:=true
+else
+   cxButton3.Enabled:=false;
+
+
 end;
 
 

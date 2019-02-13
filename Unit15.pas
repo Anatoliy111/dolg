@@ -43,6 +43,7 @@ type
     cxGrid1DBTableView1TEL: TcxGridDBColumn;
     cxLabel6: TcxLabel;
     cxButton1: TcxButton;
+    cxTextEdit1: TcxTextEdit;
     procedure cxButton3Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
@@ -67,7 +68,7 @@ uses Unit1, Unit12;
 
 procedure TForm15.cxButton1Click(Sender: TObject);
 begin
-Form1.IBKART.LocateNext('schet',cxTextEdit4.Text,[]);
+Form1.IBKART.LocateNext('schet',cxTextEdit1.Text,[]);
 
 end;
 

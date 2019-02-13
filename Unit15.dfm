@@ -47,6 +47,13 @@ object Form15: TForm15
       WordWrap = True
       OnClick = cxButton1Click
     end
+    object cxTextEdit1: TcxTextEdit
+      Left = 107
+      Top = 16
+      TabOrder = 3
+      Text = 'cxTextEdit1'
+      Width = 121
+    end
   end
   object cxGrid1: TcxGrid
     Left = 0

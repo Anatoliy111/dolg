@@ -240,7 +240,6 @@ type
     IBTMPOPL: TIBDataSet;
     DSTMPOPL: TDataSource;
     IBTransaction1: TIBTransaction;
-    IBTransaction2: TIBTransaction;
     dxBarButton118: TdxBarButton;
     cxGrid1DBTableView1SCHET: TcxGridDBColumn;
     cxGrid1DBTableView1NOTE1: TcxGridDBColumn;
@@ -445,7 +444,6 @@ type
     IBSERVICESSMSLOGIN: TIBStringField;
     IBSERVICESSMSPW: TIBStringField;
     IBSERVICESSMSTRANSLIT: TSmallintField;
-    IBTransaction3: TIBTransaction;
     IBSMSORDEREDS: TIBDataSet;
     IBSMSORDEREDSID: TIntegerField;
     IBSMSORDEREDSDATA: TDateTimeField;
@@ -465,6 +463,8 @@ type
     IBABONINFID: TIntegerField;
     IBABONINFSCHET: TIBStringField;
     IBABONINFTEL: TIBStringField;
+    IBSMSORDEREDSPOSL: TIBStringField;
+    IBSMSORDEREDSTRANSLIT: TIntegerField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -866,8 +866,6 @@ begin
   cxPropertiesStore1.RestoreFrom;
    IBDatabase1.Connected:=TRUE;
    IBTransaction1.StartTransaction;
-   IBTransaction2.StartTransaction;
-   IBTransaction3.StartTransaction;
    IBSERVICES.open;
    IBPERIOD.open;
    IBSMSORDEREDS.Open;

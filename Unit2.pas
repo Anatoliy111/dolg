@@ -129,10 +129,10 @@ begin
         Form1.IBTransaction1.StartTransaction;
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
-        Form1.IBTransaction2.StartTransaction;
+
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
-        Form1.IBTransaction3.StartTransaction;
+
 
 
   Form1.IBKONTROL.open;

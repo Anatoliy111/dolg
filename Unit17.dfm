@@ -33,7 +33,7 @@ object Form17: TForm17
       Width = 601
       object cxButton2: TcxButton
         Left = 3
-        Top = 15
+        Top = 14
         Width = 86
         Height = 56
         Caption = #1047#1072#1074#1072#1085#1090#1072#1078'. '#1073#1086#1088#1078#1085#1080#1082#1110#1074
@@ -43,12 +43,12 @@ object Form17: TForm17
       end
       object cxLabel1: TcxLabel
         Left = 3
-        Top = 77
+        Top = 88
         Caption = #1057#1091#1084#1072' '#1079#1072#1075'. '#1073#1086#1088#1075#1091' '#1085#1072' '#1087#1086#1095'. '#1087#1086#1090#1086#1095'. '#1087#1077#1088#1110#1086#1076#1091
       end
       object cxComboBox2: TcxComboBox
-        Left = 19
-        Top = 100
+        Left = 6
+        Top = 105
         Properties.Items.Strings = (
           '='
           '<>'
@@ -79,15 +79,15 @@ object Form17: TForm17
         OnClick = cxButton1Click
       end
       object cxCalcEdit2: TcxCalcEdit
-        Left = 69
-        Top = 100
+        Left = 62
+        Top = 105
         EditValue = 0.000000000000000000
         TabOrder = 6
         Width = 121
       end
       object cxButton5: TcxButton
         Left = 356
-        Top = 15
+        Top = 14
         Width = 87
         Height = 56
         Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' '#1057#1052#1057
@@ -97,7 +97,7 @@ object Form17: TForm17
       end
       object cxButton4: TcxButton
         Left = 471
-        Top = 15
+        Top = 14
         Width = 82
         Height = 56
         Caption = #1055#1077#1088#1077#1074#1110#1088#1080#1090#1080' '#1089#1090#1072#1090#1091#1089
@@ -105,8 +105,8 @@ object Form17: TForm17
         WordWrap = True
       end
       object cxButton6: TcxButton
-        Left = 236
-        Top = 15
+        Left = 241
+        Top = 14
         Width = 92
         Height = 56
         BiDiMode = bdLeftToRight
@@ -118,8 +118,8 @@ object Form17: TForm17
         OnClick = cxButton6Click
       end
       object cxLabel2: TcxLabel
-        Left = 248
-        Top = 88
+        Left = 224
+        Top = 124
         Caption = #1055#1077#1088#1077#1074#1110#1088#1082#1072
       end
       object cxLabel3: TcxLabel
@@ -127,38 +127,58 @@ object Form17: TForm17
         Top = 147
         Caption = #1055#1077#1088#1077#1074#1110#1088#1082#1072
       end
-      object cxLabel5: TcxLabel
-        Left = 95
-        Top = 33
-        Caption = '->'
-      end
       object cxLabel7: TcxLabel
-        Left = 334
-        Top = 33
+        Left = 337
+        Top = 34
         Caption = '->'
       end
       object cxLabel10: TcxLabel
         Left = 449
-        Top = 33
+        Top = 34
         Caption = '->'
       end
       object cxButton7: TcxButton
-        Left = 117
-        Top = 15
-        Width = 92
+        Left = 119
+        Top = 14
+        Width = 97
         Height = 56
         BiDiMode = bdLeftToRight
-        Caption = #1042#1080#1076#1072#1083#1080#1090#1080' '#1079#1072#1087#1080#1089#1080' '#1073#1077#1079' '#1090#1077#1083#1077#1092#1086#1085#1110#1074
+        Caption = #1042#1080#1076#1072#1083#1080#1090#1080' '#1079#1072#1087#1080#1089#1080' '#1073#1077#1079' '#1090#1077#1083'.'
         ParentBiDiMode = False
         PopupAlignment = paCenter
-        TabOrder = 15
+        TabOrder = 14
         WordWrap = True
-        OnClick = cxButton6Click
+        OnClick = cxButton7Click
       end
       object cxLabel12: TcxLabel
-        Left = 214
-        Top = 33
+        Left = 98
+        Top = 34
         Caption = '->'
+      end
+      object cxLabel14: TcxLabel
+        Left = 220
+        Top = 34
+        Caption = '->'
+      end
+      object cxDBCheckBox1: TcxDBCheckBox
+        Left = 241
+        Top = 76
+        AutoSize = False
+        Caption = 
+          #1090#1088#1072#1085#1089#1083#1110#1090#1077#1088#1072#1094#1110#1103' ('#1087#1077#1088#1077#1074#1086#1076#1077' '#1090#1077#1082#1089#1090' '#1085#1072' '#1083#1072#1090#1080#1085#1089#1100#1082#1110' '#1083#1110#1090#1077#1088#1080' '#1103#1082#1097#1086' '#1089#1084#1089' '#1073#1110#1083#1100 +
+          #1096#1077' 70 '#1089#1080#1084#1074#1086#1083#1110#1074')'
+        DataBinding.DataField = 'TRANSLIT'
+        DataBinding.DataSource = Form1.DSSMSORDEREDS
+        ParentBackground = False
+        Properties.Alignment = taLeftJustify
+        Properties.MultiLine = True
+        Properties.NullStyle = nssUnchecked
+        Properties.ValueChecked = 1
+        Properties.ValueUnchecked = 0
+        Style.Shadow = False
+        TabOrder = 17
+        Height = 29
+        Width = 357
       end
     end
     object cxLabel4: TcxLabel
@@ -439,47 +459,52 @@ object Form17: TForm17
       object cxGridDBTableView2SCHET: TcxGridDBColumn
         Caption = #1056#1072#1093#1091#1085#1086#1082
         DataBinding.FieldName = 'SCHET'
+        Width = 50
       end
       object cxGridDBTableView2FIO: TcxGridDBColumn
         Caption = #1055#1030#1055
         DataBinding.FieldName = 'FIO'
-        Width = 157
+        Width = 54
       end
       object cxGridDBTableView2ULNAIM: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
         DataBinding.FieldName = 'ULNAIM'
-        Width = 168
+        Width = 59
       end
       object cxGridDBTableView2NOMDOM: TcxGridDBColumn
         Caption = #1041#1091#1076#1080#1085#1086#1082
         DataBinding.FieldName = 'NOMDOM'
+        Width = 20
       end
       object cxGridDBTableView2NOMKV: TcxGridDBColumn
         Caption = #1050#1074'.'
         DataBinding.FieldName = 'NOMKV'
+        Width = 20
       end
       object cxGridDBTableView2TEL: TcxGridDBColumn
         Caption = #1058#1077#1083#1077#1092#1086#1085
         DataBinding.FieldName = 'TEL'
-        Width = 99
+        Width = 34
       end
       object cxGridDBTableView2DOLG: TcxGridDBColumn
         Caption = #1041#1086#1088#1075
         DataBinding.FieldName = 'DOLG'
+        Width = 22
       end
       object cxGridDBTableView2STATUS: TcxGridDBColumn
         Caption = #1057#1090#1072#1090#1091#1089
         DataBinding.FieldName = 'STATUS'
-        Width = 192
+        Width = 93
       end
       object cxGridDBTableView2KOL_SMS: TcxGridDBColumn
         Caption = #1050'-'#1089#1090#1100' '#1089#1084#1089
         DataBinding.FieldName = 'KOL_SMS'
+        Width = 20
       end
       object cxGridDBTableView2TEXT: TcxGridDBColumn
         Caption = #1058#1077#1082#1089#1090' '#1057#1052#1057
         DataBinding.FieldName = 'TEXT'
-        Width = 360
+        Width = 101
       end
     end
     object cxGridLevel2: TcxGridLevel
@@ -741,7 +766,7 @@ object Form17: TForm17
   end
   object IBSMSLIST: TIBDataSet
     Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction3
+    Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
@@ -752,13 +777,15 @@ object Form17: TForm17
       'insert into SMSLIST'
       
         '  (ID, ID_SMSORDER, SCHET, FIO, ULNAIM, NOMDOM, NOMKV, TEL, TEXT' +
-        ', ALPHANAME, '
-      '   WAPPUSH, DOLG, STATUS, MESSAGEID, KOL_SMS)'
+        ', TEXTNOTTR, '
+      '   ALPHANAME, WAPPUSH, DOLG, STATUS, MESSAGEID, KOL_SMS)'
       'values'
       
         '  (:ID, :ID_SMSORDER, :SCHET, :FIO, :ULNAIM, :NOMDOM, :NOMKV, :T' +
         'EL, :TEXT, '
-      '   :ALPHANAME, :WAPPUSH, :DOLG, :STATUS, :MESSAGEID, :KOL_SMS)')
+      
+        '   :TEXTNOTTR, :ALPHANAME, :WAPPUSH, :DOLG, :STATUS, :MESSAGEID,' +
+        ' :KOL_SMS)')
     RefreshSQL.Strings = (
       'Select '
       '  ID,'
@@ -770,6 +797,7 @@ object Form17: TForm17
       '  NOMKV,'
       '  TEL,'
       '  TEXT,'
+      '  TEXTNOTTR,'
       '  ALPHANAME,'
       '  WAPPUSH,'
       '  DOLG,'
@@ -793,6 +821,7 @@ object Form17: TForm17
       '  NOMKV = :NOMKV,'
       '  TEL = :TEL,'
       '  TEXT = :TEXT,'
+      '  TEXTNOTTR = :TEXTNOTTR,'
       '  ALPHANAME = :ALPHANAME,'
       '  WAPPUSH = :WAPPUSH,'
       '  DOLG = :DOLG,'
@@ -875,6 +904,11 @@ object Form17: TForm17
       Origin = '"SMSLIST"."FIO"'
       Size = 100
     end
+    object IBSMSLISTTEXTNOTTR: TIBStringField
+      FieldName = 'TEXTNOTTR'
+      Origin = '"SMSLIST"."TEXTNOTTR"'
+      Size = 300
+    end
   end
   object DSSMSLIST: TDataSource
     DataSet = IBSMSLIST
@@ -883,7 +917,6 @@ object Form17: TForm17
   end
   object IBQuery1: TIBQuery
     Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction3
     BufferChunks = 1000
     CachedUpdates = False
     ParamCheck = True

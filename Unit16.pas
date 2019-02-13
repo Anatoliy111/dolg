@@ -38,11 +38,16 @@ type
     cxStyle1: TcxStyle;
     cxStyle2: TcxStyle;
     cxGrid1DBTableView1KOL_ROUTE: TcxGridDBColumn;
+    Timer1: TTimer;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton5Click(Sender: TObject);
     procedure cxButton8Click(Sender: TObject);
     procedure cxButton9Click(Sender: TObject);
+    procedure cxGrid1DBTableView1CellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
     procedure balans;
@@ -89,7 +94,7 @@ procedure TForm16.cxButton5Click(Sender: TObject);
 begin
 if not Form17.Showing then
 begin
-  Form17.fl_new:=false;
+
   Form17.id_orders:=Form1.IBSMSORDEREDSID.Value;
   Form17.Caption:='Пачка № '+ int2str(Form1.IBSMSORDEREDSID.Value)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
 
@@ -109,13 +114,21 @@ if not Form17.Showing then
 begin
   if Form1.IBSMSORDEREDSSEND.Value=0 then
   begin
-  Form1.IBSMSORDEREDS.Delete;
+        Form1.IBQuery1.Close;
+        Form1.IBQuery1.SQL.Text:='delete from SMSLIST where ID_SMSORDER=:id';
+        Form1.IBQuery1.ParamByName('id').Value:=Form1.IBSMSORDEREDSID.Value;
+        Form1.IBQuery1.ExecSQL;
+        Form1.IBSMSORDEREDS.Delete;
   end
   else
   begin
     Form1.IBUSER.First;
     if Form1.IBUSER.Lookup('kl',Form1.ActiveUser,'fio')='admin' then
     begin
+        Form1.IBQuery1.Close;
+        Form1.IBQuery1.SQL.Text:='delete from SMSLIST where ID_SMSORDER=:id';
+        Form1.IBQuery1.ParamByName('id').Value:=Form1.IBSMSORDEREDSID.Value;
+        Form1.IBQuery1.ExecSQL;
       Form1.IBSMSORDEREDS.Delete;
     end;
 
@@ -130,7 +143,6 @@ begin
 if not Form17.Showing then
 begin
 Form17.id_orders:=0;
-Form17.fl_new:=true;
 Form17.Caption:='Нова пачка';
 
 //  Form17.Caption:='Пачка № '+ int2str(Form1.IBSMSORDEREDSID.Value)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
@@ -144,9 +156,23 @@ else
   Form17.Show;
 end;
 
+procedure TForm16.cxGrid1DBTableView1CellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+cxButton5.Click;
+end;
+
 procedure TForm16.FormShow(Sender: TObject);
 begin
- balans;
+// balans;
+Timer1.Enabled:=true;
+end;
+
+procedure TForm16.Timer1Timer(Sender: TObject);
+begin
+  balans;
+  Timer1.Enabled:=false;
 end;
 
 end.

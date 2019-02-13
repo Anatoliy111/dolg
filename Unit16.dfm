@@ -23,6 +23,7 @@ object Form16: TForm16
     TabOrder = 0
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      OnCellDblClick = cxGrid1DBTableView1CellDblClick
       DataController.DataSource = Form1.DSSMSORDEREDS
       DataController.DetailKeyFieldNames = 'ID'
       DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
@@ -619,5 +620,11 @@ object Form16: TForm16
       AssignedValues = [svTextColor]
       TextColor = clBlue
     end
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 3600
+    OnTimer = Timer1Timer
+    Left = 224
   end
 end
