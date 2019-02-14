@@ -3,7 +3,7 @@ object Form16: TForm16
   Top = 0
   Caption = #1046#1091#1088#1085#1072#1083' '#1087#1072#1095#1086#1082' '#1074#1110#1076#1087#1088#1072#1074#1083#1077#1085#1080#1093' SMS'
   ClientHeight = 587
-  ClientWidth = 839
+  ClientWidth = 967
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,10 +17,11 @@ object Form16: TForm16
   object cxGrid1: TcxGrid
     Left = 0
     Top = 73
-    Width = 839
+    Width = 967
     Height = 514
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 839
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       OnCellDblClick = cxGrid1DBTableView1CellDblClick
@@ -76,10 +77,34 @@ object Form16: TForm16
         item
           Format = '0'
           Kind = skMax
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1DOLG
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1KOL_SEND
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1KOL_SENDSMS
+        end
+        item
+          Kind = skSum
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1KOL_DOST
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1KOL_ERR
         end>
       DataController.Summary.SummaryGroups = <>
       OptionsData.Editing = False
       OptionsView.ColumnAutoWidth = True
+      OptionsView.Footer = True
       OptionsView.FooterMultiSummaries = True
       OptionsView.GroupByBox = False
       OptionsView.GroupFooterMultiSummaries = True
@@ -89,17 +114,7 @@ object Form16: TForm16
       object cxGrid1DBTableView1ID: TcxGridDBColumn
         Caption = #8470' '#1087#1072#1095#1082#1080
         DataBinding.FieldName = 'ID'
-        Width = 46
-      end
-      object cxGrid1DBTableView1CONTROL: TcxGridDBColumn
-        Caption = #1055#1077#1088#1077#1074'.'
-        DataBinding.FieldName = 'CONTROL'
-        PropertiesClassName = 'TcxCheckBoxProperties'
-        Properties.NullStyle = nssUnchecked
-        Properties.ValueChecked = 1
-        Properties.ValueUnchecked = 0
-        Styles.Content = cxStyle2
-        Width = 37
+        Width = 53
       end
       object cxGrid1DBTableView1SEND: TcxGridDBColumn
         Caption = #1042#1110#1076#1087#1088'.'
@@ -109,46 +124,47 @@ object Form16: TForm16
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         Styles.Content = cxStyle1
-        Width = 34
+        Width = 38
       end
       object cxGrid1DBTableView1DATA: TcxGridDBColumn
         Caption = #1044#1072#1090#1072
         DataBinding.FieldName = 'DATA'
-        Width = 150
+        Width = 148
       end
       object cxGrid1DBTableView1PERIOD: TcxGridDBColumn
         Caption = #1055#1077#1088#1110#1086#1076' '#1073#1086#1088#1075#1091
         DataBinding.FieldName = 'PERIOD'
-        Width = 85
+        Width = 99
       end
       object cxGrid1DBTableView1DOLG: TcxGridDBColumn
-        Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075#1091
+        Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075#1091' ('#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093') '
         DataBinding.FieldName = 'DOLG'
-        Width = 85
+        Width = 170
+      end
+      object cxGrid1DBTableView1KOL_SEND: TcxGridDBColumn
+        Caption = #1057#1052#1057
+        DataBinding.FieldName = 'KOL_SEND'
+        Width = 61
       end
       object cxGrid1DBTableView1KOL_SENDSMS: TcxGridDBColumn
         Caption = #1050'-'#1089#1090#1100' '#1072#1073#1086#1085'.'
         DataBinding.FieldName = 'KOL_SENDSMS'
-        Width = 84
+        Width = 87
       end
       object cxGrid1DBTableView1KOL_DOST: TcxGridDBColumn
         Caption = #1044#1086#1089#1090#1072#1074#1083#1077#1085#1110
         DataBinding.FieldName = 'KOL_DOST'
-        Width = 86
+        Width = 99
       end
-      object cxGrid1DBTableView1KOL_ROUTE: TcxGridDBColumn
-        Caption = #1042' '#1076#1086#1088#1086#1079#1110
-        DataBinding.FieldName = 'KOL_ROUTE'
-      end
-      object cxGrid1DBTableView1KOL_ERRSMS: TcxGridDBColumn
-        Caption = #1055#1086#1084#1080#1083#1082#1086#1074#1110
-        DataBinding.FieldName = 'KOL_ERRSMS'
-        Width = 83
+      object cxGrid1DBTableView1KOL_ERR: TcxGridDBColumn
+        Caption = #1042' '#1076#1086#1088#1086#1079#1110'/'#1087#1086#1084#1080#1083#1082#1086#1074#1110
+        DataBinding.FieldName = 'KOL_ERR'
+        Width = 116
       end
       object cxGrid1DBTableView1FIO: TcxGridDBColumn
         Caption = #1056#1077#1076#1072#1082#1090#1086#1088
         DataBinding.FieldName = 'FIO'
-        Width = 135
+        Width = 82
       end
     end
     object cxGrid1Level1: TcxGridLevel
@@ -158,10 +174,11 @@ object Form16: TForm16
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 839
+    Width = 967
     Height = 73
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 839
     object cxButton9: TcxButton
       Left = 0
       Top = 31
@@ -596,7 +613,7 @@ object Form16: TForm16
     object cxLabel2: TcxLabel
       Left = 196
       Top = 5
-      Caption = 'ttttt'
+      Caption = '0'
     end
     object cxButton1: TcxButton
       Left = 4
@@ -623,7 +640,7 @@ object Form16: TForm16
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 3600
+    Interval = 2000
     OnTimer = Timer1Timer
     Left = 224
   end

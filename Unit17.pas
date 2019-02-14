@@ -91,6 +91,17 @@ type
     cxLabel14: TcxLabel;
     IBSMSLISTTEXTNOTTR: TIBStringField;
     cxDBCheckBox1: TcxDBCheckBox;
+    cxLabel5: TcxLabel;
+    cxLabel13: TcxLabel;
+    cxLabel15: TcxLabel;
+    cxLabel16: TcxLabel;
+    cxLabel17: TcxLabel;
+    cxLabel18: TcxLabel;
+    cxLabel19: TcxLabel;
+    cxLabel20: TcxLabel;
+    cxLabel21: TcxLabel;
+    cxLabel22: TcxLabel;
+    cxButton9: TcxButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -114,6 +125,11 @@ type
       Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
       var AText: string);
     procedure cxButton7Click(Sender: TObject);
+    procedure cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems2GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+      var AText: string);
+    procedure cxButton9Click(Sender: TObject);
+    procedure cxButton4Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -220,7 +236,7 @@ begin
                    exit;
 
                 cxButton7.Enabled:=true;
-                cxButton5.Enabled:=false;
+
 
 
   cxGrid1.Align:=alClient;
@@ -228,6 +244,7 @@ begin
   cxGrid3.Visible:=false;
   cxGrid1.Visible:=true;
   cxButton6.Enabled:=true;
+  cxButton3.Enabled:=false;
 
 
 
@@ -453,9 +470,83 @@ begin
 Form1.ExportGrid(cxGrid3,Form17.Caption);
 end;
 
+procedure TForm17.cxButton4Click(Sender: TObject);
+var ws: ServiceSoap;
+senddost,sendabon:integer;
+stat:string;
+
+begin
+  ws := GetServiceSoap();
+  // вызываем процедуру сервиса
+//  ws.Auth('tsmsb','tsmsb1234');
+  try
+    ws.Auth(Form1.IBSERVICESSMSLOGIN.Value,Form1.IBSERVICESSMSPW.Value);
+    with ws do
+    begin
+
+       sendabon:=0;
+       senddost:=0;
+       IBSMSLIST.First;
+        while not IBSMSLIST.Eof do
+       begin
+
+       if IBSMSLISTSTATUS.Value<>'Сообщение доставлено получателю' then
+       begin
+
+           IBSMSLIST.Edit;
+           IBSMSLISTSTATUS.Value:=trim(ws.GetMessageStatus(IBSMSLISTMESSAGEID.Value));
+           IBSMSLIST.Post;
+
+       end;
+
+       if IBSMSLISTSTATUS.Value='Сообщение доставлено получателю' then
+           begin
+              sendabon:=sendabon+1;
+           end;
+
+           if Length(IBSMSLISTMESSAGEID.Value)>0 then
+           begin
+              senddost:=senddost+1;
+           end;
+
+       IBSMSLIST.Next;
+       end;
+
+
+//       IBSMSLIST.Close;
+//       IBSMSLIST.Open;
+
+//      cxLabel2.Caption:=ws.GetCreditBalance;
+    end;
+
+    Form1.IBSMSORDEREDS.Edit;
+//    Form1.IBSMSORDEREDSSEND.Value:=1;
+//    Form1.IBSMSORDEREDSDATA.Value:=now();
+//    Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+    Form1.IBSMSORDEREDSKOL_DOST.Value:=senddost;
+    Form1.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
+    Form1.IBSMSORDEREDS.Post;
+
+    Form1.IBTransaction1.CommitRetaining;
+//
+//    cxLabel22.Caption:=int2str(sendsms1);
+    cxLabel16.Caption:=int2str(sendabon);
+//    cxButton4.Enabled:=true;
+//    ShowMessage('Відправка СМС виконана!!!');
+
+
+    except
+     cxLabel3.Caption:='Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)';
+
+  end;
+
+end;
+
 procedure TForm17.cxButton5Click(Sender: TObject);
 var ws: ServiceSoap;
    send:wsdl.ArrayOfString;
+   sbal,ssms,sumsend:Double;
+   sendsms1,sendabon:integer;
 
 begin
 
@@ -466,6 +557,26 @@ begin
     ws.Auth(Form1.IBSERVICESSMSLOGIN.Value,Form1.IBSERVICESSMSPW.Value);
     with ws do
     begin
+       cxLabel2.Caption:=ws.GetCreditBalance;
+       Form16.cxLabel2.Caption:=cxLabel2.Caption;
+       sbal:=str2float(StringReplace(cxLabel2.Caption,'.',',',[rfReplaceAll, rfIgnoreCase]));
+       ssms:=str2float(cxLabel18.Caption);
+       if ssms>sbal then
+       begin
+         ShowMessage('Ви не можете відправити ці смс так як не достатньо доступних смс на балансі');
+         cxLabel18.Style.TextColor:=clRed;
+         cxLabel5.Style.TextColor:=clRed;
+         exit;
+       end
+       else
+       begin
+         cxLabel18.Style.TextColor:=clWindowText;
+         cxLabel5.Style.TextColor:=clWindowText;
+       end;
+
+       sendsms1:=0;
+       sendabon:=0;
+//       sumsend:=0;
        IBSMSLIST.First;
         while not IBSMSLIST.Eof do
        begin
@@ -474,25 +585,57 @@ begin
        IBSMSLISTMESSAGEID.Value:=send[1];
        IBSMSLISTSTATUS.Value:=send[0];
        IBSMSLIST.Post;
+       if Length(IBSMSLISTMESSAGEID.Value)>0 then
+       begin
+          sendsms1:=sendsms1+IBSMSLISTKOL_SMS.Value;
+          sendabon:=sendabon+1;
+       end;
+
        IBSMSLIST.Next;
        end;
 
-//       Form1.IBTransaction3.CommitRetaining;
-       IBSMSLIST.Close;
-       IBSMSLIST.Open;
 
-      cxLabel2.Caption:=ws.GetCreditBalance;
+//       IBSMSLIST.Close;
+//       IBSMSLIST.Open;
+
+//      cxLabel2.Caption:=ws.GetCreditBalance;
     end;
+
+    if sendabon=0 then
+    begin
+    Form1.IBSMSORDEREDS.Edit;
+    Form1.IBSMSORDEREDSDATA.Value:=now();
+    Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+    Form1.IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
+    Form1.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
+    Form1.IBSMSORDEREDS.Post;
+
+
+    cxLabel22.Caption:=int2str(sendsms1);
+    cxLabel16.Caption:=int2str(sendabon);
+    ShowMessage('Відправка не виконана!!!');
+
+    end
+    else
+    begin
+
+
 
     Form1.IBSMSORDEREDS.Edit;
     Form1.IBSMSORDEREDSSEND.Value:=1;
     Form1.IBSMSORDEREDSDATA.Value:=now();
     Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-    Form1.IBSMSORDEREDS.Edit;
-    cxButton5.Enabled:=false;
+    Form1.IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
+    Form1.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
+    Form1.IBSMSORDEREDS.Post;
+
+    cxLabel22.Caption:=int2str(sendsms1);
+    cxLabel16.Caption:=int2str(sendabon);
+    cxButton4.Enabled:=true;
     ShowMessage('Відправка СМС виконана!!!');
 
-
+    end;
+    Form1.IBTransaction1.CommitRetaining;
     except
      cxLabel3.Caption:='Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)';
 
@@ -713,6 +856,14 @@ begin
                visible;
      end;
 
+              Form1.IBSMSORDEREDS.First;
+              Form1.IBSMSORDEREDS.Locate('id',id_orders,[]);
+              Form1.IBSMSORDEREDS.Edit;
+              Form1.IBSMSORDEREDSDATA.Value:=now();
+              Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+              Form1.IBSMSORDEREDS.Post;
+
+        Form1.IBTransaction1.CommitRetaining;
         ShowMessage('Перевірка пройдена - дозволена відправка');
 
 
@@ -744,6 +895,11 @@ if cxGrid1.Visible then
 if cxGrid3.Visible then
     IBSMSLIST.Delete
 
+end;
+
+procedure TForm17.cxButton9Click(Sender: TObject);
+begin
+Form16.cxButton1.Click;
 end;
 
 procedure TForm17.cxCheckBox3PropertiesChange(Sender: TObject);
@@ -865,6 +1021,9 @@ begin
 
 IBREP.Close;
  if IBSMSLIST.State in [dsInsert,dsEdit] then IBSMSLIST.Post;
+
+ Form1.IBTransaction1.CommitRetaining;
+
 IBSMSLIST.Close;
 
 
@@ -875,6 +1034,7 @@ procedure TForm17.visible;
 var strposl:string;
 begin
 
+//  cxButton5.Enabled:=false;
   cxGrid3.Visible:=true;
   cxGrid1.Visible:=false;
   cxGrid1.Align:=alNone;
@@ -883,12 +1043,14 @@ begin
 cxButton7.Enabled:=false;
 cxButton4.Enabled:=false;
 cxButton6.Enabled:=false;
+  cxDBCheckBox1.Enabled:=true;
 
 
 if id_orders<>0 then
 begin
-   strposl:=Form1.IBSMSORDEREDS.Lookup('id',id_orders,'posl');
+   strposl:=VarToStr(Form1.IBSMSORDEREDS.Lookup('id',id_orders,'posl'));
 
+                IBWID.Open;
                 IBWID.First;
                 while not IBWID.eof do
                 begin
@@ -906,7 +1068,7 @@ begin
 
   if var2int(Form1.IBSMSORDEREDS.Lookup('id',id_orders,'send'))=1 then
   begin
-     cxButton5.Enabled:=false;
+
      cxButton8.Enabled:=false;
      cxGrid2.Enabled:=false;
   cxCheckBox3.Enabled:=false;
@@ -914,11 +1076,12 @@ begin
 
   cxButton4.Enabled:=true;
   cxCalcEdit2.Enabled:=false;
+  cxDBCheckBox1.Enabled:=false;
 
   end
   else
   begin
-     cxButton5.Enabled:=true;
+
      cxButton8.Enabled:=true;
      cxGrid2.Enabled:=true;
      cxCheckBox3.Enabled:=true;
@@ -930,6 +1093,13 @@ begin
   Form17.IBSMSLIST.Close;
   Form17.IBSMSLIST.ParamByName('idord').Value:=id_orders;
   Form17.IBSMSLIST.Open;
+  if IBSMSLIST.RecordCount=0 then
+  begin
+    cxButton6.Enabled:=false;
+
+  end;
+
+
   cxLabel9.Caption:=mon_slovoDt(Form1.IBSMSORDEREDSPERIOD.Value);
 
   Caption:='Пачка №'+int2str(id_orders)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
@@ -940,7 +1110,7 @@ begin
 
   cxCheckBox3.Enabled:=true;
   cxButton2.Enabled:=true;
-  cxButton5.Enabled:=false;
+
   cxButton4.Enabled:=false;
   cxCalcEdit2.Enabled:=true;
   IBWID.Close;
@@ -961,6 +1131,7 @@ end;
 
 procedure TForm17.FormShow(Sender: TObject);
 begin
+cxLabel2.Caption:=Form16.cxLabel2.Caption;
 visible;
 end;
 
@@ -1008,7 +1179,30 @@ procedure TForm17.cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterS
   Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
   var AText: string);
 begin
-cxLabel2.Caption:=AText;
+cxLabel18.Caption:=iif(AText='','0',AText);
+
+       if (str2float(cxLabel18.Caption)>str2float(StringReplace(cxLabel2.Caption,'.',',',[rfReplaceAll, rfIgnoreCase]))) or (str2float(cxLabel18.Caption)=0) then
+       begin
+         cxButton5.Enabled:=false;
+         cxLabel18.Style.TextColor:=clRed;
+         cxLabel5.Style.TextColor:=clRed;
+
+       end
+       else
+       begin
+         cxButton5.Enabled:=true;
+         cxLabel18.Style.TextColor:=clWindowText;
+         cxLabel5.Style.TextColor:=clWindowText;
+       end;
+
+
+end;
+
+procedure TForm17.cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems2GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: string);
+begin
+cxLabel16.Caption:=AText;
 end;
 
 end.

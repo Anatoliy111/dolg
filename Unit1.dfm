@@ -3097,6 +3097,7 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
+    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (
@@ -3563,6 +3564,7 @@ object Form1: TForm1
   end
   object IBSMSORDEREDS: TIBDataSet
     Database = IBDatabase1
+    Transaction = IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
@@ -3572,14 +3574,14 @@ object Form1: TForm1
     InsertSQL.Strings = (
       'insert into smsordereds'
       
-        '  (ID, DATA, SEND, CONTROL, PERIOD, DOLG, KOL_SENDSMS, KOL_ERRSM' +
-        'S, KOL_DOST, '
-      '   KOL_ROUTE, ID_USER, POSL, TRANSLIT)'
+        '  (ID, DATA, SEND, CONTROL, PERIOD, DOLG, KOL_SENDSMS, KOL_SEND,' +
+        ' KOL_ERR, '
+      '   KOL_DOST, KOL_ROUTE, ID_USER, POSL, TRANSLIT)'
       'values'
       
         '  (:ID, :DATA, :SEND, :CONTROL, :PERIOD, :DOLG, :KOL_SENDSMS, :K' +
-        'OL_ERRSMS, '
-      '   :KOL_DOST, :KOL_ROUTE, :ID_USER, :POSL, :TRANSLIT)')
+        'OL_SEND, '
+      '   :KOL_ERR, :KOL_DOST, :KOL_ROUTE, :ID_USER, :POSL, :TRANSLIT)')
     RefreshSQL.Strings = (
       'Select * '
       'from smsordereds '
@@ -3599,7 +3601,8 @@ object Form1: TForm1
       '  PERIOD = :PERIOD,'
       '  DOLG = :DOLG,'
       '  KOL_SENDSMS = :KOL_SENDSMS,'
-      '  KOL_ERRSMS = :KOL_ERRSMS,'
+      '  KOL_SEND = :KOL_SEND,'
+      '  KOL_ERR = :KOL_ERR,'
       '  KOL_DOST = :KOL_DOST,'
       '  KOL_ROUTE = :KOL_ROUTE,'
       '  ID_USER = :ID_USER,'
@@ -3635,10 +3638,6 @@ object Form1: TForm1
       FieldName = 'KOL_SENDSMS'
       Origin = '"SMSORDEREDS"."KOL_SENDSMS"'
     end
-    object IBSMSORDEREDSKOL_ERRSMS: TIntegerField
-      FieldName = 'KOL_ERRSMS'
-      Origin = '"SMSORDEREDS"."KOL_ERRSMS"'
-    end
     object IBSMSORDEREDSKOL_DOST: TIntegerField
       FieldName = 'KOL_DOST'
       Origin = '"SMSORDEREDS"."KOL_DOST"'
@@ -3668,6 +3667,14 @@ object Form1: TForm1
     object IBSMSORDEREDSTRANSLIT: TIntegerField
       FieldName = 'TRANSLIT'
       Origin = '"SMSORDEREDS"."TRANSLIT"'
+    end
+    object IBSMSORDEREDSKOL_SEND: TIntegerField
+      FieldName = 'KOL_SEND'
+      Origin = '"SMSORDEREDS"."KOL_SEND"'
+    end
+    object IBSMSORDEREDSKOL_ERR: TIntegerField
+      FieldName = 'KOL_ERR'
+      Origin = '"SMSORDEREDS"."KOL_ERR"'
     end
   end
   object DSSMSORDEREDS: TDataSource

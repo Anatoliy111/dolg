@@ -451,7 +451,6 @@ type
     IBSMSORDEREDSPERIOD: TDateField;
     IBSMSORDEREDSDOLG: TFloatField;
     IBSMSORDEREDSKOL_SENDSMS: TIntegerField;
-    IBSMSORDEREDSKOL_ERRSMS: TIntegerField;
     IBSMSORDEREDSKOL_DOST: TIntegerField;
     IBSMSORDEREDSFIO: TIBStringField;
     IBSMSORDEREDSID_USER: TIntegerField;
@@ -465,6 +464,8 @@ type
     IBABONINFTEL: TIBStringField;
     IBSMSORDEREDSPOSL: TIBStringField;
     IBSMSORDEREDSTRANSLIT: TIntegerField;
+    IBSMSORDEREDSKOL_SEND: TIntegerField;
+    IBSMSORDEREDSKOL_ERR: TIntegerField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);

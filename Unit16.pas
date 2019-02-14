@@ -26,19 +26,18 @@ type
     cxGrid1DBTableView1PERIOD: TcxGridDBColumn;
     cxGrid1DBTableView1DOLG: TcxGridDBColumn;
     cxGrid1DBTableView1KOL_SENDSMS: TcxGridDBColumn;
-    cxGrid1DBTableView1KOL_ERRSMS: TcxGridDBColumn;
     cxGrid1DBTableView1KOL_DOST: TcxGridDBColumn;
     cxGrid1DBTableView1FIO: TcxGridDBColumn;
     cxLabel1: TcxLabel;
     cxLabel2: TcxLabel;
     cxButton1: TcxButton;
     cxGrid1DBTableView1ID: TcxGridDBColumn;
-    cxGrid1DBTableView1CONTROL: TcxGridDBColumn;
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
     cxStyle2: TcxStyle;
-    cxGrid1DBTableView1KOL_ROUTE: TcxGridDBColumn;
     Timer1: TTimer;
+    cxGrid1DBTableView1KOL_SEND: TcxGridDBColumn;
+    cxGrid1DBTableView1KOL_ERR: TcxGridDBColumn;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton5Click(Sender: TObject);
@@ -75,7 +74,7 @@ begin
   ws.Auth(Form1.IBSERVICESSMSLOGIN.Value,Form1.IBSERVICESSMSPW.Value);
   with ws do
     cxLabel2.Caption:=ws.GetCreditBalance;
-
+    Form17.cxLabel2.Caption:=cxLabel2.Caption;
   except
    cxLabel2.Caption:='Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)';
   end;
