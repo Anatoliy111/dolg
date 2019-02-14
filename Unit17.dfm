@@ -126,6 +126,7 @@ object Form17: TForm17
           #1090#1088#1072#1085#1089#1083#1110#1090#1077#1088#1072#1094#1110#1103' ('#1087#1077#1088#1077#1074#1086#1076#1077' '#1090#1077#1082#1089#1090' '#1085#1072' '#1083#1072#1090#1080#1085#1089#1100#1082#1110' '#1083#1110#1090#1077#1088#1080' '#1103#1082#1097#1086' '#1089#1084#1089' '#1073#1110#1083#1100 +
           #1096#1077' 70 '#1089#1080#1084#1074#1086#1083#1110#1074', '#1074#1087#1083#1080#1074#1072#1108' '#1085#1072' '#1082'-'#1090#1100' '#1057#1052#1057')'
         DataBinding.DataField = 'TRANSLIT'
+        DataBinding.DataSource = Form1.DSSMSORDEREDS
         ParentBackground = False
         Properties.Alignment = taLeftJustify
         Properties.MultiLine = True
@@ -427,6 +428,7 @@ object Form17: TForm17
         item
           Kind = skCount
           OnGetText = cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems2GetText
+          Column = cxGridDBTableView2SCHET
         end>
       DataController.Summary.SummaryGroups = <>
       Filtering.MRUItemsList = False

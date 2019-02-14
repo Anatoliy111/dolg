@@ -144,8 +144,8 @@ uses Unit16, Unit1, mytools, Unit2, wsdl, Unit18;
 procedure TForm17.cxButton1Click(Sender: TObject);
 begin
 
-   Form1.IBSMSLIST.First;
-   Form1.IBSMSLIST.LocateNext('schet',cxTextEdit4.Text,[]);
+   IBSMSLIST.First;
+   IBSMSLIST.LocateNext('schet',cxTextEdit4.Text,[]);
 
 end;
 
@@ -190,41 +190,41 @@ begin
        dolgabon:=0;
        dostabon:=0;
        errabon:=0;
-       Form1.IBSMSLIST.First;
-        while not Form1.IBSMSLIST.Eof do
+       IBSMSLIST.First;
+        while not IBSMSLIST.Eof do
        begin
 
-           if Form1.IBSMSLISTSTATUS.Value<>'Сообщение доставлено получателю' then
+           if IBSMSLISTSTATUS.Value<>'Сообщение доставлено получателю' then
            begin
 
-               Form1.IBSMSLIST.Edit;
-               Form1.IBSMSLISTSTATUS.Value:=trim(ws.GetMessageStatus(Form1.IBSMSLISTMESSAGEID.Value));
-               Form1.IBSMSLIST.Post;
+               IBSMSLIST.Edit;
+               IBSMSLISTSTATUS.Value:=trim(ws.GetMessageStatus(IBSMSLISTMESSAGEID.Value));
+               IBSMSLIST.Post;
 
            end;
 
-           if Form1.IBSMSLISTSTATUS.Value='Сообщение доставлено получателю' then
+           if IBSMSLISTSTATUS.Value='Сообщение доставлено получателю' then
                begin
                   sendabon:=sendabon+1;
                end;
 
-           if Length(Form1.IBSMSLISTMESSAGEID.Value)>0 then
+           if Length(IBSMSLISTMESSAGEID.Value)>0 then
                begin
                   dostabon:=dostabon+1;
                end;
 
-       if Length(Form1.IBSMSLISTMESSAGEID.Value)>0 then
+       if Length(IBSMSLISTMESSAGEID.Value)>0 then
        begin
-          sendsms1:=sendsms1+Form1.IBSMSLISTKOL_SMS.Value;
+          sendsms1:=sendsms1+IBSMSLISTKOL_SMS.Value;
           sendabon:=sendabon+1;
        end;
 
-       Form1.IBSMSLIST.Next;
+       IBSMSLIST.Next;
        end;
 
 
-//       Form1.IBSMSLIST.Close;
-//       Form1.IBSMSLIST.Open;
+//       IBSMSLIST.Close;
+//       IBSMSLIST.Open;
 
 //      cxLabel2.Caption:=ws.GetCreditBalance;
     end;
@@ -287,26 +287,26 @@ begin
        sendsms1:=0;
        sendabon:=0;
 //       sumsend:=0;
-       Form1.IBSMSLIST.First;
-        while not Form1.IBSMSLIST.Eof do
+       IBSMSLIST.First;
+        while not IBSMSLIST.Eof do
        begin
-       send:=ws.SendSMS('Msg',Form1.IBSMSLISTTEL.AsString,Form1.IBSMSLISTTEXT.AsString,'');
-       Form1.IBSMSLIST.Edit;
-       Form1.IBSMSLISTMESSAGEID.Value:=send[1];
-       Form1.IBSMSLISTSTATUS.Value:=send[0];
-       Form1.IBSMSLIST.Post;
-       if Length(Form1.IBSMSLISTMESSAGEID.Value)>0 then
+       send:=ws.SendSMS('Msg',IBSMSLISTTEL.AsString,IBSMSLISTTEXT.AsString,'');
+       IBSMSLIST.Edit;
+       IBSMSLISTMESSAGEID.Value:=send[1];
+       IBSMSLISTSTATUS.Value:=send[0];
+       IBSMSLIST.Post;
+       if Length(IBSMSLISTMESSAGEID.Value)>0 then
        begin
-          sendsms1:=sendsms1+Form1.IBSMSLISTKOL_SMS.Value;
+          sendsms1:=sendsms1+IBSMSLISTKOL_SMS.Value;
           sendabon:=sendabon+1;
        end;
 
-       Form1.IBSMSLIST.Next;
+       IBSMSLIST.Next;
        end;
 
 
-//       Form1.IBSMSLIST.Close;
-//       Form1.IBSMSLIST.Open;
+//       IBSMSLIST.Close;
+//       IBSMSLIST.Open;
 
 //      cxLabel2.Caption:=ws.GetCreditBalance;
     end;
@@ -342,7 +342,7 @@ begin
     cxLabel22.Caption:=int2str(sendsms1);
     cxLabel16.Caption:=int2str(sendabon);
     cxButton4.Enabled:=true;
-    ShowMessage('Відправка СМС виконана! Через деякий час (10 хв.)потрібно перевірити статус, щоб взнати які смс доставлені, інколи смс іде до декількох годин, тому пачки в яких є не доставлені смс потрібно перевіряти статус декілька разів!!!');
+    ShowMessage('Відправка СМС виконана! Через деякий час (10 хв.)потрібно перевірити статус, щоб визначити які смс доставлені а які ні. Інколи смс іде до декількох годин, тому в пачках в яких є не доставлені смс потрібно декілька разів перевірити статус !!!');
 
     end;
     Form1.IBTransaction1.CommitRetaining;
@@ -397,7 +397,12 @@ begin
        end;
 
 
-
+              Form1.IBSMSORDEREDS.First;
+              Form1.IBSMSORDEREDS.Locate('id',id_orders,[]);
+              Form1.IBSMSORDEREDS.Edit;
+              Form1.IBSMSORDEREDSDATA.Value:=now();
+              Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+              Form1.IBSMSORDEREDS.Post;
 
 
 
@@ -576,6 +581,16 @@ procedure TForm17.cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterS
   var AText: string);
 begin
 cxLabel16.Caption:=AText;
+
+       if (str2float(cxLabel16.Caption)=0) then
+       begin
+         cxButton5.Enabled:=false;
+         cxButton6.Enabled:=false;
+         cxLabel18.Style.TextColor:=clRed;
+         cxLabel5.Style.TextColor:=clRed;
+
+       end;
+
 end;
 
 end.

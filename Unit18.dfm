@@ -21,7 +21,6 @@ object Form18: TForm18
     Height = 480
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 698
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
@@ -49,9 +48,8 @@ object Form18: TForm18
     Height = 209
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 698
     object cxLabel4: TcxLabel
-      Left = 209
+      Left = 138
       Top = 186
       Caption = #1041#1086#1088#1078#1085#1080#1082#1080' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
     end
@@ -98,7 +96,7 @@ object Form18: TForm18
       Caption = ' - '#1042#1110#1076#1084#1110#1090#1080#1090#1080' '#1074#1089#1110' '#1087#1086#1089#1083#1091#1075#1080
     end
     object cxLabel9: TcxLabel
-      Left = 329
+      Left = 258
       Top = 186
       Caption = #1076#1072#1090#1072' '
     end

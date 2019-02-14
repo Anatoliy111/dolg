@@ -447,7 +447,9 @@ begin
       //        Form1.IBSMSORDEREDS.Open;
 
 
-              Form1.IBSMSLIST.open;
+//                IBSMSLIST.Close;
+//                IBSMSLIST.ParamByName('idord').Value:=id_orders;
+//                IBSMSLIST.Open;
 
 
                   IBREP.First;
@@ -476,19 +478,19 @@ begin
                  else
                     smstext:=Form1.textsms2;
 
-                 Form1.IBSMSLIST.First;
-                 if not Form1.IBSMSLIST.Locate('schet',IBREP.FieldByName('schet').AsString,[]) then
-                     Form1.IBSMSLIST.Insert;
+                 Form17.IBSMSLIST.First;
+                 if not Form17.IBSMSLIST.Locate('schet',IBREP.FieldByName('schet').AsString,[]) then
+                     Form17.IBSMSLIST.Insert;
 
-                 Form1.IBSMSLIST.Edit;
-                 Form1.IBSMSLISTID_SMSORDER.Value:=Form1.IBSMSORDEREDSID.Value;
-                 Form1.IBSMSLISTSCHET.Value:=IBREP.FieldByName('schet').AsString;
-                 Form1.IBSMSLISTFIO.Value:=IBREP.FieldByName('FIO').AsString;
-                 Form1.IBSMSLISTULNAIM.Value:=IBREP.FieldByName('ULNAIM').AsString;
-                 Form1.IBSMSLISTNOMDOM.Value:=IBREP.FieldByName('NOMDOM').AsString;
-                 Form1.IBSMSLISTNOMKV.Value:=IBREP.FieldByName('NOMKV').AsString;
-                 Form1.IBSMSLISTTEL.Value:='+38'+IBREP.FieldByName('TEL').AsString;
-                 Form1.IBSMSLISTDOLG.Value:=IBREP.FieldByName('SAL').AsFloat;
+                 Form17.IBSMSLIST.Edit;
+                 Form17.IBSMSLISTID_SMSORDER.Value:=Form1.IBSMSORDEREDSID.Value;
+                 Form17.IBSMSLISTSCHET.Value:=IBREP.FieldByName('schet').AsString;
+                 Form17.IBSMSLISTFIO.Value:=IBREP.FieldByName('FIO').AsString;
+                 Form17.IBSMSLISTULNAIM.Value:=IBREP.FieldByName('ULNAIM').AsString;
+                 Form17.IBSMSLISTNOMDOM.Value:=IBREP.FieldByName('NOMDOM').AsString;
+                 Form17.IBSMSLISTNOMKV.Value:=IBREP.FieldByName('NOMKV').AsString;
+                 Form17.IBSMSLISTTEL.Value:='+38'+IBREP.FieldByName('TEL').AsString;
+                 Form17.IBSMSLISTDOLG.Value:=IBREP.FieldByName('SAL').AsFloat;
                  if pos('[period]', smstext)>0 then
                     smstext:=StringReplace(smstext,'[period]',mon_slovoDt(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
                  if pos('[schet]', smstext)>0 then
@@ -520,24 +522,24 @@ begin
 
                  smstext:=Trim(smstext);
 
-                 Form1.IBSMSLISTTEXTNOTTR.Value:=smstext;
+                 Form17.IBSMSLISTTEXTNOTTR.Value:=smstext;
 //
 //                 if Form1.IBSMSORDEREDSTRANSLIT.Value=1 then
 //                 begin
 //                   if Length(smstext)>70 then
 //                   begin
 //                      smstext:=Translit2Lat(smstext);
-//                      Form1.IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1);
+//                      Form17.IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1);
 //                   end
 //                   else
-//                      Form1.IBSMSLISTKOL_SMS.Value:=1;
+//                      Form17.IBSMSLISTKOL_SMS.Value:=1;
 //                 end
 //                 else
-//                   Form1.IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/70))+1);
+//                   Form17.IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/70))+1);
 
-//                 Form1.IBSMSLISTTEXT.Value:=smstext;
+//                 Form17.IBSMSLISTTEXT.Value:=smstext;
 
-                 Form1.IBSMSLIST.Post;
+                 Form17.IBSMSLIST.Post;
                  IBREP.Next;
                  end;
       //         Form1.IBTransaction3.CommitRetaining;
@@ -545,21 +547,25 @@ begin
 
 
 
+
+
+        Form1.IBTransaction1.CommitRetaining;
+//        Form17.IBSMSLIST.Close;
+//
+//        Form17.IBSMSLIST.Open;
+        Form17.IBSMSLIST.FetchAll;
+        if Form17.IBSMSLIST.RecordCount<>0 then
+        begin
+          Form17.cxButton6.Enabled:=true;
+          Form17.cxButton5.Enabled:=false;
               Form1.IBSMSORDEREDS.First;
               Form1.IBSMSORDEREDS.Locate('id',id_orders,[]);
               Form1.IBSMSORDEREDS.Edit;
               Form1.IBSMSORDEREDSDATA.Value:=now();
+              Form1.IBSMSORDEREDSPERIOD.Value:=Form1.IBPERIODPERIOD.Value;
               Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
               Form1.IBSMSORDEREDS.Post;
-
-        Form1.IBTransaction1.CommitRetaining;
-        Form17.IBSMSLIST.Close;
-
-        Form17.IBSMSLIST.Open;
-        if Form17.IBSMSLIST.RecordCount=0 then
-        begin
-          Form17.cxButton6.Enabled:=true;
-          Form17.cxButton5.Enabled:=false;
+              Form17.cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
         end;
 
         Form18.close;

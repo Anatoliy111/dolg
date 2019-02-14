@@ -78,6 +78,7 @@ begin
     Form17.cxLabel2.Caption:=cxLabel2.Caption;
   except
    cxLabel2.Caption:='Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)';
+   Form17.cxLabel2.Caption:='--';
   end;
 
 end;
