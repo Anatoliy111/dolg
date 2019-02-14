@@ -38,6 +38,7 @@ type
     Timer1: TTimer;
     cxGrid1DBTableView1KOL_SEND: TcxGridDBColumn;
     cxGrid1DBTableView1KOL_ERR: TcxGridDBColumn;
+    cxGrid1DBTableView1KOL_DOSTSMS: TcxGridDBColumn;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton5Click(Sender: TObject);
@@ -141,10 +142,20 @@ procedure TForm16.cxButton9Click(Sender: TObject);
 begin
 if not Form17.Showing then
 begin
-Form17.id_orders:=0;
-Form17.Caption:='Нова пачка';
 
-//  Form17.Caption:='Пачка № '+ int2str(Form1.IBSMSORDEREDSID.Value)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
+              Form1.IBSMSORDEREDS.Insert;
+              Form1.IBSMSORDEREDS.Edit;
+              Form1.IBSMSORDEREDSDATA.Value:=now();
+              Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+              Form1.IBSMSORDEREDSCONTROL.Value:=1;
+              Form1.IBSMSORDEREDSPOSL.Value:=posl;
+              if Form1.translit='1' then
+                 Form1.IBSMSORDEREDSTRANSLIT.Value:=1;
+              Form1.IBSMSORDEREDS.Post;
+              Form1.IBSMSORDEREDS.Close;
+              Form1.IBSMSORDEREDS.Open;
+              Form17.id_orders:=Form1.IBSMSORDEREDSID.Value;
+              Form17.Caption:='Пачка № '+ int2str(Form1.IBSMSORDEREDSID.Value)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
 
   Form17.Show;
 

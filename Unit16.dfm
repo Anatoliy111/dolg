@@ -21,7 +21,6 @@ object Form16: TForm16
     Height = 514
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 839
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       OnCellDblClick = cxGrid1DBTableView1CellDblClick
@@ -136,35 +135,39 @@ object Form16: TForm16
         DataBinding.FieldName = 'PERIOD'
         Width = 99
       end
-      object cxGrid1DBTableView1DOLG: TcxGridDBColumn
-        Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075#1091' ('#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093') '
-        DataBinding.FieldName = 'DOLG'
-        Width = 170
-      end
-      object cxGrid1DBTableView1KOL_SEND: TcxGridDBColumn
-        Caption = #1057#1052#1057
-        DataBinding.FieldName = 'KOL_SEND'
-        Width = 61
-      end
       object cxGrid1DBTableView1KOL_SENDSMS: TcxGridDBColumn
         Caption = #1050'-'#1089#1090#1100' '#1072#1073#1086#1085'.'
         DataBinding.FieldName = 'KOL_SENDSMS'
-        Width = 87
+        Width = 98
       end
       object cxGrid1DBTableView1KOL_DOST: TcxGridDBColumn
         Caption = #1044#1086#1089#1090#1072#1074#1083#1077#1085#1110
         DataBinding.FieldName = 'KOL_DOST'
-        Width = 99
+        Width = 110
       end
       object cxGrid1DBTableView1KOL_ERR: TcxGridDBColumn
         Caption = #1042' '#1076#1086#1088#1086#1079#1110'/'#1087#1086#1084#1080#1083#1082#1086#1074#1110
         DataBinding.FieldName = 'KOL_ERR'
-        Width = 116
+        Width = 131
+      end
+      object cxGrid1DBTableView1DOLG: TcxGridDBColumn
+        Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075#1091' ('#1076#1086#1089#1090') '
+        DataBinding.FieldName = 'DOLG'
+        Width = 108
+      end
+      object cxGrid1DBTableView1KOL_SEND: TcxGridDBColumn
+        Caption = #1057#1052#1057'('#1074#1110#1076#1087#1088')'
+        DataBinding.FieldName = 'KOL_SEND'
+        Width = 77
+      end
+      object cxGrid1DBTableView1KOL_DOSTSMS: TcxGridDBColumn
+        Caption = #1057#1052#1057'('#1076#1086#1089#1090')'
+        DataBinding.FieldName = 'KOL_DOSTSMS'
       end
       object cxGrid1DBTableView1FIO: TcxGridDBColumn
         Caption = #1056#1077#1076#1072#1082#1090#1086#1088
         DataBinding.FieldName = 'FIO'
-        Width = 82
+        Width = 91
       end
     end
     object cxGrid1Level1: TcxGridLevel
@@ -178,7 +181,6 @@ object Form16: TForm16
     Height = 73
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 839
     object cxButton9: TcxButton
       Left = 0
       Top = 31

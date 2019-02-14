@@ -3,7 +3,7 @@ object Form17: TForm17
   Top = 0
   Caption = 'Form17'
   ClientHeight = 624
-  ClientWidth = 900
+  ClientWidth = 775
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object Form17: TForm17
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 900
+    Width = 775
     Height = 209
     Align = alTop
     TabOrder = 0
@@ -29,33 +29,16 @@ object Form17: TForm17
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080' '#1074#1110#1076#1073#1086#1088#1091
       TabOrder = 0
       Height = 172
-      Width = 601
+      Width = 753
       object cxButton2: TcxButton
         Left = 3
         Top = 14
         Width = 86
         Height = 56
-        Caption = #1047#1072#1074#1072#1085#1090#1072#1078'. '#1073#1086#1088#1078#1085#1080#1082#1110#1074
+        Caption = #1044#1086#1076#1072#1090#1080' '#1072#1073#1086#1085#1077#1085#1090#1110#1074
         TabOrder = 0
         WordWrap = True
         OnClick = cxButton2Click
-      end
-      object cxLabel1: TcxLabel
-        Left = 3
-        Top = 88
-        Caption = #1057#1091#1084#1072' '#1079#1072#1075'. '#1073#1086#1088#1075#1091' '#1085#1072' '#1087#1086#1095'. '#1087#1086#1090#1086#1095'. '#1087#1077#1088#1110#1086#1076#1091
-      end
-      object cxComboBox2: TcxComboBox
-        Left = 6
-        Top = 105
-        Properties.Items.Strings = (
-          '='
-          '<>'
-          '>='
-          '<=')
-        TabOrder = 2
-        Text = '>='
-        Width = 44
       end
       object cxLabel6: TcxLabel
         Left = 14
@@ -65,7 +48,7 @@ object Form17: TForm17
       object cxTextEdit4: TcxTextEdit
         Left = 3
         Top = 148
-        TabOrder = 4
+        TabOrder = 2
         Width = 121
       end
       object cxButton1: TcxButton
@@ -74,38 +57,31 @@ object Form17: TForm17
         Width = 71
         Height = 25
         Caption = #1055#1086#1096#1091#1082
-        TabOrder = 5
+        TabOrder = 3
         OnClick = cxButton1Click
       end
-      object cxCalcEdit2: TcxCalcEdit
-        Left = 62
-        Top = 105
-        EditValue = 0.000000000000000000
-        TabOrder = 6
-        Width = 121
-      end
       object cxButton5: TcxButton
-        Left = 356
+        Left = 235
         Top = 14
         Width = 87
         Height = 56
         Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' '#1057#1052#1057
-        TabOrder = 7
+        TabOrder = 4
         WordWrap = True
         OnClick = cxButton5Click
       end
       object cxButton4: TcxButton
-        Left = 471
+        Left = 350
         Top = 14
         Width = 82
         Height = 56
         Caption = #1055#1077#1088#1077#1074#1110#1088#1080#1090#1080' '#1089#1090#1072#1090#1091#1089
-        TabOrder = 8
+        TabOrder = 5
         WordWrap = True
         OnClick = cxButton4Click
       end
       object cxButton6: TcxButton
-        Left = 241
+        Left = 118
         Top = 14
         Width = 92
         Height = 56
@@ -113,7 +89,7 @@ object Form17: TForm17
         Caption = #1055#1077#1088#1077#1074#1110#1088#1080#1090#1080' '#1090#1072' '#1079#1092#1086#1088#1084#1091#1074#1072#1090#1080' '#1057#1052#1057
         ParentBiDiMode = False
         PopupAlignment = paCenter
-        TabOrder = 9
+        TabOrder = 6
         WordWrap = True
         OnClick = cxButton6Click
       end
@@ -128,47 +104,28 @@ object Form17: TForm17
         Caption = '0'
       end
       object cxLabel7: TcxLabel
-        Left = 337
+        Left = 216
         Top = 34
         Caption = '->'
       end
       object cxLabel10: TcxLabel
-        Left = 449
+        Left = 328
         Top = 34
         Caption = '->'
-      end
-      object cxButton7: TcxButton
-        Left = 119
-        Top = 14
-        Width = 97
-        Height = 56
-        BiDiMode = bdLeftToRight
-        Caption = #1042#1080#1076#1072#1083#1080#1090#1080' '#1079#1072#1087#1080#1089#1080' '#1073#1077#1079' '#1090#1077#1083'.'
-        ParentBiDiMode = False
-        PopupAlignment = paCenter
-        TabOrder = 14
-        WordWrap = True
-        OnClick = cxButton7Click
       end
       object cxLabel12: TcxLabel
         Left = 98
         Top = 34
         Caption = '->'
       end
-      object cxLabel14: TcxLabel
-        Left = 220
-        Top = 34
-        Caption = '->'
-      end
       object cxDBCheckBox1: TcxDBCheckBox
-        Left = 241
+        Left = 120
         Top = 76
         AutoSize = False
         Caption = 
           #1090#1088#1072#1085#1089#1083#1110#1090#1077#1088#1072#1094#1110#1103' ('#1087#1077#1088#1077#1074#1086#1076#1077' '#1090#1077#1082#1089#1090' '#1085#1072' '#1083#1072#1090#1080#1085#1089#1100#1082#1110' '#1083#1110#1090#1077#1088#1080' '#1103#1082#1097#1086' '#1089#1084#1089' '#1073#1110#1083#1100 +
           #1096#1077' 70 '#1089#1080#1084#1074#1086#1083#1110#1074', '#1074#1087#1083#1080#1074#1072#1108' '#1085#1072' '#1082'-'#1090#1100' '#1057#1052#1057')'
         DataBinding.DataField = 'TRANSLIT'
-        DataBinding.DataSource = Form1.DSSMSORDEREDS
         ParentBackground = False
         Properties.Alignment = taLeftJustify
         Properties.MultiLine = True
@@ -176,9 +133,9 @@ object Form17: TForm17
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         Style.Shadow = False
-        TabOrder = 17
+        TabOrder = 12
         Height = 29
-        Width = 357
+        Width = 312
       end
       object cxLabel5: TcxLabel
         Left = 216
@@ -271,7 +228,7 @@ object Form17: TForm17
           0002000000010000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000}
-        TabOrder = 28
+        TabOrder = 23
         WordWrap = True
         OnClick = cxButton9Click
       end
@@ -281,63 +238,18 @@ object Form17: TForm17
       Top = 186
       Caption = #1041#1086#1088#1078#1085#1080#1082#1080' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
     end
-    object cxGrid2: TcxGrid
-      Left = 613
-      Top = 22
-      Width = 289
-      Height = 181
-      TabOrder = 2
-      object cxGridDBTableView1: TcxGridDBTableView
-        Navigator.Buttons.CustomButtons = <>
-        DataController.DataSource = DSWID
-        DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        OptionsView.CellAutoHeight = True
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.GroupByBox = False
-        object cxGridDBTableView1CH: TcxGridDBColumn
-          DataBinding.FieldName = 'CH'
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ImmediatePost = True
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          Width = 60
-        end
-        object cxGridDBTableView1NAIM: TcxGridDBColumn
-          DataBinding.FieldName = 'NAIM'
-          Options.Editing = False
-          Width = 227
-        end
-      end
-      object cxGridLevel1: TcxGridLevel
-        GridView = cxGridDBTableView1
-      end
-    end
-    object cxLabel8: TcxLabel
-      Left = 635
-      Top = 3
-      Caption = ' - '#1042#1110#1076#1084#1110#1090#1080#1090#1080' '#1074#1089#1110' '#1087#1086#1089#1083#1091#1075#1080
-    end
     object cxLabel9: TcxLabel
       Left = 423
       Top = 186
       Caption = #1076#1072#1090#1072' '
     end
-    object cxCheckBox3: TcxCheckBox
-      Left = 615
-      Top = 1
-      Properties.OnChange = cxCheckBox3PropertiesChange
-      TabOrder = 5
-    end
     object cxButton3: TcxButton
-      Left = 535
-      Top = 181
+      Left = 687
+      Top = 180
       Width = 74
       Height = 25
       Caption = #1042' '#1045#1082#1089#1077#1083#1100
-      TabOrder = 6
+      TabOrder = 3
       OnClick = cxButton3Click
     end
     object cxButton8: TcxButton
@@ -479,7 +391,7 @@ object Form17: TForm17
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000}
       OptionsImage.Layout = blGlyphRight
-      TabOrder = 7
+      TabOrder = 4
       OnClick = cxButton8Click
     end
     object cxLabel11: TcxLabel
@@ -488,37 +400,13 @@ object Form17: TForm17
       Caption = '-- '#1074#1080#1076#1072#1083#1080#1090#1080' '#1079#1072#1087#1080#1089
     end
   end
-  object cxGrid1: TcxGrid
-    Left = 8
-    Top = 215
-    Width = 399
-    Height = 362
-    TabOrder = 1
-    object cxGrid1DBTableView1: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
-      OnEditValueChanged = cxGrid1DBTableView1EditValueChanged
-      DataController.DataSource = DSREP
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsView.Footer = True
-      OptionsView.FooterMultiSummaries = True
-      OptionsView.GroupFooterMultiSummaries = True
-      OptionsView.GroupFooters = gfVisibleWhenExpanded
-      OptionsView.GroupSummaryLayout = gslAlignWithColumns
-      OptionsView.Indicator = True
-    end
-    object cxGrid1Level1: TcxGridLevel
-      GridView = cxGrid1DBTableView1
-    end
-  end
   object cxGrid3: TcxGrid
-    Left = 413
-    Top = 215
-    Width = 487
-    Height = 362
-    TabOrder = 2
+    Left = 0
+    Top = 209
+    Width = 775
+    Height = 415
+    Align = alClient
+    TabOrder = 1
     object cxGridDBTableView2: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       FilterBox.CustomizeDialog = False
@@ -703,78 +591,7 @@ object Form17: TForm17
     Left = 616
     Top = 528
   end
-  object IBREP: TIBDataSet
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from obor'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into obor'
-      
-        '  (KL, PERIOD, SCHET, WID, N_DOG, D_DOG, TARIF, DOLG, NACH, SUBS' +
-        ', OPL, '
-      '   UDER, KOMP, WZMZ, WOZW, MOVW, PERE, SAL)'
-      'values'
-      
-        '  (:KL, :PERIOD, :SCHET, :WID, :N_DOG, :D_DOG, :TARIF, :DOLG, :N' +
-        'ACH, :SUBS, '
-      '   :OPL, :UDER, :KOMP, :WZMZ, :WOZW, :MOVW, :PERE, :SAL)')
-    RefreshSQL.Strings = (
-      'Select * '
-      'from obor '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      
-        'select vw_obkr.period,vw_obkr.schet,vw_obkr.fio,vw_obkr.ulnaim,v' +
-        'w_obkr.nomdom,vw_obkr.nomkv,'
-      'aboninf.tel'
-      ' from vw_obkr'
-      'join aboninf on (aboninf.schet=vw_obkr.schet)'
-      '')
-    ModifySQL.Strings = (
-      'update obor'
-      'set'
-      '  KL = :KL,'
-      '  PERIOD = :PERIOD,'
-      '  SCHET = :SCHET,'
-      '  WID = :WID,'
-      '  N_DOG = :N_DOG,'
-      '  D_DOG = :D_DOG,'
-      '  TARIF = :TARIF,'
-      '  DOLG = :DOLG,'
-      '  NACH = :NACH,'
-      '  SUBS = :SUBS,'
-      '  OPL = :OPL,'
-      '  UDER = :UDER,'
-      '  KOMP = :KOMP,'
-      '  WZMZ = :WZMZ,'
-      '  WOZW = :WOZW,'
-      '  MOVW = :MOVW,'
-      '  PERE = :PERE,'
-      '  SAL = :SAL'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_OBOR_ID'
-    OnFilterRecord = IBREPFilterRecord
-    Left = 688
-    Top = 472
-  end
-  object DSREP: TDataSource
-    DataSet = IBREP
-    Left = 688
-    Top = 520
-  end
   object IBSEND: TIBDataSet
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
@@ -863,6 +680,17 @@ object Form17: TForm17
     Left = 760
     Top = 520
   end
+  object IBQuery1: TIBQuery
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    ParamCheck = True
+    SQL.Strings = (
+      '')
+    Left = 568
+    Top = 408
+  end
   object IBSMSLIST: TIBDataSet
     Database = Form1.IBDatabase1
     Transaction = Form1.IBTransaction1
@@ -877,14 +705,17 @@ object Form17: TForm17
       
         '  (ID, ID_SMSORDER, SCHET, FIO, ULNAIM, NOMDOM, NOMKV, TEL, TEXT' +
         ', TEXTNOTTR, '
-      '   ALPHANAME, WAPPUSH, DOLG, STATUS, MESSAGEID, KOL_SMS)'
+      
+        '   ALPHANAME, WAPPUSH, DOLG, STATUS, MESSAGEID, KOL_SMS, KOL_ABO' +
+        'N)'
       'values'
       
         '  (:ID, :ID_SMSORDER, :SCHET, :FIO, :ULNAIM, :NOMDOM, :NOMKV, :T' +
         'EL, :TEXT, '
       
         '   :TEXTNOTTR, :ALPHANAME, :WAPPUSH, :DOLG, :STATUS, :MESSAGEID,' +
-        ' :KOL_SMS)')
+        ' :KOL_SMS, '
+      '   :KOL_ABON)')
     RefreshSQL.Strings = (
       'Select '
       '  ID,'
@@ -902,7 +733,8 @@ object Form17: TForm17
       '  DOLG,'
       '  STATUS,'
       '  MESSAGEID,'
-      '  KOL_SMS'
+      '  KOL_SMS,'
+      '  KOL_ABON'
       'from SMSLIST '
       'where'
       '  ID = :ID')
@@ -926,12 +758,13 @@ object Form17: TForm17
       '  DOLG = :DOLG,'
       '  STATUS = :STATUS,'
       '  MESSAGEID = :MESSAGEID,'
-      '  KOL_SMS = :KOL_SMS'
+      '  KOL_SMS = :KOL_SMS,'
+      '  KOL_ABON = :KOL_ABON'
       'where'
       '  ID = :OLD_ID')
     ParamCheck = True
     UniDirectional = False
-    Left = 568
+    Left = 504
     Top = 472
     object IBSMSLISTID: TIntegerField
       FieldName = 'ID'
@@ -1008,21 +841,14 @@ object Form17: TForm17
       Origin = '"SMSLIST"."TEXTNOTTR"'
       Size = 300
     end
+    object IBSMSLISTKOL_ABON: TIntegerField
+      FieldName = 'KOL_ABON'
+      Origin = '"SMSLIST"."KOL_ABON"'
+    end
   end
   object DSSMSLIST: TDataSource
     DataSet = IBSMSLIST
-    Left = 568
+    Left = 504
     Top = 520
-  end
-  object IBQuery1: TIBQuery
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    ParamCheck = True
-    SQL.Strings = (
-      '')
-    Left = 568
-    Top = 408
   end
 end

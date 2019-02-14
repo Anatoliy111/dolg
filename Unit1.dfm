@@ -3576,14 +3576,16 @@ object Form1: TForm1
       
         '  (ID, DATA, SEND, CONTROL, PERIOD, DOLG, KOL_SENDSMS, KOL_SEND,' +
         ' KOL_ERR, '
-      '   KOL_DOST, KOL_ROUTE, ID_USER, POSL, TRANSLIT)'
+      '   KOL_DOST, KOL_DOSTSMS, ID_USER, POSL, TRANSLIT)'
       'values'
       
         '  (:ID, :DATA, :SEND, :CONTROL, :PERIOD, :DOLG, :KOL_SENDSMS, :K' +
         'OL_SEND, '
-      '   :KOL_ERR, :KOL_DOST, :KOL_ROUTE, :ID_USER, :POSL, :TRANSLIT)')
+      
+        '   :KOL_ERR, :KOL_DOST, :KOL_DOSTSMS, :ID_USER, :POSL, :TRANSLIT' +
+        ')')
     RefreshSQL.Strings = (
-      'Select * '
+      'Select *'
       'from smsordereds '
       'where'
       '  ID = :ID')
@@ -3604,7 +3606,7 @@ object Form1: TForm1
       '  KOL_SEND = :KOL_SEND,'
       '  KOL_ERR = :KOL_ERR,'
       '  KOL_DOST = :KOL_DOST,'
-      '  KOL_ROUTE = :KOL_ROUTE,'
+      '  KOL_DOSTSMS = :KOL_DOSTSMS,'
       '  ID_USER = :ID_USER,'
       '  POSL = :POSL,'
       '  TRANSLIT = :TRANSLIT'
@@ -3612,8 +3614,8 @@ object Form1: TForm1
       '  ID = :OLD_ID')
     ParamCheck = True
     UniDirectional = False
-    Left = 800
-    Top = 440
+    Left = 472
+    Top = 264
     object IBSMSORDEREDSID: TIntegerField
       FieldName = 'ID'
       Origin = '"SMSORDEREDS"."ID"'
@@ -3655,10 +3657,6 @@ object Form1: TForm1
       FieldName = 'CONTROL'
       Origin = '"SMSORDEREDS"."CONTROL"'
     end
-    object IBSMSORDEREDSKOL_ROUTE: TIntegerField
-      FieldName = 'KOL_ROUTE'
-      Origin = '"SMSORDEREDS"."KOL_ROUTE"'
-    end
     object IBSMSORDEREDSPOSL: TIBStringField
       FieldName = 'POSL'
       Origin = '"SMSORDEREDS"."POSL"'
@@ -3676,11 +3674,15 @@ object Form1: TForm1
       FieldName = 'KOL_ERR'
       Origin = '"SMSORDEREDS"."KOL_ERR"'
     end
+    object IBSMSORDEREDSKOL_DOSTSMS: TIntegerField
+      FieldName = 'KOL_DOSTSMS'
+      Origin = '"SMSORDEREDS"."KOL_DOSTSMS"'
+    end
   end
   object DSSMSORDEREDS: TDataSource
     DataSet = IBSMSORDEREDS
-    Left = 800
-    Top = 488
+    Left = 472
+    Top = 312
   end
   object IBABONINF: TIBDataSet
     Database = IBDatabase1
@@ -3740,5 +3742,165 @@ object Form1: TForm1
     DataSet = IBABONINF
     Left = 896
     Top = 448
+  end
+  object IBSMSLIST: TIBDataSet
+    Database = IBDatabase1
+    Transaction = IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from SMSLIST'
+      'where'
+      '  ID = :OLD_ID')
+    InsertSQL.Strings = (
+      'insert into SMSLIST'
+      
+        '  (ID, ID_SMSORDER, SCHET, FIO, ULNAIM, NOMDOM, NOMKV, TEL, TEXT' +
+        ', TEXTNOTTR, '
+      
+        '   ALPHANAME, WAPPUSH, DOLG, STATUS, MESSAGEID, KOL_SMS, KOL_ABO' +
+        'N)'
+      'values'
+      
+        '  (:ID, :ID_SMSORDER, :SCHET, :FIO, :ULNAIM, :NOMDOM, :NOMKV, :T' +
+        'EL, :TEXT, '
+      
+        '   :TEXTNOTTR, :ALPHANAME, :WAPPUSH, :DOLG, :STATUS, :MESSAGEID,' +
+        ' :KOL_SMS, '
+      '   :KOL_ABON)')
+    RefreshSQL.Strings = (
+      'Select '
+      '  ID,'
+      '  ID_SMSORDER,'
+      '  SCHET,'
+      '  FIO,'
+      '  ULNAIM,'
+      '  NOMDOM,'
+      '  NOMKV,'
+      '  TEL,'
+      '  TEXT,'
+      '  TEXTNOTTR,'
+      '  ALPHANAME,'
+      '  WAPPUSH,'
+      '  DOLG,'
+      '  STATUS,'
+      '  MESSAGEID,'
+      '  KOL_SMS,'
+      '  KOL_ABON'
+      'from SMSLIST '
+      'where'
+      '  ID = :ID')
+    SelectSQL.Strings = (
+      'select * from SMSLIST')
+    ModifySQL.Strings = (
+      'update SMSLIST'
+      'set'
+      '  ID = :ID,'
+      '  ID_SMSORDER = :ID_SMSORDER,'
+      '  SCHET = :SCHET,'
+      '  FIO = :FIO,'
+      '  ULNAIM = :ULNAIM,'
+      '  NOMDOM = :NOMDOM,'
+      '  NOMKV = :NOMKV,'
+      '  TEL = :TEL,'
+      '  TEXT = :TEXT,'
+      '  TEXTNOTTR = :TEXTNOTTR,'
+      '  ALPHANAME = :ALPHANAME,'
+      '  WAPPUSH = :WAPPUSH,'
+      '  DOLG = :DOLG,'
+      '  STATUS = :STATUS,'
+      '  MESSAGEID = :MESSAGEID,'
+      '  KOL_SMS = :KOL_SMS,'
+      '  KOL_ABON = :KOL_ABON'
+      'where'
+      '  ID = :OLD_ID')
+    ParamCheck = True
+    UniDirectional = False
+    Left = 384
+    Top = 264
+    object IBSMSLISTID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"SMSLIST"."ID"'
+    end
+    object IBSMSLISTID_SMSORDER: TIntegerField
+      FieldName = 'ID_SMSORDER'
+      Origin = '"SMSLIST"."ID_SMSORDER"'
+    end
+    object IBSMSLISTSCHET: TIBStringField
+      FieldName = 'SCHET'
+      Origin = '"SMSLIST"."SCHET"'
+      Size = 10
+    end
+    object IBSMSLISTULNAIM: TIBStringField
+      FieldName = 'ULNAIM'
+      Origin = '"SMSLIST"."ULNAIM"'
+      Size = 64
+    end
+    object IBSMSLISTNOMDOM: TIBStringField
+      FieldName = 'NOMDOM'
+      Origin = '"SMSLIST"."NOMDOM"'
+      Size = 5
+    end
+    object IBSMSLISTNOMKV: TIBStringField
+      FieldName = 'NOMKV'
+      Origin = '"SMSLIST"."NOMKV"'
+      Size = 5
+    end
+    object IBSMSLISTALPHANAME: TIBStringField
+      FieldName = 'ALPHANAME'
+      Origin = '"SMSLIST"."ALPHANAME"'
+      Size = 11
+    end
+    object IBSMSLISTWAPPUSH: TIBStringField
+      FieldName = 'WAPPUSH'
+      Origin = '"SMSLIST"."WAPPUSH"'
+    end
+    object IBSMSLISTDOLG: TFloatField
+      FieldName = 'DOLG'
+      Origin = '"SMSLIST"."DOLG"'
+    end
+    object IBSMSLISTSTATUS: TIBStringField
+      FieldName = 'STATUS'
+      Origin = '"SMSLIST"."STATUS"'
+      Size = 250
+    end
+    object IBSMSLISTTEXT: TIBStringField
+      FieldName = 'TEXT'
+      Origin = '"SMSLIST"."TEXT"'
+      Size = 300
+    end
+    object IBSMSLISTKOL_SMS: TIntegerField
+      FieldName = 'KOL_SMS'
+      Origin = '"SMSLIST"."KOL_SMS"'
+    end
+    object IBSMSLISTTEL: TIBStringField
+      FieldName = 'TEL'
+      Origin = '"SMSLIST"."TEL"'
+      Size = 13
+    end
+    object IBSMSLISTMESSAGEID: TIBStringField
+      FieldName = 'MESSAGEID'
+      Origin = '"SMSLIST"."MESSAGEID"'
+      Size = 41
+    end
+    object IBSMSLISTFIO: TIBStringField
+      FieldName = 'FIO'
+      Origin = '"SMSLIST"."FIO"'
+      Size = 100
+    end
+    object IBSMSLISTTEXTNOTTR: TIBStringField
+      FieldName = 'TEXTNOTTR'
+      Origin = '"SMSLIST"."TEXTNOTTR"'
+      Size = 300
+    end
+    object IBSMSLISTKOL_ABON: TIntegerField
+      FieldName = 'KOL_ABON'
+      Origin = '"SMSLIST"."KOL_ABON"'
+    end
+  end
+  object DSSMSLIST: TDataSource
+    DataSet = IBSMSLIST
+    Left = 384
+    Top = 312
   end
 end
