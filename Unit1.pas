@@ -485,6 +485,7 @@ type
     IBSMSLISTTEXTNOTTR: TIBStringField;
     DSSMSLIST: TDataSource;
     IBSMSLISTKOL_ABON: TIntegerField;
+    IBUSERSMS: TIntegerField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);

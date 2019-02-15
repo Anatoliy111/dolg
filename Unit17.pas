@@ -10,7 +10,7 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, cxDropDownEdit, cxCalc, cxTextEdit,
   cxMaskEdit, cxLabel, Vcl.StdCtrls, cxButtons, cxGroupBox, Vcl.ExtCtrls,
-  IBX.IBCustomDataSet,cxCurrencyEdit, IBX.IBQuery, cxDBEdit;
+  IBX.IBCustomDataSet,cxCurrencyEdit, IBX.IBQuery, cxDBEdit, cxDBLabel;
 
 type
   TForm17 = class(TForm)
@@ -47,7 +47,6 @@ type
     cxGridDBTableView2DOLG: TcxGridDBColumn;
     cxGridDBTableView2STATUS: TcxGridDBColumn;
     cxGridDBTableView2KOL_SMS: TcxGridDBColumn;
-    cxLabel3: TcxLabel;
     cxButton8: TcxButton;
     IBQuery1: TIBQuery;
     IBWIDSNAIM: TIBStringField;
@@ -59,13 +58,10 @@ type
     cxLabel5: TcxLabel;
     cxLabel13: TcxLabel;
     cxLabel15: TcxLabel;
-    cxLabel16: TcxLabel;
     cxLabel17: TcxLabel;
     cxLabel18: TcxLabel;
     cxLabel19: TcxLabel;
-    cxLabel20: TcxLabel;
     cxLabel21: TcxLabel;
-    cxLabel22: TcxLabel;
     cxButton9: TcxButton;
     IBSMSLIST: TIBDataSet;
     IBSMSLISTID: TIntegerField;
@@ -86,6 +82,29 @@ type
     IBSMSLISTTEXTNOTTR: TIBStringField;
     DSSMSLIST: TDataSource;
     IBSMSLISTKOL_ABON: TIntegerField;
+    cxLabel1: TcxLabel;
+    IBSMSORDEREDS: TIBDataSet;
+    IBSMSORDEREDSID: TIntegerField;
+    IBSMSORDEREDSDATA: TDateTimeField;
+    IBSMSORDEREDSSEND: TIntegerField;
+    IBSMSORDEREDSPERIOD: TDateField;
+    IBSMSORDEREDSDOLG: TFloatField;
+    IBSMSORDEREDSKOL_SENDSMS: TIntegerField;
+    IBSMSORDEREDSKOL_DOST: TIntegerField;
+    IBSMSORDEREDSFIO: TIBStringField;
+    IBSMSORDEREDSID_USER: TIntegerField;
+    IBSMSORDEREDSCONTROL: TIntegerField;
+    IBSMSORDEREDSPOSL: TIBStringField;
+    IBSMSORDEREDSTRANSLIT: TIntegerField;
+    IBSMSORDEREDSKOL_SEND: TIntegerField;
+    IBSMSORDEREDSKOL_ERR: TIntegerField;
+    IBSMSORDEREDSKOL_DOSTSMS: TIntegerField;
+    DSSMSORDEREDS: TDataSource;
+    cxDBLabel1: TcxDBLabel;
+    cxDBLabel2: TcxDBLabel;
+    cxDBLabel3: TcxDBLabel;
+    cxDBLabel4: TcxDBLabel;
+    cxDBLabel5: TcxDBLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -172,7 +191,8 @@ end;
 
 procedure TForm17.cxButton4Click(Sender: TObject);
 var ws: ServiceSoap;
-sendabon,sendsms1,dostsms,dolgabon,dostabon,errabon:integer;
+sendabon,sendsms1,dostsms,dostabon,errabon:integer;
+dolgabon:Double;
 stat:string;
 
 begin
@@ -205,48 +225,49 @@ begin
 
            if IBSMSLISTSTATUS.Value='Сообщение доставлено получателю' then
                begin
-                  sendabon:=sendabon+1;
-               end;
-
-           if Length(IBSMSLISTMESSAGEID.Value)>0 then
-               begin
                   dostabon:=dostabon+1;
+                  dolgabon:=dolgabon+IBSMSLISTDOLG.Value;
+                  dostsms:=dostsms+IBSMSLISTKOL_SMS.Value;
                end;
 
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
        if Length(IBSMSLISTMESSAGEID.Value)>0 then
        begin
           sendsms1:=sendsms1+IBSMSLISTKOL_SMS.Value;
           sendabon:=sendabon+1;
        end;
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
        IBSMSLIST.Next;
        end;
 
 
-//       IBSMSLIST.Close;
-//       IBSMSLIST.Open;
-
-//      cxLabel2.Caption:=ws.GetCreditBalance;
     end;
 
-    Form1.IBSMSORDEREDS.Edit;
-//    Form1.IBSMSORDEREDSSEND.Value:=1;
-//    Form1.IBSMSORDEREDSDATA.Value:=now();
-//    Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-    Form1.IBSMSORDEREDSKOL_DOST.Value:=dostabon;
-    Form1.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
-    Form1.IBSMSORDEREDS.Post;
+    Form17.IBSMSORDEREDS.Edit;
+//    Form17.IBSMSORDEREDSSEND.Value:=1;
+//    Form17.IBSMSORDEREDSDATA.Value:=now();
+//    Form17.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+    Form17.IBSMSORDEREDSKOL_DOST.Value:=dostabon;
+    Form17.IBSMSORDEREDSDOLG.Value:=dolgabon;
+    Form17.IBSMSORDEREDSKOL_DOSTSMS.Value:=dostsms;
+    Form17.IBSMSORDEREDSKOL_ERR.Value:=sendabon-dostabon;
+
+    Form17.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
+    Form17.IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
+    Form17.IBSMSORDEREDS.Post;
 
     Form1.IBTransaction1.CommitRetaining;
 //
 //    cxLabel22.Caption:=int2str(sendsms1);
-    cxLabel16.Caption:=int2str(sendabon);
+
 //    cxButton4.Enabled:=true;
-//    ShowMessage('Відправка СМС виконана!!!');
+    ShowMessage('Перевірка статусу СМС виконана!!!');
 
 
     except
-     cxLabel3.Caption:='Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)';
+     ShowMessage('Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)');
 
   end;
 
@@ -267,8 +288,7 @@ begin
     ws.Auth(Form1.IBSERVICESSMSLOGIN.Value,Form1.IBSERVICESSMSPW.Value);
     with ws do
     begin
-       cxLabel2.Caption:=ws.GetCreditBalance;
-       Form16.cxLabel2.Caption:=cxLabel2.Caption;
+       Form16.balanslabel(ws.GetCreditBalance);
        sbal:=str2float(StringReplace(cxLabel2.Caption,'.',',',[rfReplaceAll, rfIgnoreCase]));
        ssms:=str2float(cxLabel18.Caption);
        if ssms>sbal then
@@ -313,16 +333,12 @@ begin
 
     if sendabon=0 then
     begin
-    Form1.IBSMSORDEREDS.Edit;
-    Form1.IBSMSORDEREDSDATA.Value:=now();
-    Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-    Form1.IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
-    Form1.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
-    Form1.IBSMSORDEREDS.Post;
+    Form17.IBSMSORDEREDS.Edit;
+    Form17.IBSMSORDEREDSKOL_SENDSMS.Value:=0;
+    Form17.IBSMSORDEREDSKOL_SEND.Value:=0;
+    Form17.IBSMSORDEREDS.Post;
 
 
-    cxLabel22.Caption:=int2str(sendsms1);
-    cxLabel16.Caption:=int2str(sendabon);
     ShowMessage('Відправка не виконана!!!');
 
     end
@@ -331,23 +347,25 @@ begin
 
 
 
-    Form1.IBSMSORDEREDS.Edit;
-    Form1.IBSMSORDEREDSSEND.Value:=1;
-    Form1.IBSMSORDEREDSDATA.Value:=now();
-    Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-    Form1.IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
-    Form1.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
-    Form1.IBSMSORDEREDS.Post;
+    Form17.IBSMSORDEREDS.Edit;
+    Form17.IBSMSORDEREDSSEND.Value:=1;
+    Form17.IBSMSORDEREDSDATA.Value:=now();
+    Form17.IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
+    Form17.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
+    Form17.IBSMSORDEREDS.Post;
 
-    cxLabel22.Caption:=int2str(sendsms1);
-    cxLabel16.Caption:=int2str(sendabon);
+    Form16.balanslabel(ws.GetCreditBalance);
+
     cxButton4.Enabled:=true;
+    cxButton2.Enabled:=false;
+    cxButton6.Enabled:=false;
+    cxButton5.Enabled:=false;
     ShowMessage('Відправка СМС виконана! Через деякий час (10 хв.)потрібно перевірити статус, щоб визначити які смс доставлені а які ні. Інколи смс іде до декількох годин, тому в пачках в яких є не доставлені смс потрібно декілька разів перевірити статус !!!');
 
     end;
     Form1.IBTransaction1.CommitRetaining;
     except
-     cxLabel3.Caption:='Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)';
+      ShowMessage('Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)');
 
   end;
 
@@ -373,7 +391,7 @@ begin
        begin
                    IBSMSLIST.Edit;
                    smstext:=IBSMSLISTTEXTNOTTR.Value;
-                   if Form1.IBSMSORDEREDSTRANSLIT.Value=1 then
+                   if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
                    begin
                      if Length(smstext)>70 then
                      begin
@@ -395,14 +413,6 @@ begin
 
        IBSMSLIST.Next;
        end;
-
-
-              Form1.IBSMSORDEREDS.First;
-              Form1.IBSMSORDEREDS.Locate('id',id_orders,[]);
-              Form1.IBSMSORDEREDS.Edit;
-              Form1.IBSMSORDEREDSDATA.Value:=now();
-              Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-              Form1.IBSMSORDEREDS.Post;
 
 
 
@@ -439,8 +449,19 @@ Form18.IBWID.Close;
 
 
  if IBSMSLIST.State in [dsInsert,dsEdit] then IBSMSLIST.Post;
+ if IBSMSORDEREDS.State in [dsInsert,dsEdit] then
+ begin
+   IBSMSORDEREDS.Edit;
+   IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+   IBSMSORDEREDS.Post;
+ end;
  Form1.IBTransaction1.CommitRetaining;
 
+Form1.IBSMSORDEREDS.Close;
+Form1.IBSMSORDEREDS.Open;
+Form1.IBSMSORDEREDS.Locate('id',IBSMSORDEREDSID.Value,[]);
+
+IBSMSORDEREDS.Close;
 IBSMSLIST.Close;
 
 
@@ -460,7 +481,7 @@ cxButton6.Enabled:=false;
 if id_orders<>0 then
 begin
 
-  if var2int(Form1.IBSMSORDEREDS.Lookup('id',id_orders,'send'))=1 then
+  if Form17.IBSMSORDEREDSSEND.Value=1 then
   begin
 
      cxButton8.Enabled:=false;
@@ -479,6 +500,7 @@ begin
 
      cxButton2.Enabled:=true;
      cxButton6.Enabled:=true;
+     cxButton5.Enabled:=false;
 
   end;
 
@@ -492,9 +514,9 @@ begin
   end;
 
 
-  cxLabel9.Caption:=mon_slovoDt(Form1.IBSMSORDEREDSPERIOD.Value);
+  cxLabel9.Caption:=mon_slovoDt(Form17.IBSMSORDEREDSPERIOD.Value);
 
-  Caption:='Пачка №'+int2str(id_orders)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
+  Caption:='Пачка №'+int2str(id_orders);
 
 end
 else
@@ -509,7 +531,6 @@ end;
 
 procedure TForm17.FormShow(Sender: TObject);
 begin
-cxLabel2.Caption:=Form16.cxLabel2.Caption;
 visible;
 end;
 
@@ -568,7 +589,8 @@ cxLabel18.Caption:=iif(AText='','0',AText);
        end
        else
        begin
-         cxButton5.Enabled:=true;
+         if IBSMSORDEREDSSEND.Value=0 then
+             cxButton5.Enabled:=true;
          cxLabel18.Style.TextColor:=clWindowText;
          cxLabel5.Style.TextColor:=clWindowText;
        end;
@@ -580,9 +602,9 @@ procedure TForm17.cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterS
   Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
   var AText: string);
 begin
-cxLabel16.Caption:=AText;
 
-       if (str2float(cxLabel16.Caption)=0) then
+
+       if (str2float(AText)=0) then
        begin
          cxButton5.Enabled:=false;
          cxButton6.Enabled:=false;

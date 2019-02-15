@@ -94,13 +94,8 @@ object Form17: TForm17
         OnClick = cxButton6Click
       end
       object cxLabel2: TcxLabel
-        Left = 320
+        Left = 289
         Top = 111
-        Caption = '0'
-      end
-      object cxLabel3: TcxLabel
-        Left = 516
-        Top = 143
         Caption = '0'
       end
       object cxLabel7: TcxLabel
@@ -126,7 +121,7 @@ object Form17: TForm17
           #1090#1088#1072#1085#1089#1083#1110#1090#1077#1088#1072#1094#1110#1103' ('#1087#1077#1088#1077#1074#1086#1076#1077' '#1090#1077#1082#1089#1090' '#1085#1072' '#1083#1072#1090#1080#1085#1089#1100#1082#1110' '#1083#1110#1090#1077#1088#1080' '#1103#1082#1097#1086' '#1089#1084#1089' '#1073#1110#1083#1100 +
           #1096#1077' 70 '#1089#1080#1084#1074#1086#1083#1110#1074', '#1074#1087#1083#1080#1074#1072#1108' '#1085#1072' '#1082'-'#1090#1100' '#1057#1052#1057')'
         DataBinding.DataField = 'TRANSLIT'
-        DataBinding.DataSource = Form1.DSSMSORDEREDS
+        DataBinding.DataSource = DSSMSORDEREDS
         ParentBackground = False
         Properties.Alignment = taLeftJustify
         Properties.MultiLine = True
@@ -134,64 +129,49 @@ object Form17: TForm17
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         Style.Shadow = False
-        TabOrder = 12
+        TabOrder = 11
         Height = 29
         Width = 312
       end
       object cxLabel5: TcxLabel
-        Left = 216
+        Left = 191
         Top = 127
         Caption = #1050'-'#1089#1090#1100' '#1074#1089#1100#1086#1075#1086' '#1057#1052#1057':'
         Style.TextColor = clWindowText
       end
       object cxLabel13: TcxLabel
-        Left = 351
+        Left = 487
         Top = 143
         Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075#1091' '#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
       end
       object cxLabel15: TcxLabel
-        Left = 377
+        Left = 511
         Top = 111
         Caption = #1050'-'#1089#1090#1100' '#1074#1110#1076#1087#1088#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
       end
-      object cxLabel16: TcxLabel
-        Left = 516
-        Top = 111
-        Caption = '0'
-      end
       object cxLabel17: TcxLabel
-        Left = 215
+        Left = 164
         Top = 111
-        Caption = #1041#1072#1083#1072#1085#1089' '#1076#1086#1089#1090'. '#1057#1052#1057':'
+        Caption = #1041#1072#1083#1072#1085#1089' '#1076#1086#1089#1090#1091#1087#1085#1080#1093' '#1057#1052#1057':'
       end
       object cxLabel18: TcxLabel
-        Left = 320
+        Left = 289
         Top = 127
         Caption = '0'
       end
       object cxLabel19: TcxLabel
-        Left = 380
+        Left = 516
         Top = 127
         Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
       end
-      object cxLabel20: TcxLabel
-        Left = 516
-        Top = 127
-        Caption = '0'
-      end
       object cxLabel21: TcxLabel
-        Left = 222
-        Top = 143
-        Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090'. '#1057#1052#1057':'
-      end
-      object cxLabel22: TcxLabel
-        Left = 320
-        Top = 143
-        Caption = '0'
+        Left = 345
+        Top = 127
+        Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090#1072#1074'. '#1057#1052#1057':'
       end
       object cxButton9: TcxButton
-        Left = 189
-        Top = 108
+        Left = 132
+        Top = 109
         Width = 26
         Height = 24
         OptionsImage.Glyph.Data = {
@@ -229,9 +209,74 @@ object Form17: TForm17
           0002000000010000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000}
-        TabOrder = 23
+        TabOrder = 19
         WordWrap = True
         OnClick = cxButton9Click
+      end
+      object cxLabel1: TcxLabel
+        Left = 342
+        Top = 111
+        Caption = #1050'-'#1089#1090#1100' '#1074#1110#1076#1087#1088#1072#1074'. '#1057#1052#1057':'
+      end
+      object cxDBLabel1: TcxDBLabel
+        Left = 447
+        Top = 111
+        DataBinding.DataField = 'KOL_SENDSMS'
+        DataBinding.DataSource = DSSMSORDEREDS
+        Properties.Alignment.Horz = taLeftJustify
+        Properties.Alignment.Vert = taVCenter
+        Properties.Orientation = cxoLeft
+        Height = 17
+        Width = 58
+        AnchorY = 120
+      end
+      object cxDBLabel2: TcxDBLabel
+        Left = 447
+        Top = 127
+        DataBinding.DataField = 'KOL_DOSTSMS'
+        DataBinding.DataSource = DSSMSORDEREDS
+        Properties.Alignment.Horz = taLeftJustify
+        Properties.Alignment.Vert = taVCenter
+        Properties.Orientation = cxoLeft
+        Height = 17
+        Width = 59
+        AnchorY = 136
+      end
+      object cxDBLabel3: TcxDBLabel
+        Left = 647
+        Top = 111
+        DataBinding.DataField = 'KOL_SEND'
+        DataBinding.DataSource = DSSMSORDEREDS
+        Properties.Alignment.Horz = taLeftJustify
+        Properties.Alignment.Vert = taVCenter
+        Properties.Orientation = cxoLeft
+        Height = 17
+        Width = 59
+        AnchorY = 120
+      end
+      object cxDBLabel4: TcxDBLabel
+        Left = 647
+        Top = 127
+        DataBinding.DataField = 'KOL_DOST'
+        DataBinding.DataSource = DSSMSORDEREDS
+        Properties.Alignment.Horz = taLeftJustify
+        Properties.Alignment.Vert = taVCenter
+        Properties.Orientation = cxoLeft
+        Height = 17
+        Width = 59
+        AnchorY = 136
+      end
+      object cxDBLabel5: TcxDBLabel
+        Left = 647
+        Top = 143
+        DataBinding.DataField = 'DOLG'
+        DataBinding.DataSource = DSSMSORDEREDS
+        Properties.Alignment.Horz = taLeftJustify
+        Properties.Alignment.Vert = taVCenter
+        Properties.Orientation = cxoLeft
+        Height = 17
+        Width = 59
+        AnchorY = 152
       end
     end
     object cxLabel4: TcxLabel
@@ -851,6 +896,128 @@ object Form17: TForm17
   object DSSMSLIST: TDataSource
     DataSet = IBSMSLIST
     Left = 504
+    Top = 520
+  end
+  object IBSMSORDEREDS: TIBDataSet
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from smsordereds'
+      'where'
+      '  ID = :OLD_ID')
+    InsertSQL.Strings = (
+      'insert into smsordereds'
+      
+        '  (ID, DATA, SEND, CONTROL, PERIOD, DOLG, KOL_SENDSMS, KOL_SEND,' +
+        ' KOL_ERR, '
+      '   KOL_DOST, KOL_DOSTSMS, ID_USER, POSL, TRANSLIT)'
+      'values'
+      
+        '  (:ID, :DATA, :SEND, :CONTROL, :PERIOD, :DOLG, :KOL_SENDSMS, :K' +
+        'OL_SEND, '
+      
+        '   :KOL_ERR, :KOL_DOST, :KOL_DOSTSMS, :ID_USER, :POSL, :TRANSLIT' +
+        ')')
+    RefreshSQL.Strings = (
+      'Select *'
+      'from smsordereds '
+      'where'
+      '  ID = :ID')
+    SelectSQL.Strings = (
+      'select smsordereds.*,users.fio from smsordereds'
+      'left join users on users.kl=smsordereds.id_user'
+      'order by id desc')
+    ModifySQL.Strings = (
+      'update smsordereds'
+      'set'
+      '  ID = :ID,'
+      '  DATA = :DATA,'
+      '  SEND = :SEND,'
+      '  CONTROL = :CONTROL,'
+      '  PERIOD = :PERIOD,'
+      '  DOLG = :DOLG,'
+      '  KOL_SENDSMS = :KOL_SENDSMS,'
+      '  KOL_SEND = :KOL_SEND,'
+      '  KOL_ERR = :KOL_ERR,'
+      '  KOL_DOST = :KOL_DOST,'
+      '  KOL_DOSTSMS = :KOL_DOSTSMS,'
+      '  ID_USER = :ID_USER,'
+      '  POSL = :POSL,'
+      '  TRANSLIT = :TRANSLIT'
+      'where'
+      '  ID = :OLD_ID')
+    ParamCheck = True
+    UniDirectional = False
+    Left = 432
+    Top = 472
+    object IBSMSORDEREDSID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"SMSORDEREDS"."ID"'
+    end
+    object IBSMSORDEREDSDATA: TDateTimeField
+      FieldName = 'DATA'
+      Origin = '"SMSORDEREDS"."DATA"'
+    end
+    object IBSMSORDEREDSSEND: TIntegerField
+      FieldName = 'SEND'
+      Origin = '"SMSORDEREDS"."SEND"'
+    end
+    object IBSMSORDEREDSPERIOD: TDateField
+      FieldName = 'PERIOD'
+      Origin = '"SMSORDEREDS"."PERIOD"'
+    end
+    object IBSMSORDEREDSDOLG: TFloatField
+      FieldName = 'DOLG'
+      Origin = '"SMSORDEREDS"."DOLG"'
+    end
+    object IBSMSORDEREDSKOL_SENDSMS: TIntegerField
+      FieldName = 'KOL_SENDSMS'
+      Origin = '"SMSORDEREDS"."KOL_SENDSMS"'
+    end
+    object IBSMSORDEREDSKOL_DOST: TIntegerField
+      FieldName = 'KOL_DOST'
+      Origin = '"SMSORDEREDS"."KOL_DOST"'
+    end
+    object IBSMSORDEREDSFIO: TIBStringField
+      FieldName = 'FIO'
+      Origin = '"USERS"."FIO"'
+      Size = 30
+    end
+    object IBSMSORDEREDSID_USER: TIntegerField
+      FieldName = 'ID_USER'
+      Origin = '"SMSORDEREDS"."ID_USER"'
+    end
+    object IBSMSORDEREDSCONTROL: TIntegerField
+      FieldName = 'CONTROL'
+      Origin = '"SMSORDEREDS"."CONTROL"'
+    end
+    object IBSMSORDEREDSPOSL: TIBStringField
+      FieldName = 'POSL'
+      Origin = '"SMSORDEREDS"."POSL"'
+      Size = 30
+    end
+    object IBSMSORDEREDSTRANSLIT: TIntegerField
+      FieldName = 'TRANSLIT'
+      Origin = '"SMSORDEREDS"."TRANSLIT"'
+    end
+    object IBSMSORDEREDSKOL_SEND: TIntegerField
+      FieldName = 'KOL_SEND'
+      Origin = '"SMSORDEREDS"."KOL_SEND"'
+    end
+    object IBSMSORDEREDSKOL_ERR: TIntegerField
+      FieldName = 'KOL_ERR'
+      Origin = '"SMSORDEREDS"."KOL_ERR"'
+    end
+    object IBSMSORDEREDSKOL_DOSTSMS: TIntegerField
+      FieldName = 'KOL_DOSTSMS'
+      Origin = '"SMSORDEREDS"."KOL_DOSTSMS"'
+    end
+  end
+  object DSSMSORDEREDS: TDataSource
+    DataSet = IBSMSORDEREDS
+    Left = 432
     Top = 520
   end
 end

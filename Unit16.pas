@@ -51,7 +51,9 @@ type
   private
     { Private declarations }
     procedure balans;
+
   public
+  procedure balanslabel(s:string);
     { Public declarations }
   end;
 
@@ -74,12 +76,20 @@ begin
   try
   ws.Auth(Form1.IBSERVICESSMSLOGIN.Value,Form1.IBSERVICESSMSPW.Value);
   with ws do
-    cxLabel2.Caption:=ws.GetCreditBalance;
-    Form17.cxLabel2.Caption:=cxLabel2.Caption;
+    balanslabel(ws.GetCreditBalance);
   except
    cxLabel2.Caption:='Нема підключення до сервера СМС (можливо відсутнє з"єднання з інтернетом)';
-   Form17.cxLabel2.Caption:='--';
+   balanslabel('--');
   end;
+
+end;
+
+procedure TForm16.balanslabel(s:string);
+begin
+
+    cxLabel2.Caption:=s;
+    Form17.cxLabel2.Caption:=s;
+
 
 end;
 
@@ -97,7 +107,10 @@ if not Form17.Showing then
 begin
 
   Form17.id_orders:=Form1.IBSMSORDEREDSID.Value;
-  Form17.Caption:='Пачка № '+ int2str(Form1.IBSMSORDEREDSID.Value)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
+                Form17.IBSMSORDEREDS.close;
+              Form17.IBSMSORDEREDS.Open;
+              Form17.IBSMSORDEREDS.Locate('id',Form1.IBSMSORDEREDSID.Value,[]);
+  Form17.Caption:='Пачка № '+ int2str(Form1.IBSMSORDEREDSID.Value);
 
 
   Form17.Show;
@@ -146,17 +159,18 @@ begin
 
               Form1.IBSMSORDEREDS.Insert;
               Form1.IBSMSORDEREDS.Edit;
-              Form1.IBSMSORDEREDSDATA.Value:=now();
+//              Form1.IBSMSORDEREDSDATA.Value:=now();
               Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-              Form1.IBSMSORDEREDSCONTROL.Value:=1;
-              Form1.IBSMSORDEREDSPOSL.Value:=posl;
               if Form1.translit='1' then
                  Form1.IBSMSORDEREDSTRANSLIT.Value:=1;
               Form1.IBSMSORDEREDS.Post;
-              Form1.IBSMSORDEREDS.Close;
-              Form1.IBSMSORDEREDS.Open;
+//              Form1.IBSMSORDEREDS.Close;
+//              Form1.IBSMSORDEREDS.Open;
               Form17.id_orders:=Form1.IBSMSORDEREDSID.Value;
-              Form17.Caption:='Пачка № '+ int2str(Form1.IBSMSORDEREDSID.Value)+' від '+DateTimeToStr(Form1.IBSMSORDEREDSDATA.Value);
+              Form17.IBSMSORDEREDS.close;
+              Form17.IBSMSORDEREDS.Open;
+              Form17.IBSMSORDEREDS.Locate('id',Form1.IBSMSORDEREDSID.Value,[]);
+              Form17.Caption:='Пачка № '+ int2str(Form1.IBSMSORDEREDSID.Value);
 
   Form17.Show;
 

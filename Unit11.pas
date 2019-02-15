@@ -43,10 +43,17 @@ begin
      if cxMaskEdit1.Text=Form1.IBUSERPW.Value then
      begin
      Form1.ActiveUser:=Form1.IBUSERKL.Value;
-     if Form1.IBUSERFIO.Value<>'admin' then
-     begin
-       Form1.dxBarButton114.Enabled:=false;
-     end;
+       if Form1.IBUSERFIO.Value<>'admin' then
+       begin
+         Form1.dxBarButton114.Enabled:=false;
+
+       end;
+
+       if Form1.IBUSERSMS.Value=0 then
+       begin
+         Form1.cxButton4.Enabled:=false;
+
+       end;
 
      Form1.Enabled:=true;
      Form11.Hide;

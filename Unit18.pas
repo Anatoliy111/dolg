@@ -428,23 +428,23 @@ begin
 //              end
 //              else
 //              begin
-//              Form1.IBSMSORDEREDS.First;
-//              Form1.IBSMSORDEREDS.Locate('id',id_orders,[]);
-//              Form1.IBSMSORDEREDS.Edit;
-//              Form1.IBSMSORDEREDSDATA.Value:=now();
-//              Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-//              Form1.IBSMSORDEREDSPERIOD.Value:=IBREP.FieldByName('period').Value;
-//      //        Form1.IBSMSORDEREDSCONTROL.Value:=1;
-//              Form1.IBSMSORDEREDSPOSL.Value:=posl;
-//              Form1.IBSMSORDEREDS.Post;
+//              Form17.IBSMSORDEREDS.First;
+//              Form17.IBSMSORDEREDS.Locate('id',id_orders,[]);
+//              Form17.IBSMSORDEREDS.Edit;
+//              Form17.IBSMSORDEREDSDATA.Value:=now();
+//              Form17.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+//              Form17.IBSMSORDEREDSPERIOD.Value:=IBREP.FieldByName('period').Value;
+//      //        Form17.IBSMSORDEREDSCONTROL.Value:=1;
+//              Form17.IBSMSORDEREDSPOSL.Value:=posl;
+//              Form17.IBSMSORDEREDS.Post;
 //              IBQuery1.Close;
 //              IBQuery1.SQL.Text:='delete from SMSLIST where ID_SMSORDER=:id';
 //              IBQuery1.ParamByName('id').Value:=id_orders;
 //              IBQuery1.ExecSQL;
 //              end;
       //        Form1.IBTransaction3.CommitRetaining;
-      //        Form1.IBSMSORDEREDS.Close;
-      //        Form1.IBSMSORDEREDS.Open;
+      //        Form17.IBSMSORDEREDS.Close;
+      //        Form17.IBSMSORDEREDS.Open;
 
 
 //                IBSMSLIST.Close;
@@ -483,7 +483,7 @@ begin
                      Form17.IBSMSLIST.Insert;
 
                  Form17.IBSMSLIST.Edit;
-                 Form17.IBSMSLISTID_SMSORDER.Value:=Form1.IBSMSORDEREDSID.Value;
+                 Form17.IBSMSLISTID_SMSORDER.Value:=Form17.IBSMSORDEREDSID.Value;
                  Form17.IBSMSLISTSCHET.Value:=IBREP.FieldByName('schet').AsString;
                  Form17.IBSMSLISTFIO.Value:=IBREP.FieldByName('FIO').AsString;
                  Form17.IBSMSLISTULNAIM.Value:=IBREP.FieldByName('ULNAIM').AsString;
@@ -524,7 +524,7 @@ begin
 
                  Form17.IBSMSLISTTEXTNOTTR.Value:=smstext;
 //
-//                 if Form1.IBSMSORDEREDSTRANSLIT.Value=1 then
+//                 if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
 //                 begin
 //                   if Length(smstext)>70 then
 //                   begin
@@ -558,13 +558,9 @@ begin
         begin
           Form17.cxButton6.Enabled:=true;
           Form17.cxButton5.Enabled:=false;
-              Form1.IBSMSORDEREDS.First;
-              Form1.IBSMSORDEREDS.Locate('id',id_orders,[]);
-              Form1.IBSMSORDEREDS.Edit;
-              Form1.IBSMSORDEREDSDATA.Value:=now();
-              Form1.IBSMSORDEREDSPERIOD.Value:=Form1.IBPERIODPERIOD.Value;
-              Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-              Form1.IBSMSORDEREDS.Post;
+          Form17.IBSMSORDEREDS.Edit;
+          Form17.IBSMSORDEREDSPERIOD.Value:=Form1.IBPERIODPERIOD.Value;
+          Form17.IBSMSORDEREDS.Post;
               Form17.cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
         end;
 

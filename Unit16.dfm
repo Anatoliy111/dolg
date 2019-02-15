@@ -126,7 +126,7 @@ object Form16: TForm16
         Width = 38
       end
       object cxGrid1DBTableView1DATA: TcxGridDBColumn
-        Caption = #1044#1072#1090#1072
+        Caption = #1044#1072#1090#1072' '#1074#1110#1076#1087#1088#1072#1074#1083#1077#1085#1085#1103
         DataBinding.FieldName = 'DATA'
         Width = 148
       end
@@ -137,7 +137,7 @@ object Form16: TForm16
       end
       object cxGrid1DBTableView1KOL_SENDSMS: TcxGridDBColumn
         Caption = #1050'-'#1089#1090#1100' '#1072#1073#1086#1085'.'
-        DataBinding.FieldName = 'KOL_SENDSMS'
+        DataBinding.FieldName = 'KOL_SEND'
         Width = 98
       end
       object cxGrid1DBTableView1KOL_DOST: TcxGridDBColumn
@@ -157,7 +157,7 @@ object Form16: TForm16
       end
       object cxGrid1DBTableView1KOL_SEND: TcxGridDBColumn
         Caption = #1057#1052#1057'('#1074#1110#1076#1087#1088')'
-        DataBinding.FieldName = 'KOL_SEND'
+        DataBinding.FieldName = 'KOL_SENDSMS'
         Width = 77
       end
       object cxGrid1DBTableView1KOL_DOSTSMS: TcxGridDBColumn

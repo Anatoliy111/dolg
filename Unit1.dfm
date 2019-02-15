@@ -637,14 +637,15 @@ object Form1: TForm1
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
       'insert into USERS'
-      '  (FIO, KL, PW)'
+      '  (FIO, KL, PW, SMS)'
       'values'
-      '  (:FIO, :KL, :PW)')
+      '  (:FIO, :KL, :PW, :SMS)')
     RefreshSQL.Strings = (
       'Select '
       '  FIO,'
       '  KL,'
-      '  PW'
+      '  PW,'
+      '  SMS'
       'from USERS '
       'where'
       '  KL = :KL')
@@ -655,7 +656,8 @@ object Form1: TForm1
       'set'
       '  FIO = :FIO,'
       '  KL = :KL,'
-      '  PW = :PW'
+      '  PW = :PW,'
+      '  SMS = :SMS'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -678,6 +680,10 @@ object Form1: TForm1
       FieldName = 'PW'
       Origin = '"USERS"."PW"'
       Size = 10
+    end
+    object IBUSERSMS: TIntegerField
+      FieldName = 'SMS'
+      Origin = '"USERS"."SMS"'
     end
   end
   object DSUSER: TDataSource
@@ -3592,7 +3598,7 @@ object Form1: TForm1
     SelectSQL.Strings = (
       'select smsordereds.*,users.fio from smsordereds'
       'left join users on users.kl=smsordereds.id_user'
-      'order by smsordereds.data desc')
+      'order by smsordereds.id desc')
     ModifySQL.Strings = (
       'update smsordereds'
       'set'
@@ -3614,6 +3620,8 @@ object Form1: TForm1
       '  ID = :OLD_ID')
     ParamCheck = True
     UniDirectional = False
+    GeneratorField.Field = 'ID'
+    GeneratorField.Generator = 'GEN_SMSORDEREDS_ID'
     Left = 472
     Top = 264
     object IBSMSORDEREDSID: TIntegerField
