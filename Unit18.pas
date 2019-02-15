@@ -550,9 +550,9 @@ begin
 
 
         Form1.IBTransaction1.CommitRetaining;
-//        Form17.IBSMSLIST.Close;
-//
-//        Form17.IBSMSLIST.Open;
+        Form17.IBSMSLIST.Close;
+        Form17.IBSMSLIST.ParamByName('idord').Value:=Form17.IBSMSORDEREDSID.Value;
+        Form17.IBSMSLIST.Open;
         Form17.IBSMSLIST.FetchAll;
         if Form17.IBSMSLIST.RecordCount<>0 then
         begin

@@ -2,9 +2,9 @@ execute ibeblock
 as
 begin
     upd=0; 
-    dir = 'D:\WORK\KOMUN\kvpl\';
-	 base = '"D:\WORK\KOMUN\dolg\DOLG.GDB"';
-    cur_file = dir+'cur_date.txt';
+    dir = 'k:\kvpl\';
+	 base = '"main:/var/base/DOLG.GDB"';
+    cur_file = dir+'cur_date.t';
     fl=true;
 
   if(ibec_FileExists(:cur_file)) then
@@ -23,12 +23,12 @@ begin
 		  cbb = 'execute ibeblock (RecCount variant)
 		         as
 		         begin
-		           if (ibec_Mod(RecCount, 100) = 0) then
+		           if (ibec_Mod(RecCount, 1000) = 0) then
 		             ibec_Progress(RecCount || '' OBOR export to program DOLG.'');
 		         end;';
 		  
 		  DB = ibec_CreateConnection(__ctFirebird, 'DBName='+Base+';
-		                                            ClientLib=C:\Windows\System32\gds32.dll;
+		                                            ClientLib=k:\kvpl\script\gds32.dll;
 		                                            User=upd; Password=masterkey; Names=WIN1251; SqlDialect=3;');
 		  try
 			 
@@ -56,7 +56,7 @@ begin
                  end;
 
 			 
-		  delete from OBOR where upd is null;
+		  delete from OBOR where upd is null or upd=0;
 		  commit;
 
 		    Res = ibec_ImportData(DB, 'OBOR', __impDBase, dir+'dbf\OBOR.DBF', '', 
@@ -65,23 +65,21 @@ begin
 
 
 		  
---		    if (Res is not null) then
---		      ibec_ShowMessage(Res || ' records were imported successfully.');
 
                     if (Res is not null) then
                     begin
-  		    -- Deleting records from the target table
-                  		  delete from OBOR where period=:MyStr;
-	   	                 commit;
+			commit;
+                  	  delete from OBOR where period=:MyStr;
+	   	          commit;
 
                         ibec_Progress('commit - delete from OBOR');
                         
                         update OBOR set period=:MyStr where period is null;
-								commit;
+			commit;
                         ibec_Progress('commit - update OBOR set period');
  
                         update OBOR set upd=1 where upd is null;
-								commit;
+			commit;
 			INSERT INTO period (period) select pp.period from (select period from obor group by period) pp where pp.period not in (select period from period);
 			commit;
                         ibec_Progress('commit - INSERT INTO period'); 
@@ -91,9 +89,10 @@ begin
 			do
 			begin
 		        	INSERT INTO NOTE (wid, schet) select wid, schet from obor where not exists(select wid, schet from note where kl_users=:kl_us) group by wid, schet;
+			commit;
 			        update NOTE set kl_users=:kl_us where kl_users is null;
+			commit;
 			end;
-                        commit;
                         ibec_Progress('commit - INSERT INTO NOTE');
                     end;
 
@@ -104,7 +103,7 @@ begin
 		  cbb = 'execute ibeblock (RecCount variant)
 		         as
 		         begin
-		           if (ibec_Mod(RecCount, 100) = 0) then
+		           if (ibec_Mod(RecCount, 1000) = 0) then
 		             ibec_Progress(RecCount || '' KART export to program DOLG.'');
 		         end;';
 
@@ -120,14 +119,17 @@ begin
 		  
                     if (Res is not null) then
                     begin
-  		    -- Deleting records from the target table
+			commit;
                        DELETE from kart where upd=1 and schet in (select schet from kart k1 where upd is null);
-							  commit;
+			commit;
 			ibec_Progress('commit - DELETE from kart');
                        update KART set upd=1 where upd is null;
                        commit;
-                       INSERT INTO aboninf (schet) select kart.schet from kart where kart.schet not in (select schet from aboninf);
 			ibec_Progress('commit - update KART');
+			insert into aboninf (schet) select pp.schet from  (select schet from kart) pp where pp.schet not in (select schet from aboninf);
+			                       commit;
+--         update kart set ulnaim=trim(ulnaim),schet=trim(schet),nomdom=trim(nomdom),nomkv=trim(nomkv);
+--			commit;
                     end;
 
 
@@ -152,9 +154,9 @@ begin
 		  
                     if (Res is not null) then
                     begin
-  		    -- Deleting records from the target table
+			commit;
                         delete from OPL where upd=1;
-   							commit;
+			commit;
                         update OPL set upd=1 where upd is null;
                         commit;
                     end;
@@ -181,26 +183,26 @@ begin
 		  
                     if (Res is not null) then
                     begin
-  		    -- Deleting records from the target table
+			commit;
                         DELETE from ul where upd=1 and kl in (select kl from ul where upd is null);
-								commit;
+			commit;
                         update UL set upd=1 where upd is null;
-								commit;
+			commit;
                         update kart set kart.kl_ul = (select kl from UL T1 where T1.ul=kart.ulnaim) where kart.kl_ul is null;
-								commit;
+			commit;
                         UPDATE kart SET nomdom = REPLACE(nomdom, 'Â','â') where upd=1;
-								commit;
-			               UPDATE kart SET nomdom = REPLACE(nomdom, 'Á','á') where upd=1;
-								commit;
-			               UPDATE kart SET nomdom = REPLACE(nomdom, 'À','à') where upd=1;
-								commit;								
-								update kart set ulnaim=trim(ulnaim) where upd=1;
-								commit;
-								update UL set ul=trim(ul) where upd=1;
-								commit;
-								update ADRES set ul=trim(ul) where ul is not null;
-								commit;								
-				
+			commit;
+  	               UPDATE kart SET nomdom = REPLACE(nomdom, 'Á','á') where upd=1;
+			commit;
+	               UPDATE kart SET nomdom = REPLACE(nomdom, 'À','à') where upd=1;
+			commit;								
+			update kart set ulnaim=trim(ulnaim) where upd=1;
+			commit;
+			update UL set ul=trim(ul) where upd=1;
+			commit;
+			update ADRES set ul=trim(ul) where ul is not null;
+			commit;								
+			
                     end;
 
 
@@ -227,8 +229,9 @@ begin
                     if (Res is not null) then
                     begin
   		    -- Deleting records from the target table
+			commit;
                         DELETE from ORGAN where upd=1 and org in (select org from ORGAN where upd is null);
-								commit;
+			commit;
                         update ORGAN set upd=1 where upd is null;
                         commit;
                     end;

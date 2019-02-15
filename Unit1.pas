@@ -639,6 +639,9 @@ end;
 
 procedure TForm1.cxButton4Click(Sender: TObject);
 begin
+Form1.IBSMSORDEREDS.Close;
+Form1.IBSMSORDEREDS.Open;
+
 Form16.show;
 //  // получаем интерфейс
 //  ws := GetServiceSoap();

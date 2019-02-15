@@ -24,6 +24,7 @@ object Form16: TForm16
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       OnCellDblClick = cxGrid1DBTableView1CellDblClick
+      OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
       DataController.DataSource = Form1.DSSMSORDEREDS
       DataController.DetailKeyFieldNames = 'ID'
       DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
@@ -83,11 +84,11 @@ object Form16: TForm16
         end
         item
           Kind = skSum
-          Column = cxGrid1DBTableView1KOL_SEND
+          Column = cxGrid1DBTableView1KOL_SENDSMS
         end
         item
           Kind = skSum
-          Column = cxGrid1DBTableView1KOL_SENDSMS
+          Column = cxGrid1DBTableView1KOL_SEND
         end
         item
           Kind = skSum
@@ -135,7 +136,7 @@ object Form16: TForm16
         DataBinding.FieldName = 'PERIOD'
         Width = 99
       end
-      object cxGrid1DBTableView1KOL_SENDSMS: TcxGridDBColumn
+      object cxGrid1DBTableView1KOL_SEND: TcxGridDBColumn
         Caption = #1050'-'#1089#1090#1100' '#1072#1073#1086#1085'.'
         DataBinding.FieldName = 'KOL_SEND'
         Width = 98
@@ -155,7 +156,7 @@ object Form16: TForm16
         DataBinding.FieldName = 'DOLG'
         Width = 108
       end
-      object cxGrid1DBTableView1KOL_SEND: TcxGridDBColumn
+      object cxGrid1DBTableView1KOL_SENDSMS: TcxGridDBColumn
         Caption = #1057#1052#1057'('#1074#1110#1076#1087#1088')'
         DataBinding.FieldName = 'KOL_SENDSMS'
         Width = 77
@@ -626,6 +627,26 @@ object Form16: TForm16
       TabOrder = 5
       OnClick = cxButton1Click
     end
+    object cxLabel3: TcxLabel
+      Left = 384
+      Top = 5
+      AutoSize = False
+      Caption = 
+        '- '#1087#1077#1088#1077#1074#1110#1088#1103#1108' '#1089#1090#1072#1090#1091#1089' '#1074#1089#1080#1093' '#1085#1077' '#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085#1077#1085#1090#1110#1074' ('#1059#1074#1072#1075#1072'!!! '#1055#1088#1086#1094#1077 +
+        #1089#1089' '#1084#1086#1078#1077' '#1079#1072#1090#1103#1085#1091#1090#1080#1089#1100')'
+      Properties.WordWrap = True
+      Height = 52
+      Width = 241
+    end
+  end
+  object cxButton2: TcxButton
+    Left = 260
+    Top = 2
+    Width = 118
+    Height = 25
+    Caption = #1055#1077#1088#1077#1074#1110#1088#1080#1090#1080' c'#1090#1072#1090#1091#1089
+    TabOrder = 2
+    OnClick = cxButton2Click
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 32

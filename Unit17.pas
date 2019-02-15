@@ -105,6 +105,7 @@ type
     cxDBLabel3: TcxDBLabel;
     cxDBLabel4: TcxDBLabel;
     cxDBLabel5: TcxDBLabel;
+    cxGridDBTableView2MESSAGEID: TcxGridDBColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -129,8 +130,12 @@ type
       var AText: string);
     procedure cxButton9Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
+    procedure cxGridDBTableView2CustomDrawCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+      var ADone: Boolean);
 
   private
+
     { Private declarations }
   public
     { Public declarations }
@@ -188,6 +193,7 @@ procedure TForm17.cxButton3Click(Sender: TObject);
 begin
 Form1.ExportGrid(cxGrid3,Form17.Caption);
 end;
+
 
 procedure TForm17.cxButton4Click(Sender: TObject);
 var ws: ServiceSoap;
@@ -333,10 +339,10 @@ begin
 
     if sendabon=0 then
     begin
-    Form17.IBSMSORDEREDS.Edit;
-    Form17.IBSMSORDEREDSKOL_SENDSMS.Value:=0;
-    Form17.IBSMSORDEREDSKOL_SEND.Value:=0;
-    Form17.IBSMSORDEREDS.Post;
+    IBSMSORDEREDS.Edit;
+    IBSMSORDEREDSKOL_SENDSMS.Value:=0;
+    IBSMSORDEREDSKOL_SEND.Value:=0;
+    IBSMSORDEREDS.Post;
 
 
     ShowMessage('Відправка не виконана!!!');
@@ -347,12 +353,12 @@ begin
 
 
 
-    Form17.IBSMSORDEREDS.Edit;
-    Form17.IBSMSORDEREDSSEND.Value:=1;
-    Form17.IBSMSORDEREDSDATA.Value:=now();
-    Form17.IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
-    Form17.IBSMSORDEREDSKOL_SEND.Value:=sendabon;
-    Form17.IBSMSORDEREDS.Post;
+    IBSMSORDEREDS.Edit;
+    IBSMSORDEREDSSEND.Value:=1;
+    IBSMSORDEREDSDATA.Value:=now();
+    IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
+    IBSMSORDEREDSKOL_SEND.Value:=sendabon;
+    IBSMSORDEREDS.Post;
 
     Form16.balanslabel(ws.GetCreditBalance);
 
@@ -361,7 +367,7 @@ begin
     cxButton6.Enabled:=false;
     cxButton5.Enabled:=false;
     ShowMessage('Відправка СМС виконана! Через деякий час (10 хв.)потрібно перевірити статус, щоб визначити які смс доставлені а які ні. Інколи смс іде до декількох годин, тому в пачках в яких є не доставлені смс потрібно декілька разів перевірити статус !!!');
-
+    cxButton4.Click;
     end;
     Form1.IBTransaction1.CommitRetaining;
     except
@@ -421,8 +427,8 @@ end;
 procedure TForm17.cxButton8Click(Sender: TObject);
 begin
 
-    IBSMSLIST.Delete
-
+    IBSMSLIST.Delete;
+    Form1.IBTransaction1.CommitRetaining;
 end;
 
 procedure TForm17.cxButton9Click(Sender: TObject);
@@ -571,6 +577,20 @@ begin
     //    Error:=false;
       end;
 
+
+end;
+
+procedure TForm17.cxGridDBTableView2CustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+if IBSMSORDEREDSSEND.Value=1 then
+begin
+  if Length(AViewInfo.GridRecord.DisplayTexts[cxGridDBTableView2.GetColumnByFieldName('MESSAGEID').index])=0  then
+  ACanvas.Canvas.Brush.Color := $B9B9FF;
+//  else
+//  ACanvas.Canvas.Brush.Color := $ffffff;
+end;
 
 end;
 

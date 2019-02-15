@@ -65,18 +65,6 @@ object Form6: TForm6
       Top = 9
       Caption = #1055#1072#1088#1086#1083#1100' SMS'
     end
-    object DBCheckBox1: TDBCheckBox
-      Left = 32
-      Top = 59
-      Width = 97
-      Height = 17
-      Caption = 'SMS '#1058#1088#1072#1085#1089#1083#1080#1090
-      DataField = 'SMSTRANSLIT'
-      DataSource = Form1.DSSERVICES
-      TabOrder = 6
-      ValueChecked = '1'
-      ValueUnchecked = '0'
-    end
   end
   object cxGrid1: TcxGrid
     Left = 0
@@ -112,6 +100,13 @@ object Form6: TForm6
       object cxGrid1DBTableView1PW: TcxGridDBColumn
         DataBinding.FieldName = 'PW'
         Width = 179
+      end
+      object cxGrid1DBTableView1SMS: TcxGridDBColumn
+        DataBinding.FieldName = 'SMS'
+        PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.NullStyle = nssUnchecked
+        Properties.ValueChecked = 1
+        Properties.ValueUnchecked = 0
       end
     end
     object cxGrid1Level1: TcxGridLevel

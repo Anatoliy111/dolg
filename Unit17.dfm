@@ -457,6 +457,7 @@ object Form17: TForm17
       Navigator.Buttons.CustomButtons = <>
       FilterBox.CustomizeDialog = False
       FilterBox.Visible = fvNever
+      OnCustomDrawCell = cxGridDBTableView2CustomDrawCell
       DataController.DataSource = DSSMSLIST
       DataController.DetailKeyFieldNames = 'ID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -539,6 +540,11 @@ object Form17: TForm17
         Caption = #1058#1077#1082#1089#1090' '#1057#1052#1057
         DataBinding.FieldName = 'TEXT'
         Width = 101
+      end
+      object cxGridDBTableView2MESSAGEID: TcxGridDBColumn
+        DataBinding.FieldName = 'MESSAGEID'
+        MinWidth = 1
+        Width = 1
       end
     end
     object cxGridLevel2: TcxGridLevel

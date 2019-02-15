@@ -9,7 +9,7 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
   cxClasses, cxGridCustomView, cxGrid, DBCtrls, ExtCtrls, Menus, cxContainer,
   cxProgressBar, StdCtrls, cxButtons, cxNavigator, frxDesgn, frxClass, cxLabel,
-  cxTextEdit, cxDBEdit;
+  cxTextEdit, cxDBEdit, cxCheckBox;
 
 type
   TForm6 = class(TForm)
@@ -36,7 +36,7 @@ type
     cxDBTextEdit2: TcxDBTextEdit;
     cxLabel1: TcxLabel;
     cxLabel2: TcxLabel;
-    DBCheckBox1: TDBCheckBox;
+    cxGrid1DBTableView1SMS: TcxGridDBColumn;
     procedure FormShow(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
