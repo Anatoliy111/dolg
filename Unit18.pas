@@ -560,6 +560,7 @@ begin
           Form17.cxButton5.Enabled:=false;
           Form17.IBSMSORDEREDS.Edit;
           Form17.IBSMSORDEREDSPERIOD.Value:=Form1.IBPERIODPERIOD.Value;
+          Form17.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
           Form17.IBSMSORDEREDS.Post;
               Form17.cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
         end;

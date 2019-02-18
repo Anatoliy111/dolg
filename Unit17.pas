@@ -356,6 +356,7 @@ begin
     IBSMSORDEREDS.Edit;
     IBSMSORDEREDSSEND.Value:=1;
     IBSMSORDEREDSDATA.Value:=now();
+    IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
     IBSMSORDEREDSKOL_SENDSMS.Value:=sendsms1;
     IBSMSORDEREDSKOL_SEND.Value:=sendabon;
     IBSMSORDEREDS.Post;
@@ -457,8 +458,8 @@ Form18.IBWID.Close;
  if IBSMSLIST.State in [dsInsert,dsEdit] then IBSMSLIST.Post;
  if IBSMSORDEREDS.State in [dsInsert,dsEdit] then
  begin
-   IBSMSORDEREDS.Edit;
-   IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
+//   IBSMSORDEREDS.Edit;
+//   IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
    IBSMSORDEREDS.Post;
  end;
  Form1.IBTransaction1.CommitRetaining;
