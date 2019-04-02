@@ -17,7 +17,8 @@ uses
   wsdl in 'wsdl.pas',
   Unit16 in 'Unit16.pas' {Form16},
   Unit17 in 'Unit17.pas' {Form17},
-  Unit18 in 'Unit18.pas' {Form18};
+  Unit18 in 'Unit18.pas' {Form18},
+  Unit19 in 'Unit19.pas' {Form19};
 
 {$R *.res}
 
@@ -40,5 +41,6 @@ begin
   Application.CreateForm(TForm16, Form16);
   Application.CreateForm(TForm17, Form17);
   Application.CreateForm(TForm18, Form18);
+  Application.CreateForm(TForm19, Form19);
   Application.Run;
 end.

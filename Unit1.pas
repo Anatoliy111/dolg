@@ -486,6 +486,7 @@ type
     DSSMSLIST: TDataSource;
     IBSMSLISTKOL_ABON: TIntegerField;
     IBUSERSMS: TIntegerField;
+    cxButton10: TcxButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -505,7 +506,6 @@ type
     procedure cxButton7Click(Sender: TObject);
     procedure IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
     procedure cxButton5Click(Sender: TObject);
-    procedure cxButton10Click(Sender: TObject);
     procedure cxTextEdit4PropertiesChange(Sender: TObject);
     procedure cxButton8Click(Sender: TObject);
     procedure dxBarButton95Click(Sender: TObject);
@@ -578,11 +578,6 @@ Form15.Caption:=dxBarButton95.Caption;
 IBKART.Close;
 IBKART.Open;
 Form15.show;
-end;
-
-procedure TForm1.cxButton10Click(Sender: TObject);
-begin
-IBREPD.LocateNext('schet',cxTextEdit4.Text,[loCaseInsensitive, loPartialKey]);
 end;
 
 procedure TForm1.cxButton1Click(Sender: TObject);

@@ -557,6 +557,14 @@ object Form1: TForm1
         TabOrder = 17
         Width = 121
       end
+      object cxButton10: TcxButton
+        Left = 406
+        Top = 12
+        Width = 185
+        Height = 25
+        Caption = #1056#1077#1077#1089#1090#1088' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
+        TabOrder = 18
+      end
     end
     object cxButton6: TcxButton
       Left = 608
