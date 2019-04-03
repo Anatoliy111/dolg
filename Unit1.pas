@@ -510,6 +510,7 @@ type
     procedure cxButton8Click(Sender: TObject);
     procedure dxBarButton95Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
+    procedure cxButton10Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -540,7 +541,7 @@ implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
-  Unit16;
+  Unit16, Unit19;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -578,6 +579,11 @@ Form15.Caption:=dxBarButton95.Caption;
 IBKART.Close;
 IBKART.Open;
 Form15.show;
+end;
+
+procedure TForm1.cxButton10Click(Sender: TObject);
+begin
+Form19.show;
 end;
 
 procedure TForm1.cxButton1Click(Sender: TObject);

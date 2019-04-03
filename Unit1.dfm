@@ -564,6 +564,7 @@ object Form1: TForm1
         Height = 25
         Caption = #1056#1077#1077#1089#1090#1088' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
         TabOrder = 18
+        OnClick = cxButton10Click
       end
     end
     object cxButton6: TcxButton
