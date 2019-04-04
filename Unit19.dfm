@@ -91,8 +91,8 @@ object Form19: TForm19
     ParamCheck = True
     SQL.Strings = (
       
-        'select trim(schet) as schet, nach+pere as nach, sal from obor wh' +
-        'ere period=:dt and wid=:wid')
+        'select trim(schet) as schet, nach+pere+wozw as nach, bgend as sa' +
+        'l from vw_obor where period=:dt and wid=:wid')
     Left = 463
     Top = 2
     ParamData = <
