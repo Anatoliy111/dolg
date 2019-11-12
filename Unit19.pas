@@ -116,10 +116,18 @@ begin
 //  form1.IBWID.First
 //  form1.IBWID.Locate('naim',cxLookupComboBox1.EditValue,[]);
 //  form1.IBWID.Lookup('naim',cxLookupComboBox1.EditValue,'wid');
-
   IBQuery1.Close;
+  if (cxLookupComboBox1.EditValue='sm') or (cxLookupComboBox1.EditValue='sn') then
+  begin
+  IBQuery1.SQL.Text:='select schet, sum(nach) nach, sum(sal) sal from (select trim(schet) as schet, nach+pere+wozw as nach, bgend as sal from vw_obor where period=:dt and (wid=''sm'' or wid=''sn'')) group by schet';
+  IBQuery1.ParamByName('dt').AsDate:=cxLookupComboBox2.EditValue;
+  end
+  else
+  begin
+  IBQuery1.SQL.Text:='select trim(schet) as schet, nach+pere+wozw as nach, bgend as sal from vw_obor where period=:dt and wid=:wid';
   IBQuery1.ParamByName('dt').AsDate:=cxLookupComboBox2.EditValue;
   IBQuery1.ParamByName('wid').Value:=cxLookupComboBox1.EditValue;
+  end;
   IBQuery1.Open;
 
 

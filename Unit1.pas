@@ -341,9 +341,6 @@ type
     IBWIDVAL: TFloatField;
     cxLookupComboBox1: TcxLookupComboBox;
     cxLabel3: TcxLabel;
-    cxButton6: TcxButton;
-    cxButton8: TcxButton;
-    cxButton7: TcxButton;
     cxButton3: TcxButton;
     cxLabel4: TcxLabel;
     cxLabel7: TcxLabel;
@@ -487,6 +484,12 @@ type
     IBSMSLISTKOL_ABON: TIntegerField;
     IBUSERSMS: TIntegerField;
     cxButton10: TcxButton;
+    dxBarButton119: TdxBarButton;
+    dxBarSubItem27: TdxBarSubItem;
+    dxBarButton120: TdxBarButton;
+    dxBarButton121: TdxBarButton;
+    dxBarButton122: TdxBarButton;
+    dxBarButton123: TdxBarButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -502,15 +505,17 @@ type
     procedure cxButton3Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
-    procedure cxButton6Click(Sender: TObject);
     procedure cxButton7Click(Sender: TObject);
     procedure IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
     procedure cxButton5Click(Sender: TObject);
     procedure cxTextEdit4PropertiesChange(Sender: TObject);
-    procedure cxButton8Click(Sender: TObject);
     procedure dxBarButton95Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
     procedure cxButton10Click(Sender: TObject);
+    procedure dxBarButton120Click(Sender: TObject);
+    procedure dxBarButton121Click(Sender: TObject);
+    procedure dxBarButton122Click(Sender: TObject);
+    procedure dxBarButton123Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -561,6 +566,72 @@ end;
 procedure TForm1.dxBarButton118Click(Sender: TObject);
 begin
 Form12.Show;
+end;
+
+procedure TForm1.dxBarButton120Click(Sender: TObject);
+begin
+Form13.Caption:=dxBarButton120.Caption;
+Form13.show;
+end;
+
+procedure TForm1.dxBarButton121Click(Sender: TObject);
+begin
+Form14.tip:='Abon';
+Form14.cxGrid1DBTableView1.ClearItems;
+Form14.Caption:=dxBarButton121.Caption;
+Form14.Show;
+
+end;
+
+procedure TForm1.dxBarButton122Click(Sender: TObject);
+begin
+//     cxGrid1DBTableView1DOLGMES1.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES2.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES3.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES4.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES5.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES6.Visible:=false;
+//     cxGrid1DBTableView1MES1.Visible:=false;
+//     cxGrid1DBTableView1MES2.Visible:=false;
+//     cxGrid1DBTableView1MES3.Visible:=false;
+//     cxGrid1DBTableView1MES4.Visible:=false;
+//     cxGrid1DBTableView1MES5.Visible:=false;
+//     cxGrid1DBTableView1MES6.Visible:=false;
+//
+//     StrSQL:=StartSQL;
+//     if cxCheckBox1.Checked then
+//     begin
+//       i:=0;
+////       IBPERIOD.First;
+////       while not IBPERIOD.Eof do
+////       begin
+////         if IBPERIODPERIOD.Value>=cxLookupComboBox1.EditValue then
+////         begin
+////         inc(i);
+////           StrSQL:=StringReplace(StrSQL,'0.00 as dolgmes'+int2str(i),'(select sum(dolgmes) as dolgmes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then dolg else 0.00 end dolgmes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as dolgmes'+int2str(i),[]);
+////           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Visible:=true;
+////           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Caption:='Борг на '+DateTimeToStr(IBPERIODPERIOD.Value);
+////
+////         StrSQL:=StringReplace(StrSQL,'0.00 as mes'+int2str(i),'(select sum(mes) as mes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then fullopl else 0.00 end mes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as mes'+int2str(i),[]);
+//////         cxGrid1DBTableView1MES+int2str(i).Visible:=true;
+////         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Visible:=true;
+////         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Caption:='Оплата '+DateTimeToStr(IBPERIODPERIOD.Value);
+////
+////         end;
+////
+////       IBPERIOD.Next;
+////       end;
+//
+//     end;
+end;
+
+procedure TForm1.dxBarButton123Click(Sender: TObject);
+begin
+Form14.tip:='Org';
+Form14.cxGrid1DBTableView1.ClearItems;
+Form14.Caption:=dxBarButton123.Caption;
+Form14.Show;
+
 end;
 
 procedure TForm1.dxBarButton19Click(Sender: TObject);
@@ -676,11 +747,6 @@ end;
 
 end;
 
-procedure TForm1.cxButton6Click(Sender: TObject);
-begin
-Form13.Caption:=cxButton6.Caption;
-Form13.show;
-end;
 
 procedure TForm1.cxButton7Click(Sender: TObject);
 begin
@@ -724,11 +790,7 @@ begin
 //     end;
 end;
 
-procedure TForm1.cxButton8Click(Sender: TObject);
-begin
-Form14.Show;
-Form14.Caption:=cxButton8.Caption;
-end;
+
 
 procedure TForm1.cxGrid1DBTableView1Column1PropertiesButtonClick(
   Sender: TObject; AButtonIndex: Integer);

@@ -389,8 +389,8 @@ object Form1: TForm1
     object Label16: TLabel
       Left = 630
       Top = 0
-      Width = 133
-      Height = 23
+      Width = 161
+      Height = 22
       Alignment = taCenter
       Caption = #1055#1086#1090#1086#1095#1085#1080#1081' '#1087#1077#1088#1110#1086#1076
       Font.Charset = ANSI_CHARSET
@@ -403,8 +403,8 @@ object Form1: TForm1
     object Label17: TLabel
       Left = 630
       Top = 20
-      Width = 34
-      Height = 20
+      Width = 42
+      Height = 18
       Alignment = taCenter
       Caption = #1076#1072#1090#1072
       Font.Charset = ANSI_CHARSET
@@ -567,33 +567,6 @@ object Form1: TForm1
         OnClick = cxButton10Click
       end
     end
-    object cxButton6: TcxButton
-      Left = 608
-      Top = 46
-      Width = 185
-      Height = 25
-      Caption = #1047#1074#1110#1090' '#1082#1086#1085#1090#1088#1086#1083#1077#1088#1072' ('#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1086')'
-      TabOrder = 1
-      OnClick = cxButton6Click
-    end
-    object cxButton8: TcxButton
-      Left = 608
-      Top = 77
-      Width = 185
-      Height = 25
-      Caption = #1047#1074#1110#1090' '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084' ('#1075#1086#1088#1080#1079#1086#1085#1090#1072#1083#1100#1085#1080#1081')'
-      TabOrder = 2
-      OnClick = cxButton8Click
-    end
-    object cxButton7: TcxButton
-      Left = 608
-      Top = 108
-      Width = 185
-      Height = 25
-      Caption = #1040#1085#1072#1083#1110#1079' '#1073#1086#1088#1078#1085#1080#1082#1110#1074' ('#1087#1086#1084#1110#1089#1103#1095#1085#1086')'
-      TabOrder = 3
-      OnClick = cxButton7Click
-    end
     object cxLabel4: TcxLabel
       Left = 263
       Top = 158
@@ -606,11 +579,11 @@ object Form1: TForm1
     end
     object cxButton4: TcxButton
       Left = 608
-      Top = 139
+      Top = 51
       Width = 185
       Height = 25
       Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' SMS'
-      TabOrder = 6
+      TabOrder = 3
       OnClick = cxButton4Click
     end
   end
@@ -622,6 +595,7 @@ object Form1: TForm1
     Width = 121
   end
   object IBDatabase1: TIBDatabase
+    Connected = True
     DatabaseName = 'D:\WORK\KOMUN\DOLG\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'
@@ -1479,6 +1453,10 @@ object Form1: TForm1
         item
           Visible = True
           ItemName = 'dxBarButton118'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarSubItem27'
         end
         item
           Visible = True
@@ -2627,6 +2605,62 @@ object Form1: TForm1
       Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1072#1073#1086#1085#1077#1085#1090#1110#1074
       Visible = ivAlways
       OnClick = dxBarButton95Click
+    end
+    object dxBarButton119: TdxBarButton
+      Caption = 'New Button'
+      Category = 0
+      Hint = 'New Button'
+      Visible = ivAlways
+    end
+    object dxBarSubItem27: TdxBarSubItem
+      Caption = #1047#1074#1110#1090#1080
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarButton120'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton121'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton123'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton122'
+        end>
+    end
+    object dxBarButton120: TdxBarButton
+      Caption = #1047#1074#1110#1090' '#1082#1086#1085#1090#1088#1086#1083#1077#1088#1072' ('#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1086')'
+      Category = 0
+      Hint = #1047#1074#1110#1090' '#1082#1086#1085#1090#1088#1086#1083#1077#1088#1072' ('#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1086')'
+      Visible = ivAlways
+      OnClick = dxBarButton120Click
+    end
+    object dxBarButton121: TdxBarButton
+      Caption = #1047#1074#1110#1090' '#1087#1086' '#1072#1073#1086#1085#1077#1085#1090#1072#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076')'
+      Category = 0
+      Hint = #1047#1074#1110#1090' '#1087#1086' '#1072#1073#1086#1085#1077#1085#1090#1072#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076')'
+      Visible = ivAlways
+      OnClick = dxBarButton121Click
+    end
+    object dxBarButton122: TdxBarButton
+      Caption = #1040#1085#1072#1083#1110#1079' '#1073#1086#1088#1078#1085#1080#1082#1110#1074' ('#1087#1086#1084#1110#1089#1103#1095#1085#1086')'
+      Category = 0
+      Hint = #1040#1085#1072#1083#1110#1079' '#1073#1086#1088#1078#1085#1080#1082#1110#1074' ('#1087#1086#1084#1110#1089#1103#1095#1085#1086')'
+      Visible = ivAlways
+      OnClick = dxBarButton122Click
+    end
+    object dxBarButton123: TdxBarButton
+      Caption = #1047#1074#1110#1090' '#1087#1086' '#1086#1088#1075#1072#1085#1110#1079#1072#1094#1110#1103#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076') '
+      Category = 0
+      Hint = #1047#1074#1110#1090' '#1087#1086' '#1086#1088#1075#1072#1085#1110#1079#1072#1094#1110#1103#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076') '
+      Visible = ivAlways
+      OnClick = dxBarButton123Click
     end
   end
   object IBPERIOD: TIBDataSet

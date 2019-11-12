@@ -154,9 +154,6 @@ Coordinates=296,1178,119,36
 [cxGrid1Level1]
 Coordinates=652,1750,97,36
 
-[cxLabel4]
-Coordinates=1293,1354,66,36
-
 [cxLabel5]
 Coordinates=1217,1354,66,36
 
@@ -209,9 +206,6 @@ Coordinates=652,2135,58,36
 Coordinates=652,2696,90,36
 
 []
-Coordinates=1141,1354,66,36
-
-[Memo1]
 Coordinates=754,1354,64,58
 Visible=True
 
