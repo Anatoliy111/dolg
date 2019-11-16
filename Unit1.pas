@@ -483,13 +483,14 @@ type
     DSSMSLIST: TDataSource;
     IBSMSLISTKOL_ABON: TIntegerField;
     IBUSERSMS: TIntegerField;
-    cxButton10: TcxButton;
     dxBarButton119: TdxBarButton;
     dxBarSubItem27: TdxBarSubItem;
     dxBarButton120: TdxBarButton;
     dxBarButton121: TdxBarButton;
     dxBarButton122: TdxBarButton;
     dxBarButton123: TdxBarButton;
+    cxButton10: TcxButton;
+    cxButton6: TcxButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -516,6 +517,7 @@ type
     procedure dxBarButton121Click(Sender: TObject);
     procedure dxBarButton122Click(Sender: TObject);
     procedure dxBarButton123Click(Sender: TObject);
+    procedure cxButton6Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -654,7 +656,12 @@ end;
 
 procedure TForm1.cxButton10Click(Sender: TObject);
 begin
+Form19.Caption:=cxButton10.Caption;
+Form19.cxLookupComboBox2.Visible:=true;
+Form19.cxLabel3.Visible:=true;
+Form19.mode:=1;
 Form19.show;
+
 end;
 
 procedure TForm1.cxButton1Click(Sender: TObject);
@@ -747,6 +754,15 @@ end;
 
 end;
 
+
+procedure TForm1.cxButton6Click(Sender: TObject);
+begin
+Form19.Caption:=cxButton6.Caption;
+Form19.cxLookupComboBox2.Visible:=false;
+Form19.cxLabel3.Visible:=false;
+Form19.mode:=2;
+Form19.show;
+end;
 
 procedure TForm1.cxButton7Click(Sender: TObject);
 begin
@@ -935,6 +951,11 @@ begin
   ORG:=iniFile.ReadString('Data','org',extractfilepath(paramstr(0)));
   PathKvart:=iniFile.ReadString('DBF','base',extractfilepath(paramstr(0)));
   PathDIR:=iniFile.ReadString('DBF','tmp',extractfilepath(paramstr(0)));
+
+  if not DirectoryExists(PathDIR) then
+    MkDir(PathDIR);
+
+
 // sms
 
     textsms1:=iniFile.ReadString('SMS','textsms1',extractfilepath(paramstr(0)));

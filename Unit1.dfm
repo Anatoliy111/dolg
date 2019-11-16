@@ -557,15 +557,6 @@ object Form1: TForm1
         TabOrder = 17
         Width = 121
       end
-      object cxButton10: TcxButton
-        Left = 406
-        Top = 12
-        Width = 185
-        Height = 25
-        Caption = #1056#1077#1077#1089#1090#1088' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
-        TabOrder = 18
-        OnClick = cxButton10Click
-      end
     end
     object cxLabel4: TcxLabel
       Left = 263
@@ -585,6 +576,24 @@ object Form1: TForm1
       Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' SMS'
       TabOrder = 3
       OnClick = cxButton4Click
+    end
+    object cxButton10: TcxButton
+      Left = 608
+      Top = 82
+      Width = 185
+      Height = 25
+      Caption = #1053#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103' '#1074' '#1088#1077#1108#1089#1090#1088' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
+      TabOrder = 4
+      OnClick = cxButton10Click
+    end
+    object cxButton6: TcxButton
+      Left = 608
+      Top = 113
+      Width = 185
+      Height = 25
+      Caption = #1054#1087#1083#1072#1090#1072' '#1079' '#1088#1077#1108#1089#1090#1088#1091' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
+      TabOrder = 5
+      OnClick = cxButton6Click
     end
   end
   object cxCalcEdit1: TcxCalcEdit
