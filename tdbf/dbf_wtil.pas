@@ -4,13 +4,14 @@ unit dbf_wtil;
 
 interface
 
-{$ifndef MSWINDOWS}
+{$ifndef WINDOWS}
 uses
 {$ifdef FPC}
   BaseUnix,
 {$else}
   Libc, 
 {$endif}
+  dbf_ansistrings,
   Types, SysUtils, Classes;
 
 const
@@ -239,6 +240,17 @@ type
     wMilliseconds: Word;
   end;
 
+{$ifdef SUPPORT_INT64}
+  ULARGE_INTEGER = record
+    case Integer of
+    0: (
+      LowPart: DWORD;
+      HighPart: DWORD);
+    1: (
+      QuadPart: Int64);
+  end;
+{$endif}
+
   TFarProc = Pointer;
   TFNLocaleEnumProc = TFarProc;
   TFNCodepageEnumProc = TFarProc;
@@ -270,7 +282,7 @@ procedure SetLastError(Value: Integer);
 
 implementation
 
-{$ifndef MSWINDOWS}
+{$ifndef WINDOWS}
 {$ifdef FPC}
 uses
   unix;
@@ -577,21 +589,21 @@ end;
 function OemToChar(lpszSrc: PAnsiChar; lpszDst: PAnsiChar): BOOL;
 begin
   if lpszDst <> lpszSrc then
-    StrCopy(lpszDst, lpszSrc);
+    dbfStrCopy(lpszDst, lpszSrc);
   Result := true;
 end;
 
 function CharToOem(lpszSrc: PAnsiChar; lpszDst: PAnsiChar): BOOL;
 begin
   if lpszDst <> lpszSrc then
-    StrCopy(lpszDst, lpszSrc);
+    dbfStrCopy(lpszDst, lpszSrc);
   Result := true;
 end;
 
 function OemToCharBuff(lpszSrc: PAnsiChar; lpszDst: PAnsiChar; cchDstLength: DWORD): BOOL;
 begin
   if lpszDst <> lpszSrc then
-    StrLCopy(lpszDst, lpszSrc, cchDstLength);
+    dbfStrLCopy(lpszDst, lpszSrc, cchDstLength);
 {$ifdef HUNGARIAN}
   OemHunHun(lpszDst, cchDstLength);
 {$endif}
@@ -601,7 +613,7 @@ end;
 function CharToOemBuff(lpszSrc: PAnsiChar; lpszDst: PAnsiChar; cchDstLength: DWORD): BOOL;
 begin
   if lpszDst <> lpszSrc then
-    StrLCopy(lpszDst, lpszSrc, cchDstLength);
+    dbfStrLCopy(lpszDst, lpszSrc, cchDstLength);
 {$ifdef HUNGARIAN}
   AnsiHunHun(lpszDst, cchDstLength);
 {$endif}
@@ -632,7 +644,7 @@ end;
 
 function CompareString(Locale: LCID; dwCmpFlags: DWORD; lpString1: PAnsiChar; cchCount1: Integer; lpString2: PAnsiChar; cchCount2: Integer): Integer;
 begin
-  Result := StrLComp(lpString1, lpString2, cchCount1) + 2;
+  Result := dbfStrLComp(lpString1, lpString2, cchCount1) + 2;
   if Result > 2 then Result := 3;
   if Result < 2 then Result := 1;
 end;

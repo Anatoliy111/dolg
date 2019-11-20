@@ -2,7 +2,7 @@ object Form19: TForm19
   Left = 0
   Top = 0
   Caption = #1056#1077#1108#1089#1090#1088#1080' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
-  ClientHeight = 540
+  ClientHeight = 638
   ClientWidth = 606
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,142 +15,200 @@ object Form19: TForm19
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object cxLookupComboBox1: TcxLookupComboBox
-    Left = 231
-    Top = 31
-    Properties.KeyFieldNames = 'WID'
-    Properties.ListColumns = <
-      item
-        FieldName = 'NAIM'
-      end>
-    Properties.ListSource = Form1.DSTMPWID
-    TabOrder = 0
-    Width = 209
-  end
-  object cxLabel2: TcxLabel
-    Left = 285
-    Top = 8
-    Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1087#1086#1089#1083#1091#1075#1091
-  end
   object cxButton1: TcxButton
     Left = 343
-    Top = 83
+    Top = 7
     Width = 161
     Height = 25
-    Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1110#1092#1072#1081#1083
-    TabOrder = 2
+    Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1092#1072#1081#1083
+    TabOrder = 0
     OnClick = cxButton1Click
   end
   object cxTextEdit1: TcxTextEdit
     Left = 31
-    Top = 87
-    TabOrder = 3
+    Top = 8
+    TabOrder = 1
     Text = #1060#1072#1081#1083
     Width = 306
   end
   object cxButton2: TcxButton
-    Left = 159
-    Top = 114
-    Width = 249
+    Left = 31
+    Top = 125
+    Width = 554
     Height = 25
     Caption = #1047#1072#1074#1072#1085#1090#1072#1078#1080#1090#1080
-    TabOrder = 4
+    TabOrder = 2
     OnClick = cxButton2Click
   end
   object cxProgressBar1: TcxProgressBar
     Left = 31
-    Top = 145
-    TabOrder = 5
+    Top = 204
+    TabOrder = 3
     Width = 554
   end
-  object cxLabel3: TcxLabel
-    Left = 83
-    Top = 8
-    Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1087#1077#1088#1110#1086#1076
+  object Memo1: TMemo
+    Left = 343
+    Top = 38
+    Width = 185
+    Height = 70
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 4
   end
-  object cxLookupComboBox2: TcxLookupComboBox
-    Left = 43
-    Top = 31
-    Properties.KeyFieldNames = 'PERIOD'
-    Properties.ListColumns = <
-      item
-        FieldName = 'PERIOD'
-      end>
-    Properties.ListSource = Form1.DSPERIOD
-    TabOrder = 7
-    Width = 169
+  object cxTextEdit2: TcxTextEdit
+    Left = 136
+    Top = 38
+    Properties.ReadOnly = True
+    TabOrder = 5
+    Width = 201
+  end
+  object cxTextEdit3: TcxTextEdit
+    Left = 136
+    Top = 65
+    Properties.ReadOnly = True
+    TabOrder = 6
+    Width = 201
+  end
+  object cxLabel1: TcxLabel
+    Left = 39
+    Top = 65
+    Caption = #1055#1077#1088#1110#1086#1076
+  end
+  object cxLabel2: TcxLabel
+    Left = 39
+    Top = 39
+    Caption = #1055#1086#1089#1083#1091#1075#1072
+  end
+  object cxTextEdit4: TcxTextEdit
+    Left = 136
+    Top = 92
+    Properties.ReadOnly = True
+    TabOrder = 9
+    Width = 201
+  end
+  object cxLabel3: TcxLabel
+    Left = 39
+    Top = 92
+    Caption = #1058#1080#1087' '#1088#1077#1108#1089#1090#1088#1091
   end
   object cxButton3: TcxButton
     Left = 31
-    Top = 193
-    Width = 161
+    Top = 173
+    Width = 554
     Height = 25
-    Caption = 'ins'
-    TabOrder = 8
+    Caption = #1047#1072#1074#1072#1085#1090#1072#1078#1080#1090#1080'2'
+    TabOrder = 11
     OnClick = cxButton3Click
   end
-  object cxButton4: TcxButton
-    Left = 215
-    Top = 193
-    Width = 161
-    Height = 25
-    Caption = 'ed'
-    TabOrder = 9
-    OnClick = cxButton4Click
-  end
-  object cxButton5: TcxButton
-    Left = 407
-    Top = 193
-    Width = 161
-    Height = 25
-    Caption = 'ed2'
-    TabOrder = 10
-    OnClick = cxButton5Click
-  end
-  object cxButton6: TcxButton
-    Left = 408
-    Top = 257
-    Width = 161
-    Height = 25
-    Caption = 'ap'
-    TabOrder = 11
-    OnClick = cxButton6Click
-  end
   object cxGrid1: TcxGrid
-    Left = 56
-    Top = 320
-    Width = 448
-    Height = 200
-    Font.Charset = OEM_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
+    Left = 72
+    Top = 256
+    Width = 481
+    Height = 337
     TabOrder = 12
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = DSADOSUBS
-      DataController.DetailKeyFieldNames = 'SCHET'
+      DataController.DataSource = DSADOEDIT
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
-      object cxGrid1DBTableView1schet: TcxGridDBColumn
-        DataBinding.FieldName = 'schet'
+      object cxGrid1DBTableView1SCHET: TcxGridDBColumn
+        DataBinding.FieldName = 'SCHET'
+      end
+      object cxGrid1DBTableView1YM: TcxGridDBColumn
+        DataBinding.FieldName = 'YM'
+      end
+      object cxGrid1DBTableView1SUBS_K: TcxGridDBColumn
+        DataBinding.FieldName = 'SUBS_K'
+      end
+      object cxGrid1DBTableView1SUBS_E: TcxGridDBColumn
+        DataBinding.FieldName = 'SUBS_E'
+      end
+      object cxGrid1DBTableView1RSUBS_K: TcxGridDBColumn
+        DataBinding.FieldName = 'RSUBS_K'
+      end
+      object cxGrid1DBTableView1RSUBS_E: TcxGridDBColumn
+        DataBinding.FieldName = 'RSUBS_E'
+      end
+      object cxGrid1DBTableView1S_EL: TcxGridDBColumn
+        DataBinding.FieldName = 'S_EL'
+      end
+      object cxGrid1DBTableView1S_HV: TcxGridDBColumn
+        DataBinding.FieldName = 'S_HV'
+      end
+      object cxGrid1DBTableView1S_KV: TcxGridDBColumn
+        DataBinding.FieldName = 'S_KV'
+      end
+      object cxGrid1DBTableView1S_OM: TcxGridDBColumn
+        DataBinding.FieldName = 'S_OM'
+      end
+      object cxGrid1DBTableView1S_OT: TcxGridDBColumn
+        DataBinding.FieldName = 'S_OT'
+      end
+      object cxGrid1DBTableView1S_RS: TcxGridDBColumn
+        DataBinding.FieldName = 'S_RS'
+      end
+      object cxGrid1DBTableView1S_SM: TcxGridDBColumn
+        DataBinding.FieldName = 'S_SM'
+      end
+      object cxGrid1DBTableView1S_SN: TcxGridDBColumn
+        DataBinding.FieldName = 'S_SN'
+      end
+      object cxGrid1DBTableView1S_SU: TcxGridDBColumn
+        DataBinding.FieldName = 'S_SU'
+      end
+      object cxGrid1DBTableView1S_UB: TcxGridDBColumn
+        DataBinding.FieldName = 'S_UB'
+      end
+      object cxGrid1DBTableView1OB_EL: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_EL'
+      end
+      object cxGrid1DBTableView1OB_HV: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_HV'
+      end
+      object cxGrid1DBTableView1OB_KV: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_KV'
+      end
+      object cxGrid1DBTableView1OB_OM: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_OM'
+      end
+      object cxGrid1DBTableView1OB_OT: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_OT'
+      end
+      object cxGrid1DBTableView1OB_RS: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_RS'
+      end
+      object cxGrid1DBTableView1OB_SM: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_SM'
+      end
+      object cxGrid1DBTableView1OB_SN: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_SN'
+      end
+      object cxGrid1DBTableView1OB_SU: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_SU'
+      end
+      object cxGrid1DBTableView1OB_UB: TcxGridDBColumn
+        DataBinding.FieldName = 'OB_UB'
+      end
+      object cxGrid1DBTableView1SFIO: TcxGridDBColumn
+        DataBinding.FieldName = 'SFIO'
+      end
+      object cxGrid1DBTableView1SUL: TcxGridDBColumn
+        DataBinding.FieldName = 'SUL'
+      end
+      object cxGrid1DBTableView1SDOM: TcxGridDBColumn
+        DataBinding.FieldName = 'SDOM'
+      end
+      object cxGrid1DBTableView1SKV: TcxGridDBColumn
+        DataBinding.FieldName = 'SKV'
+      end
+      object cxGrid1DBTableView1SNORM: TcxGridDBColumn
+        DataBinding.FieldName = 'SNORM'
       end
     end
     object cxGrid1Level1: TcxGridLevel
       GridView = cxGrid1DBTableView1
     end
-  end
-  object cxButton7: TcxButton
-    Left = 407
-    Top = 288
-    Width = 161
-    Height = 25
-    Caption = 'Ind'
-    TabOrder = 13
-    OnClick = cxButton7Click
   end
   object OpenDialog1: TOpenDialog
     Left = 568
@@ -197,145 +255,82 @@ object Form19: TForm19
     Left = 519
     Top = 2
   end
-  object ADOOBOR: TADODataSet
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=D:\WO' +
-      'RK\KOMUN\kvpl\dbf\;Mode=Share Deny Read|Share Deny Write;Persist' +
-      ' Security Info=False;Jet OLEDB:System database="";Jet OLEDB:Regi' +
-      'stry Path="";Jet OLEDB:Database Password="";Jet OLEDB:Engine Typ' +
-      'e=16;Jet OLEDB:Database Locking Mode=0;Jet OLEDB:Global Partial ' +
-      'Bulk Ops=2;Jet OLEDB:Global Bulk Transactions=1;Jet OLEDB:New Da' +
-      'tabase Password="";Jet OLEDB:Create System Database=False;Jet OL' +
-      'EDB:Encrypt Database=False;Jet OLEDB:Don'#39't Copy Locale on Compac' +
-      't=False;Jet OLEDB:Compact Without Replica Repair=False;Jet OLEDB' +
-      ':SFP=False'
-    CursorType = ctStatic
-    CommandText = 'select * from obor'
-    IndexFieldNames = 'schet'
-    ParamCheck = False
-    Parameters = <>
-    Left = 304
-    Top = 176
-  end
-  object DSADOOBOR: TDataSource
-    DataSet = ADOOBOR
-    Left = 216
-    Top = 184
-  end
-  object ADOConnectionDBF1: TADOConnection
-    Attributes = [xaCommitRetaining]
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=d:\WO' +
-      'RK\KOMUN\kvpl\dbf\;Mode=ReadWrite;Persist Security Info=False;Je' +
-      't OLEDB:System database="";Jet OLEDB:Registry Path="";Jet OLEDB:' +
-      'Database Password="";Jet OLEDB:Engine Type=16;Jet OLEDB:Database' +
-      ' Locking Mode=0;Jet OLEDB:Global Partial Bulk Ops=2;Jet OLEDB:Gl' +
-      'obal Bulk Transactions=1;Jet OLEDB:New Database Password="";Jet ' +
-      'OLEDB:Create System Database=False;Jet OLEDB:Encrypt Database=Fa' +
-      'lse;Jet OLEDB:Don'#39't Copy Locale on Compact=False;Jet OLEDB:Compa' +
-      'ct Without Replica Repair=False;Jet OLEDB:SFP=False;'
-    LoginPrompt = False
-    Mode = cmReadWrite
-    Provider = 'Microsoft.Jet.OLEDB.4.0'
-    Left = 64
-    Top = 8
-  end
-  object ADOQuerySUBS: TADOQuery
-    Connection = ADOConnectionDBF2
-    ParamCheck = False
-    Parameters = <>
-    SQL.Strings = (
-      'select * from subs')
-    Left = 176
-    Top = 8
-  end
-  object DSADOQuerySUBS: TDataSource
-    DataSet = ADOQuerySUBS
-    Enabled = False
-    Left = 264
-    Top = 8
-  end
-  object ADOConnectionDBF2: TADOConnection
-    Attributes = [xaCommitRetaining]
-    Connected = True
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=d:\WO' +
-      'RK\KOMUN\kvpl\dbf\;Mode=Share Deny Read|Share Deny Write;Persist' +
-      ' Security Info=False;Jet OLEDB:System database="";Jet OLEDB:Regi' +
-      'stry Path="";Jet OLEDB:Database Password="";Jet OLEDB:Engine Typ' +
-      'e=16;Jet OLEDB:Database Locking Mode=0;Jet OLEDB:Global Partial ' +
-      'Bulk Ops=2;Jet OLEDB:Global Bulk Transactions=1;Jet OLEDB:New Da' +
-      'tabase Password="";Jet OLEDB:Create System Database=False;Jet OL' +
-      'EDB:Encrypt Database=False;Jet OLEDB:Don'#39't Copy Locale on Compac' +
-      't=False;Jet OLEDB:Compact Without Replica Repair=False;Jet OLEDB' +
-      ':SFP=False;'
-    LoginPrompt = False
-    Mode = cmShareExclusive
-    Provider = 'Microsoft.Jet.OLEDB.4.0'
-    Left = 64
-    Top = 56
-  end
-  object ADOQuerySLGOT: TADOQuery
-    Connection = ADOConnectionDBF1
+  object ADOQueryTAB: TADOQuery
+    Connection = ADOConnectionDBF
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
-      'select * from slgot')
-    Left = 176
-    Top = 56
+      'select * from subs order by schet')
+    Left = 112
   end
-  object DSADOQuerySLGOT: TDataSource
-    DataSet = ADOQuerySLGOT
+  object DSADOQueryTAB: TDataSource
+    DataSet = ADOQueryTAB
     Enabled = False
-    Left = 264
-    Top = 56
+    Left = 112
+    Top = 48
   end
   object ADOQueryOBOR: TADOQuery
-    Connection = ADOConnectionDBF1
-    CursorType = ctStatic
+    Connection = ADOConnectionDBF
+    CursorLocation = clUseServer
+    ParamCheck = False
     Parameters = <>
+    Prepared = True
     SQL.Strings = (
-      'select * from obor')
+      'select * from obor where wid='#39'ot'#39)
     Left = 184
-    Top = 96
   end
   object DSADOQueryOBOR: TDataSource
-    DataSet = ADOOBOR
-    Left = 264
-    Top = 112
+    DataSet = ADOQueryOBOR
+    Enabled = False
+    Left = 184
+    Top = 48
+  end
+  object ADOTAB: TADODataSet
+    Connection = ADOConnectionDBF
+    CommandText = 'select * from SUBS order by schet'
+    Parameters = <>
+    Left = 312
+  end
+  object DSADOTAB: TDataSource
+    DataSet = ADOTAB
+    Enabled = False
+    Left = 312
+    Top = 56
   end
   object ADOConnectionDBF: TADOConnection
     Connected = True
     ConnectionString = 
-      'Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Dat' +
-      'a Source=dBASE Files;Mode=ReadWrite;Initial Catalog=d:\WORK\KOMU' +
-      'N\kvpl\dbf\'
+      'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=d:\WO' +
+      'RK\KOMUN\kvpl\dbf\;Mode=Read;Jet OLEDB:System database="";Jet OL' +
+      'EDB:Registry Path="";Jet OLEDB:Database Password="";Jet OLEDB:En' +
+      'gine Type=16;Jet OLEDB:Database Locking Mode=0;Jet OLEDB:Global ' +
+      'Partial Bulk Ops=2;Jet OLEDB:Global Bulk Transactions=1;Jet OLED' +
+      'B:New Database Password="";Jet OLEDB:Create System Database=Fals' +
+      'e;Jet OLEDB:Encrypt Database=False;Jet OLEDB:Don'#39't Copy Locale o' +
+      'n Compact=False;Jet OLEDB:Compact Without Replica Repair=False;J' +
+      'et OLEDB:SFP=False;'
     LoginPrompt = False
-    Mode = cmReadWrite
-    Left = 48
-    Top = 232
+    Mode = cmRead
+    Provider = 'Microsoft.Jet.OLEDB.4.0'
+    Left = 32
+    Top = 40
   end
-  object ADOSUBS: TADODataSet
-    AutoCalcFields = False
-    Connection = ADOConnectionDBF
-    CursorType = ctStatic
-    CommandText = 'select * from SUBS'
-    ParamCheck = False
+  object ADOEDIT: TADODataSet
+    ConnectionString = 
+      'Provider=MSDASQL;Persist Security Info=False;User ID=Admin;Data ' +
+      'Source=dBASE Files;Mode=ReadWrite;Initial Catalog=d:\WORK\KOMUN\' +
+      'kvpl\dbf\'
+    CursorType = ctDynamic
+    LockType = ltPessimistic
+    CommandText = 'select * from subs'#13#10
+    IndexName = 'subs.cdx'
     Parameters = <>
-    Left = 152
-    Top = 216
+    Left = 248
+    Top = 8
   end
-  object DSADOSUBS: TDataSource
-    DataSet = ADOSUBS
-    Left = 152
-    Top = 264
-  end
-  object ADOCommand1: TADOCommand
-    CommandText = 'CREATE INDEX subs111 ON subs (schet)'
-    Connection = ADOConnectionDBF
-    Parameters = <>
-    ParamCheck = False
-    Left = 224
-    Top = 248
+  object DSADOEDIT: TDataSource
+    DataSet = ADOEDIT
+    Left = 248
+    Top = 64
   end
 end

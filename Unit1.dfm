@@ -604,7 +604,6 @@ object Form1: TForm1
     Width = 121
   end
   object IBDatabase1: TIBDatabase
-    Connected = True
     DatabaseName = 'D:\WORK\KOMUN\DOLG\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'

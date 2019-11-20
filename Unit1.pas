@@ -531,6 +531,7 @@ type
     iniFile:TIniFile;
     PathKvart,StartSQL,PathDir,ORG:string;
     translit,textsms1,textsms2:string;
+    posl:TStrings;
 
 
 
@@ -657,8 +658,6 @@ end;
 procedure TForm1.cxButton10Click(Sender: TObject);
 begin
 Form19.Caption:=cxButton10.Caption;
-Form19.cxLookupComboBox2.Visible:=true;
-Form19.cxLabel3.Visible:=true;
 Form19.mode:=1;
 Form19.show;
 
@@ -758,8 +757,6 @@ end;
 procedure TForm1.cxButton6Click(Sender: TObject);
 begin
 Form19.Caption:=cxButton6.Caption;
-Form19.cxLookupComboBox2.Visible:=false;
-Form19.cxLabel3.Visible:=false;
 Form19.mode:=2;
 Form19.show;
 end;
@@ -934,11 +931,13 @@ end;
 
 
 procedure TForm1.FormCreate(Sender: TObject);
-var s,ss,log,pw,cur,stroka,strmes,strye:string;
+var s,ss,log,pw,cur,stroka,strmes,strye,pp:string;
 f : TextFile;
-mes,ye,year,month,yearmon:integer;
+mes,ye,year,month,yearmon,i:integer;
 DateKVART:TDate;
 DateKVART1:TDate;
+
+
 begin
   try
 
@@ -946,11 +945,23 @@ begin
   IBDatabase1.Connected:=false;
   iniFile:=TIniFile.Create(extractfilepath(paramstr(0))+'dolg.ini');
   s:=iniFile.ReadString('Data','Database',extractfilepath(paramstr(0))+'DOLG.GDB');
-  log:=iniFile.ReadString('Data','Login',extractfilepath(paramstr(0)));
-  pw:=iniFile.ReadString('Data','PW',extractfilepath(paramstr(0)));
-  ORG:=iniFile.ReadString('Data','org',extractfilepath(paramstr(0)));
-  PathKvart:=iniFile.ReadString('DBF','base',extractfilepath(paramstr(0)));
+  log:=iniFile.ReadString('Data','Login','');
+  pw:=iniFile.ReadString('Data','PW','');
+  ORG:=iniFile.ReadString('Data','org','');
+  PathKvart:=iniFile.ReadString('DBF','base','');
   PathDIR:=iniFile.ReadString('DBF','tmp',extractfilepath(paramstr(0)));
+
+  posl := TStringList.Create;
+
+  IBWID.open;
+  IBWID.First;
+  while not IBWID.Eof do
+    begin
+    if Length(iniFile.ReadString('POSL',IBWIDWID.Value,''))<>0 then
+       posl.Add(Format('%s=%s', [IBWIDWID.Value, iniFile.ReadString('POSL',IBWIDWID.Value,'')]));
+    pp:=posl.Values[Form1.IBWIDWID.Value];
+    IBWID.Next;
+    end;
 
   if not DirectoryExists(PathDIR) then
     MkDir(PathDIR);
@@ -1001,7 +1012,7 @@ begin
 
   IBTMPOPL.open;
 
-  IBWID.open;
+
 
      IBREPD.close;
      DSREPD.Enabled:=false;

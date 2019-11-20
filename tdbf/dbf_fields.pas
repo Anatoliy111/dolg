@@ -92,9 +92,9 @@ type
     constructor Create(Owner: TPersistent);
 
 {$ifdef SUPPORT_DEFAULT_PARAMS}
-    procedure Add(const Name: string; DataType: TFieldType; Size: Integer = 0; Required: Boolean = False);
+    procedure Add(const Name: AnsiString; DataType: TFieldType; Size: Integer = 0; Required: Boolean = False);
 {$else}
-    procedure Add(const Name: string; DataType: TFieldType; Size: Integer; Required: Boolean);
+    procedure Add(const Name: AnsiString; DataType: TFieldType; Size: Integer; Required: Boolean);
 {$endif}
     function AddFieldDef: TDbfFieldDef;
 
@@ -169,7 +169,7 @@ begin
   Result := FOwner;
 end;
 
-procedure TDbfFieldDefs.Add(const Name: string; DataType: TFieldType; Size: Integer; Required: Boolean);
+procedure TDbfFieldDefs.Add(const Name: AnsiString; DataType: TFieldType; Size: Integer; Required: Boolean);
 var
   FieldDef: TDbfFieldDef;
 begin
@@ -244,7 +244,7 @@ end;
 procedure TDbfFieldDef.AssignDb(DbSource: TFieldDef);
 begin
   // copy from Db.TFieldDef
-  FFieldName := DbSource.Name;
+  FFieldName := AnsiString(DbSource.Name);
   FFieldType := DbSource.DataType;
   FSize := DbSource.Size;
   FPrecision := DbSource.Precision;
@@ -282,12 +282,14 @@ begin
     // what a shame :-)
 {$ifdef SUPPORT_FIELDDEF_ATTRIBUTES}
     DbDest.Attributes := [];
+{$ifndef FPC}
     DbDest.ChildDefs.Clear;
+{$endif}
+{$endif}
     DbDest.DataType := FFieldType;
     DbDest.Required := FRequired;
     DbDest.Size := FSize;
-    DbDest.Name := FFieldName;
-{$endif}
+    DbDest.Name := string(FFieldName);
   end else
 {$endif}
     inherited AssignTo(Dest);
@@ -457,11 +459,12 @@ begin
         FPrecision := 0;
       end;
 {$endif}
-    ftString {$ifdef SUPPORT_FIELDTYPES_V4}, ftFixedChar, ftWideString{$endif}:
-      begin
-        FSize := 30;
-        FPrecision := 0;
-      end;
+    // VB: Removed... all this has ever done, was kill off data after 30 chars 
+    //ftString {$ifdef SUPPORT_FIELDTYPES_V4}, ftFixedChar, ftWideString{$endif}:
+    //  begin
+    //    FSize := 30;
+    //    FPrecision := 0;
+    //  end;
   end; // case fieldtype
 
   // set sizes for fields that are restricted to single size/precision
@@ -551,7 +554,7 @@ end;
 
 function TDbfFieldDef.GetDisplayName: string; {override;}
 begin
-  Result := FieldName;
+  Result := string(FieldName);
 end;
 
 function TDbfFieldDef.IsBlob: Boolean; {override;}

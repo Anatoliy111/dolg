@@ -18,11 +18,11 @@ type
     FFile: TPagedFile;
 
   protected
-    function GetPhysicalRecno: Integer; virtual; abstract;
-    function GetSequentialRecno: Integer; virtual; abstract;
-    function GetSequentialRecordCount: Integer; virtual; abstract;
-    procedure SetPhysicalRecno(Recno: Integer); virtual; abstract;
-    procedure SetSequentialRecno(Recno: Integer); virtual; abstract;
+    function GetPhysicalRecNo: Integer; virtual; abstract;
+    function GetSequentialRecNo: TSequentialRecNo; virtual; abstract;
+    function GetSequentialRecordCount: TSequentialRecNo; virtual; abstract;
+    procedure SetPhysicalRecNo(Recno: Integer); virtual; abstract;
+    procedure SetSequentialRecNo(Recno: TSequentialRecNo); virtual; abstract;
 
   public
     constructor Create(pFile: TPagedFile);
@@ -37,8 +37,8 @@ type
 
     property PagedFile: TPagedFile read FFile;
     property PhysicalRecNo: Integer read GetPhysicalRecNo write SetPhysicalRecNo;
-    property SequentialRecNo: Integer read GetSequentialRecNo write SetSequentialRecNo;
-    property SequentialRecordCount: Integer read GetSequentialRecordCount;
+    property SequentialRecNo: TSequentialRecNo read GetSequentialRecNo write SetSequentialRecNo;
+    property SequentialRecordCount: TSequentialRecNo read GetSequentialRecordCount;
   end;
 
 implementation

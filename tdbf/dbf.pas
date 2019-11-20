@@ -2,6 +2,8 @@ unit dbf;
 
 { design info in dbf_reg.pas }
 
+{$BOOLEVAL OFF}
+
 interface
 
 {$I dbf_common.inc}
@@ -21,8 +23,12 @@ uses
 // this file in your project:
 // dsgnintf.pas in 'C: \Program Files\Borland\Delphi5\Source\Toolsapi\dsgnintf.pas'
 
-type
+{$ifdef SUPPORT_MAXLISTSIZEDEPRECATED}
+const
+  MaxListSize = MaxInt div 16;
+{$endif}
 
+type
 //====================================================================
   pBookmarkData = ^TBookmarkData;
   TBookmarkData = record
@@ -33,7 +39,7 @@ type
   TDbfRecordHeader = record
     BookmarkData: TBookmarkData;
     BookmarkFlag: TBookmarkFlag;
-    SequentialRecNo: Integer;
+    SequentialRecNo: TSequentialRecNo;
     DeletedFlag: AnsiChar;
   end;
 //====================================================================
@@ -44,6 +50,9 @@ type
   TDbfLanguageAction = (laReadOnly, laForceOEM, laForceANSI, laDefault);
   TDbfTranslationMode = (tmNoneAvailable, tmNoneNeeded, tmSimple, tmAdvanced);
   TDbfFileName = (dfDbf, dfMemo, dfIndex);
+  TDbfBatchMode = (bmAppend, bmUpdate, bmAppendUpdate, bmDelete, bmCopy);
+  TDbfBatchOption = (boUsePhysicalFieldNo);
+  TDbfBatchOptions = set of TDbfBatchOption;
 //====================================================================
   TDbfFileNames = set of TDbfFileName;
 //====================================================================
@@ -128,7 +137,7 @@ type
     procedure ActiveChanged; override;
     procedure CheckBrowseMode; override;
     procedure LayoutChanged; override;
-    procedure RecordChanged(Field: TField); override;
+    procedure RecordChanged({%H-}Field: TField); override;
 
   public
     constructor Create(ADataSet: TDbf);
@@ -162,8 +171,8 @@ type
     FAbsolutePath: string;
     FIndexName: string;
     FReadOnly: Boolean;
-    FFilterBuffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF};
-    FTempBuffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF};
+    FFilterBuffer: TDbfRecordBuffer;
+    FTempBuffer: TDbfRecordBuffer;
     FEditingRecNo: Integer;
 {$ifdef SUPPORT_VARIANTS}    
     FLocateRecNo: Integer;
@@ -187,9 +196,18 @@ type
     FOnTranslate: TTranslateEvent;
     FOnLanguageWarning: TLanguageWarningEvent;
     FOnLocaleError: TDbfLocaleErrorEvent;
+    FOnIndexInvalid: TDbfIndexInvalidEvent;
     FOnIndexMissing: TDbfIndexMissingEvent;
     FOnCompareRecord: TNotifyEvent;
     FOnCopyDateTimeAsString: TConvertFieldEvent;
+    FOnProgress: TPagedFileProgressEvent;
+    FScrolling: Boolean;
+
+    FKeyBufferLen: Integer;
+    FKeyBuffer: Pointer;
+    function GetKeyBuffer: PAnsiChar;
+    function InitKeyBuffer(Buffer: PAnsiChar): PAnsiChar;
+    procedure PostKeyBuffer({%H-}Commit: Boolean);
 
     function GetIndexName: string;
     function GetVersion: string;
@@ -206,7 +224,7 @@ type
     procedure SetDbfIndexDefs(const Value: TDbfIndexDefs);
     procedure SetFilePath(const Value: string);
     procedure SetTableName(const S: string);
-    procedure SetVersion(const S: string);
+    procedure SetVersion(const {%H-}S: string);
     procedure SetLanguageID(NewID: Byte);
     procedure SetDataSource(Value: TDataSource);
     procedure SetMasterFields(const Value: string);
@@ -223,27 +241,31 @@ type
     function  ParseIndexName(const AIndexName: string): string;
     procedure ParseFilter(const AFilter: string);
     function  GetDbfFieldDefs: TDbfFieldDefs;
+    function  ReadCurrentRecord(Buffer: TDbfRecordBuffer; var Acceptable: Boolean): TGetResult;
     function  SearchKeyBuffer(Buffer: PAnsiChar; SearchType: TSearchKeyType): Boolean;
     procedure SetRangeBuffer(LowRange: PAnsiChar; HighRange: PAnsiChar);
+    procedure UpdateLock;
+    function  ResyncSharedReadCurrentRecord: Boolean;
 
   protected
     { abstract methods }
-    function  AllocRecordBuffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; override; {virtual abstract}
-    procedure ClearCalcFields(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}); override;
-    procedure FreeRecordBuffer(var Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}); override; {virtual abstract}
-    procedure GetBookmarkData(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; Data: Pointer); override; {virtual abstract}
-    function  GetBookmarkFlag(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}): TBookmarkFlag; override; {virtual abstract}
-    function  GetRecord(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; GetMode: TGetMode; DoCheck: Boolean): TGetResult; override; {virtual abstract}
+    function  AllocRecordBuffer: TDbfRecordBuffer; override; {virtual abstract}
+    procedure ClearCalcFields(Buffer: TDbfRecordBuffer); override;
+    procedure FreeRecordBuffer(var Buffer: TDbfRecordBuffer); override; {virtual abstract}
+    procedure GetBookmarkData(Buffer: TDbfRecordBuffer; Data: Pointer); override; {virtual abstract}
+    function  GetBookmarkFlag(Buffer: TDbfRecordBuffer): TBookmarkFlag; override; {virtual abstract}
+    function  GetRecord(Buffer: TDbfRecBuf; GetMode: TGetMode; {%H-}DoCheck: Boolean): TGetResult; override; {virtual abstract}
     function  GetRecordSize: Word; override; {virtual abstract}
-    procedure InternalAddRecord(Buffer: Pointer; AAppend: Boolean); override; {virtual abstract}
+    procedure InternalAddRecord(Buffer: Pointer; {%H-}AAppend: Boolean); override; {virtual abstract}
     procedure InternalClose; override; {virtual abstract}
     procedure InternalDelete; override; {virtual abstract}
     procedure InternalFirst; override; {virtual abstract}
     procedure InternalGotoBookmark(ABookmark: Pointer); override; {virtual abstract}
     procedure InternalHandleException; override; {virtual abstract}
     procedure InternalInitFieldDefs; override; {virtual abstract}
-    procedure InternalInitRecord(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}); override; {virtual abstract}
+    procedure InternalInitRecord(Buffer: TDbfRecordBuffer); override; {virtual abstract}
     procedure InternalLast; override; {virtual abstract}
+    function DbfDefaultFields: Boolean;
     procedure InternalOpen; override; {virtual abstract}
     procedure InternalEdit; override; {virtual}
     procedure InternalCancel; override; {virtual}
@@ -252,13 +274,15 @@ type
     procedure InternalInsert; override; {virtual}
 {$endif}
 {$endif}
-    procedure InternalPost; override; {virtual abstract}
-    procedure InternalSetToRecord(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}); override; {virtual abstract}
+    procedure InternalPost; override; {virtual}
+    procedure InternalRefresh; override;
+    procedure InternalSetToRecord(Buffer: TDbfRecordBuffer); override; {virtual abstract}
     procedure InitFieldDefs; override;
     function  IsCursorOpen: Boolean; override; {virtual abstract}
-    procedure SetBookmarkFlag(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; Value: TBookmarkFlag); override; {virtual abstract}
-    procedure SetBookmarkData(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; Data: Pointer); override; {virtual abstract}
-    procedure SetFieldData(Field: TField; Buffer: Pointer); overload; override; {virtual abstract}
+    procedure SetBookmarkFlag(Buffer: TDbfRecordBuffer; Value: TBookmarkFlag); override; {virtual abstract}
+    procedure SetBookmarkData(Buffer: TDbfRecordBuffer; Data: Pointer); override; {virtual abstract}
+    procedure {%H-}SetFieldData(Field: TField; Buffer: TDbfValueBuffer);
+	  {$ifdef SUPPORT_OVERLOAD}overload;{$ENDIF} override; {virtual abstract}
 
     { virtual methods (mostly optionnal) }
     function  GetDataSource: TDataSource; {$ifndef VER1_0}override;{$endif}
@@ -272,13 +296,15 @@ type
     procedure DefChanged(Sender: TObject); override;
 {$endif}
     function  FindRecord(Restart, GoForward: Boolean): Boolean; override;
+    procedure DoBeforeScroll; override;
+    procedure DoAfterScroll; override;
 
     function  GetIndexFieldNames: string; {virtual;}
     procedure SetIndexFieldNames(const Value: string); {virtual;}
 
 {$ifdef SUPPORT_VARIANTS}
     function  LocateRecordLinear(const KeyFields: String; const KeyValues: Variant; Options: TLocateOptions): Boolean;
-    function  LocateRecordIndex(const KeyFields: String; const KeyValues: Variant; Options: TLocateOptions): Boolean;
+    function  LocateRecordIndex(const {%H-}KeyFields: String; const KeyValues: Variant; Options: TLocateOptions): Boolean;
     function  LocateRecord(const KeyFields: String; const KeyValues: Variant; Options: TLocateOptions): Boolean;
 {$endif}
 
@@ -287,8 +313,23 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
+    procedure SetKey;
+    function  GotoCommon(SearchKeyType: TSearchKeyType): Boolean;
+    procedure GotoNearest;
+    function  GotoKey: Boolean;
+    procedure Cancel; override;
+    procedure Post; override;
+
     { abstract methods }
-    function GetFieldData(Field: TField; Buffer: Pointer): Boolean; overload; override; {virtual abstract}
+
+    {$ifdef SUPPORT_TVALUEBUFFER_VAR}
+    function GetFieldData(Field: TField; var Buffer: TDbfValueBuffer): Boolean;
+      {$ifdef SUPPORT_OVERLOAD} overload; {$endif} override; {virtual abstract}
+    {$else SUPPORT_TVALUEBUFFER_VAR}
+    function GetFieldData(Field: TField; Buffer: TDbfValueBuffer): Boolean;
+      {$ifdef SUPPORT_OVERLOAD} overload; {$endif} override; {virtual abstract}
+    {$endif SUPPORT_TVALUEBUFFER_VAR}
+
     { virtual methods (mostly optionnal) }
     procedure Resync(Mode: TResyncMode); override;
     function CreateBlobStream(Field: TField; Mode: TBlobStreamMode): TStream; override; {virtual}
@@ -298,17 +339,26 @@ type
     procedure Translate(Src, Dest: PAnsiChar; ToOem: Boolean); override; {virtual}
 {$endif}
 
-    function  GetFieldData(Field: TField; Buffer: Pointer; NativeFormat: Boolean): Boolean; overload;
+{$ifdef SUPPORT_OVERLOAD}
+    {$ifdef SUPPORT_TVALUEBUFFER_VAR}
+    function  GetFieldData(Field: TField; var Buffer: TDbfValueBuffer; NativeFormat: Boolean): Boolean; overload;
       {$ifdef SUPPORT_BACKWARD_FIELDDATA} override; {$endif}
-    procedure SetFieldData(Field: TField; Buffer: Pointer; NativeFormat: Boolean); overload;
+    {$else SUPPORT_TVALUEBUFFER_VAR}
+    function  GetFieldData(Field: TField; Buffer: TDbfValueBuffer; NativeFormat: Boolean): Boolean; overload;
       {$ifdef SUPPORT_BACKWARD_FIELDDATA} override; {$endif}
+    {$endif SUPPORT_TVALUEBUFFER_VAR}
+    procedure SetFieldData(Field: TField; Buffer: TDbfValueBuffer; NativeFormat: Boolean); overload;
+      {$ifdef SUPPORT_BACKWARD_FIELDDATA} override; {$endif}
+{$endif SUPPORT_OVERLOAD}
 
     function CompareBookmarks(Bookmark1, Bookmark2: TBookmark): Integer; override;
     procedure CheckDbfFieldDefs(ADbfFieldDefs: TDbfFieldDefs);
 
-{$ifdef VER1_0}
-    procedure DataEvent(Event: TDataEvent; Info: Longint); override;
-{$endif}
+    {$ifdef DELPHI_XE}
+    procedure DataEvent(Event: TDataEvent; Info: NativeInt); override;
+    {$else}
+    procedure DataEvent(Event: TDataEvent; Info: {$ifdef FPC_VERSION}Ptrint{$else}Longint{$endif}); override;
+    {$endif}
 
     // my own methods and properties
     // most look like ttable functions but they are not tdataset related
@@ -316,7 +366,7 @@ type
 
     // index support (use same syntax as ttable but is not related)
 {$ifdef SUPPORT_DEFAULT_PARAMS}
-    procedure AddIndex(const AIndexName, AFields: String; Options: TIndexOptions; const DescFields: String='');
+    procedure AddIndex(const AIndexName, AFields: String; Options: TIndexOptions; const {%H-}DescFields: String='');
 {$else}
     procedure AddIndex(const AIndexName, AFields: String; Options: TIndexOptions);
 {$endif}
@@ -330,13 +380,14 @@ type
     procedure SetRange(LowRange: Variant; HighRange: Variant; KeyIsANSI: boolean
       {$ifdef SUPPORT_DEFAULT_PARAMS}= false{$endif});
 {$endif}
-    function  PrepareKey(Buffer: Pointer; BufferType: TExpressionType): {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PAnsiChar{$ENDIF};
+    function  PrepareKey(Buffer: Pointer; BufferType: TExpressionType): TDbfRecordBuffer;
     function  SearchKeyPChar(Key: PAnsiChar; SearchType: TSearchKeyType; KeyIsANSI: boolean
       {$ifdef SUPPORT_DEFAULT_PARAMS}= false{$endif}): Boolean;
     procedure SetRangePChar(LowRange: PAnsiChar; HighRange: PAnsiChar; KeyIsANSI: boolean
       {$ifdef SUPPORT_DEFAULT_PARAMS}= false{$endif});
-    function  GetCurrentBuffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF};
+    function  GetCurrentBuffer: TDbfRecordBuffer;
     procedure ExtractKey(KeyBuffer: PAnsiChar);
+    function  CompareKeys(Key1, Key2: PAnsiChar): Integer;
     procedure UpdateIndexDefs; override;
     procedure GetFileNames(Strings: TStrings; Files: TDbfFileNames); {$ifdef SUPPORT_DEFAULT_PARAMS} overload; {$endif}
 {$ifdef SUPPORT_DEFAULT_PARAMS}
@@ -362,16 +413,23 @@ type
     function  Locate(const KeyFields: string; const KeyValues: Variant; Options: TLocateOptions): Boolean; override;
 {$endif}
 
+    function IsSequenced: Boolean; override; // lsp
     function  IsDeleted: Boolean;
     procedure Undelete;
 
     procedure CreateTable;
     procedure CreateTableEx(ADbfFieldDefs: TDbfFieldDefs);
     procedure CopyFrom(DataSet: TDataSet; FileName: string; DateTimeAsString: Boolean; Level: Integer);
+    procedure BatchMove(DataSet: TDataSet; FileName: string; DateTimeAsString: Boolean; Level: Integer; Mode: TDbfBatchMode; Options: TDbfBatchOptions; FieldMappings: TStrings);
     procedure RestructureTable(ADbfFieldDefs: TDbfFieldDefs; Pack: Boolean);
+    procedure RestructureTable2(ADbfFieldDefs: TDbfFieldDefs; Pack, DeleteFiles: Boolean);
     procedure PackTable;
     procedure EmptyTable;
     procedure Zap;
+    procedure BatchStart;
+    procedure BatchUpdate;
+    procedure BatchFinish;
+    function DeleteMdxFile: Boolean;
 
 {$ifndef SUPPORT_INITDEFSFROMFIELDS}
     procedure InitFieldDefsFromFields;
@@ -418,9 +476,11 @@ type
     property OnCompareRecord: TNotifyEvent read FOnCompareRecord write FOnCompareRecord;
     property OnLanguageWarning: TLanguageWarningEvent read FOnLanguageWarning write FOnLanguageWarning;
     property OnLocaleError: TDbfLocaleErrorEvent read FOnLocaleError write FOnLocaleError;
+    property OnIndexInvalid: TDbfIndexInvalidEvent read FOnIndexInvalid write FOnIndexInvalid;
     property OnIndexMissing: TDbfIndexMissingEvent read FOnIndexMissing write FOnIndexMissing;
     property OnCopyDateTimeAsString: TConvertFieldEvent read FOnCopyDateTimeAsString write FOnCopyDateTimeAsString;
     property OnTranslate: TTranslateEvent read FOnTranslate write FOnTranslate;
+    property OnProgress: TPagedFileProgressEvent read FOnProgress write FOnProgress;
 
     // redeclared data set properties
     property Active;
@@ -442,6 +502,8 @@ type
     property AfterCancel;
     property BeforeDelete;
     property AfterDelete;
+    property BeforeRefresh;
+    property AfterRefresh;
     property BeforeScroll;
     property AfterScroll;
     property OnCalcFields;
@@ -460,18 +522,28 @@ var
 implementation
 
 uses
+{$ifdef SUPPORT_GENERICS_FIELDLIST}
+  System.Generics.Collections,
+{$endif}
   SysUtils,
-{$ifndef FPC} DBConsts, {$endif}
+{$ifdef FPC}
+  dbconst,
+{$else}
+  DBConsts,
+{$endif}
 {$ifdef WINDOWS}
   Windows,
 {$else}
-{$ifdef KYLIX} Libc,{$endif}  
+{$ifdef KYLIX}
+  Libc,
+{$endif}
   Types,
   dbf_wtil,
 {$endif}
 {$ifdef SUPPORT_SEPARATE_VARIANTS_UNIT}
   Variants,
 {$endif}
+  dbf_ansistrings,
   dbf_idxcur,
   dbf_memo,
   dbf_str;
@@ -480,17 +552,19 @@ uses
 const
   // TODO: move these to DBConsts
   SNotEditing = 'Dataset not in edit or insert mode';
-  SCircularDataLink = 'Circular datalinks are not allowed';
+//SCircularDataLink = 'Circular datalinks are not allowed';
 {$endif}
 
 function TableLevelToDbfVersion(TableLevel: integer): TXBaseVersion;
 begin
   case TableLevel of
     3:                      Result := xBaseIII;
+    4:                      Result := xBaseIV;
+    5:                      Result := xBaseV;
     7:                      Result := xBaseVII;
     TDBF_TABLELEVEL_FOXPRO: Result := xFoxPro;
   else
-    {4:} Result := xBaseIV;
+    Result := xUnknown;
   end;
 end;
 
@@ -550,6 +624,7 @@ end;
 procedure TDbfBlobStream.Commit;
 var
   Dbf: TDbf;
+  Src: Pointer;
 begin
   if FDirty then
   begin
@@ -557,7 +632,11 @@ begin
     Dbf := TDbf(FBlobField.DataSet);
     Translate(true);
     Dbf.FDbfFile.MemoFile.WriteMemo(FMemoRecNo, FReadSize, Self);
-    Dbf.FDbfFile.SetFieldData(FBlobField.FieldNo-1, ftInteger, @FMemoRecNo,
+    if Size <> 0 then
+      Src := @FMemoRecNo
+    else
+      Src := nil;
+    Dbf.FDbfFile.SetFieldData(FBlobField.FieldNo-1, ftInteger, Src,
       @pDbfRecord(TDbf(FBlobField.DataSet).ActiveBuffer)^.DeletedFlag, false);
     FDirty := false;
   end;
@@ -615,9 +694,6 @@ constructor TDbf.Create(AOwner: TComponent); {override;}
 begin
   inherited;
 
-  if DbfGlobals = nil then
-    DbfGlobals := TDbfGlobals.Create;
-
   BookmarkSize := sizeof(TBookmarkData);
   FIndexDefs := TDbfIndexDefs.Create(Self);
   FMasterLink := TDbfMasterLink.Create(Self);
@@ -636,7 +712,7 @@ begin
   FInCopyFrom := false;
   FFindRecordFilter := false;
   FEditingRecNo := -1;
-  FTableLevel := 4;
+  FTableLevel := 5;
   FIndexName := EmptyStr;
   FilePath := EmptyStr;
   FTempBuffer := nil;
@@ -644,6 +720,7 @@ begin
   FIndexFile := nil;
   FOnTranslate := nil;
   FOnCopyDateTimeAsString := nil;
+  FLanguageID := DbfGlobals.DefaultCreateLangId; 
 end;
 
 destructor TDbf.Destroy; {override;}
@@ -659,49 +736,47 @@ begin
     FIndexDefs.Free;
   end;
   FMasterLink.Free;
+
+  FreeMemAndNil(FKeyBuffer);
 end;
 
-function TDbf.AllocRecordBuffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; {override virtual abstract from TDataset}
+function TDbf.AllocRecordBuffer: TDbfRecordBuffer; {override virtual abstract from TDataset}
 begin
-  GetMem(Result, SizeOf(TDbfRecordHeader)+FDbfFile.RecordSize+CalcFieldsSize+1);
+  GetMem(Result, SizeOf(TDbfRecordHeader) + RecordSize + CalcFieldsSize + 1);
 end;
 
-procedure TDbf.FreeRecordBuffer(var Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}); {override virtual abstract from TDataset}
+procedure TDbf.FreeRecordBuffer(var Buffer: TDbfRecordBuffer); {override virtual abstract from TDataset}
 begin
   FreeMemAndNil(Pointer(Buffer));
 end;
 
-procedure TDbf.GetBookmarkData(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; Data: Pointer); {override virtual abstract from TDataset}
+procedure TDbf.GetBookmarkData(Buffer: TDbfRecordBuffer; Data: Pointer); {override virtual abstract from TDataset}
 begin
   pBookmarkData(Data)^ := pDbfRecord(Buffer)^.BookmarkData;
+  pBookmarkData(Data)^.PhysicalRecNo := SwapIntLE(DWORD(pBookmarkData(Data)^.PhysicalRecNo));
 end;
 
-function TDbf.GetBookmarkFlag(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}): TBookmarkFlag; {override virtual abstract from TDataset}
+function TDbf.GetBookmarkFlag(Buffer: TDbfRecordBuffer): TBookmarkFlag; {override virtual abstract from TDataset}
 begin
   Result := pDbfRecord(Buffer)^.BookmarkFlag;
 end;
 
-function TDbf.GetCurrentBuffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF};
+function TDbf.GetCurrentBuffer: TDbfRecordBuffer;
 begin
   case State of
-    dsFilter:     Result := FFilterBuffer;
-    dsCalcFields: Result := CalcBuffer;
-//    dsSetKey:     Result := FKeyBuffer;     // TO BE Implemented
+    dsFilter:     Result := TDbfRecordBuffer(FFilterBuffer);
+    dsCalcFields: Result := TDbfRecordBuffer(CalcBuffer);
+    dsSetKey:     Result := TDbfRecordBuffer(GetKeyBuffer);
   else
     if IsEmpty then
     begin
       Result := nil;
     end else begin
-      Result := ActiveBuffer;
+      Result := TDbfRecordBuffer(ActiveBuffer);
     end;
   end;
   if Result <> nil then
     Result := @PDbfRecord(Result)^.DeletedFlag;
-end;
-
-function TDbf.GetFieldData(Field: TField; Buffer: Pointer): Boolean; {override virtual abstract from TDataset}
-begin
-  Result := GetFieldData(Field, Buffer, true);
 end;
 
 // we don't want converted data formats, we want native :-)
@@ -711,9 +786,29 @@ end;
 //  ftBCD:
 // ftDateTime is more difficult though
 
-function TDbf.GetFieldData(Field: TField; Buffer: Pointer; NativeFormat: Boolean): Boolean; {overload; override;}
+{$ifdef SUPPORT_TVALUEBUFFER_VAR}
+function TDbf.GetFieldData(Field: TField; var Buffer: TDbfValueBuffer): Boolean; {override virtual abstract from TDataset}
+{$else SUPPORT_TVALUEBUFFER_VAR}
+function TDbf.GetFieldData(Field: TField; Buffer: TDbfValueBuffer): Boolean; {override virtual abstract from TDataset}
+{$endif SUPPORT_TVALUEBUFFER_VAR}
+{$ifdef SUPPORT_OVERLOAD}
+begin
+  { calling through 'old' delphi 3 interface, use compatible/'native' format }
+  Result := GetFieldData(Field, Buffer, true);
+end;
+
+{$ifdef SUPPORT_TVALUEBUFFER_VAR}
+function TDbf.GetFieldData(Field: TField; var Buffer: TDbfValueBuffer; NativeFormat: Boolean): Boolean; {overload; override;}
+{$else SUPPORT_TVALUEBUFFER_VAR}
+function TDbf.GetFieldData(Field: TField; Buffer: TDbfValueBuffer; NativeFormat: Boolean): Boolean; {overload; override;}
+{$endif SUPPORT_TVALUEBUFFER_VAR}
+{$else}
+const
+  { no overload => delphi 3 => use compatible/'native' format }
+  NativeFormat = true;
+{$endif}
 var
-  Src: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF};
+  Src: TDbfRecordBuffer;
 begin
   Src := GetCurrentBuffer;
   if Src = nil then
@@ -726,34 +821,55 @@ begin
   begin
     Result := FDbfFile.GetFieldData(Field.FieldNo-1, Field.DataType, Src, Buffer, NativeFormat);
   end else begin { weird calculated fields voodoo (from dbtables).... }
-    Inc(PChar(Src), Field.Offset + GetRecordSize);
+    Inc(Src, Field.Offset + GetRecordSize); // Was PChar(Src)
     Result := Boolean(Src[0]);
-    if Result and (Buffer <> nil) then
+    if Result and (Buffer <> nil) then begin
+{$ifdef SUPPORT_TVALUEBUFFER}
+      Move(Src[1], Buffer[0], Field.DataSize);
+{$else}
       Move(Src[1], Buffer^, Field.DataSize);
+{$endif}
+    end;
   end;
 end;
 
-procedure TDbf.SetFieldData(Field: TField; Buffer: Pointer; NativeFormat: Boolean); {overload; override;}
+procedure TDbf.SetFieldData(Field: TField; Buffer: TDbfValueBuffer); {override virtual abstract from TDataset}
+{$ifdef SUPPORT_OVERLOAD}
+begin
+  { calling through 'old' delphi 3 interface, use compatible/'native' format }
+  SetFieldData(Field, Buffer, true);
+end;
+
+procedure TDbf.SetFieldData(Field: TField; Buffer: TDbfValueBuffer; NativeFormat: Boolean); {overload; override;}
+{$else}
+const
+  { no overload => delphi 3 => use compatible/'native' format }
+  NativeFormat = true;
+{$endif}
 var
   Dst: PAnsiChar;
 begin
   if (Field.FieldNo >= 0) then
   begin
-    Dst := @PDbfRecord(ActiveBuffer)^.DeletedFlag;
+    if Field.ReadOnly and not (State in [dsSetKey, dsFilter]) then
+      DatabaseErrorFmt({$ifdef FPC}SReadOnlyField{$else}SFieldReadOnly{$endif}, [Field.DisplayName]);
+    if State = dsSetKey then
+      Dst := @PDbfRecord(GetKeyBuffer)^.DeletedFlag
+    else
+      Dst := @PDbfRecord(ActiveBuffer)^.DeletedFlag;
     FDbfFile.SetFieldData(Field.FieldNo - 1, Field.DataType, Buffer, Dst, NativeFormat);
   end else begin    { ***** fkCalculated, fkLookup ***** }
     Dst := @PDbfRecord(CalcBuffer)^.DeletedFlag;
-    Inc(PChar(Dst), RecordSize + Field.Offset);
-{$IFDEF DELPHI_2009}
-    if (Buffer <> nil) then
-      Dst[0] := #1
-    else
+    Inc(Dst, RecordSize + Field.Offset); // Was PChar(Dst)
+    if Buffer <> nil then begin
+      Dst[0] := #1;
+{$ifdef SUPPORT_TVALUEBUFFER}
+      Move(Buffer[0], Dst[1], Field.DataSize);
+{$else}
+      Move(Buffer^, Dst[1], Field.DataSize);
+{$endif}
+	end else
       Dst[0] := #0;
-{$ELSE}
-    Boolean(Dst[0]) := Buffer <> nil;
-{$ENDIF}
-    if Buffer <> nil then
-      Move(Buffer^, Dst[1], Field.DataSize)
   end;     { end of ***** fkCalculated, fkLookup ***** }
   if not (State in [dsCalcFields, dsFilter, dsNewValue]) then begin
     DataEvent(deFieldChange, PtrInt(Field));
@@ -766,11 +882,11 @@ begin
   if Length(Filter) > 0 then
   begin
 {$ifndef VER1_0}
-    Acceptable := Boolean((FParser.ExtractFromBuffer(PAnsiChar(GetCurrentBuffer)))^);
+    Acceptable := Boolean((FParser.ExtractFromBuffer(PAnsiChar(GetCurrentBuffer), PhysicalRecNo))^);
 {$else}
     // strange problem
     // dbf.pas(716,19) Error: Incompatible types: got "CHAR" expected "BOOLEAN"
-    Acceptable := not ((FParser.ExtractFromBuffer(GetCurrentBuffer))^ = #0);
+    Acceptable := not ((FParser.ExtractFromBuffer(GetCurrentBuffer), PhysicalRecNo)^ = #0);
 {$endif}
   end;
 
@@ -779,13 +895,31 @@ begin
     OnFilterRecord(Self, Acceptable);
 end;
 
-function TDbf.GetRecord(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; GetMode: TGetMode; DoCheck: Boolean): TGetResult; {override virtual abstract from TDataset}
+function TDbf.ReadCurrentRecord(Buffer: TDbfRecordBuffer; var Acceptable: Boolean): TGetResult;
 var
-  pRecord: pDBFRecord;
+  lPhysicalRecNo: Integer;
+  pRecord: pDbfRecord;
+begin
+  lPhysicalRecNo := FCursor.PhysicalRecNo;
+  if (lPhysicalRecNo = 0) or not FDbfFile.IsRecordPresent(lPhysicalRecNo) then
+  begin
+    Result := grError;
+    Acceptable := false;
+  end else begin
+    Result := grOK;
+    pRecord := pDbfRecord(Buffer);
+    FDbfFile.ReadRecord(lPhysicalRecNo, @pRecord^.DeletedFlag);
+    Acceptable := (FShowDeleted or (pRecord^.DeletedFlag <> '*'))
+  end;
+end;
+
+function TDbf.GetRecord(Buffer: TDbfRecBuf; GetMode: TGetMode; DoCheck: Boolean): TGetResult; {override virtual abstract from TDataset}
+var
+  pRecord: pDbfRecord;
   acceptable: Boolean;
   SaveState: TDataSetState;
-  lPhysicalRecNo: Integer;
 //  s: string;
+  lSequentialRecNo: TSequentialRecNo;
 begin
   if FCursor = nil then
   begin
@@ -793,7 +927,8 @@ begin
     exit;
   end;
 
-  pRecord := pDBFRecord(Buffer);
+  pRecord := pDbfRecord(Buffer);
+  lSequentialRecNo := FCursor.SequentialRecNo;
   acceptable := false;
   repeat
     Result := grOK;
@@ -820,14 +955,9 @@ begin
 
     if (Result = grOK) then
     begin
-      lPhysicalRecNo := FCursor.PhysicalRecNo;
-      if (lPhysicalRecNo = 0) or not FDbfFile.IsRecordPresent(lPhysicalRecNo) then
-      begin
-        Result := grError;
-      end else begin
-        FDbfFile.ReadRecord(lPhysicalRecNo, @pRecord^.DeletedFlag);
-        acceptable := (FShowDeleted or (pRecord^.DeletedFlag <> '*'))
-      end;
+      Result := ReadCurrentRecord(TDbfRecordBuffer(Buffer), acceptable);
+      if lSequentialRecNo = 0 then
+        lSequentialRecNo := FCursor.SequentialRecNo;
     end;
 
     if (Result = grOK) and acceptable then
@@ -839,7 +969,7 @@ begin
 
       if Filtered or FFindRecordFilter then
       begin
-        FFilterBuffer := Buffer;
+        FFilterBuffer := TDbfRecordBuffer(Buffer);
         SaveState := SetTempState(dsFilter);
         DoFilterRecord(acceptable);
         RestoreState(SaveState);
@@ -851,7 +981,11 @@ begin
   until (Result <> grOK) or acceptable;
 
   if Result <> grOK then
+  begin
+    if lSequentialRecNo <> 0 then
+      FCursor.SequentialRecNo := lSequentialRecNo;
     pRecord^.BookmarkData.PhysicalRecNo := -1;
+  end;
 end;
 
 function TDbf.GetRecordSize: Word; {override virtual abstract from TDataset}
@@ -917,7 +1051,7 @@ begin
   // disconnect field objects
   BindFields(false);
   // Destroy field object (if not persistent)
-  if DefaultFields then
+  if DbfDefaultFields then
     DestroyFields;
 
   if FParser <> nil then
@@ -966,18 +1100,18 @@ begin
 end;
 
 procedure TDbf.InternalGotoBookmark(ABookmark: Pointer); {override virtual abstract from TDataset}
+var
+  APhysicalRecNo: Integer;
 begin
-  with PBookmarkData(ABookmark)^ do
-  begin
-    if (PhysicalRecNo = 0) then begin
-      First;
-    end else
-    if (PhysicalRecNo = MaxInt) then begin
-      Last;
-    end else begin
-      if FCursor.PhysicalRecNo <> PhysicalRecNo then
-        FCursor.PhysicalRecNo := PhysicalRecNo;
-    end;
+  APhysicalRecNo := Integer(SwapIntLE(DWORD(PBookmarkData(ABookmark)^.PhysicalRecNo)));
+  if (APhysicalRecNo = 0) then begin
+    First;
+  end else
+  if (APhysicalRecNo = MaxInt) then begin
+    Last;
+  end else begin
+    if FCursor.PhysicalRecNo <> APhysicalRecNo then
+      FCursor.PhysicalRecNo := APhysicalRecNo;
   end;
 end;
 
@@ -1001,17 +1135,17 @@ begin
     TempFieldDef := FDbfFile.FieldDefs.Items[I];
     // handle duplicate field names
     N := 1;
-    BaseName := TempFieldDef.FieldName;
-    while FieldDefs.IndexOf(TempFieldDef.FieldName)>=0 do
+    BaseName := string(TempFieldDef.FieldName);
+    while FieldDefs.IndexOf(string(TempFieldDef.FieldName))>=0 do
     begin
       Inc(N);
-      TempFieldDef.FieldName:=BaseName+IntToStr(N);
+      TempFieldDef.FieldName := AnsiString(BaseName + IntToStr(N));
     end;
     // add field
     if TempFieldDef.FieldType in [ftString, ftBCD, ftBytes] then
-      FieldDefs.Add(TempFieldDef.FieldName, TempFieldDef.FieldType, TempFieldDef.Size, false)
+      FieldDefs.Add(string(TempFieldDef.FieldName), TempFieldDef.FieldType, TempFieldDef.Size, false)
     else
-      FieldDefs.Add(TempFieldDef.FieldName, TempFieldDef.FieldType, 0, false);
+      FieldDefs.Add(string(TempFieldDef.FieldName), TempFieldDef.FieldType, 0, false);
 
     if TempFieldDef.FieldType = ftFloat then
       FieldDefs[I].Precision := TempFieldDef.Precision;
@@ -1062,6 +1196,7 @@ begin
   FDbfFile.AutoCreate := false;
   FDbfFile.DateTimeHandling := FDateTimeHandling;
   FDbfFile.OnLocaleError := FOnLocaleError;
+  FDbfFile.OnIndexInvalid := FOnIndexInvalid;
   FDbfFile.OnIndexMissing := FOnIndexMissing;
 end;
 
@@ -1085,7 +1220,7 @@ begin
   end;
 end;
 
-procedure TDbf.InternalInitRecord(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}); {override virtual abstract from TDataset}
+procedure TDbf.InternalInitRecord(Buffer: TDbfRecordBuffer); {override virtual abstract from TDataset}
 var
   pRecord: pDbfRecord;
 begin
@@ -1120,6 +1255,15 @@ begin
     FTranslationMode := tmNoneAvailable;
 end;
 
+function TDbf.DbfDefaultFields: Boolean;
+begin
+{$ifdef SUPPORT_FIELD_LIFECYCLES}
+  Result := (FieldOptions.AutoCreateMode <> acExclusive) or not (lcPersistent in Fields.LifeCycles);
+{$else}
+  Result := DefaultFields;
+{$endif}
+end;
+
 procedure TDbf.InternalOpen; {override virtual abstract from TDataset}
 const
   DbfOpenMode: array[Boolean, Boolean] of TPagedFileMode =
@@ -1133,136 +1277,145 @@ var
 begin
   // close current file
   FreeAndNil(FDbfFile);
-
-  // does file not exist? -> create
-  if ((FStorage = stoFile) and 
-        not FileExists(FAbsolutePath + FTableName) and 
-        (FOpenMode in [omAutoCreate, omTemporary])) or
-     ((FStorage = stoMemory) and (FUserStream = nil)) then
-  begin
-    doCreate := true;
-    if Assigned(FBeforeAutoCreate) then
-      FBeforeAutoCreate(Self, doCreate);
-    if doCreate then
-      CreateTable
-    else
-      exit;
-  end;
-
-  // now we know for sure the file exists
-  InitDbfFile(DbfOpenMode[FReadOnly, FExclusive]);
-  FDbfFile.Open;
-
-  // fail open?
-{$ifndef FPC}  
-  if FDbfFile.ForceClose then
-    Abort;
-{$endif}    
-
-  // determine dbf version
-  case FDbfFile.DbfVersion of
-    xBaseIII: FTableLevel := 3;
-    xBaseIV:  FTableLevel := 4;
-    xBaseVII: FTableLevel := 7;
-    xFoxPro:  FTableLevel := TDBF_TABLELEVEL_FOXPRO;
-  end;
-  // 11.09.2007 Есди 0, например DBaseIII, будем считать из DbfGlobals
-  if FDbfFile.LanguageID=0 then  begin
-    FDbfFile.UseCodePage := DbfGlobals.DefaultCreateCodePage; // GETACPOEM;
-    FDbfFile.FileLangId := DbfGlobals.DefaultCreateLangId;     // DbfLangId_RUS_866
-  end;
-  // Реальный locale из заголовка файла
-  FLanguageID := FDbfFile.LanguageID;
-
-
-  // build VCL fielddef list from native DBF FieldDefs
-(*
-  if (FDbfFile.HeaderSize = 0) or (FDbfFile.FieldDefs.Count = 0) then
-  begin
-    if FieldDefs.Count > 0 then
-    begin
-      CreateTableFromFieldDefs;
-    end else begin
-      CreateTableFromFields;
-    end;
-  end else begin
-*)
-//    GetFieldDefsFromDbfFieldDefs;
-//  end;
-
-{$ifdef SUPPORT_FIELDDEFS_UPDATED}
-  FieldDefs.Updated := False;
-  FieldDefs.Update;
-{$else}
-  InternalInitFieldDefs;
-{$endif}
-
-  // create the fields dynamically
-  if DefaultFields then
-    CreateFields; // Create fields from fielddefs.
-
-  BindFields(true);
-
-  // create array of blobstreams to store memo's in. each field is a possible blob
-  FBlobStreams := AllocMem(FieldDefs.Count * SizeOf(TDbfBlobStream));
-
-  // check codepage settings
-  DetermineTranslationMode;
-  if FTranslationMode = tmNoneAvailable then
-  begin
-    // no codepage available? ask user
-    LanguageAction := laReadOnly;
-    if Assigned(FOnLanguageWarning) then
-      FOnLanguageWarning(Self, LanguageAction);
-    case LanguageAction of
-      laReadOnly: FTranslationMode := tmNoneAvailable;
-      laForceOEM:
-        begin
-          FDbfFile.UseCodePage := GetOEMCP;
-          FTranslationMode := tmSimple;
-        end;
-      laForceANSI:
-        begin
-          FDbfFile.UseCodePage := GetACP;
-          FTranslationMode := tmNoneNeeded;
-        end;
-      laDefault:
-        begin
-          FDbfFile.UseCodePage := DbfGlobals.DefaultOpenCodePage;
-          DetermineTranslationMode;
-        end;
-    end;
-  end;
-
-  // allocate a record buffer for temporary data
-  FTempBuffer := AllocRecordBuffer;
-
-  // open indexes
-  for I := 0 to FIndexDefs.Count - 1 do
-  begin
-    lIndex := FIndexDefs.Items[I];
-    lIndexName := ParseIndexName(lIndex.IndexFile);
-    // if index does not exist -> create, if it does exist -> open only
-    FDbfFile.OpenIndex(lIndexName, lIndex.SortField, false, lIndex.Options);
-  end;
-
-  // parse filter expression
   try
-    ParseFilter(Filter);
+
+    // does file not exist? -> create
+    if ((FStorage = stoFile) and
+          not FileExists(FAbsolutePath + FTableName) and
+          (FOpenMode in [omAutoCreate, omTemporary])) or
+       ((FStorage = stoMemory) and (FUserStream = nil)) then
+    begin
+      doCreate := true;
+      if Assigned(FBeforeAutoCreate) then
+        FBeforeAutoCreate(Self, doCreate);
+      if doCreate then
+        CreateTable
+      else
+        exit;
+    end;
+
+    // now we know for sure the file exists
+    InitDbfFile(DbfOpenMode[FReadOnly, FExclusive]);
+    FDbfFile.Open;
+    UpdateLock;
+
+    // fail open?
+  {$ifndef FPC}
+    if FDbfFile.ForceClose then
+      Abort;
+  {$endif}
+
+    // determine dbf version
+    case FDbfFile.DbfVersion of
+      xBaseIII: FTableLevel := 3;
+      xBaseIV:  FTableLevel := 4;
+      xBaseV:   FTableLevel := 5;
+      xBaseVII: FTableLevel := 7;
+      xFoxPro:  FTableLevel := TDBF_TABLELEVEL_FOXPRO;
+    end;
+    // 11.09.2007 Есди 0, например DBaseIII, будем считать из DbfGlobals
+    if FDbfFile.LanguageID=0 then  begin
+      FDbfFile.UseCodePage := DbfGlobals.DefaultCreateCodePage; // GETACPOEM;
+      FDbfFile.FileLangId := DbfGlobals.DefaultCreateLangId;     // DbfLangId_RUS_866
+    end;
+    // Реальный locale из заголовка файла
+    FLanguageID := FDbfFile.LanguageID;
+
+
+    // build VCL fielddef list from native DBF FieldDefs
+  (*
+    if (FDbfFile.HeaderSize = 0) or (FDbfFile.FieldDefs.Count = 0) then
+    begin
+      if FieldDefs.Count > 0 then
+      begin
+        CreateTableFromFieldDefs;
+      end else begin
+        CreateTableFromFields;
+      end;
+    end else begin
+  *)
+  //    GetFieldDefsFromDbfFieldDefs;
+  //  end;
+
+  {$ifdef SUPPORT_FIELDDEFS_UPDATED}
+    FieldDefs.Updated := False;
+    FieldDefs.Update;
+  {$else}
+    InternalInitFieldDefs;
+  {$endif}
+
+    // create the fields dynamically
+    if DbfDefaultFields then
+      CreateFields; // Create fields from fielddefs.
+
+    BindFields(true);
+
+    // create array of blobstreams to store memo's in. each field is a possible blob
+    FBlobStreams := AllocMem(FieldDefs.Count * SizeOf(TDbfBlobStream));
+
+    // check codepage settings
+    DetermineTranslationMode;
+    if FTranslationMode = tmNoneAvailable then
+    begin
+      // no codepage available? ask user
+      LanguageAction := laReadOnly;
+      if Assigned(FOnLanguageWarning) then
+        FOnLanguageWarning(Self, LanguageAction);
+      case LanguageAction of
+        laReadOnly: FTranslationMode := tmNoneAvailable;
+        laForceOEM:
+          begin
+            FDbfFile.UseCodePage := GetOEMCP;
+            FTranslationMode := tmSimple;
+          end;
+        laForceANSI:
+          begin
+            FDbfFile.UseCodePage := GetACP;
+            FTranslationMode := tmNoneNeeded;
+          end;
+        laDefault:
+          begin
+            FDbfFile.UseCodePage := DbfGlobals.DefaultOpenCodePage;
+            DetermineTranslationMode;
+          end;
+      end;
+    end;
+
+    // allocate a record buffer for temporary data
+    FTempBuffer := AllocRecordBuffer;
+
+    // open indexes
+    for I := 0 to FIndexDefs.Count - 1 do
+    begin
+      lIndex := FIndexDefs.Items[I];
+      lIndexName := ParseIndexName(lIndex.IndexFile);
+      // if index does not exist -> create, if it does exist -> open only
+      FDbfFile.OpenIndex(lIndexName, lIndex.SortField, false, lIndex.Options);
+    end;
+
+    // parse filter expression
+    try
+      ParseFilter(Filter);
+    except
+      // oops, a problem with parsing, clear filter for now
+      on E: EDbfError do Filter := EmptyStr;
+    end;
+
+    SetIndexName(FIndexName);
+
+  // SetIndexName will have made the cursor for us if no index selected :-)
+  //  if FCursor = nil then FCursor := TDbfCursor.Create(FDbfFile);
+
+    if FMasterLink.Active and Assigned(FIndexFile) then
+      CheckMasterRange;
+    InternalFirst;
+
+  //  FDbfFile.SetIndex(FIndexName);
+  //  FDbfFile.FIsCursorOpen := true;
   except
-    // oops, a problem with parsing, clear filter for now
-    on E: EDbfError do Filter := EmptyStr;
+    InternalClose;
+    raise;
   end;
-
-  SetIndexName(FIndexName);
-
-// SetIndexName will have made the cursor for us if no index selected :-)
-//  if FCursor = nil then FCursor := TDbfCursor.Create(FDbfFile);
-
-  InternalFirst;
-
-//  FDbfFile.SetIndex(FIndexName);
-//  FDbfFile.FIsCursorOpen := true;
 end;
 
 function TDbf.GetCodePage: Cardinal;
@@ -1276,19 +1429,22 @@ end;
 function TDbf.GetLanguageStr: String;
 begin
   if FDbfFile <> nil then
-    Result := FDbfFile.LanguageStr;
+    Result := string(FDbfFile.LanguageStr);
 end;
 
 function TDbf.LockTable(const Wait: Boolean): Boolean;
 begin
-  CheckActive;
+  if not(Assigned(FDbfFile) and FDbfFile.Active) then
+    CheckActive;
   Result := FDbfFile.LockAllPages(Wait);
+  UpdateLock;
 end;
 
 procedure TDbf.UnlockTable;
 begin
   CheckActive;
   FDbfFile.UnlockAllPages;
+  UpdateLock;
 end;
 
 procedure TDbf.InternalEdit;
@@ -1303,7 +1459,7 @@ begin
     if Assigned(FBlobStreams^[I]) then
       FBlobStreams^[I].Cancel;
   // try to lock this record
-  FDbfFile.LockRecord(FEditingRecNo, @pDbfRecord(ActiveBuffer)^.DeletedFlag);
+  FDbfFile.LockRecord(FEditingRecNo, @pDbfRecord(ActiveBuffer)^.DeletedFlag, BufferCount = 1);
   // succeeded!
 end;
 
@@ -1318,11 +1474,19 @@ end;
 {$endif}
 {$endif}
 
-procedure TDbf.InternalPost; {override virtual abstract from TDataset}
+procedure TDbf.InternalPost; {override virtual from TDataset}
 var
   pRecord: pDbfRecord;
   I, newRecord: Integer;
 begin
+  // inherited method checks required fields
+{$ifdef FPC}
+  inherited;
+{$else}
+{$ifdef DELPHI_7} // perhaps ifdef DELPHI_6
+  inherited;
+{$endif}
+{$endif}
   // if internalpost is called, we know we are active
   pRecord := pDbfRecord(ActiveBuffer);
   // commit blobs
@@ -1339,10 +1503,22 @@ begin
     // insert
     newRecord := FDbfFile.Insert(@pRecord^.DeletedFlag);
     if newRecord > 0 then
+    begin
       FCursor.PhysicalRecNo := newRecord;
+      pRecord^.BookmarkData.PhysicalRecNo := newRecord;
+      pRecord^.BookmarkFlag := bfCurrent;
+      pRecord^.SequentialRecNo := FCursor.SequentialRecNo;
+    end;
   end;
   // set flag that TDataSet is about to post...so we can disable resync
   FPosting := true;
+end;
+
+procedure TDbf.InternalRefresh;
+begin
+  if Assigned(FDbfFile) then
+    FDbfFile.ResyncSharedReadBuffer;
+  inherited;
 end;
 
 procedure TDbf.Resync(Mode: TResyncMode);
@@ -1403,10 +1579,11 @@ begin
   begin
     // check dbffielddefs for errors
     TempDef := ADbfFieldDefs.Items[I];
-    if FTableLevel < 7 then
-      if not {$IFDEF DELPHI_2009}CharInSet{$ENDIF}(TempDef.NativeFieldType {$IFDEF DELPHI_2009},{$ELSE} in {$ENDIF}['C', 'F', 'N', 'D', 'L', 'M']) then
+    if FTableLevel < 7 then begin
+      if not CharInSet(TempDef.NativeFieldType, ['C', 'F', 'N', 'D', 'L', 'M']) then
         raise EDbfError.CreateFmt(STRING_INVALID_FIELD_TYPE,
           [FieldTypeStr(TempDef.NativeFieldType), TempDef.FieldName]);
+      end;
   end;
 end;
 
@@ -1437,7 +1614,7 @@ begin
         begin
           with ADbfFieldDefs.AddFieldDef do
           begin
-            FieldName := FieldDefs.Items[I].Name;
+            FieldName := AnsiString(FieldDefs.Items[I].Name);
             FieldType := FieldDefs.Items[I].DataType;
             if FieldDefs.Items[I].Size > 0 then
             begin
@@ -1456,6 +1633,7 @@ begin
       FDbfFile.FileLangID := FLanguageID;
       FDbfFile.Open;
       FDbfFile.FinishCreate(ADbfFieldDefs, 512);
+      UpdateLock;
 
       // if creating memory table, copy stream pointer
       if FStorage = stoMemory then
@@ -1497,7 +1675,49 @@ begin
   FDbfFile.Zap;
 end;
 
+procedure TDbf.BatchStart;
+begin
+  DisableControls;
+  if Assigned(FDbfFile) then
+    FDbfFile.BatchStart;
+  FInCopyFrom := True;
+end;
+
+procedure TDbf.BatchUpdate;
+begin
+  if Assigned(FDbfFile) then
+    FDbfFile.BatchUpdate;
+end;
+
+procedure TDbf.BatchFinish;
+begin
+  FInCopyFrom := False;
+  if Assigned(FDbfFile) then
+    FDbfFile.BatchFinish;
+  EnableControls;
+end;
+
+function TDbf.DeleteMdxFile: Boolean;
+begin
+  CheckActive;
+  Result:= Assigned(DbfFile.MdxFile);
+  if Result then
+  begin
+    IndexName:= '';
+    DbfFile.DeleteMdxFile;
+    InternalInitFieldDefs;
+  end;
+end;
+
 procedure TDbf.RestructureTable(ADbfFieldDefs: TDbfFieldDefs; Pack: Boolean);
+begin
+  // if restructure -> rename the old dbf files
+  // if pack only -> delete the old dbf files
+  RestructureTable2(ADbfFieldDefs, Pack, ADbfFieldDefs = nil);
+end;
+
+procedure TDbf.RestructureTable2(ADbfFieldDefs: TDbfFieldDefs;
+  Pack, DeleteFiles: Boolean);
 begin
   CheckInactive;
 
@@ -1507,10 +1727,16 @@ begin
   // open dbf file
   InitDbfFile(pfExclusiveOpen);
   FDbfFile.Open;
+  UpdateLock;
 
   // do restructure
   try
-    FDbfFile.RestructureTable(ADbfFieldDefs, Pack);
+    BatchStart;
+    try
+      FDbfFile.RestructureTable2(ADbfFieldDefs, Pack, DeleteFiles);
+    finally
+      BatchFinish;
+    end;
   finally
     // close file
     FreeAndNil(FDbfFile);
@@ -1526,20 +1752,92 @@ begin
   oldIndexName := IndexName;
   IndexName := EmptyStr;
   // pack
-  FDbfFile.RestructureTable(nil, true);
+  FDbfFile.OnProgress := FOnProgress;
+  try
+    BatchStart;
+    try
+      FDbfFile.RestructureTable(nil, true);
+    finally
+      BatchFinish;
+    end;
+  finally
+    FDbfFile.OnProgress := nil;
+  end;
   // reselect index
   IndexName := oldIndexName;
 end;
 
-procedure TDbf.CopyFrom(DataSet: TDataSet; FileName: string; DateTimeAsString: Boolean; Level: Integer);
-var
-  lPhysFieldDefs, lFieldDefs: TDbfFieldDefs;
+procedure TDbf.CopyFrom(DataSet: TDataSet; FileName: string;
+  DateTimeAsString: Boolean; Level: Integer);
+begin
+  BatchMove(DataSet, FileName, DateTimeAsString, Level, bmCopy, [], nil);
+end;
+
+procedure TDbf.BatchMove(DataSet: TDataSet; FileName: string;
+  DateTimeAsString: Boolean; Level: Integer; Mode: TDbfBatchMode;
+  Options: TDbfBatchOptions; FieldMappings: TStrings);
+var                                                                                                                                                                               // 03/08/2011 spb CR 18716
+  lPhysFieldDefs, lFieldDefs: TDbfFieldDefs;                                                                                                                                      // 03/08/2011 pb  CR 18706
   lSrcField, lDestField: TField;
   I: integer;
+  cur, last: Integer;
+  lSourceFields: TList;
+  lDestinationFields: TList;
+  lSourceFieldCount : Integer;
+  lDestinationFieldCount : Integer;
+  SourceName: string;
+  DestinationName: string;
+  lSrcFieldDef, lDestFieldDef: TDbfFieldDef;
+  CopyLen: Integer;
+  SrcBuffer: PAnsiChar;
+  DestBuffer: PAnsiChar;
+  CopyBlob: Boolean;
+  BlobStream: TMemoryStream;
+  lBlobPageNo: Integer;
+
+  procedure GetFieldMappingNames;
+  var
+    SeparatorPos: Integer;
+  begin
+    SeparatorPos := Pos('=', FieldMappings[I]);
+    if SeparatorPos > 1 then
+    begin
+      SourceName := Trim(Copy(FieldMappings[I], 1, Pred(SeparatorPos)));
+      DestinationName := Trim(Copy(FieldMappings[I], Succ(SeparatorPos), Length(FieldMappings[I])));
+    end
+    else
+    begin
+      SourceName := Trim(FieldMappings[I]);
+      DestinationName := SourceName;
+    end;
+  end;
+
+  procedure AddSourceField;
+  begin
+    if Assigned(lSrcField) then
+      with lFieldDefs.AddFieldDef do
+      begin
+        if Length(lSrcField.Name) > 0 then
+          FieldName := AnsiString(lSrcField.Name)
+        else
+          FieldName := AnsiString(lSrcField.FieldName);
+        FieldType := lSrcField.DataType;
+        Required := lSrcField.Required;
+        if (1 <= lSrcField.FieldNo)
+            and (lSrcField.FieldNo <= lPhysFieldDefs.Count) then
+        begin
+          Size := lPhysFieldDefs.Items[lSrcField.FieldNo-1].Size;
+          Precision := lPhysFieldDefs.Items[lSrcField.FieldNo-1].Precision;
+        end;
+      end;
+  end;
+
 begin
-  FInCopyFrom := true;
+//FInCopyFrom := true;
   lFieldDefs := TDbfFieldDefs.Create(nil);
   lPhysFieldDefs := TDbfFieldDefs.Create(nil);
+  lSourceFields := nil;
+  lDestinationFields := nil;
   try
     if Active then
       Close;
@@ -1557,73 +1855,219 @@ begin
       lPhysFieldDefs.Assign(TDbf(DataSet).DbfFieldDefs);
       IndexDefs.Assign(TDbf(DataSet).IndexDefs);
     end else begin
+{$ifdef SUPPORT_FIELDDEF_TPERSISTENT}
       lPhysFieldDefs.Assign(DataSet.FieldDefs);
+{$endif}
       IndexDefs.Clear;
     end;
     // convert list of tfields into a list of tdbffielddefs
     // so that our tfields will correspond to the source tfields
-    for I := 0 to Pred(DataSet.FieldCount) do
+    lSourceFields := TList.Create;
+    lDestinationFields := TList.Create;
+    if Mode = bmCopy then
     begin
-      lSrcField := DataSet.Fields[I];
-      with lFieldDefs.AddFieldDef do
-      begin
-        if Length(lSrcField.Name) > 0 then
-          FieldName := lSrcField.Name
-        else
-          FieldName := lSrcField.FieldName;
-        FieldType := lSrcField.DataType;
-        Required := lSrcField.Required;
-        if (1 <= lSrcField.FieldNo) 
-            and (lSrcField.FieldNo <= lPhysFieldDefs.Count) then
+      if boUsePhysicalfieldNo in Options then
+        lSourceFieldCount := DataSet.FieldDefs.Count
+      else
+        lSourceFieldCount := DataSet.FieldCount;
+      if Assigned(FieldMappings) and (FieldMappings.Count > 0) then
+        for I := 0 to Pred(FieldMappings.Count) do
         begin
-          Size := lPhysFieldDefs.Items[lSrcField.FieldNo-1].Size;
-          Precision := lPhysFieldDefs.Items[lSrcField.FieldNo-1].Precision;
+          GetFieldMappingNames;
+          lSrcField := DataSet.Fields.FindField(SourceName);
+          AddSourceField;
+          lSourceFields.Add(Pointer(lSrcField));
+        end
+      else
+        for I := 0 to Pred(lSourceFieldCount) do
+        begin
+          if boUsePhysicalfieldNo in Options then
+            lSrcField := DataSet.Fields.FieldByNumber(Succ(I))
+          else
+            lSrcField := DataSet.Fields[I];
+          AddSourceField;
+          lSourceFields.Add(Pointer(lSrcField));
         end;
-      end;
-    end;
-
-    CreateTableEx(lFieldDefs);
-    Open;
-    DataSet.First;
-{$ifdef USE_CACHE}
-    FDbfFile.BufferAhead := true;
-    if DataSet is TDbf then
-      TDbf(DataSet).DbfFile.BufferAhead := true;
-{$endif}      
-    while not DataSet.EOF do
+      CreateTableEx(lFieldDefs);
+      Open;
+      lDestinationFieldCount := FieldDefs.Count;
+      for I := 1 to lDestinationFieldCount do
+        lDestinationFields.Add(Pointer(Fields.FieldByNumber(I)));
+    end
+    else if Mode = bmAppend then
     begin
-      Append;
-      for I := 0 to Pred(FieldCount) do
-      begin
-        lSrcField := DataSet.Fields[I];
-        lDestField := Fields[I];
-        if not lSrcField.IsNull then
+      Open;
+      lDestinationFieldCount := FieldDefs.Count;
+      lSourceFields.Count := lDestinationFieldCount;
+      lDestinationFields.Count := lDestinationFieldCount;
+      if Assigned(FieldMappings) then
+        for I := 0 to Pred(FieldMappings.Count) do
         begin
-          if lSrcField.DataType = ftDateTime then
-          begin
-            if FCopyDateTimeAsString then
+          GetFieldMappingNames;
+          lDestField := Fields.FindField(DestinationName);
+          lSrcField := DataSet.Fields.FindField(SourceName);
+          if Assigned(lDestField) then
+            if (1 <= lDestField.FieldNo) and (lDestField.FieldNo <= lDestinationFieldCount) then
+              begin
+                lSourceFields[Pred(lDestField.FieldNo)] := lSrcField;
+                lDestinationFields[Pred(lDestField.FieldNo)] := lDestField;
+              end;
+        end
+      else
+        for I := 1 to lDestinationFieldCount do
+          if I <= DataSet.FieldDefs.Count then
             begin
-              lDestField.AsString := lSrcField.AsString;
-              if Assigned(FOnCopyDateTimeAsString) then
-                FOnCopyDateTimeAsString(Self, lDestField, lSrcField)
-            end else
-              lDestField.AsDateTime := lSrcField.AsDateTime;
-          end else
-            lDestField.Assign(lSrcField);
-        end;
-      end;
-      Post;
-      DataSet.Next;
+              lSourceFields[Pred(I)] := Pointer(DataSet.Fields.FieldByNumber(I));
+              lDestinationfields[Pred(I)] := Pointer(Fields.FieldByNumber(I));
+            end;
     end;
+    BatchStart;
+    try
+      if DataSet is TDbf then
+        TDbf(DataSet).BatchStart;
+      try
+        cur := 0;
+        if Assigned(FOnProgress) and (DataSet is TDbf) then
+        begin
+          last := TDbf(DataSet).PhysicalRecordCount;
+          FDbfFile.OnProgress := FOnProgress;
+          FDbfFile.DoProgress(cur, last, STRING_PROGRESS_APPENDINGRECORDS);
+        end
+        else
+          last := -1;
+        try
+          BlobStream := TMemoryStream.Create;
+          try
+            while not DataSet.EOF do
+            begin
+              Append;
+              for I := 0 to Pred(lDestinationFields.Count) do
+              begin
+                lSrcField := TField(lSourceFields[I]);
+                lDestField := TField(lDestinationFields[I]);
+                if Assigned(lSrcField) and Assigned(lDestField) then
+                begin
+                  CopyLen := -1;
+                  CopyBlob := False;
+                  if DataSet is TDbf then
+                  begin
+                    lSrcFieldDef := TDbf(DataSet).DbfFieldDefs.Items[Pred(lSrcField.FieldNo)];
+                    lDestFieldDef := DbfFieldDefs.Items[Pred(lDestField.FieldNo)];
+                    if lSrcFieldDef.NativeFieldType = lDestFieldDef.NativeFieldType then
+                    begin
+                      if lSrcFieldDef.IsBlob then
+                        CopyBlob := True
+                      else
+                      begin
+                        if lSrcFieldDef.NativeFieldType = 'C' then
+                        begin
+                          if lSrcFieldDef.Size > lDestFieldDef.Size then
+                            CopyLen := lDestFieldDef.Size
+                          else
+                            CopyLen := lSrcFieldDef.Size;
+                        end
+                        else
+                        begin
+                          if (lSrcFieldDef.Size = lDestFieldDef.Size) and (lSrcFieldDef.Precision = lDestFieldDef.Precision) then
+                            CopyLen := lSrcFieldDef.Size;
+                        end;
+                      end;
+                    end
+                  end
+                  else
+                  begin
+                    lSrcFieldDef := nil;
+                    lDestFieldDef := nil;
+                  end;
+                  SrcBuffer := PAnsiChar(@pDbfRecord(DataSet.ActiveBuffer).DeletedFlag);
+                  DestBuffer := PAnsiChar(@pDbfRecord(ActiveBuffer).DeletedFlag);
+                  if CopyBlob then
+                  begin
+                    if FDbfFile.GetFieldDataFromDef(lSrcFieldDef, ftInteger, SrcBuffer, @lBlobPageNo, false) and (lBlobPageNo > 0) then
+                    begin
+                      TDbf(DataSet).FDbfFile.MemoFile.ReadMemo(lBlobPageNo, BlobStream);
+                      BlobStream.Position := 0;
+                      FDbfFile.MemoFile.WriteMemo(lBlobPageNo, 0, BlobStream);
+                      FDbfFile.SetFieldData(lDestFieldDef.Index, ftInteger, @lBlobPageNo, DestBuffer, false);
+                      BlobStream.Clear;
+                    end;
+                  end
+                  else
+                  begin
+                    if CopyLen > 0 then
+                    begin
+                      Inc(SrcBuffer, lSrcFieldDef.Offset);
+                      Inc(DestBuffer, lDestFieldDef.Offset);
+                      Move(SrcBuffer^, DestBuffer^, CopyLen);
+                      if (lDestFieldDef.NativeFieldType = 'C') and (TDbf(DataSet).DbfFile.DbfVersion >= xBaseVII) and (lDestFieldDef.Size > lSrcFieldDef.Size) and (not lSrcField.IsNull) then
+                        FillChar((DestBuffer + CopyLen)^, lDestFieldDef.Size - lSrcFieldDef.Size, ' ');
+                    end
+                    else
+                    begin
+                      if not lSrcField.IsNull then
+                      begin
+                        if lSrcField.DataType = ftDateTime then
+                        begin
+                          if FCopyDateTimeAsString then
+                          begin
+                            lDestField.AsString := lSrcField.AsString;
+                            if Assigned(FOnCopyDateTimeAsString) then
+                              FOnCopyDateTimeAsString(Self, lDestField, lSrcField)
+                          end else
+                            lDestField.AsDateTime := lSrcField.AsDateTime;
+                        end else
+                          lDestField.Assign(lSrcField);
+                      end;
+                    end;
+                  end;
+                end;
+              end;
+              Post;
+              if DataSet is TDbf then
+                if TDbf(DataSet).IsDeleted then
+                  Delete;
+              DataSet.Next;
+              if last >= 0 then
+              begin
+                if TDbf(DataSet).FCursor is TIndexCursor then
+                  Inc(cur)
+                else
+                  cur := TDbf(DataSet).PhysicalRecNo;
+                FDbfFile.DoProgress(cur, last, STRING_PROGRESS_APPENDINGRECORDS);
+              end;
+            end;
+            if (last >= 0) and (cur < last) then
+            begin
+              cur := last;
+              FDbfFile.DoProgress(cur, last, STRING_PROGRESS_APPENDINGRECORDS);
+            end;
+          finally
+            BlobStream.Free;
+          end;
+        finally
+          if last >= 0 then
+            FDbfFile.OnProgress:= nil;
+        end;
+      finally
+        if DataSet is TDbf then
+          TDbf(DataSet).BatchFinish;
+      end;
+    finally
+      BatchFinish;
+    end;
+    BatchUpdate;
     Close;
   finally
-{$ifdef USE_CACHE}
-    if (DataSet is TDbf) and (TDbf(DataSet).DbfFile <> nil) then
-      TDbf(DataSet).DbfFile.BufferAhead := false;
-{$endif}      
-    FInCopyFrom := false;
+//{$ifdef USE_CACHE}
+//  if (DataSet is TDbf) and (TDbf(DataSet).DbfFile <> nil) then
+//    TDbf(DataSet).DbfFile.BufferAhead := false;
+//{$endif}      
+//  FInCopyFrom := false;
+//  FDbfFile.InCopyFrom := False;
     lFieldDefs.Free;
     lPhysFieldDefs.Free;
+    lSourceFields.Free;
+    lDestinationFields.Free;
   end;
 end;
 
@@ -1641,10 +2085,10 @@ begin
     if GoForward then
     begin
       if Restart then FCursor.First;
-      Result := GetRecord(FTempBuffer, gmNext, false) = grOK;
+      Result := GetRecord(TDbfRecBuf(FTempBuffer), gmNext, false) = grOK;
     end else begin
       if Restart then FCursor.Last;
-      Result := GetRecord(FTempBuffer, gmPrior, false) = grOK;
+      Result := GetRecord(TDbfRecBuf(FTempBuffer), gmPrior, false) = grOK;
     end;
   finally
     FFindRecordFilter := false;
@@ -1659,13 +2103,27 @@ begin
   end;
 end;
 
+procedure TDbf.DoBeforeScroll;
+begin
+  FScrolling := True;
+  inherited DoBeforeScroll;
+end;
+
+procedure TDbf.DoAfterScroll;
+begin
+  inherited DoAfterScroll;
+  if FScrolling and (BufferCount = 1) and (State = dsBrowse) then
+    ResyncSharedReadCurrentRecord;
+  FScrolling := False;
+end;
+
 {$ifdef SUPPORT_VARIANTS}
 
 function TDbf.Lookup(const KeyFields: string; const KeyValues: Variant;
   const ResultFields: string): Variant;
 var
 //  OldState:  TDataSetState;
-  saveRecNo: integer;
+  saveRecNo: TSequentialRecNo;
   saveState: TDataSetState;
 begin
   Result := Null;
@@ -1678,7 +2136,11 @@ begin
       // FFilterBuffer contains record buffer
       saveState := SetTempState(dsCalcFields);
       try
+{$ifdef SUPPORT_CALCULATEFIELDS_NATIVEINT}
+        CalculateFields(NativeInt(FFilterBuffer));
+{$else}
         CalculateFields(FFilterBuffer);
+{$endif}
         if KeyValues = FieldValues[KeyFields] then
            Result := FieldValues[ResultFields];
       finally
@@ -1692,7 +2154,7 @@ end;
 
 function TDbf.Locate(const KeyFields: string; const KeyValues: Variant; Options: TLocateOptions): Boolean;
 var
-  saveRecNo: integer;
+  saveRecNo: TSequentialRecNo;
 begin
   if FCursor = nil then
   begin
@@ -1718,7 +2180,11 @@ end;
 function TDbf.LocateRecordLinear(const KeyFields: String; const KeyValues: Variant;
     Options: TLocateOptions): Boolean;
 var
+{$ifdef SUPPORT_GENERICS_FIELDLIST}
+  lstKeys              : TList<TField>;
+{$else}
   lstKeys              : TList;
+{$endif}
   iIndex               : Integer;
   Field                : TField;
   bMatchedData         : Boolean;
@@ -1765,8 +2231,12 @@ var
 begin
   Result := false;
   bVarIsArray := false;
+{$ifdef SUPPORT_GENERICS_FIELDLIST}
+  lstKeys := TList<TField>.Create;
+{$else}
   lstKeys := TList.Create;
-  FFilterBuffer := TempBuffer;
+{$endif}
+  FFilterBuffer := TDbfRecordBuffer(TempBuffer);
   SaveState := SetTempState(dsFilter);
   try
     GetFieldList(lstKeys, KeyFields);
@@ -1816,7 +2286,8 @@ function TDbf.LocateRecordIndex(const KeyFields: String; const KeyValues: Varian
 var
   searchFlag: TSearchKeyType;
   matchRes: Integer;
-  lTempBuffer: array [0..100] of AnsiChar;
+  lTempBuffer: array [0..MaxIndexKeyLen] of AnsiChar;
+  acceptable, checkmatch: boolean;
 begin
   if loPartialKey in Options then
     searchFlag := stGreaterEqual
@@ -1825,23 +2296,32 @@ begin
   if TIndexCursor(FCursor).VariantToBuffer(KeyValues, @lTempBuffer[0]) = etString then
     Translate(@lTempBuffer[0], @lTempBuffer[0], true);
   Result := FIndexFile.SearchKey(@lTempBuffer[0], searchFlag);
-  if Result then
-  begin
-    Result := GetRecord(TempBuffer, gmCurrent, false) = grOK;
-    if not Result then
+  if not Result then
+    exit;
+
+  checkmatch := false;
+  repeat
+    acceptable := True;
+    if ReadCurrentRecord(TDbfRecordBuffer(TempBuffer), acceptable) = grError then
     begin
-      Result := GetRecord(TempBuffer, gmNext, false) = grOK;
-      if Result then
-      begin
-        matchRes := TIndexCursor(FCursor).IndexFile.MatchKey(@lTempBuffer[0]);
-        if loPartialKey in Options then
-          Result := matchRes <= 0
-        else
-          Result := matchRes =  0;
-      end;
+      Result := false;
+      exit;
     end;
-    FFilterBuffer := TempBuffer;
+    if acceptable then break;
+    checkmatch := true;
+    FCursor.Next;
+  until false;
+
+  if checkmatch then
+  begin
+    matchRes := TIndexCursor(FCursor).IndexFile.MatchKey(@lTempBuffer[0]);
+    if loPartialKey in Options then
+      Result := matchRes <= 0
+    else
+      Result := matchRes =  0;
   end;
+
+  FFilterBuffer := TDbfRecordBuffer(TempBuffer);
 end;
 
 function TDbf.LocateRecord(const KeyFields: String; const KeyValues: Variant;
@@ -1852,46 +2332,52 @@ var
   lIndexDef: TDbfIndexDef;
   lIndexFile, lSaveIndexFile: TIndexFile;
 begin
-  lCursor := nil;
-  lSaveCursor := nil;
-  lIndexFile := nil;
-  lSaveIndexFile := FIndexFile;
-  if (FCursor is TIndexCursor) 
-    and (TIndexCursor(FCursor).IndexFile.Expression = KeyFields) then
+  if not (loCaseInsensitive in Options) then
   begin
-    lCursor := FCursor;
-  end else begin
-    lIndexDef := FIndexDefs.GetIndexByField(KeyFields);
-    if lIndexDef <> nil then
+    lCursor := nil;
+    lSaveCursor := nil;
+    lIndexFile := nil;
+    lSaveIndexFile := FIndexFile;
+    if (FCursor is TIndexCursor)
+      and (TIndexCursor(FCursor).IndexFile.Expression = KeyFields) then
     begin
-      lIndexName := ParseIndexName(lIndexDef.IndexFile);
-      lIndexFile := FDbfFile.GetIndexByName(lIndexName);
-      if lIndexFile <> nil then
+      lCursor := FCursor;
+    end else begin
+      lIndexDef := FIndexDefs.GetIndexByField(KeyFields);
+      if lIndexDef <> nil then
       begin
-        lSaveCursor := FCursor;
-        lCursor := TIndexCursor.Create(lIndexFile);
-        lSaveIndexName := lIndexFile.IndexName;
-        lIndexFile.IndexName := lIndexName;
-        FIndexFile := lIndexFile;
+        lIndexName := ParseIndexName(lIndexDef.IndexFile);
+        lIndexFile := FDbfFile.GetIndexByName(lIndexName);
+        if lIndexFile <> nil then
+        begin
+          lSaveCursor := FCursor;
+          lCursor := TIndexCursor.Create(lIndexFile);
+          lSaveIndexName := lIndexFile.IndexName;
+          lIndexFile.IndexName := lIndexName;
+          FIndexFile := lIndexFile;
+        end;
       end;
     end;
-  end;
-  if lCursor <> nil then
-  begin
-    FCursor := lCursor;
-    Result := LocateRecordIndex(KeyFields, KeyValues, Options);
-    if lSaveCursor <> nil then
+    if (lCursor <> nil) and (not TIndexCursor(lCursor).IndexFile.IsDescending) then
     begin
-      FCursor.Free;
-      FCursor := lSaveCursor;
-    end;
-    if lIndexFile <> nil then
-    begin
-      FLocateRecNo := FIndexFile.PhysicalRecNo;
-      lIndexFile.IndexName := lSaveIndexName;
-      FIndexFile := lSaveIndexFile;
-    end;
-  end else
+      FCursor := lCursor;
+      Result := LocateRecordIndex(KeyFields, KeyValues, Options);
+      if lSaveCursor <> nil then
+      begin
+        FCursor.Free;
+        FCursor := lSaveCursor;
+      end;
+      if lIndexFile <> nil then
+      begin
+        FLocateRecNo := FIndexFile.PhysicalRecNo;
+        lIndexFile.IndexName := lSaveIndexName;
+        FIndexFile := lSaveIndexFile;
+      end;
+    end
+    else
+      Result := LocateRecordLinear(KeyFields, KeyValues, Options);    
+  end
+  else
     Result := LocateRecordLinear(KeyFields, KeyValues, Options);
 end;
 
@@ -1912,6 +2398,7 @@ begin
     FExclusive := true;
     FReadOnly := false;
   end;
+  UpdateLock;
 end;
 
 procedure TDbf.EndExclusive;
@@ -1927,6 +2414,7 @@ begin
     // just set exclusive to false
     FExclusive := false;
   end;
+  UpdateLock;
 end;
 
 function TDbf.CreateBlobStream(Field: TField; Mode: TBlobStreamMode): TStream; {override virtual}
@@ -1994,7 +2482,7 @@ begin
     begin
       Result := FOnTranslate(Self, Src, Dest, ToOem);
       if Result = -1 then
-        Result := StrLen(Dest);
+        Result := dbfStrLen(Dest);
     end else begin
       if FTranslationMode <> tmNoneNeeded then
       begin
@@ -2010,7 +2498,6 @@ begin
         FromCP := GetACP;
         ToCP := FromCP;
       end;
-
       Result := TranslateString(FromCP, ToCP, Src, Dest, -1);
     end;
   end else
@@ -2047,7 +2534,7 @@ end;
 
 {$endif}
 
-procedure TDbf.ClearCalcFields(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF});
+procedure TDbf.ClearCalcFields(Buffer: TDbfRecordBuffer);
 var
   lRealBuffer, lCalcBuffer: PAnsiChar;
 begin
@@ -2056,7 +2543,7 @@ begin
   FillChar(lCalcBuffer^, CalcFieldsSize, 0);
 end;
 
-procedure TDbf.InternalSetToRecord(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}); {override virtual abstract from TDataset}
+procedure TDbf.InternalSetToRecord(Buffer: TDbfRecordBuffer); {override virtual abstract from TDataset}
 var
   pRecord: pDbfRecord;
 begin
@@ -2082,26 +2569,21 @@ begin
   Result := StoreDefs and (FieldDefs.Count > 0);
 end;
 
-procedure TDbf.SetBookmarkFlag(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; Value: TBookmarkFlag); {override virtual abstract from TDataset}
+procedure TDbf.SetBookmarkFlag(Buffer: TDbfRecordBuffer; Value: TBookmarkFlag); {override virtual abstract from TDataset}
 begin
   pDbfRecord(Buffer)^.BookmarkFlag := Value;
 end;
 
-procedure TDbf.SetBookmarkData(Buffer: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PChar{$ENDIF}; Data: Pointer); {override virtual abstract from TDataset}
+procedure TDbf.SetBookmarkData(Buffer: TDbfRecordBuffer; Data: Pointer); {override virtual abstract from TDataset}
 begin
   pDbfRecord(Buffer)^.BookmarkData := pBookmarkData(Data)^;
-end;
-
-procedure TDbf.SetFieldData(Field: TField; Buffer: Pointer); {override virtual abstract from TDataset}
-begin
-  SetFieldData(Field, Buffer, true);
 end;
 
 // this function counts real number of records: skip deleted records, filter, etc.
 // warning: is very slow, compared to GetRecordCount
 function TDbf.GetExactRecordCount: Integer;
 var
-  prevRecNo: Integer;
+  prevRecNo: TSequentialRecNo;
   getRes: TGetResult;
 begin
   // init vars
@@ -2116,7 +2598,7 @@ begin
   FCursor.First;
   repeat
     // repeatedly retrieve next record until eof encountered
-    getRes := GetRecord(FTempBuffer, gmNext, true);
+    getRes := GetRecord(TDbfRecBuf(FTempBuffer), gmNext, true);
     if getRes = grOk then
       inc(Result);
   until getRes <> grOk;
@@ -2151,10 +2633,12 @@ var
 begin
   if FCursor <> nil then
   begin
-    if State = dsCalcFields then
-      pBuffer := CalcBuffer
+    case State of
+      dsFilter:     pBuffer := TDbfRecordBuffer(FFilterBuffer);
+      dsCalcFields: pBuffer := TDbfRecordBuffer(CalcBuffer);
     else
-      pBuffer := ActiveBuffer;
+      pBuffer := TDbfRecordBuffer(ActiveBuffer);
+    end;
     Result := pDbfRecord(pBuffer)^.SequentialRecNo;
   end else
     Result := 0;
@@ -2175,7 +2659,7 @@ end;
 
 function TDbf.GetCanModify: Boolean; {override;}
 begin
-  if FReadOnly or (csDesigning in ComponentState) then
+  if FReadOnly or (csDesigning in ComponentState) or (not Active) then
     Result := false
   else
     Result := FTranslationMode > tmNoneAvailable;
@@ -2290,7 +2774,7 @@ begin
   if NewLevel <> FTableLevel then
   begin
     // check validity
-    if not ((NewLevel = 3) or (NewLevel = 4) or (NewLevel = 7) or (NewLevel = 25)) then
+    if not ((NewLevel = 3) or (NewLevel = 4) or (NewLevel = 5) or (NewLevel = 7) or (NewLevel = TDBF_TABLELEVEL_FOXPRO)) then
       exit;
 
     // can only assign tablelevel if table is closed
@@ -2324,7 +2808,7 @@ end;
 
 function TDbf.GetVersion: string;
 begin
-  Result := Format('%d.%02d', [TDBF_MAJOR_VERSION, TDBF_MINOR_VERSION]);
+  Result := DbfVersionString;
 end;
 
 procedure TDbf.SetVersion(const S: string);
@@ -2345,7 +2829,12 @@ end;
 procedure TDbf.RegenerateIndexes;
 begin
   CheckBrowseMode;
-  FDbfFile.RegenerateIndexes;
+  FDbfFile.OnProgress := FOnProgress;
+  try
+    FDbfFile.RegenerateIndexes;
+  finally
+    FDbfFile.OnProgress := nil;
+  end;
 end;
 
 {$ifdef SUPPORT_DEFAULT_PARAMS}
@@ -2358,7 +2847,12 @@ var
 begin
   CheckActive;
   lIndexFileName := ParseIndexName(AIndexName);
-  FDbfFile.OpenIndex(lIndexFileName, AFields, true, Options);
+  FDbfFile.OnProgress := FOnProgress;
+  try
+    FDbfFile.OpenIndex(lIndexFileName, AFields, true, Options);
+  finally
+    FDbfFile.OnProgress := FOnProgress;
+  end;
 
   // refresh our indexdefs
   InternalInitFieldDefs;
@@ -2368,42 +2862,45 @@ procedure TDbf.SetIndexName(AIndexName: string);
 var
   lRecNo: Integer;
 begin
-  FIndexName := AIndexName;
-  if FDbfFile = nil then
-    exit;
+  if (FIndexName <> AIndexName) or (not Assigned(FCursor)) then
+  begin
+    FIndexName := AIndexName;
+    if FDbfFile = nil then
+      exit;
 
-  // get accompanying index file
-  AIndexName := ParseIndexName(Trim(AIndexName));
-  FIndexFile := FDbfFile.GetIndexByName(AIndexName);
-  // store current lRecNo
-  if FCursor = nil then
-  begin
-    lRecNo := 1;
-  end else begin
-    UpdateCursorPos;
-    lRecNo := FCursor.PhysicalRecNo;
+    // get accompanying index file
+    AIndexName := ParseIndexName(Trim(AIndexName));
+    FIndexFile := FDbfFile.GetIndexByName(AIndexName);
+    // store current lRecNo
+    if FCursor = nil then
+    begin
+      lRecNo := 1;
+    end else begin
+      UpdateCursorPos;
+      lRecNo := FCursor.PhysicalRecNo;
+    end;
+    // select new cursor
+    FreeAndNil(FCursor);
+    if FIndexFile <> nil then
+    begin
+      FCursor := TIndexCursor.Create(FIndexFile);
+      // select index
+      FIndexFile.IndexName := AIndexName;
+      // check if can activate master link
+      CheckMasterRange;
+    end else begin
+      FCursor := TDbfCursor.Create(FDbfFile);
+      FIndexName := EmptyStr;
+    end;
+    // reset previous lRecNo
+    FCursor.PhysicalRecNo := lRecNo;
+    // refresh records
+    if State = dsBrowse then
+      Resync([]);
+    // warn user if selecting non-existing index
+    if (FCursor = nil) and (AIndexName <> EmptyStr) then
+      raise EDbfError.CreateFmt(STRING_INDEX_NOT_EXIST, [AIndexName]);
   end;
-  // select new cursor
-  FreeAndNil(FCursor);
-  if FIndexFile <> nil then
-  begin
-    FCursor := TIndexCursor.Create(FIndexFile);
-    // select index
-    FIndexFile.IndexName := AIndexName;
-    // check if can activate master link
-    CheckMasterRange;
-  end else begin
-    FCursor := TDbfCursor.Create(FDbfFile);
-    FIndexName := EmptyStr;
-  end;
-  // reset previous lRecNo
-  FCursor.PhysicalRecNo := lRecNo;
-  // refresh records
-  if State = dsBrowse then
-    Resync([]);
-  // warn user if selecting non-existing index
-  if (FCursor = nil) and (AIndexName <> EmptyStr) then
-    raise EDbfError.CreateFmt(STRING_INDEX_NOT_EXIST, [AIndexName]);
 end;
 
 function TDbf.GetIndexFieldNames: string;
@@ -2432,14 +2929,16 @@ end;
 procedure TDbf.DeleteIndex(const AIndexName: string);
 var
   lIndexFileName: string;
+  lIndexDef: TDbfIndexDef;
 begin
   // extract absolute path if NDX file
   lIndexFileName := ParseIndexName(AIndexName);
   // try to delete index
   FDbfFile.DeleteIndex(lIndexFileName);
 
-  // refresh index defs
-  InternalInitFieldDefs;
+  // remove deleted index from index defs
+  lIndexDef := FIndexDefs.GetIndexByName(AIndexName);
+  lIndexDef.Free;
 end;
 
 procedure TDbf.OpenIndexFile(IndexFile: string);
@@ -2542,10 +3041,16 @@ begin
   // check if active, test state: if inserting, then -1
   if (FCursor <> nil) and (State <> dsInsert) then
   begin
-    if State = dsCalcFields then
-      pBuffer := CalcBuffer
+//  if State = dsCalcFields then
+//    pBuffer := TDbfRecordBuffer(CalcBuffer)
+//  else
+//    pBuffer := TDbfRecordBuffer(ActiveBuffer);
+    case State of
+      dsFilter:     pBuffer := TDbfRecordBuffer(FFilterBuffer);
+      dsCalcFields: pBuffer := TDbfRecordBuffer(CalcBuffer);
     else
-      pBuffer := ActiveBuffer;
+      pBuffer := TDbfRecordBuffer(ActiveBuffer);
+    end;
     Result := pDbfRecord(pBuffer)^.BookmarkData.PhysicalRecNo;
   end else
     Result := -1;
@@ -2583,34 +3088,46 @@ begin
   end;
 end;
 
+// IsSequenced controls scrollbar behavior for e.g. TDBGrid. When the number
+// of records is unknown (e.g. when Filtered), this turns the scrollbar into
+// the somewhat awkward 3-state scrollbar rather than the scrollbar with a
+// range that is too wide.
+function TDbf.IsSequenced: Boolean; // lsp
+begin
+  Result := (not Filtered);
+end;
+
 function TDbf.IsDeleted: Boolean;
 var
   src: PAnsiChar;
 begin
   src := PAnsiChar(GetCurrentBuffer);
-  IsDeleted := (src=nil) or (src^ = '*')
+  if Assigned(src) then
+    Result := (src^ = '*')
+  else
+    Result := False;
 end;
 
 procedure TDbf.Undelete;
 var
-  src: {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PAnsiChar{$ENDIF};
+  src: TDbfRecordBuffer;
+  srcptr: PAnsiChar;
 begin
   if State <> dsEdit then
     inherited Edit;
   // get active buffer
   src := GetCurrentBuffer;
-  if (src <> nil) and
-     ({$IFDEF DELPHI_2009}src[0] = Ord('*'){$ELSE}src^ = '*'{$ENDIF}) then
+  srcptr := PAnsiChar(src);
+  if srcptr <> nil then
   begin
-    // notify indexes record is about to be recalled
-    FDbfFile.RecordRecalled(FCursor.PhysicalRecNo, src);
-    // recall record
-    {$IFDEF DELPHI_2009}
-    src[0] := Ord(' ');
-    {$ELSE}
-    src^ := ' ';
-    {$ENDIF}
-    FDbfFile.WriteRecord(FCursor.PhysicalRecNo, src);
+    if srcptr^ = '*' then
+    begin
+      // notify indexes record is about to be recalled
+      FDbfFile.RecordRecalled(FCursor.PhysicalRecNo, src);
+      // recall record
+      srcptr^ := ' ';
+      FDbfFile.WriteRecord(FCursor.PhysicalRecNo, src);
+    end;
   end;
 end;
 
@@ -2636,11 +3153,37 @@ begin
     inherited First;
 end;
 
+procedure TDbf.UpdateLock;
+begin
+  if Assigned(DbfFile) then
+  begin
+    DbfFile.UpdateLock;
+    DisableResyncOnPost := (not DbfFile.IsSharedAccess) or DbfFile.FileLocked;
+  end;
+end;
+
+function TDbf.ResyncSharedReadCurrentRecord: Boolean;
+var
+  Buffer: PAnsiChar;
+begin
+  Buffer := nil;
+  Result := FDbfFile.ResyncSharedReadBuffer;
+  if Result then
+  begin
+    Buffer := PAnsiChar(GetCurrentBuffer);
+    Result := Assigned(Buffer);
+  end;
+  if Result then
+    Result := FDbfFile.ReadRecord(PhysicalRecNo, Buffer) <> 0;
+  if Result then
+    DataEvent(deRecordChange, 0);
+end;
+
 {$ifdef SUPPORT_VARIANTS}
 
 procedure TDbf.SetRange(LowRange: Variant; HighRange: Variant; KeyIsANSI: boolean);
 var
-  LowBuf, HighBuf: array[0..100] of AnsiChar;
+  LowBuf, HighBuf: array[0..MaxIndexKeyLen] of AnsiChar;
 begin
   if (FIndexFile = nil) or VarIsNull(LowRange) or VarIsNull(HighRange) then
     exit;
@@ -2657,7 +3200,7 @@ end;
 
 procedure TDbf.SetRangePChar(LowRange: PAnsiChar; HighRange: PAnsiChar; KeyIsANSI: boolean);
 var
-  LowBuf, HighBuf: array [0..100] of AnsiChar;
+  LowBuf, HighBuf: array [0..MaxIndexKeyLen] of AnsiChar;
   LowPtr, HighPtr: PAnsiChar;
 begin
   if FIndexFile = nil then
@@ -2678,10 +3221,18 @@ end;
 
 procedure TDbf.ExtractKey(KeyBuffer: PAnsiChar);
 begin
-  if FIndexFile <> nil then
-    StrCopy(FIndexFile.ExtractKeyFromBuffer(GetCurrentBuffer), KeyBuffer)
+  if FCursor is TIndexCursor then
+    TIndexCursor(FCursor).IndexFile.ExtractKey(KeyBuffer)
   else
-    KeyBuffer[0] := #0;
+    KeyBuffer^ := #0;
+end;
+
+function TDbf.CompareKeys(Key1, Key2: PAnsiChar): Integer;
+begin
+  if FCursor is TIndexCursor then
+    Result := TIndexCursor(FCursor).IndexFile.CompareKeys(Key1, Key2)
+  else
+    Result := 0;
 end;
 
 function TDbf.GetKeySize: Integer;
@@ -2696,7 +3247,7 @@ end;
 
 function TDbf.SearchKey(Key: Variant; SearchType: TSearchKeyType; KeyIsANSI: boolean): Boolean;
 var
-  TempBuffer: array [0..100] of AnsiChar;
+  TempBuffer: array [0..MaxIndexKeyLen] of AnsiChar;
 begin
   if (FIndexFile = nil) or VarIsNull(Key) then
   begin
@@ -2712,7 +3263,7 @@ end;
 
 {$endif}
 
-function  TDbf.PrepareKey(Buffer: Pointer; BufferType: TExpressionType): {$IFDEF DELPHI_2009}TRecordBuffer{$ELSE}PAnsiChar{$ENDIF};
+function  TDbf.PrepareKey(Buffer: Pointer; BufferType: TExpressionType): TDbfRecordBuffer;
 begin
   if FIndexFile = nil then
   begin
@@ -2725,9 +3276,9 @@ end;
 
 function TDbf.SearchKeyPChar(Key: PAnsiChar; SearchType: TSearchKeyType; KeyIsANSI: boolean): Boolean;
 var
-  StringBuf: array [0..100] of AnsiChar;
+  StringBuf: array [0..MaxIndexKeyLen] of AnsiChar;
 begin
-  if FCursor = nil then
+  if (FCursor = nil) or not (FCursor is TIndexCursor) then
   begin
     Result := false;
     exit;
@@ -2754,17 +3305,20 @@ begin
   CheckBrowseMode;
   Result := FIndexFile.SearchKey(Buffer, SearchType);
   { if found, then retrieve new current record }
-  if Result then
+  if Result or (SearchType <> stEqual) then
   begin
     CursorPosChanged;
     Resync([]);
     UpdateCursorPos;
     { recno could have been changed due to deleted record, check if still matches }
-    matchRes := TIndexCursor(FCursor).IndexFile.MatchKey(Buffer);
-    case SearchType of
-      stEqual:        Result := matchRes =  0;
-      stGreater:      Result := (not Eof) and (matchRes <  0);
-      stGreaterEqual: Result := (not Eof) and (matchRes <= 0);
+    if Result then
+    begin
+      matchRes := TIndexCursor(FCursor).IndexFile.MatchKey(Buffer);
+      case SearchType of
+        stEqual:        Result := matchRes =  0;
+        stGreater:      Result := (not Eof) and (matchRes <  0);
+        stGreaterEqual: Result := (not Eof) and (matchRes <= 0);
+      end;
     end;
   end;
 end;
@@ -2774,16 +3328,16 @@ begin
   FieldDefs.Update;
 end;
 
-// A hack to upgrade method visibility, only necessary for FPC 1.0.x
-
-{$ifdef VER1_0}
-
-procedure TDbf.DataEvent(Event: TDataEvent; Info: Longint);
+{$ifdef DELPHI_XE}
+procedure TDbf.DataEvent(Event: TDataEvent; Info: NativeInt);
+{$else}
+procedure TDbf.DataEvent(Event: TDataEvent; Info: {$ifdef FPC_VERSION}Ptrint{$else}Longint{$endif});
+{$endif}
 begin
+  if ((Event = deDataSetChange) or (Event = deLayoutChange)) and Assigned(FDbfFile) and (not ControlsDisabled) then
+    FDbfFile.ResyncSharedFlushBuffer;
   inherited;
 end;
-
-{$endif}
 
 { Master / Detail }
 
@@ -2801,14 +3355,14 @@ begin
   fieldsVal := FMasterLink.FieldsVal;
   if FMasterLink.KeyTranslation then
   begin
-    FMasterLink.DataSet.Translate(PAnsiChar(fieldsVal), @tempBuffer[0], false);
+    FMasterLink.DataSet.Translate(fieldsVal, @tempBuffer[0], false);
     fieldsVal := @tempBuffer[0];
-    Translate(PAnsiChar(fieldsVal), PAnsiChar(fieldsVal), true);
+    Translate(fieldsVal, fieldsVal, true);
   end;
-  fieldsVal := PAnsiChar(TIndexCursor(FCursor).IndexFile.PrepareKey({$IFDEF DELPHI_2009}TRecordBuffer{$ENDIF}(fieldsVal), FMasterLink.Parser.ResultType));
+  fieldsVal := PAnsiChar(TIndexCursor(FCursor).IndexFile.PrepareKey({$IFDEF SUPPORT_TRECORDBUFFER}TDbfRecordBuffer{$ENDIF}(fieldsVal), FMasterLink.Parser.ResultType));
   SetRangeBuffer(fieldsVal, fieldsVal);
 end;
-    
+
 procedure TDbf.MasterChanged(Sender: TObject);
 begin
   CheckBrowseMode;
@@ -2836,7 +3390,7 @@ begin
     DatabaseError(SCircularDataLink);
 {$endif}
   end;
-{$endif}  
+{$endif}
   FMasterLink.DataSource := Value;
 end;
 
@@ -2848,6 +3402,85 @@ end;
 procedure TDbf.SetMasterFields(const Value: string);
 begin
   FMasterLink.FieldNames := Value;
+end;
+
+function TDbf.GetKeyBuffer: PAnsiChar;
+var
+  Len: Integer;
+begin
+  Len := SizeOf(TDbfRecordHeader) + RecordSize + CalcFieldsSize + 1;
+  if (FKeyBuffer = nil) then
+    GetMem(FKeyBuffer, Len)
+  else
+    if Len <> FKeyBufferLen then
+      ReAllocMem(FKeyBuffer, Len);
+  FKeyBufferLen := Len;
+  Result := PAnsiChar(FKeyBuffer);
+end;
+
+function TDbf.InitKeyBuffer(Buffer: PAnsiChar): PAnsiChar;
+begin
+  FillChar(Buffer^, RecordSize, 0);
+  InitRecord(TDbfRecBuf(Buffer));
+  Result := Buffer;
+end;
+
+procedure TDbf.PostKeyBuffer(Commit: boolean);
+begin
+  DataEvent(deCheckBrowseMode, 0);
+  SetState(dsBrowse);
+  DataEvent(deDataSetChange, 0);
+end;
+
+function TDbf.GotoCommon(SearchKeyType: TSearchKeyType): Boolean;
+var
+  Buffer: PAnsiChar;
+begin
+  if Assigned(FIndexFile) and (not IsEmpty) then
+  begin
+    Buffer := FIndexFile.ExtractKeyFromBuffer(GetCurrentBuffer, PhysicalRecNo);
+    Result := SearchKeyBuffer(Buffer, SearchKeyType);
+  end
+  else
+  begin
+    Result := False;
+    CheckBrowseMode;
+  end;
+end;
+
+function TDbf.GotoKey: Boolean;
+begin
+  Result := GotoCommon(stEqual);
+end;
+
+procedure TDbf.GotoNearest;
+begin
+  GotoCommon(stGreaterEqual);
+end;
+
+procedure TDbf.SetKey;
+begin
+  CheckBrowseMode;
+  SetModified(true);
+  SetState(dsSetKey);
+  InitKeyBuffer(GetKeyBuffer);
+  DataEvent(deDataSetChange, 0);
+end;
+
+procedure TDbf.Cancel;
+begin
+  inherited Cancel;
+  if State = dsSetKey then
+    PostKeyBuffer(False);
+end;
+
+procedure TDbf.Post;
+begin
+  // TDataSet.Post raises exception if State = dsSetKey in Free Pascal
+  if State <> dsSetKey then
+    inherited Post;
+  if State = dsSetKey then
+    PostKeyBuffer(True);
 end;
 
 //==========================================================
@@ -2883,11 +3516,13 @@ function TDbfIndexDefs.GetIndexByName(const Name: string): TDbfIndexDef;
 var
   I: Integer;
   lIndex: TDbfIndexDef;
+  lIndexName: string;
 begin
+  lIndexName := IndexNameNormalize(Name);
   for I := 0 to Count-1 do
   begin
     lIndex := Items[I];
-    if lIndex.IndexFile = Name then
+    if lIndex.IndexFile = lIndexName then
     begin
       Result := lIndex;
       exit;
@@ -2951,7 +3586,7 @@ begin
     FValidExpression := false;
     FParser.DbfFile := (DataSet as TDbf).DbfFile;
     FParser.ParseExpression(FFieldNames);
-    FKeyTranslation := TDbfFile(FParser.DbfFile).UseCodePage <> 
+    FKeyTranslation := TDbfFile(FParser.DbfFile).UseCodePage <>
       FDetailDataSet.DbfFile.UseCodePage;
     FValidExpression := true;
   end else begin
@@ -2995,7 +3630,7 @@ end;
 
 function TDbfMasterLink.GetFieldsVal: PAnsiChar;
 begin
-  Result := FParser.ExtractFromBuffer(@pDbfRecord(TDbf(DataSet).ActiveBuffer)^.DeletedFlag);
+  Result := FParser.ExtractFromBuffer(@pDbfRecord(TDbf(DataSet).ActiveBuffer)^.DeletedFlag, TDbf(DataSet).PhysicalRecNo);
 end;
 
 ////////////////////////////////////////////////////////////////////////////

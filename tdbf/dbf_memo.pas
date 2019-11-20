@@ -66,18 +66,18 @@ type
 
   TNullMemoFile = class(TMemoFile)
   protected
-    procedure SetHeaderOffset(NewValue: Integer); override;
-    procedure SetRecordSize(NewValue: Integer); override;
-    procedure SetHeaderSize(NewValue: Integer); override;
+    procedure SetHeaderOffset({%H-}NewValue: Integer); override;
+    procedure SetRecordSize({%H-}NewValue: Integer); override;
+    procedure SetHeaderSize({%H-}NewValue: Integer); override;
 
-    function  LockSection(const Offset, Length: Cardinal; const Wait: Boolean): Boolean; override;
-    function  UnlockSection(const Offset, Length: Cardinal): Boolean; override;
+    function  LockSection(const {%H-}Offset: TPagedFileOffset; const {%H-}Length: Cardinal; const {%H-}Wait: Boolean): Boolean; override;
+    function  UnlockSection(const {%H-}Offset: TPagedFileOffset; const {%H-}Length: Cardinal): Boolean; override;
 
     function  GetBlockLen: Integer; override;
     function  GetMemoSize: Integer; override;
     function  GetNextFreeBlock: Integer; override;
-    procedure SetNextFreeBlock(BlockNo: Integer); override;
-    procedure SetBlockLen(BlockLen: Integer); override;
+    procedure SetNextFreeBlock({%H-}BlockNo: Integer); override;
+    procedure SetBlockLen({%H-}BlockLen: Integer); override;
 
   public
     constructor Create(ADbfFile: pointer);
@@ -85,8 +85,8 @@ type
     procedure CloseFile; override;
     procedure OpenFile; override;
 
-    function  ReadRecord(IntRecNum: Integer; Buffer: Pointer): Integer; override;
-    procedure WriteRecord(IntRecNum: Integer; Buffer: Pointer); override;
+    function  ReadRecord({%H-}IntRecNum: Integer; {%H-}Buffer: Pointer): Integer; override;
+    procedure WriteRecord({%H-}IntRecNum: Integer; {%H-}Buffer: Pointer); override;
   end;
 
   PInteger = ^Integer;
@@ -104,7 +104,7 @@ type
 
   PDbtHdr = ^rDbtHdr;
   rDbtHdr = record
-    NextBlock : LongWord;
+    NextBlock : dword;
     Dummy     : array [4..7] of Byte;
     DbfFile   : array [0..7] of Byte;   // 8..15
     bVer      : Byte;                   // 16
@@ -115,7 +115,7 @@ type
 
   PFptHdr = ^rFptHdr;
   rFptHdr = record
-    NextBlock : LongWord;
+    NextBlock : dword;
     Dummy     : array [4..5] of Byte;
     BlockLen  : Word;                   // 20..21
     Dummy3    : array [8..511] of Byte;
@@ -182,6 +182,7 @@ begin
     end;
 
     RecordSize := GetBlockLen;
+    HeaderSize := GetBlockLen;
     // checking for right blocksize not needed for foxpro?
     // mod 128 <> 0 <-> and 0x7F <> 0
     if (RecordSize = 0) and ((FDbfVersion = xFoxPro) or ((RecordSize and $7F) <> 0)) then
@@ -238,7 +239,7 @@ begin
     exit;
   end else
   if numBytes < RecordSize then
-    FillChar(FBuffer[RecordSize-numBytes], numBytes, #0);
+    FillChar(FBuffer[numBytes], RecordSize-numBytes, #0);
 
   bytesLeft := GetMemoSize;
   // bytesLeft <> -1 -> memo size is known (FoxPro, dBase4)
@@ -373,11 +374,11 @@ begin
       totsize := Src.Size + bytesBefore + bytesAfter;
       if FDbfVersion <> xFoxPro then
       begin
-        PBlockHdr(FBuffer)^.MemoType := $0008FFFF;
-        PBlockHdr(FBuffer)^.MemoSize := totsize;
+        PBlockHdr(FBuffer)^.MemoType := SwapIntLE($0008FFFF);
+        PBlockHdr(FBuffer)^.MemoSize := SwapIntLE(totsize);
       end else begin
-        PBlockHdr(FBuffer)^.MemoType := $01000000;
-        PBlockHdr(FBuffer)^.MemoSize := SwapInt(Src.Size);
+        PBlockHdr(FBuffer)^.MemoType := SwapIntLE($01000000);
+        PBlockHdr(FBuffer)^.MemoSize := SwapIntBE(Src.Size);
       end;
     end;
     repeat
@@ -423,31 +424,31 @@ begin
   if FDbfVersion = xBaseIII then
     Result := 512
   else
-    Result := PDbtHdr(Header)^.BlockLen;
+    Result := SwapWordLE(PDbtHdr(Header)^.BlockLen);
 end;
 
 function  TDbaseMemoFile.GetMemoSize: Integer;
 begin
   // dBase4 memofiles contain small 'header'
-  if PInteger(@FBuffer[0])^ = $0008FFFF then
-    Result := PBlockHdr(FBuffer)^.MemoSize-8
+  if PInteger(@FBuffer[0])^ = Integer(SwapIntLE($0008FFFF)) then
+    Result := SwapIntLE(PBlockHdr(FBuffer)^.MemoSize)-8
   else
     Result := -1;
 end;
 
 function  TDbaseMemoFile.GetNextFreeBlock: Integer;
 begin
-  Result := PDbtHdr(Header)^.NextBlock;
+  Result := SwapIntLE(PDbtHdr(Header)^.NextBlock);
 end;
 
 procedure TDbaseMemoFile.SetNextFreeBlock(BlockNo: Integer);
 begin
-  PDbtHdr(Header)^.NextBlock := BlockNo;
+  PDbtHdr(Header)^.NextBlock := SwapIntLE(BlockNo);
 end;
 
 procedure TDbaseMemoFile.SetBlockLen(BlockLen: Integer);
 begin
-  PDbtHdr(Header)^.BlockLen := BlockLen;
+  PDbtHdr(Header)^.BlockLen := SwapWordLE(BlockLen);
 end;
 
 // ------------------------------------------------------------------
@@ -456,27 +457,27 @@ end;
 
 function  TFoxProMemoFile.GetBlockLen: Integer;
 begin
-  Result := SwapWord(PFptHdr(Header)^.BlockLen);
+  Result := SwapWordBE(PFptHdr(Header)^.BlockLen);
 end;
 
 function  TFoxProMemoFile.GetMemoSize: Integer;
 begin
-  Result := SwapInt(PBlockHdr(FBuffer)^.MemoSize);
+  Result := SwapIntBE(PBlockHdr(FBuffer)^.MemoSize);
 end;
 
 function  TFoxProMemoFile.GetNextFreeBlock: Integer;
 begin
-  Result := SwapInt(PFptHdr(Header)^.NextBlock);
+  Result := SwapIntBE(PFptHdr(Header)^.NextBlock);
 end;
 
 procedure TFoxProMemoFile.SetNextFreeBlock(BlockNo: Integer);
 begin
-  PFptHdr(Header)^.NextBlock := SwapInt(LongWord(BlockNo));
+  PFptHdr(Header)^.NextBlock := SwapIntBE(dword(BlockNo));
 end;
 
 procedure TFoxProMemoFile.SetBlockLen(BlockLen: Integer);
 begin
-  PFptHdr(Header)^.BlockLen := SwapWord(LongWord(BlockLen));
+  PFptHdr(Header)^.BlockLen := SwapWordBE(dword(BlockLen));
 end;
 
 // ------------------------------------------------------------------
@@ -511,12 +512,12 @@ begin
   inherited SetHeaderSize(0);
 end;
 
-function  TNullMemoFile.LockSection(const Offset, Length: Cardinal; const Wait: Boolean): Boolean;
+function  TNullMemoFile.LockSection(const Offset: TPagedFileOffset; const Length: Cardinal; const Wait: Boolean): Boolean;
 begin
   Result := true;
 end;
 
-function  TNullMemoFile.UnlockSection(const Offset, Length: Cardinal): Boolean;
+function  TNullMemoFile.UnlockSection(const Offset: TPagedFileOffset; const Length: Cardinal): Boolean;
 begin
   Result := true;
 end;

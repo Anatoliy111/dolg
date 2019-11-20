@@ -16,8 +16,6 @@ uses
 type
   TForm19 = class(TForm)
     OpenDialog1: TOpenDialog;
-    cxLookupComboBox1: TcxLookupComboBox;
-    cxLabel2: TcxLabel;
     cxButton1: TcxButton;
     cxTextEdit1: TcxTextEdit;
     cxButton2: TcxButton;
@@ -27,41 +25,64 @@ type
     IBQuery1SCHET: TIBStringField;
     IBQuery1NACH: TFloatField;
     IBQuery1SAL: TFloatField;
-    cxLabel3: TcxLabel;
-    cxLookupComboBox2: TcxLookupComboBox;
-    ADOOBOR: TADODataSet;
-    DSADOOBOR: TDataSource;
-    ADOConnectionDBF1: TADOConnection;
-    cxButton3: TcxButton;
-    cxButton4: TcxButton;
-    cxButton5: TcxButton;
-    cxButton6: TcxButton;
-    ADOQuerySUBS: TADOQuery;
-    DSADOQuerySUBS: TDataSource;
-    ADOConnectionDBF2: TADOConnection;
-    ADOQuerySLGOT: TADOQuery;
-    DSADOQuerySLGOT: TDataSource;
+    ADOQueryTAB: TADOQuery;
+    DSADOQueryTAB: TDataSource;
     ADOQueryOBOR: TADOQuery;
     DSADOQueryOBOR: TDataSource;
+    Memo1: TMemo;
+    cxTextEdit2: TcxTextEdit;
+    cxTextEdit3: TcxTextEdit;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxTextEdit4: TcxTextEdit;
+    cxLabel3: TcxLabel;
+    ADOTAB: TADODataSet;
+    DSADOTAB: TDataSource;
+    cxButton3: TcxButton;
     cxGrid1DBTableView1: TcxGridDBTableView;
     cxGrid1Level1: TcxGridLevel;
     cxGrid1: TcxGrid;
     ADOConnectionDBF: TADOConnection;
-    ADOSUBS: TADODataSet;
-    DSADOSUBS: TDataSource;
-    cxGrid1DBTableView1schet: TcxGridDBColumn;
-    ADOCommand1: TADOCommand;
-    cxButton7: TcxButton;
+    ADOEDIT: TADODataSet;
+    DSADOEDIT: TDataSource;
+    cxGrid1DBTableView1SCHET: TcxGridDBColumn;
+    cxGrid1DBTableView1YM: TcxGridDBColumn;
+    cxGrid1DBTableView1SUBS_K: TcxGridDBColumn;
+    cxGrid1DBTableView1SUBS_E: TcxGridDBColumn;
+    cxGrid1DBTableView1RSUBS_K: TcxGridDBColumn;
+    cxGrid1DBTableView1RSUBS_E: TcxGridDBColumn;
+    cxGrid1DBTableView1S_EL: TcxGridDBColumn;
+    cxGrid1DBTableView1S_HV: TcxGridDBColumn;
+    cxGrid1DBTableView1S_KV: TcxGridDBColumn;
+    cxGrid1DBTableView1S_OM: TcxGridDBColumn;
+    cxGrid1DBTableView1S_OT: TcxGridDBColumn;
+    cxGrid1DBTableView1S_RS: TcxGridDBColumn;
+    cxGrid1DBTableView1S_SM: TcxGridDBColumn;
+    cxGrid1DBTableView1S_SN: TcxGridDBColumn;
+    cxGrid1DBTableView1S_SU: TcxGridDBColumn;
+    cxGrid1DBTableView1S_UB: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_EL: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_HV: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_KV: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_OM: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_OT: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_RS: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_SM: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_SN: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_SU: TcxGridDBColumn;
+    cxGrid1DBTableView1OB_UB: TcxGridDBColumn;
+    cxGrid1DBTableView1SFIO: TcxGridDBColumn;
+    cxGrid1DBTableView1SUL: TcxGridDBColumn;
+    cxGrid1DBTableView1SDOM: TcxGridDBColumn;
+    cxGrid1DBTableView1SKV: TcxGridDBColumn;
+    cxGrid1DBTableView1SNORM: TcxGridDBColumn;
     procedure cxButton2Click(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure cxButton3Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure cxButton4Click(Sender: TObject);
-    procedure cxButton6Click(Sender: TObject);
-    procedure cxButton5Click(Sender: TObject);
-    procedure cxButton7Click(Sender: TObject);
+    procedure cxButton3Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
+
 
     { Private declarations }
   public
@@ -71,7 +92,11 @@ type
 
 var
   Form19: TForm19;
-  st1:string;
+       st1,poslug,tip:string;
+     MsExcel:Variant;
+     period: TDateTime;
+
+
 
 
 implementation
@@ -83,7 +108,20 @@ uses comobj, Unit1, StrUtils;
 procedure TForm19.cxButton1Click(Sender: TObject);
 var i,ns,kolst:integer;
     st:pchar;
+    sss:string;
 begin
+  poslug:='';
+         cxTextEdit2.Text:='';
+       cxTextEdit3.Text:='';
+       Memo1.Text:='';
+       cxTextEdit4.Text:='';
+       tip:='';
+       if not VarIsEmpty(MsExcel) then
+         if not MsExcel.Visible then
+         begin
+            MsExcel.Application.Quit;
+            Application.ProcessMessages;
+         end;
 
   if OpenDialog1.Execute then
   begin
@@ -96,7 +134,64 @@ begin
       else st1:='';
     end;
 
-    cxTextEdit1.Text:=st1;
+
+
+
+
+    MsExcel := CreateOleObject('Excel.Application');
+    //    MsExcel.Workbooks.Add;
+    MsExcel.Workbooks.Open[OpenDialog1.FileName];
+
+    Form1.IBWID.First;
+    while not Form1.IBWID.Eof do
+    begin
+    sss:= trim(MsExcel.WorkSheets[1].Cells[4,2]);
+    if trim(Form1.posl.Values[Form1.IBWIDWID.Value])= sss then
+    begin
+       poslug:=Form1.IBWIDWID.Value;
+       cxTextEdit2.Text:=Form1.IBWIDNAIM.Value;
+       cxTextEdit3.Text:=MsExcel.WorkSheets[1].Cells[1,4];
+
+       Break;
+    end;
+    Form1.IBWID.Next;
+    end;
+
+    Memo1.Text:=sss;
+
+
+    sss:= trim(MsExcel.WorkSheets[1].Cells[6,3]);
+    if  Pos('пільг',sss)<>0 then
+    begin
+        cxTextEdit4.Text:='Пільга';
+        tip:='lg';
+    end;
+    if  Pos('субс',sss)<>0 then
+    begin
+        cxTextEdit4.Text:='Субсидія';
+        tip:='sub';
+    end;
+
+
+
+
+    if (Length(poslug)=0) then
+       begin
+         ShowMessage('Послуга не знайдена!!!');
+         st1:='';
+       end;
+
+    if  (Length(tip)=0)then
+       begin
+         ShowMessage('Тип реєстру не знайдено!!!');
+         st1:='';
+       end;
+
+     cxTextEdit1.Text:=st1;
+
+
+
+
 
 
     //MsExcel := null;
@@ -113,11 +208,12 @@ xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
 var i,ns,kolst:integer;
     sum:currency;
-    str,nam,tip,sch,klasf,vid_rob,n_kres,gost,dekada:string;
-    MsExcel,kolwith,rowh,rowh1:Variant;
+    str,nam,sch,klasf,vid_rob,n_kres,gost,dekada:string;
+    kolwith,rowh,rowh1:Variant;
     f1:boolean;
     pathDBF,Path:string;
     adostr:WideString;
+
 
 begin
   inherited;
@@ -134,12 +230,6 @@ begin
 
       }
 
-   if cxLookupComboBox1.EditValue=null then
-   begin
-     ShowMessage('Виберіть послугу');
-     exit;
-   end;
-
    if Length(st1)=0 then
    begin
      ShowMessage('Виберіть файл');
@@ -147,37 +237,53 @@ begin
    end;
 
 
-   if mode=1 then
-   begin
       f1:=true;
       kolst:=7;
-    //  form1.IBWID.First
-    //  form1.IBWID.Locate('naim',cxLookupComboBox1.EditValue,[]);
-    //  form1.IBWID.Lookup('naim',cxLookupComboBox1.EditValue,'wid');
-      IBQuery1.Close;
-      if (cxLookupComboBox1.EditValue='sm') or (cxLookupComboBox1.EditValue='sn') then
-      begin
-      IBQuery1.SQL.Text:='select schet, sum(nach) nach, sum(sal) sal from (select trim(schet) as schet, nach+pere+wozw as nach, bgend as sal from vw_obor where period=:dt and (wid=''sm'' or wid=''sn'')) group by schet';
-      IBQuery1.ParamByName('dt').AsDate:=cxLookupComboBox2.EditValue;
-      end
-      else
-      begin
-      IBQuery1.SQL.Text:='select trim(schet) as schet, nach+pere+wozw as nach, bgend as sal from vw_obor where period=:dt and wid=:wid';
-      IBQuery1.ParamByName('dt').AsDate:=cxLookupComboBox2.EditValue;
-      IBQuery1.ParamByName('wid').Value:=cxLookupComboBox1.EditValue;
-      end;
-      IBQuery1.Open;
 
 
-        MsExcel := CreateOleObject('Excel.Application');
-    //    MsExcel.Workbooks.Add;
-        MsExcel.Workbooks.Open[OpenDialog1.FileName];
+//        MsExcel.Visible := True;
         while f1 do
         begin
         if (Length(MsExcel.WorkSheets[1].Cells[kolst,4])=0) then
            f1:=False
-        else kolst:=kolst+1;
+        else
+          begin
+          MsExcel.WorkSheets[1].Cells[kolst,8]:='';
+          kolst:=kolst+1;
+          end;
+
         end;
+
+
+
+
+
+
+
+
+    period:=StrToDate('01.'+MidStr(MsExcel.WorkSheets[1].Cells[1,4],6,2)+'.'+LeftStr(MsExcel.WorkSheets[1].Cells[1,4],4));
+
+   if mode=1 then
+   begin
+    //  form1.IBWID.First
+    //  form1.IBWID.Locate('naim',cxLookupComboBox1.EditValue,[]);
+    //  form1.IBWID.Lookup('naim',cxLookupComboBox1.EditValue,'wid');
+      IBQuery1.Close;
+      if (poslug='sm') then
+      begin
+      IBQuery1.SQL.Text:='select schet, sum(nach) nach, sum(sal) sal from (select trim(schet) as schet, nach+pere+wozw as nach, bgend as sal from vw_obor where period=:dt and (wid=''sm'' or wid=''sn'')) group by schet';
+      IBQuery1.ParamByName('dt').AsDate:=period;
+      end
+      else
+      begin
+      IBQuery1.SQL.Text:='select trim(schet) as schet, nach+pere+wozw as nach, bgend as sal from vw_obor where period=:dt and wid=:wid';
+      IBQuery1.ParamByName('dt').AsDate:=period;
+      IBQuery1.ParamByName('wid').Value:=poslug;
+      end;
+      IBQuery1.Open;
+
+
+
         MsExcel.Visible := True;
         cxProgressBar1.Properties.Min:=0;
         cxProgressBar1.Properties.Max:=kolst-1;
@@ -216,14 +322,19 @@ begin
    if mode=2 then
    begin
 
-      Path:=Form1.PathDIR+'\subs.dbf';
+      ADOQueryTAB.Close;
+      ADOQueryOBOR.Close;
+
+      Path:=Form1.PathDIR+'subs.dbf';
 
       try
-      deleteFile(Path);
+      deleteFile(Form1.PathDIR+'subs.dbf');
+      deleteFile(Form1.PathDIR+'obor.dbf');
+      deleteFile(Form1.PathDIR+'slgot.dbf');
        except
       on E : Exception do
       begin
-      ShowMessage('Неможливо видалити '+Path+'.'+E.Message+'  Можливо файл відкритий в іншій програмі. Спробуйте пізніше!');
+      ShowMessage('Неможливо видалити файли з '+Form1.PathDIR+'.'+E.Message+'  Можливо файли відкриті в іншій програмі!');
       Exit;
       end;
 
@@ -231,7 +342,11 @@ begin
 
 
 
-     CopyFile(PChar(Form1.PathKvart+'dbf\subs.dbf'), PChar(Form1.PathDIR+'\subs.dbf'), false);
+     if tip='sub' then
+       CopyFile(PChar(Form1.PathKvart+'dbf\subs.dbf'), PChar(Form1.PathDIR+'subs.dbf'), false);
+     if tip='lg' then
+       CopyFile(PChar(Form1.PathKvart+'dbf\slgot.dbf'), PChar(Form1.PathDIR+'slgot.dbf'), false);
+     CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(Form1.PathDIR+'obor.dbf'), false);
 
 
 
@@ -246,9 +361,12 @@ begin
 //        end;
 
 
+
+
+
      try
-       if  not ADOConnectionDBF.Connected then
-       begin
+//       if  not ADOConnectionDBF.Connected then
+//       begin
             pathDBF:=Form1.PathDIR;
             Application.ProcessMessages;
 
@@ -262,18 +380,43 @@ begin
 //                      'Jet OLEDB:Encrypt Database=False;Jet OLEDB:Don"t Copy Locale on Compact=False;'+
 //                      'Jet OLEDB:Compact Without Replica Repair=False;Jet OLEDB:SFP=False;';
 
-            adostr:='Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Data Source=dBASE Files;Mode=ReadWrite;Initial Catalog='+Form1.PathDIR+';';
+//            adostr:='Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Data Source=dBASE Files;Mode=ReadWrite;Initial Catalog='+Form1.PathDIR+';';
+//
+//            ADOConnectionDBF.ConnectionString:=adostr;
+            ADOConnectionDBF.ConnectionString:='Provider=VFPOLEDB.1;Data Source='+Form1.PathKvart+'dbf\;Mode=ReadWrite;Password="";Collating Sequence=MACHINE;CODEPAGE=866;ANSI=False';
 
-            ADOConnectionDBF.ConnectionString:=adostr;
 
             ADOConnectionDBF.Connected:=true;
+//       end;
+
+       if tip='sub' then
+       begin
+          ADOQueryTAB.SQL.Text:='select * from subs order by schet';
+          ADOQueryTAB.Open;
        end;
+
+       if tip='lg' then
+       begin
+          ADOQueryTAB.SQL.Text:='select * from slgot order by schet';
+          ADOQueryTAB.Open;
+       end;
+
+
+       if (poslug='sm') then
+          ADOQueryOBOR.SQL.Text:='select * from obor where wid=''sm'' or wid=''sn'' and koef<>0'
+       else
+          ADOQueryOBOR.SQL.Text:='select * from obor where wid='''+poslug+''' or wid='''+poslug+''' and koef<>0';
+//
+       ADOQueryOBOR.Open;
+
+       ADOQueryOBOR.Close;
+       ADOQueryTAB.Close;
 
 
        except
        on E : Exception do
        begin
-        messagedlg('Помилка при підключенні до бази даних квартплати!!! - '+E.Message,mtError,[mbCancel],0);
+        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
         exit;
        end;
 
@@ -282,19 +425,195 @@ begin
      end;
 
 
-    ADOCommand1.CommandText:='';
-    ADOCommand1.CommandText:='CREATE INDEX IndexName ON subs (schet)';
-    ADOCommand1.Execute;
+     try
+            Application.ProcessMessages;
+            ADOConnectionDBF.Connected:=false;
+//            ADOConnectionDBF.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'dbf\;Mode=Share Deny Read|Share Deny Write;Extended Properties=dBase IV;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
+                ADOConnectionDBF.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'dbf\;Mode=ReadWrite;Extended Properties=dBase III;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
+            ADOConnectionDBF.Connected:=true;
 
-    ADOSUBS.Open;
+            ADOQueryOBOR.Open;
+
+            ADOQueryTAB.Open;
+
+
+
+       except
+       on E : Exception do
+       begin
+        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+        exit;
+       end;
+     end;
+
+
+//    ADOCommand1.CommandText:='';
+//    ADOCommand1.CommandText:='CREATE INDEX IndexName ON subs (schet)';
+//    ADOCommand1.Execute;
+
+
+
+
+
+
+//            ADOQueryTAB.First;
+//            while not ADOQueryTAB.Eof do
+//            begin
+//               ADOQueryTAB.Edit;
+//               ADOQueryTAB.FieldByName('s_'+poslug).AsFloat:=0;
+//               ADOQueryTAB.Post;
+//               ADOQueryTAB.Next;
+//            end;
+//
+//            if (poslug='sm') then
+//            begin
+//            ADOQueryTAB.First;
+//              while not ADOQueryTAB.Eof do
+//              begin
+//                 ADOQueryTAB.Edit;
+//                 ADOQueryTAB.FieldByName('s_sn').AsFloat:=0;
+//                 ADOQueryTAB.Post;
+//                 ADOQueryTAB.Next;
+//              end;
+//
+//
+//            end;
+
+
+                        ADOEDIT.First;
+            while not ADOEDIT.Eof do
+            begin
+               ADOEDIT.Edit;
+               ADOEDIT.FieldByName('s_'+poslug).AsFloat:=0;
+               ADOEDIT.Post;
+               ADOEDIT.Next;
+            end;
+
+            if (poslug='sm') then
+            begin
+            ADOEDIT.First;
+              while not ADOEDIT.Eof do
+              begin
+                 ADOEDIT.Edit;
+                 ADOEDIT.FieldByName('s_sn').AsFloat:=0;
+                 ADOEDIT.Post;
+                 ADOEDIT.Next;
+              end;
+
+
+            end;
+
+
+
+
+
+        cxProgressBar1.Properties.Min:=0;
+        cxProgressBar1.Properties.Max:=kolst-1;
+        cxProgressBar1.Position:=5;
+        for I := 7 to kolst-1 do
+        begin
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+          Application.ProcessMessages;
+
+//          ADOQueryOBOR.Close;
+//          ADOQueryOBOR.CommandText:='select schet from obor where wid='''+cxLookupComboBox1.EditValue+''' and koef=1';
+
+
+
+
+
+
+
+          sch:=trim(MsExcel.WorkSheets[1].Cells[i,4]);
+
+          if StrToFloat(MsExcel.WorkSheets[1].Cells[i,7])<>0 then
+          begin
+
+            ADOQueryOBOR.First;
+//            if ADOQueryOBOR.Locate('wid;schet',VarArrayOf([cxLookupComboBox1.EditValue,sch]),[loPartialKey]) then
+            if ADOQueryOBOR.Locate('schet',sch,[]) then
+            begin
+               ADOQueryTAB.First;
+               if not ADOQueryTAB.Locate('schet',sch,[]) then
+               begin
+                  ADOQueryTAB.Append;
+                  ADOQueryTAB.FieldByName('schet').AsString:=sch;
+               end
+               else
+                  ADOQueryTAB.Edit;
+
+
+               ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
+               ADOQueryTAB.Post;
+            end
+            else
+               MsExcel.WorkSheets[1].Cells[i,8]:='рахунок (послуга по рахунку) не знайдено';
+          end;
+          end;
+
+        ADOConnectionDBF.Close;
+        MsExcel.Visible := True;
+        MsExcel.ActiveWorkbook.save;
+//        MsExcel.ActiveWorkbook.Close;
+//        MsExcel.Application.Quit;
+
+
+   end;
+
+//     if tip='sub' then
+//       CopyFile(PChar(Form1.PathDIR+'subs.dbf'), PChar(Form1.PathKvart+'dbf\subs.dbf'), false);
+//     if tip='lg' then
+//       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
+
+
+
+      ShowMessage('Завантаження закінчено');
+
+end;
+
+procedure TForm19.cxButton3Click(Sender: TObject);
+const
+xlContinuous=1;
+xlThin=2;
+xlTop = -4160;
+xlCenter = -4108;
+xlHAlignRight=-4152;
+xlVAlignBottom=-4107;
+var i,ns,kolst:integer;
+    sum:currency;
+    str,nam,sch,klasf,vid_rob,n_kres,gost,dekada:string;
+    kolwith,rowh,rowh1:Variant;
+    f1:boolean;
+    pathDBF,Path:string;
+    adostr:WideString;
+
+
+begin
+  inherited;
+
+
+  {  with CreateForm.DB do
+
+  begin
+    Exclusive:=CB1.Checked;
+    TableName:=OpenDialog1.FileName;
+    Open; FillSG;
+  end;
+
+
+      }
+
+   if Length(st1)=0 then
+   begin
+     ShowMessage('Виберіть файл');
+     exit;
+   end;
 
 
       f1:=true;
       kolst:=7;
 
-        MsExcel := CreateOleObject('Excel.Application');
-    //    MsExcel.Workbooks.Add;
-        MsExcel.Workbooks.Open[OpenDialog1.FileName];
+
 //        MsExcel.Visible := True;
         while f1 do
         begin
@@ -309,21 +628,173 @@ begin
         end;
 
 
-       ADOQueryOBOR.Open;
 
-       if LeftStr(st1,2)='RK' then
+
+
+
+
+
+    period:=StrToDate('01.'+MidStr(MsExcel.WorkSheets[1].Cells[1,4],6,2)+'.'+LeftStr(MsExcel.WorkSheets[1].Cells[1,4],4));
+
+   if mode=1 then
+   begin
+    //  form1.IBWID.First
+    //  form1.IBWID.Locate('naim',cxLookupComboBox1.EditValue,[]);
+    //  form1.IBWID.Lookup('naim',cxLookupComboBox1.EditValue,'wid');
+      IBQuery1.Close;
+      if (poslug='sm') then
+      begin
+      IBQuery1.SQL.Text:='select schet, sum(nach) nach, sum(sal) sal from (select trim(schet) as schet, nach+pere+wozw as nach, bgend as sal from vw_obor where period=:dt and (wid=''sm'' or wid=''sn'')) group by schet';
+      IBQuery1.ParamByName('dt').AsDate:=period;
+      end
+      else
+      begin
+      IBQuery1.SQL.Text:='select trim(schet) as schet, nach+pere+wozw as nach, bgend as sal from vw_obor where period=:dt and wid=:wid';
+      IBQuery1.ParamByName('dt').AsDate:=period;
+      IBQuery1.ParamByName('wid').Value:=poslug;
+      end;
+      IBQuery1.Open;
+
+
+
+        MsExcel.Visible := True;
+        cxProgressBar1.Properties.Min:=0;
+        cxProgressBar1.Properties.Max:=kolst-1;
+        cxProgressBar1.Position:=5;
+        for I := 7 to kolst-1 do
+        begin
+          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+          Application.ProcessMessages;
+
+          sch:=MsExcel.WorkSheets[1].Cells[i,4];
+          IBQuery1.First;
+          IBQuery1SCHET.Value;
+          if not IBQuery1.Locate('schet',sch,[]) then
           begin
-//            ADOSUBS.Open;
-            ADOQuerySUBS.First;
-            while not ADOQuerySUBS.Eof do
+          IBQuery1SCHET.Value;
+             MsExcel.WorkSheets[1].Cells[i,5]:='рахунок не знайдено';
+             MsExcel.WorkSheets[1].Cells[i,6]:='рахунок не знайдено';
+          end
+          else
+          begin
+             IBQuery1SCHET.Value;
+             MsExcel.WorkSheets[1].Cells[i,5]:=IBQuery1NACH.Value;
+             MsExcel.WorkSheets[1].Cells[i,6]:=IBQuery1SAL.Value;
+          end;
+        end;
+
+
+
+
+        MsExcel.ActiveWorkbook.Close;
+        MsExcel.Application.Quit;
+
+        MsExcel := null;
+   end;
+
+   if mode=2 then
+   begin
+
+
+
+      Path:=Form1.PathDIR+'subs.dbf';
+
+      try
+      deleteFile(Form1.PathDIR+'subs.dbf');
+      deleteFile(Form1.PathDIR+'obor.dbf');
+      deleteFile(Form1.PathDIR+'slgot.dbf');
+       except
+      on E : Exception do
+      begin
+      ShowMessage('Неможливо видалити файли з '+Form1.PathDIR+'.'+E.Message+'  Можливо файли відкриті в іншій програмі!');
+      Exit;
+      end;
+
+      end;
+
+
+
+     if tip='sub' then
+       CopyFile(PChar(Form1.PathKvart+'dbf\subs.dbf'), PChar(Form1.PathDIR+'subs.dbf'), false);
+     if tip='lg' then
+       CopyFile(PChar(Form1.PathKvart+'dbf\slgot.dbf'), PChar(Form1.PathDIR+'slgot.dbf'), false);
+     CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(Form1.PathDIR+'obor.dbf'), false);
+
+
+
+
+
+
+//        if FileExists(data.DatabaseName+format('kvpl%d.dbf',[YM])) then
+//        begin
+//          copyfile(pchar(data.DatabaseName+format('kvpl%d.dbf',[YM])),
+//             pchar(data.DatabaseName+data.TableName),false);
+//          break;
+//        end;
+
+
+
+
+
+     try
+
+
+
+       except
+       on E : Exception do
+       begin
+        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+        exit;
+       end;
+
+
+
+     end;
+
+
+     try
+
+
+       except
+       on E : Exception do
+       begin
+        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+        exit;
+       end;
+     end;
+
+
+//    ADOCommand1.CommandText:='';
+//    ADOCommand1.CommandText:='CREATE INDEX IndexName ON subs (schet)';
+//    ADOCommand1.Execute;
+
+
+
+
+
+
+            ADOQueryTAB.First;
+            while not ADOQueryTAB.Eof do
             begin
-               ADOQuerySUBS.Edit;
-               ADOQuerySUBS.FieldByName('s_'+cxLookupComboBox1.EditValue).Value:=0;
-               ADOQuerySUBS.Post;
-               ADOQuerySUBS.Next;
+               ADOQueryTAB.Edit;
+               ADOQueryTAB.FieldByName('s_'+poslug).AsFloat:=0;
+               ADOQueryTAB.Post;
+               ADOQueryTAB.Next;
             end;
 
-          end;
+            if (poslug='sm') then
+            begin
+            ADOQueryTAB.First;
+            while not ADOQueryTAB.Eof do
+            begin
+               ADOQueryTAB.Edit;
+               ADOQueryTAB.FieldByName('s_sn').AsFloat:=0;
+               ADOQueryTAB.Post;
+               ADOQueryTAB.Next;
+            end;
+
+
+            end;
 
 
 
@@ -336,8 +807,8 @@ begin
           cxProgressBar1.Position:=cxProgressBar1.Position+1;
           Application.ProcessMessages;
 
-//          ADOOBOR.Close;
-//          ADOOBOR.CommandText:='select schet from obor where wid='''+cxLookupComboBox1.EditValue+''' and koef=1';
+//          ADOQueryOBOR.Close;
+//          ADOQueryOBOR.CommandText:='select schet from obor where wid='''+cxLookupComboBox1.EditValue+''' and koef=1';
 
 
 
@@ -350,19 +821,25 @@ begin
           if StrToFloat(MsExcel.WorkSheets[1].Cells[i,7])<>0 then
           begin
 
-            ADOOBOR.First;
-            if ADOOBOR.Locate('wid;schet',VarArrayOf([cxLookupComboBox1.EditValue,sch]),[loPartialKey]) then
+            ADOQueryOBOR.First;
+//            if ADOQueryOBOR.Locate('wid;schet',VarArrayOf([cxLookupComboBox1.EditValue,sch]),[loPartialKey]) then
+            if ADOQueryOBOR.Locate('schet',sch,[]) then
             begin
-               ADOQuerySUBS.First;
-               if not ADOQuerySUBS.Locate('schet',sch,[]) then
-                  ADOQuerySUBS.Append;
-               ADOQuerySUBS.Edit;
-               ADOQuerySUBS.FieldByName('schet').Value:=sch;
-               ADOQuerySUBS.FieldByName('s_'+cxLookupComboBox1.EditValue).Value:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
-               ADOQuerySUBS.Post;
+               ADOQueryTAB.First;
+               if not ADOQueryTAB.Locate('schet',sch,[]) then
+               begin
+                  ADOQueryTAB.Append;
+                  ADOQueryTAB.FieldByName('schet').AsString:=sch;
+               end
+               else
+                  ADOQueryTAB.Edit;
+
+
+               ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
+               ADOQueryTAB.Post;
             end
             else
-               MsExcel.WorkSheets[1].Cells[i,8]:='рахунок не знайдено';
+               MsExcel.WorkSheets[1].Cells[i,8]:='рахунок (послуга по рахунку) не знайдено';
           end;
           end;
 
@@ -372,92 +849,37 @@ begin
 //        MsExcel.ActiveWorkbook.Close;
 //        MsExcel.Application.Quit;
 
-        MsExcel := null;
+
    end;
+
+//     if tip='sub' then
+//       CopyFile(PChar(Form1.PathDIR+'subs.dbf'), PChar(Form1.PathKvart+'dbf\subs.dbf'), false);
+//     if tip='lg' then
+//       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
 
 
       ShowMessage('Завантаження закінчено');
 
-end;
 
-procedure TForm19.cxButton3Click(Sender: TObject);
-begin
-ADOQuerySUBS.Append;
-end;
-
-procedure TForm19.cxButton4Click(Sender: TObject);
-begin
-//               ADOSUBS.Append;
-//               ADOSUBS.Edit;
-//               ADOSUBS.FieldByName('schet').Value:='12345';
-//               ADOSUBS.Post;
-
-                           ADOQuerySUBS.First;
-            while not ADOQuerySUBS.Eof do
-            begin
-               ADOQuerySUBS.Edit;
-               ADOQuerySUBS.FieldByName('schet').Value:='555555555';
-               ADOQuerySUBS.Post;
-               ADOQuerySUBS.Next;
-            end;
-
-
-
-end;
-
-procedure TForm19.cxButton5Click(Sender: TObject);
-var tt:integer;
-begin
-//               ADOConnectionDBF1.BeginTrans;
-//                        ADOQuerySUBS.Edit;
-//               ADOQuerySUBS.FieldByName('schet').Value:='0000000000';
-//               ADOQuerySUBS.Post;
-//               ADOConnectionDBF1.CommitTrans;
-
-//                        ADOOBOR.Edit;
-//               ADOOBOR.FieldByName('schet').Value:='0000000000';
-//               ADOOBOR.Post;
-                                       ADOSUBS.Edit;
-               ADOSUBS.FieldByName('schet').Value:='жмд';
-               ADOSUBS.Post;
-
-end;
-
-procedure TForm19.cxButton6Click(Sender: TObject);
-begin
-//                 ADOQuerySUBS.Append;
-//               ADOQuerySUBS.FieldByName('schet').Value:='1111111111111';
-//               ADOQuerySUBS.Post;
-                 ADOSUBS.Append;
-               ADOSUBS.FieldByName('schet').Value:='1111111111111';
-               ADOSUBS.Post;
-
-
-end;
-
-procedure TForm19.cxButton7Click(Sender: TObject);
-begin
-    ADOCommand1.CommandText:='';
-    ADOCommand1.CommandText:='CREATE INDEX sss ON subs (schet)';
-    ADOCommand1.Execute;
 end;
 
 procedure TForm19.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-// ADOConnectionDBF.CommitTrans;
  ADOConnectionDBF.Close;
+       if not VarIsEmpty(MsExcel)  then
+         if not MsExcel.Visible then
+         begin
+            MsExcel.Application.Quit;
+            Application.ProcessMessages;
+         end;
+
 
 end;
 
 procedure TForm19.FormShow(Sender: TObject);
 begin
-cxLookupComboBox2.EditValue:=Form1.DateKVART;
-ADOConnectionDBF.Connected:=true;
-ADOConnectionDBF1.Connected:=true;
-//ADOConnectionDBF.BeginTrans;
-ADOSUBS.Open;
-ADOQuerySUBS.Open;
+ADOEDIT.Open;
 end;
 
 end.

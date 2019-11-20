@@ -22,10 +22,10 @@ type
     FIndexFile: TIndexFile;
   protected
     function  GetPhysicalRecNo: Integer; override;
-    function  GetSequentialRecNo: Integer; override;
-    function  GetSequentialRecordCount: Integer; override;
+    function  GetSequentialRecNo: TSequentialRecNo; override;
+    function  GetSequentialRecordCount: TSequentialRecNo; override;
     procedure SetPhysicalRecNo(RecNo: Integer); override;
-    procedure SetSequentialRecNo(RecNo: Integer); override;
+    procedure SetSequentialRecNo(RecNo: TSequentialRecNo); override;
 
   public
     constructor Create(DbfIndexFile: TIndexFile);
@@ -36,7 +36,7 @@ type
     procedure First; override;
     procedure Last; override;
 
-    procedure Insert(RecNo: Integer; Buffer: PAnsiChar);
+    procedure Insert(RecNo: Integer; Buffer: PAnsiChar; AUniqueMode: TIndexUniqueType);
     procedure Update(RecNo: Integer; PrevBuffer, NewBuffer: PAnsiChar);
 
 {$ifdef SUPPORT_VARIANTS}
@@ -55,6 +55,9 @@ type
 //====================================================================
 implementation
 
+uses
+  dbf_ansistrings;
+
 //==========================================================
 //============ TIndexCursor
 //==========================================================
@@ -70,15 +73,15 @@ begin
   inherited Destroy;
 end;
 
-procedure TIndexCursor.Insert(RecNo: Integer; Buffer: PAnsiChar);
+procedure TIndexCursor.Insert(RecNo: Integer; Buffer: PAnsiChar; AUniqueMode: TIndexUniqueType);
 begin
-  TIndexFile(PagedFile).Insert(RecNo, {$IFDEF DELPHI_2009}PByte{$ENDIF}(Buffer));
+  TIndexFile(PagedFile).Insert(RecNo, {$IFDEF SUPPORT_TRECORDBUFFER}PByte{$ENDIF}(Buffer), AUniqueMode);
   // TODO SET RecNo and Key
 end;
 
 procedure TIndexCursor.Update(RecNo: Integer; PrevBuffer, NewBuffer: PAnsiChar);
 begin
-  TIndexFile(PagedFile).Update(RecNo, {$IFDEF DELPHI_2009}PByte{$ENDIF}(PrevBuffer), {$IFDEF DELPHI_2009}PByte{$ENDIF}(NewBuffer));
+  TIndexFile(PagedFile).Update(RecNo, {$IFDEF SUPPORT_TRECORDBUFFER}PByte{$ENDIF}(PrevBuffer), {$IFDEF SUPPORT_TRECORDBUFFER}PByte{$ENDIF}(NewBuffer));
 end;
 
 procedure TIndexCursor.First;
@@ -111,17 +114,17 @@ begin
   TIndexFile(PagedFile).PhysicalRecNo := RecNo;
 end;
 
-function TIndexCursor.GetSequentialRecordCount: Integer;
+function TIndexCursor.GetSequentialRecordCount: TSequentialRecNo;
 begin
   Result := TIndexFile(PagedFile).SequentialRecordCount;
 end;
 
-function TIndexCursor.GetSequentialRecNo: Integer;
+function TIndexCursor.GetSequentialRecNo: TSequentialRecNo;
 begin
   Result := TIndexFile(PagedFile).SequentialRecNo;
 end;
 
-procedure TIndexCursor.SetSequentialRecNo(RecNo: Integer);
+procedure TIndexCursor.SetSequentialRecNo(RecNo: TSequentialRecNo);
 begin
   TIndexFile(PagedFile).SequentialRecNo := RecNo;
 end;
@@ -139,13 +142,13 @@ begin
     if (TIndexFile(PagedFile).IndexVersion <> xBaseIII) then
     begin
       // make copy of userbcd to buffer
-      Move(TIndexFile(PagedFile).PrepareKey({$IFDEF DELPHI_2009}PByte{$ENDIF}(ABuffer), etFloat)[0], ABuffer[0], 11);
+      Move(TIndexFile(PagedFile).PrepareKey({$IFDEF SUPPORT_TRECORDBUFFER}PByte{$ENDIF}(ABuffer), etFloat)[0], ABuffer[0], 11);
     end;
     Result := etInteger;
   end else begin
-    StrPLCopy(ABuffer, Key, TIndexFile(PagedFile).KeyLen);
+    dbfStrPLCopy(ABuffer, AnsiString(Key), TIndexFile(PagedFile).KeyLen); // PChar cast removed, AnsiString cast added
     // we have null-terminated string, pad with spaces if string too short
-    currLen := StrLen(ABuffer);
+    currLen := dbfStrLen(ABuffer);
     FillChar(ABuffer[currLen], TIndexFile(PagedFile).KeyLen-currLen, ' ');
     Result := etString;
   end;
@@ -165,7 +168,7 @@ begin
     // nothing needs to be done
   end else begin
     // check if string long enough then no copying needed
-    userLen := StrLen(Key);
+    userLen := dbfStrLen(Key);
     keyLen := TIndexFile(PagedFile).KeyLen;
     if userLen < keyLen then
     begin
