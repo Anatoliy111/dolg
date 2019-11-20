@@ -12,7 +12,6 @@ object Form19: TForm19
   Font.Style = []
   OldCreateOrder = False
   OnClose = FormClose
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object cxButton1: TcxButton
@@ -91,124 +90,124 @@ object Form19: TForm19
     Top = 92
     Caption = #1058#1080#1087' '#1088#1077#1108#1089#1090#1088#1091
   end
-  object cxButton3: TcxButton
-    Left = 31
-    Top = 173
-    Width = 554
-    Height = 25
-    Caption = #1047#1072#1074#1072#1085#1090#1072#1078#1080#1090#1080'2'
-    TabOrder = 11
-    OnClick = cxButton3Click
-  end
   object cxGrid1: TcxGrid
     Left = 72
     Top = 256
     Width = 481
     Height = 337
-    TabOrder = 12
+    TabOrder = 11
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = DSADOEDIT
+      DataController.DataSource = DSADOTAB
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
-      object cxGrid1DBTableView1SCHET: TcxGridDBColumn
-        DataBinding.FieldName = 'SCHET'
+      object cxGrid1DBTableView1schet: TcxGridDBColumn
+        DataBinding.FieldName = 'schet'
       end
-      object cxGrid1DBTableView1YM: TcxGridDBColumn
-        DataBinding.FieldName = 'YM'
+      object cxGrid1DBTableView1ym: TcxGridDBColumn
+        DataBinding.FieldName = 'ym'
       end
-      object cxGrid1DBTableView1SUBS_K: TcxGridDBColumn
-        DataBinding.FieldName = 'SUBS_K'
+      object cxGrid1DBTableView1subs_k: TcxGridDBColumn
+        DataBinding.FieldName = 'subs_k'
       end
-      object cxGrid1DBTableView1SUBS_E: TcxGridDBColumn
-        DataBinding.FieldName = 'SUBS_E'
+      object cxGrid1DBTableView1subs_e: TcxGridDBColumn
+        DataBinding.FieldName = 'subs_e'
       end
-      object cxGrid1DBTableView1RSUBS_K: TcxGridDBColumn
-        DataBinding.FieldName = 'RSUBS_K'
+      object cxGrid1DBTableView1rsubs_k: TcxGridDBColumn
+        DataBinding.FieldName = 'rsubs_k'
       end
-      object cxGrid1DBTableView1RSUBS_E: TcxGridDBColumn
-        DataBinding.FieldName = 'RSUBS_E'
+      object cxGrid1DBTableView1rsubs_e: TcxGridDBColumn
+        DataBinding.FieldName = 'rsubs_e'
       end
-      object cxGrid1DBTableView1S_EL: TcxGridDBColumn
-        DataBinding.FieldName = 'S_EL'
+      object cxGrid1DBTableView1s_el: TcxGridDBColumn
+        DataBinding.FieldName = 's_el'
       end
-      object cxGrid1DBTableView1S_HV: TcxGridDBColumn
-        DataBinding.FieldName = 'S_HV'
+      object cxGrid1DBTableView1s_hv: TcxGridDBColumn
+        DataBinding.FieldName = 's_hv'
       end
-      object cxGrid1DBTableView1S_KV: TcxGridDBColumn
-        DataBinding.FieldName = 'S_KV'
+      object cxGrid1DBTableView1s_kv: TcxGridDBColumn
+        DataBinding.FieldName = 's_kv'
       end
-      object cxGrid1DBTableView1S_OM: TcxGridDBColumn
-        DataBinding.FieldName = 'S_OM'
+      object cxGrid1DBTableView1s_om: TcxGridDBColumn
+        DataBinding.FieldName = 's_om'
       end
-      object cxGrid1DBTableView1S_OT: TcxGridDBColumn
-        DataBinding.FieldName = 'S_OT'
+      object cxGrid1DBTableView1s_ot: TcxGridDBColumn
+        DataBinding.FieldName = 's_ot'
       end
-      object cxGrid1DBTableView1S_RS: TcxGridDBColumn
-        DataBinding.FieldName = 'S_RS'
+      object cxGrid1DBTableView1s_rs: TcxGridDBColumn
+        DataBinding.FieldName = 's_rs'
       end
-      object cxGrid1DBTableView1S_SM: TcxGridDBColumn
-        DataBinding.FieldName = 'S_SM'
+      object cxGrid1DBTableView1s_sm: TcxGridDBColumn
+        DataBinding.FieldName = 's_sm'
       end
-      object cxGrid1DBTableView1S_SN: TcxGridDBColumn
-        DataBinding.FieldName = 'S_SN'
+      object cxGrid1DBTableView1s_sn: TcxGridDBColumn
+        DataBinding.FieldName = 's_sn'
       end
-      object cxGrid1DBTableView1S_SU: TcxGridDBColumn
-        DataBinding.FieldName = 'S_SU'
+      object cxGrid1DBTableView1s_su: TcxGridDBColumn
+        DataBinding.FieldName = 's_su'
       end
-      object cxGrid1DBTableView1S_UB: TcxGridDBColumn
-        DataBinding.FieldName = 'S_UB'
+      object cxGrid1DBTableView1s_ub: TcxGridDBColumn
+        DataBinding.FieldName = 's_ub'
       end
-      object cxGrid1DBTableView1OB_EL: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_EL'
+      object cxGrid1DBTableView1ob_el: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_el'
       end
-      object cxGrid1DBTableView1OB_HV: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_HV'
+      object cxGrid1DBTableView1ob_hv: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_hv'
       end
-      object cxGrid1DBTableView1OB_KV: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_KV'
+      object cxGrid1DBTableView1ob_kv: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_kv'
       end
-      object cxGrid1DBTableView1OB_OM: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_OM'
+      object cxGrid1DBTableView1ob_om: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_om'
       end
-      object cxGrid1DBTableView1OB_OT: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_OT'
+      object cxGrid1DBTableView1ob_ot: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_ot'
       end
-      object cxGrid1DBTableView1OB_RS: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_RS'
+      object cxGrid1DBTableView1ob_rs: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_rs'
       end
-      object cxGrid1DBTableView1OB_SM: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_SM'
+      object cxGrid1DBTableView1ob_sm: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_sm'
       end
-      object cxGrid1DBTableView1OB_SN: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_SN'
+      object cxGrid1DBTableView1ob_sn: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_sn'
       end
-      object cxGrid1DBTableView1OB_SU: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_SU'
+      object cxGrid1DBTableView1ob_su: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_su'
       end
-      object cxGrid1DBTableView1OB_UB: TcxGridDBColumn
-        DataBinding.FieldName = 'OB_UB'
+      object cxGrid1DBTableView1ob_ub: TcxGridDBColumn
+        DataBinding.FieldName = 'ob_ub'
       end
-      object cxGrid1DBTableView1SFIO: TcxGridDBColumn
-        DataBinding.FieldName = 'SFIO'
+      object cxGrid1DBTableView1sfio: TcxGridDBColumn
+        DataBinding.FieldName = 'sfio'
       end
-      object cxGrid1DBTableView1SUL: TcxGridDBColumn
-        DataBinding.FieldName = 'SUL'
+      object cxGrid1DBTableView1sul: TcxGridDBColumn
+        DataBinding.FieldName = 'sul'
       end
-      object cxGrid1DBTableView1SDOM: TcxGridDBColumn
-        DataBinding.FieldName = 'SDOM'
+      object cxGrid1DBTableView1sdom: TcxGridDBColumn
+        DataBinding.FieldName = 'sdom'
       end
-      object cxGrid1DBTableView1SKV: TcxGridDBColumn
-        DataBinding.FieldName = 'SKV'
+      object cxGrid1DBTableView1skv: TcxGridDBColumn
+        DataBinding.FieldName = 'skv'
       end
-      object cxGrid1DBTableView1SNORM: TcxGridDBColumn
-        DataBinding.FieldName = 'SNORM'
+      object cxGrid1DBTableView1snorm: TcxGridDBColumn
+        DataBinding.FieldName = 'snorm'
       end
     end
     object cxGrid1Level1: TcxGridLevel
       GridView = cxGrid1DBTableView1
     end
+  end
+  object cxButton3: TcxButton
+    Left = 31
+    Top = 173
+    Width = 554
+    Height = 25
+    Caption = 'copy'
+    TabOrder = 12
+    OnClick = cxButton3Click
   end
   object OpenDialog1: TOpenDialog
     Left = 568
@@ -271,7 +270,6 @@ object Form19: TForm19
   end
   object ADOQueryOBOR: TADOQuery
     Connection = ADOConnectionDBF
-    CursorLocation = clUseServer
     ParamCheck = False
     Parameters = <>
     Prepared = True
@@ -286,19 +284,20 @@ object Form19: TForm19
     Top = 48
   end
   object ADOTAB: TADODataSet
-    Connection = ADOConnectionDBF
-    CommandText = 'select * from SUBS order by schet'
+    ConnectionString = 
+      'Provider=VFPOLEDB.1;Data Source=c:\tmpdolg\;Mode=ReadWrite;Passw' +
+      'ord="";Collating Sequence=MACHINE;CODEPAGE=866;ANSI=False'
+    CursorType = ctStatic
+    CommandText = 'select * from SUBS'
     Parameters = <>
     Left = 312
   end
   object DSADOTAB: TDataSource
     DataSet = ADOTAB
-    Enabled = False
     Left = 312
     Top = 56
   end
   object ADOConnectionDBF: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=d:\WO' +
       'RK\KOMUN\kvpl\dbf\;Mode=Read;Jet OLEDB:System database="";Jet OL' +
@@ -316,20 +315,27 @@ object Form19: TForm19
     Top = 40
   end
   object ADOEDIT: TADODataSet
+    Active = True
     ConnectionString = 
-      'Provider=MSDASQL;Persist Security Info=False;User ID=Admin;Data ' +
-      'Source=dBASE Files;Mode=ReadWrite;Initial Catalog=d:\WORK\KOMUN\' +
-      'kvpl\dbf\'
-    CursorType = ctDynamic
-    LockType = ltPessimistic
-    CommandText = 'select * from subs'#13#10
-    IndexName = 'subs.cdx'
+      'Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source=c:\tm' +
+      'pdolg\;Mode=ReadWrite;Extended Properties=dBase IV;Persist Secur' +
+      'ity Info=False;Jet OLEDB:System database="";Jet OLEDB:Registry P' +
+      'ath="";Jet OLEDB:Database Password="";Jet OLEDB:Engine Type=16;J' +
+      'et OLEDB:Database Locking Mode=0;Jet OLEDB:Global Partial Bulk O' +
+      'ps=2;Jet OLEDB:Global Bulk Transactions=1;Jet OLEDB:New Database' +
+      ' Password="";Jet OLEDB:Create System Database=False;Jet OLEDB:En' +
+      'crypt Database=False;Jet OLEDB:Don'#39't Copy Locale on Compact=Fals' +
+      'e;Jet OLEDB:Compact Without Replica Repair=False;Jet OLEDB:SFP=F' +
+      'alse'
+    CursorType = ctStatic
+    CommandText = 'select *  from subs'
     Parameters = <>
     Left = 248
     Top = 8
   end
   object DSADOEDIT: TDataSource
     DataSet = ADOEDIT
+    Enabled = False
     Left = 248
     Top = 64
   end
