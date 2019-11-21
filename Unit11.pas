@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
   cxContainer, cxEdit, StdCtrls, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, Menus, cxButtons;
+  cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, Menus, cxButtons,inifiles;
 
 type
   TForm11 = class(TForm)
@@ -20,6 +20,7 @@ type
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -28,18 +29,19 @@ type
 
 var
   Form11: TForm11;
+  iniFile:TIniFile;
 
 implementation
 
-uses Unit1, Unit2;
+uses Unit1, Unit2, SHFolder;
 
 {$R *.dfm}
 
 procedure TForm11.cxButton1Click(Sender: TObject);
 begin
-if cxLookupComboBox1.EditValue <> null then
+if (cxLookupComboBox1.EditValue <> null) or (Length(cxLookupComboBox1.EditValue)<>0) then
 begin
-     Form1.IBUSER.Locate('KL',cxLookupComboBox1.EditValue,[]);
+     Form1.IBUSER.Locate('FIO',cxLookupComboBox1.EditValue,[]);
      if cxMaskEdit1.Text=Form1.IBUSERPW.Value then
      begin
      Form1.ActiveUser:=Form1.IBUSERKL.Value;
@@ -54,6 +56,9 @@ begin
          Form1.cxButton4.Enabled:=false;
 
        end;
+
+        if iniFile<>nil then
+        IniFile.WriteString('User','Login',trim(cxLookupComboBox1.Text));
 
      Form1.Enabled:=true;
      Form11.Hide;
@@ -76,6 +81,22 @@ end;
 procedure TForm11.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 Form1.close;
+end;
+
+procedure TForm11.FormCreate(Sender: TObject);
+const
+  SHGFP_TYPE_CURRENT = 0;
+var folder : integer;
+    Result:string;
+path: array [0..MAX_PATH] of char;
+begin
+folder:=2;
+//  if SUCCEEDED(SHGetFolderPath(0,folder,0,SHGFP_TYPE_CURRENT,@path[0])) then
+//  begin
+    iniFile:=TIniFile.Create(extractfilepath(paramstr(0))+'dolg.ini');
+    Result:=iniFile.ReadString('User','Login','');
+    cxLookupComboBox1.EditValue:=Result;
+//  end;
 end;
 
 procedure TForm11.FormShow(Sender: TObject);

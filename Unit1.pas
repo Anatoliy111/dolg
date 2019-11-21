@@ -529,7 +529,7 @@ type
     DateKVART:TDate;
     UpdateBase:Boolean;
     iniFile:TIniFile;
-    PathKvart,StartSQL,PathDir,ORG:string;
+    PathKvart,StartSQL,PathFox,ORG:string;
     translit,textsms1,textsms2:string;
     posl:TStrings;
 
@@ -949,7 +949,7 @@ begin
   pw:=iniFile.ReadString('Data','PW','');
   ORG:=iniFile.ReadString('Data','org','');
   PathKvart:=iniFile.ReadString('DBF','base','');
-  PathDIR:=iniFile.ReadString('DBF','tmp',extractfilepath(paramstr(0)));
+  PathFOX:=iniFile.ReadString('DBF','fox','');
 
   posl := TStringList.Create;
 
@@ -963,8 +963,7 @@ begin
     IBWID.Next;
     end;
 
-  if not DirectoryExists(PathDIR) then
-    MkDir(PathDIR);
+
 
 
 // sms

@@ -13,6 +13,7 @@ object Form11: TForm11
   OldCreateOrder = False
   Position = poDesktopCenter
   OnClose = FormClose
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -57,12 +58,13 @@ object Form11: TForm11
   object cxLookupComboBox1: TcxLookupComboBox
     Left = 56
     Top = 56
-    Properties.KeyFieldNames = 'KL'
+    Properties.KeyFieldNames = 'FIO'
     Properties.ListColumns = <
       item
         FieldName = 'FIO'
       end>
     Properties.ListSource = Form1.DSUSER
+    Properties.ValidateOnEnter = False
     TabOrder = 3
     Width = 193
   end

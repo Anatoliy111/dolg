@@ -36,50 +36,10 @@ type
     cxLabel2: TcxLabel;
     cxTextEdit4: TcxTextEdit;
     cxLabel3: TcxLabel;
-    ADOTAB: TADODataSet;
-    DSADOTAB: TDataSource;
-    cxGrid1DBTableView1: TcxGridDBTableView;
-    cxGrid1Level1: TcxGridLevel;
-    cxGrid1: TcxGrid;
-    ADOConnectionDBF: TADOConnection;
-    ADOEDIT: TADODataSet;
-    DSADOEDIT: TDataSource;
-    cxGrid1DBTableView1schet: TcxGridDBColumn;
-    cxGrid1DBTableView1ym: TcxGridDBColumn;
-    cxGrid1DBTableView1subs_k: TcxGridDBColumn;
-    cxGrid1DBTableView1subs_e: TcxGridDBColumn;
-    cxGrid1DBTableView1rsubs_k: TcxGridDBColumn;
-    cxGrid1DBTableView1rsubs_e: TcxGridDBColumn;
-    cxGrid1DBTableView1s_el: TcxGridDBColumn;
-    cxGrid1DBTableView1s_hv: TcxGridDBColumn;
-    cxGrid1DBTableView1s_kv: TcxGridDBColumn;
-    cxGrid1DBTableView1s_om: TcxGridDBColumn;
-    cxGrid1DBTableView1s_ot: TcxGridDBColumn;
-    cxGrid1DBTableView1s_rs: TcxGridDBColumn;
-    cxGrid1DBTableView1s_sm: TcxGridDBColumn;
-    cxGrid1DBTableView1s_sn: TcxGridDBColumn;
-    cxGrid1DBTableView1s_su: TcxGridDBColumn;
-    cxGrid1DBTableView1s_ub: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_el: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_hv: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_kv: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_om: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_ot: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_rs: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_sm: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_sn: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_su: TcxGridDBColumn;
-    cxGrid1DBTableView1ob_ub: TcxGridDBColumn;
-    cxGrid1DBTableView1sfio: TcxGridDBColumn;
-    cxGrid1DBTableView1sul: TcxGridDBColumn;
-    cxGrid1DBTableView1sdom: TcxGridDBColumn;
-    cxGrid1DBTableView1skv: TcxGridDBColumn;
-    cxGrid1DBTableView1snorm: TcxGridDBColumn;
-    cxButton3: TcxButton;
     procedure cxButton2Click(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure cxButton3Click(Sender: TObject);
+
   private
 
 
@@ -103,6 +63,9 @@ implementation
 {$R *.dfm}
 
 uses comobj, Unit1, StrUtils, ShellAPI;
+
+
+
 
 procedure TForm19.cxButton1Click(Sender: TObject);
 var i,ns,kolst:integer;
@@ -254,7 +217,7 @@ begin
 
         end;
 
-
+   MsExcel.DisplayAlerts := False;
 
 
 
@@ -315,27 +278,23 @@ begin
 
         MsExcel.ActiveWorkbook.Close;
         MsExcel.Application.Quit;
-        st1:='';
 //        MsExcel := null;
    end;
 
    if mode=2 then
    begin
 
-      ADOQueryTAB.Close;
-      ADOQueryOBOR.Close;
-      ADOTAB.Close;
+        if not DirectoryExists(Form1.PathKvart+'subs') then
+             MkDir(Form1.PathKvart+'subs');
 
-      Path:=Form1.PathDIR+'subs.dbf';
 
-      try
-      deleteFile(Form1.PathDIR+'subs.dbf');
-      deleteFile(Form1.PathDIR+'obor.dbf');
-      deleteFile(Form1.PathDIR+'slgot.dbf');
+        try
+      deleteFile(Form1.PathKvart+'subs\subsree.dbf');
+      deleteFile(Form1.PathKvart+'subs\slgotree.dbf');
        except
       on E : Exception do
       begin
-      ShowMessage('Неможливо видалити файли з '+Form1.PathDIR+'.'+E.Message+'  Можливо файли відкриті в іншій програмі!');
+      ShowMessage('Неможливо видалити файли з '+Form1.PathKvart+'subs.'+E.Message+'  Можливо файли відкриті в іншій програмі!');
       Exit;
       end;
 
@@ -343,13 +302,13 @@ begin
 
 
 
-//     if tip='sub' then
-//       CopyFile(PChar(Form1.PathKvart+'dbf\subs.dbf'), PChar(Form1.PathDIR+'subs.dbf'), false);
-//     if tip='lg' then
-//       CopyFile(PChar(Form1.PathKvart+'dbf\slgot.dbf'), PChar(Form1.PathDIR+'slgot.dbf'), false);
-//     CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(Form1.PathDIR+'obor.dbf'), false);
-//
-//
+     if tip='sub' then
+       CopyFile(PChar(Form1.PathKvart+'dbf\subs.dbf'), PChar(Form1.PathKvart+'subs\subsree.dbf'), false);
+     if tip='lg' then
+       CopyFile(PChar(Form1.PathKvart+'dbf\slgot.dbf'), PChar(Form1.PathKvart+'subs\slgotree.dbf'), false);
+
+
+
 
 
 
@@ -369,29 +328,42 @@ begin
 
      try
             Application.ProcessMessages;
-            ADOConnectionDBF.Connected:=false;
+            ADOQueryOBOR.Close;
 //            ADOConnectionDBF.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'dbf\;Mode=Share Deny Read|Share Deny Write;Extended Properties=dBase IV;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
-                ADOConnectionDBF.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'dbf\;Mode=ReadWrite;Extended Properties=dBase III;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
-            ADOConnectionDBF.Connected:=true;
+            ADOQueryOBOR.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'dbf\;Mode=ReadWrite;Extended Properties=dBase III;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
 
 
 
 
 
 
+//       table:=TDbf.Create(self);
+//
+//       if tip='sub' then
+//           table.TableName:=Form1.PathKvart+'subs\subsree.dbf';
+//
+//       if tip='lg' then
+//           table.TableName:=Form1.PathKvart+'subs\slgotree.dbf';
+//
+
+               if tip='sub' then
+                  ADOQueryTAB.SQL.Text:='select * from subsree';
+               if tip='lg' then
+                  ADOQueryTAB.SQL.Text:='select * from slgotree';
+
+             ADOQueryTAB.Close;
+             ADOQueryTAB.ConnectionString:='Provider=VFPOLEDB.1;Data Source='+Form1.PathKvart+'subs\;Mode=ReadWrite;Password="";Collating Sequence=MACHINE;CODEPAGE=866;ANSI=False';
+             ADOQueryTAB.Open;
 
 
-       if tip='sub' then
-       begin
-          ADOQueryTAB.SQL.Text:='select * from subs order by schet';
-          ADOQueryTAB.Open;
-       end;
+            ADOQueryTAB.Close;
+//            ADOConnectionDBF.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'dbf\;Mode=Share Deny Read|Share Deny Write;Extended Properties=dBase IV;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
+            ADOQueryTAB.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'subs\;Mode=ReadWrite;Extended Properties=dBase III;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
 
-       if tip='lg' then
-       begin
-          ADOQueryTAB.SQL.Text:='select * from slgot order by schet';
-          ADOQueryTAB.Open;
-       end;
+            ADOQueryTAB.Open;
+
+
+//        table.Open;
 
 
        if (poslug='sm') then
@@ -400,7 +372,7 @@ begin
           ADOQueryOBOR.SQL.Text:='select * from obor where wid='''+poslug+''' or wid='''+poslug+''' and koef<>0';
 //
        ADOQueryOBOR.Open;
-       ADOQueryTAB.Open;
+
 
 
 
@@ -413,117 +385,47 @@ begin
        end;
      end;
 
-
-//    ADOCommand1.CommandText:='';
-//    ADOCommand1.CommandText:='CREATE INDEX IndexName ON subs (schet)';
-//    ADOCommand1.Execute;
-
-
-
-
-
-
-//            ADOQueryTAB.First;
-//            while not ADOQueryTAB.Eof do
+//            table.First;
+//            while not table.Eof do
 //            begin
-//               ADOQueryTAB.Edit;
-//               ADOQueryTAB.FieldByName('s_'+poslug).AsFloat:=0;
-//               ADOQueryTAB.Post;
-//               ADOQueryTAB.Next;
+//               table.Edit;
+//               table.FieldByName('s_'+poslug).AsFloat:=0;
+//               table.Post;
+//               table.Next;
 //            end;
 //
 //            if (poslug='sm') then
 //            begin
-//            ADOQueryTAB.First;
-//              while not ADOQueryTAB.Eof do
+//            table.First;
+//              while not table.Eof do
 //              begin
-//                 ADOQueryTAB.Edit;
-//                 ADOQueryTAB.FieldByName('s_sn').AsFloat:=0;
-//                 ADOQueryTAB.Post;
-//                 ADOQueryTAB.Next;
+//                 table.Edit;
+//                 table.FieldByName('s_sn').AsFloat:=0;
+//                 table.Post;
+//                 table.Next;
 //              end;
 //
 //
 //            end;
 
-
-
-
-
-
-
-
-        cxProgressBar1.Properties.Min:=0;
-        cxProgressBar1.Properties.Max:=kolst-1;
-        cxProgressBar1.Position:=5;
-        for I := 7 to kolst-1 do
-        begin
-          cxProgressBar1.Position:=cxProgressBar1.Position+1;
-          Application.ProcessMessages;
-
-//          ADOQueryOBOR.Close;
-//          ADOQueryOBOR.CommandText:='select schet from obor where wid='''+cxLookupComboBox1.EditValue+''' and koef=1';
-
-          sch:=trim(MsExcel.WorkSheets[1].Cells[i,4]);
-
-          if StrToFloat(MsExcel.WorkSheets[1].Cells[i,7])<>0 then
-          begin
-
-            ADOQueryOBOR.First;
-//            if ADOQueryOBOR.Locate('wid;schet',VarArrayOf([cxLookupComboBox1.EditValue,sch]),[loPartialKey]) then
-            if ADOQueryOBOR.Locate('schet',sch,[]) then
+                   ADOQueryTAB.First;
+            while not ADOQueryTAB.Eof do
             begin
-               ADOQueryTAB.First;
-               if not ADOQueryTAB.Locate('schet',sch,[]) then
-               begin
-                  ADOQueryTAB.Append;
-                  ADOQueryTAB.FieldByName('schet').AsString:=sch;
-//                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
-                  ADOQueryTAB.Post;
-               end;
-            end
-            else
-               MsExcel.WorkSheets[1].Cells[i,8]:='рахунок (послуга по рахунку) не знайдено';
-          end;
-          end;
-
-     if tip='sub' then
-     begin
-       CopyFile(PChar(Form1.PathKvart+'dbf\subs.dbf'), PChar(Form1.PathDIR+'subs.dbf'), false);
-       ADOTAB.CommandText:='select * from subs'
-     end;
-     if tip='lg' then
-     begin
-       CopyFile(PChar(Form1.PathKvart+'dbf\slgot.dbf'), PChar(Form1.PathDIR+'slgot.dbf'), false);
-       ADOTAB.CommandText:='select * from slgot'
-     end;
-
-     ADOTAB.ConnectionString:='Provider=VFPOLEDB.1;Data Source='+Form1.PathDIR+';Mode=ReadWrite;Password="";Collating Sequence=MACHINE;CODEPAGE=866;ANSI=False';
-     ADOTAB.Open;
-     ADOTAB.Close;
-     ADOTAB.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathDIR+';Mode=ReadWrite;Extended Properties=dBase IV;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
-     ADOTAB.Open;
-
-
-
-            ADOTAB.First;
-            while not ADOTAB.Eof do
-            begin
-               ADOTAB.Edit;
-               ADOTAB.FieldByName('s_'+poslug).AsFloat:=0;
-               ADOTAB.Post;
-               ADOTAB.Next;
+               ADOQueryTAB.Edit;
+               ADOQueryTAB.FieldByName('s_'+poslug).AsFloat:=0;
+               ADOQueryTAB.Post;
+               ADOQueryTAB.Next;
             end;
 
             if (poslug='sm') then
             begin
-            ADOTAB.First;
-              while not ADOTAB.Eof do
+            ADOQueryTAB.First;
+              while not ADOQueryTAB.Eof do
               begin
-                 ADOTAB.Edit;
-                 ADOTAB.FieldByName('s_sn').AsFloat:=0;
-                 ADOTAB.Post;
-                 ADOTAB.Next;
+                 ADOQueryTAB.Edit;
+                 ADOQueryTAB.FieldByName('s_sn').AsFloat:=0;
+                 ADOQueryTAB.Post;
+                 ADOQueryTAB.Next;
               end;
 
 
@@ -531,6 +433,9 @@ begin
 
 
 
+
+
+
         cxProgressBar1.Properties.Min:=0;
         cxProgressBar1.Properties.Max:=kolst-1;
         cxProgressBar1.Position:=5;
@@ -551,41 +456,74 @@ begin
 //            if ADOQueryOBOR.Locate('wid;schet',VarArrayOf([cxLookupComboBox1.EditValue,sch]),[loPartialKey]) then
             if ADOQueryOBOR.Locate('schet',sch,[]) then
             begin
-               ADOTAB.First;
-               if ADOTAB.Locate('schet',sch,[]) then
+//               table.First;
+//               if not table.Locate('schet',sch,[]) then
+//               begin
+//                  table.Append;
+//                  table.FieldByName('schet').AsString:=sch;
+//                  table.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
+//                  table.Post;
+//               end
+//               else
+//               begin
+//                  table.edit;
+////                  ADOQueryTAB.FieldByName('schet').AsString:=sch;
+//                  table.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
+//                  table.Post;
+//
+//               end;
+
+               ADOQueryTAB.First;
+               if not ADOQueryTAB.Locate('schet',sch,[]) then
                begin
-                  ADOTAB.Edit;
-                  ADOTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
-                  ADOTAB.Post;
+                  ADOQueryTAB.Append;
+                  ADOQueryTAB.FieldByName('schet').AsString:=sch;
+                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
+                  ADOQueryTAB.Post;
+               end
+               else
+               begin
+                  ADOQueryTAB.edit;
+//                  ADOQueryTAB.FieldByName('schet').AsString:=sch;
+                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
+                  ADOQueryTAB.Post;
+
                end;
+
+
             end
             else
                MsExcel.WorkSheets[1].Cells[i,8]:='рахунок (послуга по рахунку) не знайдено';
           end;
-          end;
+        end;
+
+
+//        ShellExecute(0, 'open', 'cmd.exe', PChar('/C copy '+Form1.PathDIR+'subs.dbf '+Form1.PathKvart+'dbf\subs.dbf'), nil, SW_HIDE);
 
      if tip='sub' then
      begin
-       //CopyFile(PChar(Form1.PathDIR+'subs.dbf'), PChar(Form1.PathKvart+'dbf\subs.dbf'), false);
-       ShellExecute(0, 'open', 'cmd.exe', PChar('/C copy '+Form1.PathDIR+'subs.dbf '+Form1.PathKvart+'dbf\subs.dbf'), nil, SW_HIDE);
-//       ShellExecute(0, 'open', 'cmd.exe', '/k dir', nil, SW_SHOW);
+         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'subs\subsree '+Form1.PathKvart;
+         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
      end;
      if tip='lg' then
      begin
-       ShellExecute(0, 'open', 'cmd.exe', PChar('/C copy '+Form1.PathDIR+'slgot.dbf '+Form1.PathKvart+'dbf\slgot.dbf'), nil, SW_HIDE);
-//       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
+         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'subs\slgotree '+Form1.PathKvart;
+         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
      end;
 
 
 
-        ADOConnectionDBF.Close;
-        ADOTAB.Close;
+        ADOQueryTAB.Close;
+        ADOQueryOBOR.Close;
+//        table.Close;
+//        table.Free;
 
-        MsExcel.Visible := True;
+
+//        MsExcel.Visible := True;
+
         MsExcel.ActiveWorkbook.save;
-
-//        MsExcel.ActiveWorkbook.Close;
-//        MsExcel.Application.Quit;
+        MsExcel.ActiveWorkbook.Close;
+        MsExcel.Application.Quit;
 
 
    end;
@@ -595,20 +533,14 @@ begin
 //     if tip='lg' then
 //       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
-
+      cxTextEdit1.Text:='';
       st1:='';
       ShowMessage('Завантаження закінчено');
 
 end;
 
-procedure TForm19.cxButton3Click(Sender: TObject);
-begin
-   ShellExecute(0, 'open', 'cmd.exe', PChar('/C copy '+Form1.PathDIR+'subs.dbf '+Form1.PathKvart+'dbf\subs.dbf'), nil, SW_HIDE);
-end;
-
 procedure TForm19.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
- ADOConnectionDBF.Close;
        if not VarIsEmpty(MsExcel)  then
          if not MsExcel.Visible then
          begin
