@@ -91,12 +91,12 @@ var folder : integer;
 path: array [0..MAX_PATH] of char;
 begin
 folder:=2;
-//  if SUCCEEDED(SHGetFolderPath(0,folder,0,SHGFP_TYPE_CURRENT,@path[0])) then
-//  begin
-    iniFile:=TIniFile.Create(extractfilepath(paramstr(0))+'dolg.ini');
+  if SUCCEEDED(SHGetFolderPath(0,folder,0,SHGFP_TYPE_CURRENT,@path[0])) then
+  begin
+    iniFile:=TIniFile.Create(path+'dolg.ini');
     Result:=iniFile.ReadString('User','Login','');
     cxLookupComboBox1.EditValue:=Result;
-//  end;
+  end;
 end;
 
 procedure TForm11.FormShow(Sender: TObject);

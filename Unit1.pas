@@ -529,7 +529,7 @@ type
     DateKVART:TDate;
     UpdateBase:Boolean;
     iniFile:TIniFile;
-    PathKvart,StartSQL,PathFox,ORG:string;
+    PathKvart,StartSQL,PathFox,ORG,PathTMP:string;
     translit,textsms1,textsms2:string;
     posl:TStrings;
 
@@ -950,18 +950,14 @@ begin
   ORG:=iniFile.ReadString('Data','org','');
   PathKvart:=iniFile.ReadString('DBF','base','');
   PathFOX:=iniFile.ReadString('DBF','fox','');
+  PathTMP:=iniFile.ReadString('TMP','tmp','');
 
   posl := TStringList.Create;
 
-  IBWID.open;
-  IBWID.First;
-  while not IBWID.Eof do
-    begin
-    if Length(iniFile.ReadString('POSL',IBWIDWID.Value,''))<>0 then
-       posl.Add(Format('%s=%s', [IBWIDWID.Value, iniFile.ReadString('POSL',IBWIDWID.Value,'')]));
-    pp:=posl.Values[Form1.IBWIDWID.Value];
-    IBWID.Next;
-    end;
+          if not DirectoryExists(PathTMP) then
+             MkDir(PathTMP);
+
+
 
 
 
@@ -1005,6 +1001,17 @@ begin
   IBSP_ADRES.open;
   IBSERVICES.open;
   IBPERIOD.open;
+
+
+    IBWID.open;
+  IBWID.First;
+  while not IBWID.Eof do
+    begin
+    if Length(iniFile.ReadString('POSL',IBWIDWID.Value,''))<>0 then
+       posl.Add(Format('%s=%s', [IBWIDWID.Value, iniFile.ReadString('POSL',IBWIDWID.Value,'')]));
+    pp:=posl.Values[Form1.IBWIDWID.Value];
+    IBWID.Next;
+    end;
 
 
 
