@@ -36,6 +36,7 @@ type
     cxLabel2: TcxLabel;
     cxTextEdit4: TcxTextEdit;
     cxLabel3: TcxLabel;
+    ADOCommand1: TADOCommand;
     procedure cxButton2Click(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -356,11 +357,17 @@ begin
              ADOQueryTAB.Open;
 
 
+
+
+
             ADOQueryTAB.Close;
 //            ADOConnectionDBF.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'dbf\;Mode=Share Deny Read|Share Deny Write;Extended Properties=dBase IV;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
             ADOQueryTAB.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'subs\;Mode=ReadWrite;Extended Properties=dBase III;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
 
             ADOQueryTAB.Open;
+
+
+            ADOCommand1.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'subs\;Mode=ReadWrite;Extended Properties=dBase III;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
 
 
 //        table.Open;
@@ -407,6 +414,24 @@ begin
 //
 //
 //            end;
+               ADOQueryTAB.Close;
+
+               if tip='sub' then
+                  ADOCommand1.CommandText:='delete from subsree where len(schet) is null';
+               if tip='lg' then
+                  ADOCommand1.CommandText:='delete from slgotree where len(schet) is null';
+               ADOCommand1.Execute;
+
+               ADOQueryTAB.Open;
+
+
+
+
+
+
+
+
+
 
                    ADOQueryTAB.First;
             while not ADOQueryTAB.Eof do
@@ -503,12 +528,12 @@ begin
      if tip='sub' then
      begin
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'subs\subsree '+Form1.PathKvart;
-         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_SHOW);
      end;
      if tip='lg' then
      begin
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'subs\slgotree '+Form1.PathKvart;
-         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_SHOW);
      end;
 
 

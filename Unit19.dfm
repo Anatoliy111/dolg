@@ -2,7 +2,7 @@ object Form19: TForm19
   Left = 0
   Top = 0
   Caption = #1056#1077#1108#1089#1090#1088#1080' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
-  ClientHeight = 190
+  ClientHeight = 188
   ClientWidth = 606
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -143,7 +143,7 @@ object Form19: TForm19
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
-      'select * from subsree')
+      'select schet, len(schet) from subsree')
     Left = 112
   end
   object DSADOQueryTAB: TDataSource
@@ -153,11 +153,10 @@ object Form19: TForm19
     Top = 48
   end
   object ADOQueryOBOR: TADOQuery
+    CursorType = ctStatic
     ParamCheck = False
     Parameters = <>
     Prepared = True
-    SQL.Strings = (
-      'select * from obor where wid='#39'ot'#39)
     Left = 184
   end
   object DSADOQueryOBOR: TDataSource
@@ -165,5 +164,15 @@ object Form19: TForm19
     Enabled = False
     Left = 184
     Top = 48
+  end
+  object ADOCommand1: TADOCommand
+    CommandText = 'delete from subsree where len(schet) is null'#13#10
+    ConnectionString = 
+      'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=d:\WORK\KOMUN\kvpl\' +
+      'subs\;Mode=ReadWrite;Extended Properties=dBase IV;Persist Securi' +
+      'ty Info=False'
+    Parameters = <>
+    Left = 272
+    Top = 8
   end
 end
