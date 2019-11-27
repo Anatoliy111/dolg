@@ -212,7 +212,7 @@ begin
            f1:=False
         else
           begin
-          MsExcel.WorkSheets[1].Cells[kolst,8]:='';
+          MsExcel.WorkSheets[1].Cells[kolst,9]:='';
           kolst:=kolst+1;
           end;
 
@@ -472,7 +472,9 @@ begin
 //          ADOQueryOBOR.Close;
 //          ADOQueryOBOR.CommandText:='select schet from obor where wid='''+cxLookupComboBox1.EditValue+''' and koef=1';
 
-          sch:=trim(MsExcel.WorkSheets[1].Cells[i,4]);
+//          sch:=trim(MsExcel.WorkSheets[1].Cells[i,4]);
+//          if sch='0113275А' then
+             sch:=AnsiLowerCase(trim(MsExcel.WorkSheets[1].Cells[i,4]));
 
 
 
@@ -516,7 +518,7 @@ begin
                begin
                   ADOQueryTAB.edit;
 //                  ADOQueryTAB.FieldByName('schet').AsString:=sch;
-                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=sumExcel;
+                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat+sumExcel;
                   ADOQueryTAB.Post;
 
                end;
@@ -524,7 +526,7 @@ begin
 
             end
             else
-               MsExcel.WorkSheets[1].Cells[i,8]:='рахунок (послуга по рахунку) не знайдено';
+               MsExcel.WorkSheets[1].Cells[i,9]:='рахунок (послуга по рахунку) не знайдено';
           end;
         end;
 
