@@ -2,7 +2,7 @@ object Form19: TForm19
   Left = 0
   Top = 0
   Caption = #1056#1077#1108#1089#1090#1088#1080' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
-  ClientHeight = 185
+  ClientHeight = 154
   ClientWidth = 606
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -39,12 +39,6 @@ object Form19: TForm19
     TabOrder = 2
     OnClick = cxButton2Click
   end
-  object cxProgressBar1: TcxProgressBar
-    Left = 31
-    Top = 156
-    TabOrder = 3
-    Width = 554
-  end
   object Memo1: TMemo
     Left = 343
     Top = 38
@@ -52,20 +46,20 @@ object Form19: TForm19
     Height = 70
     Lines.Strings = (
       'Memo1')
-    TabOrder = 4
+    TabOrder = 3
   end
   object cxTextEdit2: TcxTextEdit
     Left = 136
     Top = 38
     Properties.ReadOnly = True
-    TabOrder = 5
+    TabOrder = 4
     Width = 201
   end
   object cxTextEdit3: TcxTextEdit
     Left = 136
     Top = 65
     Properties.ReadOnly = True
-    TabOrder = 6
+    TabOrder = 5
     Width = 201
   end
   object cxLabel1: TcxLabel
@@ -82,7 +76,7 @@ object Form19: TForm19
     Left = 136
     Top = 92
     Properties.ReadOnly = True
-    TabOrder = 9
+    TabOrder = 8
     Width = 201
   end
   object cxLabel3: TcxLabel

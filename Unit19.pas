@@ -19,7 +19,6 @@ type
     cxButton1: TcxButton;
     cxTextEdit1: TcxTextEdit;
     cxButton2: TcxButton;
-    cxProgressBar1: TcxProgressBar;
     IBQuery1: TIBQuery;
     DSQuery1: TDataSource;
     IBQuery1SCHET: TIBStringField;
@@ -63,7 +62,7 @@ implementation
 
 {$R *.dfm}
 
-uses comobj, Unit1, StrUtils, ShellAPI;
+uses comobj, Unit1, StrUtils, ShellAPI, Unit2;
 
 
 
@@ -200,10 +199,16 @@ begin
      exit;
    end;
 
+   Form19.Enabled:=false;
+   Form2.Show;
 
       f1:=true;
       kolst:=7;
-
+   Form2.Label1.Caption:='Обрахування даних';
+        Form2.cxProgressBar1.Properties.Min:=0;
+        Form2.cxProgressBar1.Properties.Max:=0;
+        Form2.cxProgressBar1.Position:=0;
+   Application.ProcessMessages;
 
 //        MsExcel.Visible := True;
         while f1 do
@@ -247,14 +252,15 @@ begin
       IBQuery1.Open;
 
 
-
+      Form2.Label1.Caption:='Завантаження даних';
+      Application.ProcessMessages;
         MsExcel.Visible := True;
-        cxProgressBar1.Properties.Min:=0;
-        cxProgressBar1.Properties.Max:=kolst-1;
-        cxProgressBar1.Position:=5;
+        Form2.cxProgressBar1.Properties.Min:=0;
+        Form2.cxProgressBar1.Properties.Max:=kolst-1;
+        Form2.cxProgressBar1.Position:=5;
         for I := 7 to kolst-1 do
         begin
-          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+          Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
 
           sch:=MsExcel.WorkSheets[1].Cells[i,4];
@@ -301,7 +307,8 @@ begin
 
       end;
 
-
+     Form2.Label1.Caption:='Копіювання файлу реєстру';
+     Application.ProcessMessages;
 
      if tip='sub' then
        CopyFile(PChar(Form1.PathKvart+'dbf\subs.dbf'), PChar(Form1.PathKvart+'subs\subsree.dbf'), false);
@@ -414,6 +421,10 @@ begin
 //
 //
 //            end;
+
+          Form2.Label1.Caption:='Видалення пустих записів';
+          Application.ProcessMessages;
+
                ADOQueryTAB.Close;
 
                if tip='sub' then
@@ -431,7 +442,8 @@ begin
 
 
 
-
+           Form2.Label1.Caption:='Очищення файлу реєстру';
+           Application.ProcessMessages;
 
                    ADOQueryTAB.First;
             while not ADOQueryTAB.Eof do
@@ -460,13 +472,15 @@ begin
 
 
 
+           Form2.Label1.Caption:='Завантаження даних';
+           Application.ProcessMessages;
 
-        cxProgressBar1.Properties.Min:=0;
-        cxProgressBar1.Properties.Max:=kolst-1;
-        cxProgressBar1.Position:=5;
+        Form2.cxProgressBar1.Properties.Min:=0;
+        Form2.cxProgressBar1.Properties.Max:=kolst-1;
+        Form2.cxProgressBar1.Position:=5;
         for I := 7 to kolst-1 do
         begin
-          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+          Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
 
 //          ADOQueryOBOR.Close;
@@ -533,6 +547,7 @@ begin
 
 //        ShellExecute(0, 'open', 'cmd.exe', PChar('/C copy '+Form1.PathDIR+'subs.dbf '+Form1.PathKvart+'dbf\subs.dbf'), nil, SW_HIDE);
 
+     form2.Close;
      if tip='sub' then
      begin
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'subs\subsree '+Form1.PathKvart;
@@ -571,7 +586,7 @@ begin
 
 
       ShowMessage('Завантаження закінчено');
-
+      Form19.Enabled:=true;
 end;
 
 procedure TForm19.FormClose(Sender: TObject; var Action: TCloseAction);
