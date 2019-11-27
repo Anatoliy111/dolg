@@ -547,7 +547,7 @@ begin
 
 //        ShellExecute(0, 'open', 'cmd.exe', PChar('/C copy '+Form1.PathDIR+'subs.dbf '+Form1.PathKvart+'dbf\subs.dbf'), nil, SW_HIDE);
 
-     form2.Close;
+
      if tip='sub' then
      begin
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'subs\subsree '+Form1.PathKvart;
@@ -584,7 +584,7 @@ begin
       cxTextEdit1.Text:='';
       st1:='';
 
-
+      form2.Close;
       ShowMessage('Завантаження закінчено');
       Form19.Enabled:=true;
 end;
