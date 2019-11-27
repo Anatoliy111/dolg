@@ -170,7 +170,7 @@ xlCenter = -4108;
 xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
 var i,ns,kolst:integer;
-    sum:currency;
+    sum,sumExcel:currency;
     str,nam,sch,klasf,vid_rob,n_kres,gost,dekada:string;
     kolwith,rowh,rowh1:Variant;
     f1:boolean;
@@ -474,7 +474,13 @@ begin
 
           sch:=trim(MsExcel.WorkSheets[1].Cells[i,4]);
 
-          if StrToFloat(MsExcel.WorkSheets[1].Cells[i,7])<>0 then
+
+
+
+          sumExcel:=StrToFloat(StringReplace(MsExcel.WorkSheets[1].Cells[i,7],'.',',',[]));
+
+
+          if sumExcel<>0 then
           begin
 
             ADOQueryOBOR.First;
@@ -503,14 +509,14 @@ begin
                begin
                   ADOQueryTAB.Append;
                   ADOQueryTAB.FieldByName('schet').AsString:=sch;
-                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
+                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=sumExcel;
                   ADOQueryTAB.Post;
                end
                else
                begin
                   ADOQueryTAB.edit;
 //                  ADOQueryTAB.FieldByName('schet').AsString:=sch;
-                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=StrToFloat(MsExcel.WorkSheets[1].Cells[i,7]);
+                  ADOQueryTAB.FieldByName('s_'+ADOQueryOBOR.FieldByName('wid').AsString).AsFloat:=sumExcel;
                   ADOQueryTAB.Post;
 
                end;
@@ -535,7 +541,7 @@ begin
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'subs\slgotree '+Form1.PathKvart;
          ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_SHOW);
      end;
-
+     Sleep(5000);
 
 
         ADOQueryTAB.Close;
@@ -560,6 +566,8 @@ begin
 
       cxTextEdit1.Text:='';
       st1:='';
+
+
       ShowMessage('Завантаження закінчено');
 
 end;
