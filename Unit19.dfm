@@ -11,7 +11,6 @@ object Form19: TForm19
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object cxButton1: TcxButton

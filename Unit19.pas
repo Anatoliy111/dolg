@@ -38,7 +38,6 @@ type
     ADOCommand1: TADOCommand;
     procedure cxButton2Click(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   private
 
@@ -78,12 +77,12 @@ begin
        Memo1.Text:='';
        cxTextEdit4.Text:='';
        tip:='';
-       if not VarIsEmpty(MsExcel) then
-         if not MsExcel.Visible then
-         begin
-            MsExcel.Application.Quit;
-            Application.ProcessMessages;
-         end;
+//       if not VarIsEmpty(MsExcel) then
+//         if not MsExcel.Visible then
+//         begin
+//            MsExcel.Application.Quit;
+//            Application.ProcessMessages;
+//         end;
 
   if OpenDialog1.Execute then
   begin
@@ -199,6 +198,26 @@ begin
      exit;
    end;
 
+
+      if mode=2 then
+   begin
+
+       if (LeftStr(st1,2)<>'RK') or (LeftStr(st1,2)<>'LK') then
+       begin
+         ShowMessage('Неправильний файл');
+        MsExcel.ActiveWorkbook.Close;
+        MsExcel.Application.Quit;
+        MsExcel := null;
+      cxTextEdit1.Text:='';
+      st1:='';
+        Application.ProcessMessages;
+         exit;
+       end;
+   end;
+
+
+
+
    Form19.Enabled:=false;
    Form2.Show;
 
@@ -282,14 +301,18 @@ begin
 
 
 
-
+        MsExcel.ActiveWorkbook.save;
         MsExcel.ActiveWorkbook.Close;
         MsExcel.Application.Quit;
-//        MsExcel := null;
+        MsExcel := null;
+        Application.ProcessMessages;
+
+
    end;
 
    if mode=2 then
    begin
+
 
         if not DirectoryExists(Form1.PathKvart+'subs') then
              MkDir(Form1.PathKvart+'subs');
@@ -572,6 +595,8 @@ begin
         MsExcel.ActiveWorkbook.save;
         MsExcel.ActiveWorkbook.Close;
         MsExcel.Application.Quit;
+        MsExcel := null;
+        Application.ProcessMessages;
 
 
    end;
@@ -587,18 +612,6 @@ begin
       form2.Close;
       ShowMessage('Завантаження закінчено');
       Form19.Enabled:=true;
-end;
-
-procedure TForm19.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-       if not VarIsEmpty(MsExcel)  then
-         if not MsExcel.Visible then
-         begin
-            MsExcel.Application.Quit;
-            Application.ProcessMessages;
-         end;
-
-
 end;
 
 end.
