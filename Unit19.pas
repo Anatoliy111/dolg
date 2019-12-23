@@ -169,7 +169,7 @@ xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
 var i,ns,kolst:integer;
     sum,sumExcel:currency;
-    str,nam,sch,klasf,vid_rob,n_kres,gost,dekada:string;
+    str,nam,sch,klasf,vid_rob,n_kres,gost,dekada,sss:string;
     kolwith,rowh,rowh1:Variant;
     f1:boolean;
     pathDBF,Path:string;
@@ -201,18 +201,20 @@ begin
 
       if mode=2 then
    begin
-
-       if (LeftStr(st1,2)<>'RK') or (LeftStr(st1,2)<>'LK') then
-       begin
-         ShowMessage('Неправильний файл');
-        MsExcel.ActiveWorkbook.Close;
-        MsExcel.Application.Quit;
-        MsExcel := null;
-      cxTextEdit1.Text:='';
-      st1:='';
-        Application.ProcessMessages;
-         exit;
-       end;
+       sss:=LeftStr(st1,2);
+//       if (sss<>'RK') or (sss<>'LK') then
+       if sss<>'RK' then
+         if sss<>'LK' then
+         begin
+           ShowMessage('Неправильний файл');
+          MsExcel.ActiveWorkbook.Close;
+          MsExcel.Application.Quit;
+          MsExcel := null;
+        cxTextEdit1.Text:='';
+        st1:='';
+          Application.ProcessMessages;
+           exit;
+         end;
    end;
 
 
