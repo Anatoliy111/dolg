@@ -68,4 +68,5 @@ __recovery/
 # Base
 *.FDB
 *.GDB
+*.fbk
 tmp/
