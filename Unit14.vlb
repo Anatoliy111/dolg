@@ -181,31 +181,13 @@ Coordinates=1269,10,103,124
 [cxTextEdit3]
 Coordinates=1049,1354,82,36
 
-[cxGrid2]
-Coordinates=79,1466,59,36
-
-[cxGridDBTableView1]
-Coordinates=652,2421,137,36
-
 [IBREP]
 Coordinates=828,1354,53,58
-
-[cxGridDBTableView1CH]
-Coordinates=652,2476,155,36
-
-[cxLabel8]
-Coordinates=973,1354,66,36
-
-[cxGridDBTableView1NAIM]
-Coordinates=652,2641,168,36
 
 [DSREP]
 Coordinates=652,2135,58,36
 
-[cxGridLevel1]
-Coordinates=652,2696,90,36
-
 []
-Coordinates=754,1354,64,58
+Coordinates=973,1354,66,36
 Visible=True
 

@@ -18,9 +18,9 @@ object Form1: TForm1
   TextHeight = 13
   object cxGrid1: TcxGrid
     Left = 0
-    Top = 209
+    Top = 211
     Width = 972
-    Height = 429
+    Height = 427
     Align = alClient
     TabOrder = 0
     object cxGrid1DBTableView1: TcxGridDBTableView
@@ -226,6 +226,14 @@ object Form1: TForm1
         Properties.ReadOnly = True
         Width = 232
       end
+      object cxGrid1DBTableView1N_DOG: TcxGridDBColumn
+        Caption = #8470' '#1076#1086#1075#1086#1074'.'
+        DataBinding.FieldName = 'N_DOG'
+      end
+      object cxGrid1DBTableView1D_DOG: TcxGridDBColumn
+        Caption = #1044#1072#1090#1072' '#1076#1086#1075#1086#1074'.'
+        DataBinding.FieldName = 'D_DOG'
+      end
       object cxGrid1DBTableView1UL: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
         DataBinding.FieldName = 'UL'
@@ -381,7 +389,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Top = 28
+    Top = 30
     Width = 972
     Height = 181
     Align = alTop
@@ -604,6 +612,7 @@ object Form1: TForm1
     Width = 121
   end
   object IBDatabase1: TIBDatabase
+    Connected = True
     DatabaseName = 'D:\WORK\KOMUN\DOLG\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'
@@ -918,6 +927,8 @@ object Form1: TForm1
       'vw_obkr.poslug,'
       'vw_obkr.dolg as dolg,'
       'vw_obkr.fio,'
+      'vw_obkr.n_dog,'
+      'vw_obkr.d_dog,'
       'vw_obkr.idcod,'
       'vw_obkr.ulnaim ul,'
       'vw_obkr.nomdom dom,'
@@ -1089,6 +1100,16 @@ object Form1: TForm1
     object IBREPDENDDOLG: TFloatField
       FieldName = 'ENDDOLG'
       Origin = '"VW_OBKR"."SAL"'
+    end
+    object IBREPDN_DOG: TIBStringField
+      FieldName = 'N_DOG'
+      Origin = '"VW_OBKR"."N_DOG"'
+      Size = 10
+    end
+    object IBREPDD_DOG: TIBStringField
+      FieldName = 'D_DOG'
+      Origin = '"VW_OBKR"."D_DOG"'
+      Size = 8
     end
   end
   object IBQuery1: TIBQuery
@@ -1421,7 +1442,7 @@ object Form1: TForm1
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -15
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -1439,7 +1460,7 @@ object Form1: TForm1
     DockControlHeights = (
       0
       0
-      28
+      30
       0)
     object dxBarManager1Bar1: TdxBar
       Caption = 'MainMenu'
@@ -2635,10 +2656,6 @@ object Form1: TForm1
         end
         item
           Visible = True
-          ItemName = 'dxBarButton123'
-        end
-        item
-          Visible = True
           ItemName = 'dxBarButton122'
         end>
     end
@@ -2650,9 +2667,9 @@ object Form1: TForm1
       OnClick = dxBarButton120Click
     end
     object dxBarButton121: TdxBarButton
-      Caption = #1047#1074#1110#1090' '#1087#1086' '#1072#1073#1086#1085#1077#1085#1090#1072#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076')'
+      Caption = #1059#1085#1110#1074#1077#1088#1089#1072#1083#1100#1085#1080#1081' '#1079#1074#1110#1090' '#1087#1086' '#1073#1086#1088#1078#1085#1080#1082#1072#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076')'
       Category = 0
-      Hint = #1047#1074#1110#1090' '#1087#1086' '#1072#1073#1086#1085#1077#1085#1090#1072#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076')'
+      Hint = #1059#1085#1110#1074#1077#1088#1089#1072#1083#1100#1085#1080#1081' '#1079#1074#1110#1090' '#1087#1086' '#1073#1086#1088#1078#1085#1080#1082#1072#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076')'
       Visible = ivAlways
       OnClick = dxBarButton121Click
     end
@@ -2668,7 +2685,6 @@ object Form1: TForm1
       Category = 0
       Hint = #1047#1074#1110#1090' '#1087#1086' '#1086#1088#1075#1072#1085#1110#1079#1072#1094#1110#1103#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076') '
       Visible = ivAlways
-      OnClick = dxBarButton123Click
     end
   end
   object IBPERIOD: TIBDataSet
@@ -3153,6 +3169,7 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
+    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (

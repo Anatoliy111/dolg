@@ -491,6 +491,10 @@ type
     dxBarButton123: TdxBarButton;
     cxButton10: TcxButton;
     cxButton6: TcxButton;
+    IBREPDN_DOG: TIBStringField;
+    IBREPDD_DOG: TIBStringField;
+    cxGrid1DBTableView1N_DOG: TcxGridDBColumn;
+    cxGrid1DBTableView1D_DOG: TcxGridDBColumn;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -516,7 +520,6 @@ type
     procedure dxBarButton120Click(Sender: TObject);
     procedure dxBarButton121Click(Sender: TObject);
     procedure dxBarButton122Click(Sender: TObject);
-    procedure dxBarButton123Click(Sender: TObject);
     procedure cxButton6Click(Sender: TObject);
   private
     { Private declarations }
@@ -626,15 +629,6 @@ begin
 ////       end;
 //
 //     end;
-end;
-
-procedure TForm1.dxBarButton123Click(Sender: TObject);
-begin
-Form14.tip:='Org';
-Form14.cxGrid1DBTableView1.ClearItems;
-Form14.Caption:=dxBarButton123.Caption;
-Form14.Show;
-
 end;
 
 procedure TForm1.dxBarButton19Click(Sender: TObject);
