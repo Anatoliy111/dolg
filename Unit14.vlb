@@ -1,7 +1,4 @@
-﻿[cxComboBox1]
-Coordinates=656,1466,98,36
-
-[IBWIDWID]
+﻿[IBWIDWID]
 Coordinates=652,925,76,36
 
 [Form1.DSNOTE2]
@@ -28,9 +25,6 @@ Coordinates=948,1466,92,36
 [Form1.DSSERVICES]
 Coordinates=296,144,137,36
 
-[cxCheckBox1]
-Coordinates=224,1466,93,36
-
 [cxButton9]
 Coordinates=395,1354,72,58
 
@@ -43,14 +37,8 @@ Coordinates=121,10,103,674
 [cxButton1]
 Coordinates=130,1354,72,58
 
-[cxLabel1]
-Coordinates=148,1466,66,36
-
 [Form1.IBNOTE1]
 Coordinates=10,1354,110,102
-
-[cxLabel2]
-Coordinates=872,1466,66,36
 
 [cxGrid1]
 Coordinates=10,1466,59,36
@@ -188,6 +176,6 @@ Coordinates=828,1354,53,58
 Coordinates=652,2135,58,36
 
 []
-Coordinates=973,1354,66,36
+Coordinates=656,1466,98,36
 Visible=True
 

@@ -918,6 +918,13 @@ begin
 
   Excel.ActiveWindow.View := 1;
 
+ // Excel.ActiveSheet.Rows['20:20'].Select;
+  //Excel.Selection.Insert(Shift :=5);
+   //Excel.ActiveSheet.Range['A8','A8'].Insert(3);
+
+
+//   Excel.WorkBooks[1].WorkSheets[1].Rows.InsertRows(0,10);
+ //  Excel.ActiveSheet.Rows.InsertRows(0,10);
 
   except
   end;

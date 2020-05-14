@@ -17,12 +17,8 @@ type
   TForm14 = class(TForm)
     Panel1: TPanel;
     cxGroupBox1: TcxGroupBox;
-    cxLabel2: TcxLabel;
     cxCheckBox2: TcxCheckBox;
     cxButton2: TcxButton;
-    cxComboBox1: TcxComboBox;
-    cxLabel1: TcxLabel;
-    cxCheckBox1: TcxCheckBox;
     cxComboBox2: TcxComboBox;
     cxTextEdit3: TcxTextEdit;
     cxButton9: TcxButton;
@@ -42,7 +38,6 @@ type
     IBWIDCH: TIntegerField;
     IBREP: TIBDataSet;
     DSREP: TDataSource;
-    cxCalcEdit1: TcxCalcEdit;
     cxCalcEdit2: TcxCalcEdit;
     cxButton5: TcxButton;
     IBPRINT: TIBDataSet;
@@ -51,15 +46,7 @@ type
     frxDBDataset1: TfrxDBDataset;
     frxDBDataset2: TfrxDBDataset;
     cxButton3: TcxButton;
-    cxCheckBox4: TcxCheckBox;
-    cxLabel7: TcxLabel;
     cxLookupComboBox2: TcxLookupComboBox;
-    cxLabel4: TcxLabel;
-    cxCheckBox5: TcxCheckBox;
-    cxLabel10: TcxLabel;
-    cxCheckBox7: TcxCheckBox;
-    cxLabel9: TcxLabel;
-    cxCheckBox6: TcxCheckBox;
     cxGrid2: TcxGrid;
     cxGridDBTableView1: TcxGridDBTableView;
     cxGridDBTableView1CH: TcxGridDBColumn;
@@ -101,6 +88,40 @@ type
     cxCheckBox18: TcxCheckBox;
     cxCheckBox20: TcxCheckBox;
     cxLabel23: TcxLabel;
+    cxLabel1: TcxLabel;
+    cxLabel27: TcxLabel;
+    cxCheckBox24: TcxCheckBox;
+    cxComboBox8: TcxComboBox;
+    cxCalcEdit8: TcxCalcEdit;
+    cxLabel28: TcxLabel;
+    cxLabel29: TcxLabel;
+    cxLabel30: TcxLabel;
+    cxLabel31: TcxLabel;
+    Panel2: TPanel;
+    cxLabel24: TcxLabel;
+    cxLabel25: TcxLabel;
+    cxLabel26: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxCheckBox21: TcxCheckBox;
+    cxCheckBox22: TcxCheckBox;
+    cxCheckBox23: TcxCheckBox;
+    cxCheckBox1: TcxCheckBox;
+    cxComboBox5: TcxComboBox;
+    cxComboBox6: TcxComboBox;
+    cxComboBox7: TcxComboBox;
+    cxComboBox1: TcxComboBox;
+    cxCalcEdit5: TcxCalcEdit;
+    cxCalcEdit6: TcxCalcEdit;
+    cxCalcEdit7: TcxCalcEdit;
+    cxCalcEdit1: TcxCalcEdit;
+    cxCheckBox5: TcxCheckBox;
+    cxCheckBox6: TcxCheckBox;
+    cxCheckBox4: TcxCheckBox;
+    cxCheckBox7: TcxCheckBox;
+    cxLabel4: TcxLabel;
+    cxLabel9: TcxLabel;
+    cxLabel7: TcxLabel;
+    cxLabel10: TcxLabel;
     procedure cxButton2Click(Sender: TObject);
     procedure cxCheckBox3PropertiesChange(Sender: TObject);
     procedure IBREPFilterRecord(DataSet: TDataSet; var Accept: Boolean);
@@ -110,8 +131,10 @@ type
     procedure FormShow(Sender: TObject);
     procedure cxCheckBox14PropertiesChange(Sender: TObject);
     procedure cxCheckBox15PropertiesChange(Sender: TObject);
+    procedure IBWIDAfterPost(DataSet: TDataSet);
   private
     { Private declarations }
+    procedure visible;
   public
     { Public declarations }
     tip:string;
@@ -149,7 +172,7 @@ procedure TForm14.cxButton2Click(Sender: TObject);
 var
     colum:TcxGridColumn;
     AColumn: TcxGridDBColumn;
-    SQL,group,strSAL,strFIELD,strMAXFIELD,strSUMSAL,strWhere,strSUMOPL,strOPL,strDOLG,strSUMDOLG,strNACH,strSUMNACH:string;
+    SQL,having,group,strSAL,strFIELD,strSUMFIELD,strMAXFIELD,strSUMSAL,strHavingSAL,strHavingDOLG,strHavingNACH,strHavingOPL,strSUMOPL,strOPL,strDOLG,strSUMDOLG,strNACH,strSUMNACH:string;
     chwid:integer;
     prop:TPersistent;
 
@@ -531,6 +554,12 @@ begin
                       strMAXFIELD:=strMAXFIELD+'COALESCE(max(s'+IBWIDWID.Value+'),0) s'+IBWIDWID.Value+',';
                       strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period=:dt1 then dolg else null end as d'+IBWIDWID.Value+',';
                       strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period=:dt2 then sal else null end as s'+IBWIDWID.Value+',';
+
+                      strSUMFIELD:=strSUMFIELD+'sum(d'+IBWIDWID.Value+') d'+IBWIDWID.Value+',';
+                      strSUMFIELD:=strSUMFIELD+'sum(nach_'+IBWIDWID.Value+') nach_'+IBWIDWID.Value+',';
+                      strSUMFIELD:=strSUMFIELD+'sum(opl_'+IBWIDWID.Value+') opl_'+IBWIDWID.Value+',';
+                      strSUMFIELD:=strSUMFIELD+'sum(s'+IBWIDWID.Value+') s'+IBWIDWID.Value+',';
+
                       if cxCheckBox15.Checked then
                          strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period>=:dtn1 and period<=:dtn2 then nach else null end as nach_'+IBWIDWID.Value+','
                       else
@@ -540,7 +569,11 @@ begin
                       else
                          strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then fullopl else null end as opl_'+IBWIDWID.Value+',';
 
-                      strWhere:=strWhere+'s'+IBWIDWID.Value+cxComboBox1.EditValue+StringReplace(FloatToStr(cxCalcEdit1.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' or ';
+                      strHavingSAL:=strHavingSAL+'sum(s'+IBWIDWID.Value+')'+cxComboBox1.EditValue+StringReplace(FloatToStr(cxCalcEdit1.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' or ';
+                      strHavingDOLG:=strHavingDOLG+'sum(d'+IBWIDWID.Value+')'+cxComboBox5.EditValue+StringReplace(FloatToStr(cxCalcEdit5.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' or ';
+                      strHavingNACH:=strHavingNACH+'sum(nach_'+IBWIDWID.Value+')'+cxComboBox6.EditValue+StringReplace(FloatToStr(cxCalcEdit6.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' or ';
+                      strHavingOPL:=strHavingOPL+'sum(opl_'+IBWIDWID.Value+')'+cxComboBox7.EditValue+StringReplace(FloatToStr(cxCalcEdit7.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' or ';
+
                       end;
                 IBWID.Next;
                 end;
@@ -581,14 +614,23 @@ begin
                 Delete(strSUMNACH, Length(strSUMNACH), 1);
                 Delete(strSUMOPL, Length(strSUMOPL), 1);
                 Delete(strMAXFIELD, Length(strMAXFIELD), 1);
+                Delete(strSUMFIELD, Length(strSUMFIELD), 1);
                 Delete(strFIELD, Length(strFIELD), 1);
-                Delete(strWhere, Length(strWhere)-3, 3);
-                strWhere:='where '+strWhere;
+
+                Delete(strHavingSAL, Length(strHavingSAL)-3, 3);
+                Delete(strHavingDOLG, Length(strHavingDOLG)-3, 3);
+                Delete(strHavingNACH, Length(strHavingNACH)-3, 3);
+                Delete(strHavingOPL, Length(strHavingOPL)-3, 3);
+
                 strDOLG:=strSUMDOLG+' as DOLG,';
                 strSAL:=strSUMSAL+' as SAL,';
                 strOPL:=strSUMOPL+' as SOPL,';
                 strNACH:=strSUMNACH+' as SNACH,';
-                if chwid=0 then Delete(strSAL, Length(strSAL), 1);
+                if chwid=0 then Delete(strSAL, Length(strSAL), 1)
+                else
+                begin
+
+                end;
 //                if chwid=0 then
 //                begin
 //                  Delete(SQL, Length(SQL), 1);
@@ -601,38 +643,82 @@ begin
                   //if chwid=0 then Delete(SQL, Length(SQL), 1);
                   if cxCheckBox20.Checked then
                   begin
-                    SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from(select organ.name as '+group+strFIELD;
-
+                    SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from (select wid,'+group+strSUMFIELD+' from(select wid,organ.name as '+group+strFIELD;
                     SQL:=SQL+' from vw_obkr left outer join organ on (vw_obkr.org = organ.org) and (organ.upd = 1) where period>=:dt1 and period<=:dt2)';
+                    SQL:=SQL+' group by wid,'+group;
                   end
                   else
                   begin
-                    SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from(select '+group+strFIELD;
+                    SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from (select wid,'+group+strSUMFIELD+' from(select wid,'+group+strFIELD;
                     SQL:=SQL+' from vw_obkr where period>=:dt1 and period<=:dt2)';
+                    SQL:=SQL+' group by wid,'+group;
+
                   end;
-                  if (cxCheckBox1.Checked) and (chwid<>0) then
-                    SQL:=SQL+strWhere;
+
+                  Delete(SQL, Length(SQL), 1);
+
+
+                  having:='';
+
+              if (chwid<>0) then
+                  begin
+
+                      if cxCheckBox21.Checked then
+                         having:=having+'('+strHavingDOLG+') and ';
+                      if cxCheckBox22.Checked then
+                         having:=having+'('+strHavingNACH+') and ';
+                      if cxCheckBox23.Checked then
+                         having:=having+'('+strHavingOPL+') and ';
+                      if cxCheckBox1.Checked then
+                         having:=having+'('+strHavingSAL+') and ';
+
+
+                  end;
+
+
+                if Length(having)<>0 then
+                begin
+                Delete(having, Length(having)-4, 4);
+                SQL:=SQL+' having '+having;
+                end;
+
+                SQL:=SQL+')';
+
+
+
+
                   SQL:=SQL+' group by '+group;
 
                   Delete(SQL, Length(SQL), 1);
+
+               having:='';
+
+
   
-                if (cxCheckBox2.Checked) or (cxCheckBox8.Checked) or (cxCheckBox9.Checked) then
-                begin
-                  SQL:=SQL+' having ';
+
+
+                  if cxCheckBox24.Checked then
+                     having:=having+strSUMDOLG+' '+cxComboBox8.EditValue+StringReplace(FloatToStr(cxCalcEdit8.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' and ';
+
                   if cxCheckBox2.Checked then
-                     SQL:=SQL+strSUMSAL+' '+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' and ';
+                     having:=having+strSUMSAL+' '+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' and ';
 
                   if cxCheckBox8.Checked then
-                     SQL:=SQL+strSUMOPL+' '+cxComboBox3.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' and ';
+                     having:=having+strSUMOPL+' '+cxComboBox3.EditValue+StringReplace(FloatToStr(cxCalcEdit3.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' and ';
 
                   if cxCheckBox9.Checked then
-                     SQL:=SQL+strSUMNACH+' '+cxComboBox4.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' and ';
-                  Delete(SQL, Length(SQL)-4, 4);
+                     having:=having+strSUMNACH+' '+cxComboBox4.EditValue+StringReplace(FloatToStr(cxCalcEdit4.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' and ';
+
+
                     // SQL:=SQL+' having '+strSUM+' <> 0';
-                end;
+
 //                ss:=#39+IBWIDWID.Value+#39;
 
-
+                if Length(having)<>0 then
+                begin
+                Delete(having, Length(having)-4, 4);
+                SQL:=SQL+' having '+having;
+                end;
 
                 IBREP.Close;
                 IBREP.SelectSQL.Text:=SQL;
@@ -659,7 +745,7 @@ end;
 procedure TForm14.cxButton3Click(Sender: TObject);
 begin
 //  Form1.ExportGrid(cxGrid1);
-  Form1.ExportGrid(cxGrid1,Form14.Caption);
+  Form1.ExportGrid(cxGrid1,'Звіт по боржникам');
 end;
 
 procedure TForm14.cxButton5Click(Sender: TObject);
@@ -765,6 +851,7 @@ procedure TForm14.FormShow(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
+visible;
 end;
 
 procedure TForm14.IBREPFilterRecord(DataSet: TDataSet; var Accept: Boolean);
@@ -780,6 +867,79 @@ begin
 //   if (cxTextEdit1.Text<>'') then
 //      Accept:=Accept and (DataSet.FieldByName('dolg').AsFloat,StringCodePage(cxComboBox1.EditValue),str2float(cxTextEdit1.Text));
 end;
+end;
+
+procedure TForm14.IBWIDAfterPost(DataSet: TDataSet);
+begin
+visible;
+end;
+
+procedure TForm14.visible;
+begin
+   if IBWID.Lookup('ch',1,'ch')=null then
+   begin
+      cxLabel2.Enabled:=false;
+      cxLabel24.Enabled:=false;
+      cxLabel25.Enabled:=false;
+      cxLabel26.Enabled:=false;
+      cxLabel4.Enabled:=false;
+      cxLabel9.Enabled:=false;
+      cxLabel7.Enabled:=false;
+      cxLabel10.Enabled:=false;
+
+      cxCheckBox1.Enabled:=false;
+      cxCheckBox21.Enabled:=false;
+      cxCheckBox22.Enabled:=false;
+      cxCheckBox23.Enabled:=false;
+      cxCheckBox5.Enabled:=false;
+      cxCheckBox6.Enabled:=false;
+      cxCheckBox4.Enabled:=false;
+      cxCheckBox7.Enabled:=false;
+
+      cxComboBox1.Enabled:=false;
+      cxComboBox5.Enabled:=false;
+      cxComboBox6.Enabled:=false;
+      cxComboBox7.Enabled:=false;
+
+      cxCalcEdit5.Enabled:=false;
+      cxCalcEdit6.Enabled:=false;
+      cxCalcEdit7.Enabled:=false;
+      cxCalcEdit1.Enabled:=false;
+
+
+
+
+   end
+   else
+   begin
+      cxLabel2.Enabled:=true;
+      cxLabel24.Enabled:=true;
+      cxLabel25.Enabled:=true;
+      cxLabel26.Enabled:=true;
+      cxLabel4.Enabled:=true;
+      cxLabel9.Enabled:=true;
+      cxLabel7.Enabled:=true;
+      cxLabel10.Enabled:=true;
+
+      cxCheckBox1.Enabled:=true;
+      cxCheckBox21.Enabled:=true;
+      cxCheckBox22.Enabled:=true;
+      cxCheckBox23.Enabled:=true;
+      cxCheckBox5.Enabled:=true;
+      cxCheckBox6.Enabled:=true;
+      cxCheckBox4.Enabled:=true;
+      cxCheckBox7.Enabled:=true;
+
+      cxComboBox1.Enabled:=true;
+      cxComboBox5.Enabled:=true;
+      cxComboBox6.Enabled:=true;
+      cxComboBox7.Enabled:=true;
+
+      cxCalcEdit5.Enabled:=true;
+      cxCalcEdit6.Enabled:=true;
+      cxCalcEdit7.Enabled:=true;
+      cxCalcEdit1.Enabled:=true;
+   end;
 end;
 
 end.

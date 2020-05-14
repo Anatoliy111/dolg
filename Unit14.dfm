@@ -3,7 +3,7 @@ object Form14: TForm14
   Top = 0
   Caption = 'Form14----'
   ClientHeight = 656
-  ClientWidth = 951
+  ClientWidth = 950
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,64 +18,39 @@ object Form14: TForm14
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 951
-    Height = 289
+    Width = 950
+    Height = 337
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 930
+    ExplicitWidth = 951
     object cxGroupBox1: TcxGroupBox
-      Left = 0
-      Top = 8
+      Left = 1
+      Top = 1
+      Align = alClient
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080' '#1074#1110#1076#1073#1086#1088#1091
       TabOrder = 0
-      Height = 275
-      Width = 945
-      object cxLabel2: TcxLabel
-        Left = 148
-        Top = 65
-        Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075#1091' '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
-      end
+      ExplicitLeft = 2
+      ExplicitTop = -4
+      ExplicitWidth = 949
+      Height = 335
+      Width = 948
       object cxCheckBox2: TcxCheckBox
-        Left = 279
-        Top = 86
-        TabOrder = 1
+        Left = 320
+        Top = 161
+        TabOrder = 0
       end
       object cxButton2: TcxButton
-        Left = 3
-        Top = 65
-        Width = 129
-        Height = 41
+        Left = 280
+        Top = 25
+        Width = 218
+        Height = 48
         Caption = #1047#1092#1086#1088#1084#1091#1074#1072#1090#1080' '#1079#1074#1110#1090
-        TabOrder = 2
+        TabOrder = 1
         OnClick = cxButton2Click
       end
-      object cxComboBox1: TcxComboBox
-        Left = 306
-        Top = 66
-        Properties.Items.Strings = (
-          '='
-          '<>'
-          '>'
-          '>='
-          '<'
-          '<=')
-        TabOrder = 3
-        Text = '>='
-        Width = 44
-      end
-      object cxLabel1: TcxLabel
-        Left = 152
-        Top = 88
-        Caption = #1057#1091#1084#1072' '#1079#1072#1075#1072#1083#1100#1085#1086#1075#1086' '#1073#1086#1088#1075#1091
-      end
-      object cxCheckBox1: TcxCheckBox
-        Left = 279
-        Top = 64
-        TabOrder = 5
-      end
       object cxComboBox2: TcxComboBox
-        Left = 306
-        Top = 87
+        Left = 350
+        Top = 164
         Properties.Items.Strings = (
           '='
           '<>'
@@ -83,39 +58,39 @@ object Form14: TForm14
           '>='
           '<='
           '<')
-        TabOrder = 6
+        TabOrder = 2
         Text = '>='
         Width = 44
       end
       object cxTextEdit3: TcxTextEdit
-        Left = 350
-        Top = 251
-        TabOrder = 7
+        Left = 358
+        Top = 299
+        TabOrder = 3
         Width = 99
       end
       object cxButton9: TcxButton
-        Left = 453
-        Top = 247
+        Left = 461
+        Top = 295
         Width = 71
         Height = 25
         Caption = #1055#1088#1080#1084#1110#1085#1080#1090#1080
-        TabOrder = 8
+        TabOrder = 4
         OnClick = cxButton1Click
       end
       object cxLabel5: TcxLabel
-        Left = 272
-        Top = 251
+        Left = 280
+        Top = 299
         Caption = #1060#1110#1083#1100#1090#1088' '#1087#1086' '#1055#1030#1041
       end
       object cxLabel6: TcxLabel
-        Left = 1
-        Top = 250
+        Left = 9
+        Top = 298
         Caption = #1060#1110#1083#1100#1090#1088' '#1087#1086' '#1088#1072#1093#1091#1085#1082#1091
       end
       object cxTextEdit4: TcxTextEdit
-        Left = 105
-        Top = 249
-        TabOrder = 11
+        Left = 113
+        Top = 297
+        TabOrder = 7
         Width = 103
       end
       object cxLookupComboBox1: TcxLookupComboBox
@@ -127,7 +102,7 @@ object Form14: TForm14
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
-        TabOrder = 12
+        TabOrder = 8
         Width = 129
       end
       object cxLabel3: TcxLabel
@@ -136,56 +111,39 @@ object Form14: TForm14
         Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1087#1077#1088#1110#1086#1076
       end
       object cxButton1: TcxButton
-        Left = 214
-        Top = 247
+        Left = 222
+        Top = 295
         Width = 57
         Height = 25
         Caption = #1055#1088#1080#1084#1110#1085#1080#1090#1080
-        TabOrder = 14
+        TabOrder = 10
         OnClick = cxButton1Click
       end
-      object cxCalcEdit1: TcxCalcEdit
-        Left = 356
-        Top = 66
-        EditValue = 0.000000000000000000
-        TabOrder = 15
-        Width = 121
-      end
       object cxCalcEdit2: TcxCalcEdit
-        Left = 356
-        Top = 87
+        Left = 400
+        Top = 164
         EditValue = 0.000000000000000000
-        TabOrder = 16
+        TabOrder = 11
         Width = 121
       end
       object cxButton5: TcxButton
-        Left = 3
-        Top = 139
+        Left = 66
+        Top = 267
         Width = 54
         Height = 25
         Caption = #1044#1088#1091#1082
-        TabOrder = 17
+        TabOrder = 12
         Visible = False
         OnClick = cxButton5Click
       end
       object cxButton3: TcxButton
         Left = 3
-        Top = 110
-        Width = 74
-        Height = 25
+        Top = 244
+        Width = 57
+        Height = 48
         Caption = #1042' '#1045#1082#1089#1077#1083#1100
-        TabOrder = 18
+        TabOrder = 13
         OnClick = cxButton3Click
-      end
-      object cxCheckBox4: TcxCheckBox
-        Left = 524
-        Top = 227
-        TabOrder = 19
-      end
-      object cxLabel7: TcxLabel
-        Left = 554
-        Top = 229
-        Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1086#1087#1083#1072#1090#1091' '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
       end
       object cxLookupComboBox2: TcxLookupComboBox
         Left = 138
@@ -196,45 +154,15 @@ object Form14: TForm14
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
-        TabOrder = 21
+        TabOrder = 14
         Width = 129
-      end
-      object cxLabel4: TcxLabel
-        Left = 554
-        Top = 190
-        Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1073#1086#1088#1075' '#1085#1072' '#1087#1086#1095'. '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
-      end
-      object cxCheckBox5: TcxCheckBox
-        Left = 524
-        Top = 187
-        TabOrder = 23
-      end
-      object cxLabel10: TcxLabel
-        Left = 554
-        Top = 248
-        Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1073#1086#1088#1075' '#1085#1072' '#1082#1110#1085'. '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
-      end
-      object cxCheckBox7: TcxCheckBox
-        Left = 524
-        Top = 248
-        TabOrder = 25
-      end
-      object cxLabel9: TcxLabel
-        Left = 554
-        Top = 210
-        Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1085#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103' '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
-      end
-      object cxCheckBox6: TcxCheckBox
-        Left = 524
-        Top = 207
-        TabOrder = 27
       end
       object cxGrid2: TcxGrid
         Left = 765
         Top = 38
         Width = 166
         Height = 219
-        TabOrder = 28
+        TabOrder = 15
         object cxGridDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSWID
@@ -267,7 +195,7 @@ object Form14: TForm14
         Left = 765
         Top = 13
         Properties.OnChange = cxCheckBox3PropertiesChange
-        TabOrder = 29
+        TabOrder = 16
       end
       object cxLabel8: TcxLabel
         Left = 782
@@ -275,18 +203,18 @@ object Form14: TForm14
         Caption = ' - '#1042#1110#1076#1084#1110#1090#1080#1090#1080' '#1074#1089#1110' '#1087#1086#1089#1083#1091#1075#1080
       end
       object cxLabel11: TcxLabel
-        Left = 205
-        Top = 111
+        Left = 246
+        Top = 144
         Caption = #1057#1091#1084#1072' '#1086#1087#1083#1072#1090#1080
       end
       object cxCheckBox8: TcxCheckBox
-        Left = 279
-        Top = 109
-        TabOrder = 32
+        Left = 320
+        Top = 142
+        TabOrder = 19
       end
       object cxComboBox3: TcxComboBox
-        Left = 306
-        Top = 110
+        Left = 350
+        Top = 143
         Properties.Items.Strings = (
           '='
           '<>'
@@ -294,30 +222,30 @@ object Form14: TForm14
           '>='
           '<='
           '<')
-        TabOrder = 33
+        TabOrder = 20
         Text = '>='
         Width = 44
       end
       object cxCalcEdit3: TcxCalcEdit
-        Left = 356
-        Top = 110
+        Left = 400
+        Top = 143
         EditValue = 0.000000000000000000
-        TabOrder = 34
+        TabOrder = 21
         Width = 121
       end
       object cxLabel12: TcxLabel
-        Left = 175
-        Top = 134
+        Left = 216
+        Top = 124
         Caption = #1057#1091#1084#1072' '#1085#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103
       end
       object cxCheckBox9: TcxCheckBox
-        Left = 279
-        Top = 132
-        TabOrder = 36
+        Left = 320
+        Top = 122
+        TabOrder = 23
       end
       object cxComboBox4: TcxComboBox
-        Left = 306
-        Top = 133
+        Left = 350
+        Top = 123
         Properties.Items.Strings = (
           '='
           '<>'
@@ -325,15 +253,15 @@ object Form14: TForm14
           '>='
           '<='
           '<')
-        TabOrder = 37
+        TabOrder = 24
         Text = '>='
         Width = 44
       end
       object cxCalcEdit4: TcxCalcEdit
-        Left = 356
-        Top = 133
+        Left = 400
+        Top = 123
         EditValue = 0.000000000000000000
-        TabOrder = 38
+        TabOrder = 25
         Width = 121
       end
       object cxLabel13: TcxLabel
@@ -344,12 +272,13 @@ object Form14: TForm14
       object cxCheckBox10: TcxCheckBox
         Left = 524
         Top = 22
-        TabOrder = 40
+        TabOrder = 27
       end
       object cxCheckBox11: TcxCheckBox
         Left = 524
         Top = 60
-        TabOrder = 41
+        State = cbsChecked
+        TabOrder = 28
       end
       object cxLabel14: TcxLabel
         Left = 554
@@ -363,13 +292,14 @@ object Form14: TForm14
       end
       object cxCheckBox12: TcxCheckBox
         Left = 524
-        Top = 74
-        TabOrder = 44
+        Top = 78
+        State = cbsChecked
+        TabOrder = 31
       end
       object cxCheckBox13: TcxCheckBox
         Left = 524
         Top = 102
-        TabOrder = 45
+        TabOrder = 32
       end
       object cxLabel16: TcxLabel
         Left = 554
@@ -377,30 +307,30 @@ object Form14: TForm14
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1073#1086#1088#1075' '#1085#1072' '#1087#1086#1095'. '
       end
       object cxLabel17: TcxLabel
-        Left = 84
-        Top = 175
+        Left = 63
+        Top = 82
         Caption = #1055#1077#1088#1110#1086#1076' '#1086#1087#1083#1072#1090#1080
       end
       object cxCheckBox14: TcxCheckBox
-        Left = 167
-        Top = 173
+        Left = 33
+        Top = 78
         Properties.OnChange = cxCheckBox14PropertiesChange
-        TabOrder = 48
+        TabOrder = 35
       end
       object cxLabel18: TcxLabel
-        Left = 54
-        Top = 213
+        Left = 57
+        Top = 158
         Caption = #1055#1077#1088#1110#1086#1076' '#1085#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103
       end
       object cxCheckBox15: TcxCheckBox
-        Left = 167
-        Top = 211
+        Left = 33
+        Top = 155
         Properties.OnChange = cxCheckBox15PropertiesChange
-        TabOrder = 50
+        TabOrder = 37
       end
       object cxLookupComboBox3: TcxLookupComboBox
-        Left = 214
-        Top = 174
+        Left = 32
+        Top = 101
         Enabled = False
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
@@ -408,12 +338,12 @@ object Form14: TForm14
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
-        TabOrder = 51
+        TabOrder = 38
         Width = 129
       end
       object cxLookupComboBox4: TcxLookupComboBox
-        Left = 356
-        Top = 174
+        Left = 32
+        Top = 128
         Enabled = False
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
@@ -421,12 +351,12 @@ object Form14: TForm14
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
-        TabOrder = 52
+        TabOrder = 39
         Width = 129
       end
       object cxLookupComboBox5: TcxLookupComboBox
-        Left = 214
-        Top = 212
+        Left = 35
+        Top = 185
         Enabled = False
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
@@ -434,11 +364,11 @@ object Form14: TForm14
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
-        TabOrder = 53
+        TabOrder = 40
         Width = 129
       end
       object cxLookupComboBox6: TcxLookupComboBox
-        Left = 356
+        Left = 35
         Top = 212
         Enabled = False
         Properties.KeyFieldNames = 'PERIOD'
@@ -447,13 +377,14 @@ object Form14: TForm14
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
-        TabOrder = 54
+        TabOrder = 41
         Width = 129
       end
       object cxCheckBox19: TcxCheckBox
         Left = 524
         Top = 41
-        TabOrder = 55
+        State = cbsChecked
+        TabOrder = 42
       end
       object cxLabel22: TcxLabel
         Left = 554
@@ -468,12 +399,12 @@ object Form14: TForm14
       object cxCheckBox16: TcxCheckBox
         Left = 524
         Top = 122
-        TabOrder = 58
+        TabOrder = 45
       end
       object cxCheckBox17: TcxCheckBox
         Left = 524
         Top = 141
-        TabOrder = 59
+        TabOrder = 46
       end
       object cxLabel20: TcxLabel
         Left = 554
@@ -482,36 +413,269 @@ object Form14: TForm14
       end
       object cxLabel21: TcxLabel
         Left = 554
-        Top = 166
+        Top = 163
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1073#1086#1088#1075' '#1085#1072' '#1082#1110#1085'. '
       end
       object cxCheckBox18: TcxCheckBox
         Left = 524
         Top = 161
-        TabOrder = 62
+        TabOrder = 49
       end
       object cxCheckBox20: TcxCheckBox
         Left = 524
         Top = 3
-        TabOrder = 63
+        TabOrder = 50
       end
       object cxLabel23: TcxLabel
         Left = 554
         Top = 6
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1086#1088#1075#1072#1085#1110#1079#1072#1094#1110#1102
       end
+      object cxLabel1: TcxLabel
+        Left = 227
+        Top = 163
+        Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075' '#1085#1072' '#1082#1110#1085'. '
+      end
+      object cxLabel27: TcxLabel
+        Left = 219
+        Top = 104
+        Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075' '#1085#1072' '#1087#1086#1095'.'
+      end
+      object cxCheckBox24: TcxCheckBox
+        Left = 320
+        Top = 102
+        TabOrder = 54
+      end
+      object cxComboBox8: TcxComboBox
+        Left = 350
+        Top = 103
+        Properties.Items.Strings = (
+          '='
+          '<>'
+          '>'
+          '>='
+          '<='
+          '<')
+        TabOrder = 55
+        Text = '>='
+        Width = 44
+      end
+      object cxCalcEdit8: TcxCalcEdit
+        Left = 400
+        Top = 103
+        EditValue = 0.000000000000000000
+        TabOrder = 56
+        Width = 121
+      end
+      object cxLabel28: TcxLabel
+        Left = 10
+        Top = 101
+        Caption = #1079
+      end
+      object cxLabel29: TcxLabel
+        Left = 10
+        Top = 128
+        Caption = #1087#1086
+      end
+      object cxLabel30: TcxLabel
+        Left = 13
+        Top = 185
+        Caption = #1079
+      end
+      object cxLabel31: TcxLabel
+        Left = 13
+        Top = 212
+        Caption = #1087#1086
+      end
+      object Panel2: TPanel
+        Left = 170
+        Top = 191
+        Width = 589
+        Height = 105
+        Caption = 'Panel2'
+        Color = clCream
+        ParentBackground = False
+        ParentShowHint = False
+        ShowCaption = False
+        ShowHint = False
+        TabOrder = 61
+        object cxLabel24: TcxLabel
+          Left = 8
+          Top = 0
+          Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075' '#1085#1072' '#1087#1086#1095'. '#1087#1086' '#1087#1086#1089#1083
+        end
+        object cxLabel25: TcxLabel
+          Left = 5
+          Top = 23
+          Caption = #1057#1091#1084#1072' '#1085#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103' '#1087#1086' '#1087#1086#1089#1083
+        end
+        object cxLabel26: TcxLabel
+          Left = 35
+          Top = 44
+          Caption = #1057#1091#1084#1072' '#1086#1087#1083#1072#1090#1072' '#1087#1086' '#1087#1086#1089#1083
+        end
+        object cxLabel2: TcxLabel
+          Left = 12
+          Top = 70
+          Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075' '#1085#1072' '#1082#1110#1085'. '#1087#1086' '#1087#1086#1089#1083
+        end
+        object cxCheckBox21: TcxCheckBox
+          Left = 150
+          Top = 0
+          TabOrder = 4
+        end
+        object cxCheckBox22: TcxCheckBox
+          Left = 150
+          Top = 23
+          TabOrder = 5
+        end
+        object cxCheckBox23: TcxCheckBox
+          Left = 150
+          Top = 45
+          TabOrder = 6
+        end
+        object cxCheckBox1: TcxCheckBox
+          Left = 150
+          Top = 68
+          TabOrder = 7
+        end
+        object cxComboBox5: TcxComboBox
+          Left = 180
+          Top = 3
+          Properties.Items.Strings = (
+            '='
+            '<>'
+            '>'
+            '>='
+            '<'
+            '<=')
+          TabOrder = 8
+          Text = '>='
+          Width = 44
+        end
+        object cxComboBox6: TcxComboBox
+          Left = 180
+          Top = 25
+          Properties.Items.Strings = (
+            '='
+            '<>'
+            '>'
+            '>='
+            '<'
+            '<=')
+          TabOrder = 9
+          Text = '>='
+          Width = 44
+        end
+        object cxComboBox7: TcxComboBox
+          Left = 180
+          Top = 48
+          Properties.Items.Strings = (
+            '='
+            '<>'
+            '>'
+            '>='
+            '<'
+            '<=')
+          TabOrder = 10
+          Text = '>='
+          Width = 44
+        end
+        object cxComboBox1: TcxComboBox
+          Left = 180
+          Top = 71
+          Properties.Items.Strings = (
+            '='
+            '<>'
+            '>'
+            '>='
+            '<'
+            '<=')
+          TabOrder = 11
+          Text = '>='
+          Width = 44
+        end
+        object cxCalcEdit5: TcxCalcEdit
+          Left = 230
+          Top = 3
+          EditValue = 0.000000000000000000
+          TabOrder = 12
+          Width = 121
+        end
+        object cxCalcEdit6: TcxCalcEdit
+          Left = 230
+          Top = 25
+          EditValue = 0.000000000000000000
+          TabOrder = 13
+          Width = 121
+        end
+        object cxCalcEdit7: TcxCalcEdit
+          Left = 230
+          Top = 48
+          EditValue = 0.000000000000000000
+          TabOrder = 14
+          Width = 121
+        end
+        object cxCalcEdit1: TcxCalcEdit
+          Left = 230
+          Top = 70
+          EditValue = 0.000000000000000000
+          TabOrder = 15
+          Width = 121
+        end
+        object cxCheckBox5: TcxCheckBox
+          Left = 354
+          Top = 0
+          TabOrder = 16
+        end
+        object cxCheckBox6: TcxCheckBox
+          Left = 354
+          Top = 23
+          TabOrder = 17
+        end
+        object cxCheckBox4: TcxCheckBox
+          Left = 354
+          Top = 45
+          TabOrder = 18
+        end
+        object cxCheckBox7: TcxCheckBox
+          Left = 354
+          Top = 68
+          TabOrder = 19
+        end
+        object cxLabel4: TcxLabel
+          Left = 384
+          Top = 4
+          Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1073#1086#1088#1075' '#1085#1072' '#1087#1086#1095'. '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
+        end
+        object cxLabel9: TcxLabel
+          Left = 384
+          Top = 27
+          Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1085#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103' '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
+        end
+        object cxLabel7: TcxLabel
+          Left = 384
+          Top = 50
+          Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1086#1087#1083#1072#1090#1091' '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
+        end
+        object cxLabel10: TcxLabel
+          Left = 384
+          Top = 73
+          Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1073#1086#1088#1075' '#1085#1072' '#1082#1110#1085'. '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
+        end
+      end
     end
   end
   object cxGrid1: TcxGrid
     Left = 0
-    Top = 289
-    Width = 951
-    Height = 367
+    Top = 337
+    Width = 950
+    Height = 319
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 209
-    ExplicitWidth = 947
-    ExplicitHeight = 447
+    ExplicitTop = 352
+    ExplicitWidth = 951
+    ExplicitHeight = 304
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSREP
@@ -656,6 +820,7 @@ object Form14: TForm14
   object IBWID: TIBDataSet
     Database = Form1.IBDatabase1
     Transaction = Form1.IBTransaction1
+    AfterPost = IBWIDAfterPost
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
