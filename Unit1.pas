@@ -495,6 +495,7 @@ type
     IBREPDD_DOG: TIBStringField;
     cxGrid1DBTableView1N_DOG: TcxGridDBColumn;
     cxGrid1DBTableView1D_DOG: TcxGridDBColumn;
+    cxButton7: TcxButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -552,7 +553,7 @@ implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
-  Unit16, Unit19;
+  Unit16, Unit19, Unit20;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -757,44 +758,8 @@ end;
 
 procedure TForm1.cxButton7Click(Sender: TObject);
 begin
-//     cxGrid1DBTableView1DOLGMES1.Visible:=false;
-//     cxGrid1DBTableView1DOLGMES2.Visible:=false;
-//     cxGrid1DBTableView1DOLGMES3.Visible:=false;
-//     cxGrid1DBTableView1DOLGMES4.Visible:=false;
-//     cxGrid1DBTableView1DOLGMES5.Visible:=false;
-//     cxGrid1DBTableView1DOLGMES6.Visible:=false;
-//     cxGrid1DBTableView1MES1.Visible:=false;
-//     cxGrid1DBTableView1MES2.Visible:=false;
-//     cxGrid1DBTableView1MES3.Visible:=false;
-//     cxGrid1DBTableView1MES4.Visible:=false;
-//     cxGrid1DBTableView1MES5.Visible:=false;
-//     cxGrid1DBTableView1MES6.Visible:=false;
-//
-//     StrSQL:=StartSQL;
-//     if cxCheckBox1.Checked then
-//     begin
-//       i:=0;
-////       IBPERIOD.First;
-////       while not IBPERIOD.Eof do
-////       begin
-////         if IBPERIODPERIOD.Value>=cxLookupComboBox1.EditValue then
-////         begin
-////         inc(i);
-////           StrSQL:=StringReplace(StrSQL,'0.00 as dolgmes'+int2str(i),'(select sum(dolgmes) as dolgmes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then dolg else 0.00 end dolgmes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as dolgmes'+int2str(i),[]);
-////           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Visible:=true;
-////           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Caption:='Борг на '+DateTimeToStr(IBPERIODPERIOD.Value);
-////
-////         StrSQL:=StringReplace(StrSQL,'0.00 as mes'+int2str(i),'(select sum(mes) as mes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then fullopl else 0.00 end mes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as mes'+int2str(i),[]);
-//////         cxGrid1DBTableView1MES+int2str(i).Visible:=true;
-////         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Visible:=true;
-////         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Caption:='Оплата '+DateTimeToStr(IBPERIODPERIOD.Value);
-////
-////         end;
-////
-////       IBPERIOD.Next;
-////       end;
-//
-//     end;
+Form20.Caption:=cxButton7.Caption;
+Form20.show;
 end;
 
 
@@ -1094,3 +1059,43 @@ Form1.IBQuery1.close;
 end;
 
 end.
+
+
+//     cxGrid1DBTableView1DOLGMES1.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES2.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES3.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES4.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES5.Visible:=false;
+//     cxGrid1DBTableView1DOLGMES6.Visible:=false;
+//     cxGrid1DBTableView1MES1.Visible:=false;
+//     cxGrid1DBTableView1MES2.Visible:=false;
+//     cxGrid1DBTableView1MES3.Visible:=false;
+//     cxGrid1DBTableView1MES4.Visible:=false;
+//     cxGrid1DBTableView1MES5.Visible:=false;
+//     cxGrid1DBTableView1MES6.Visible:=false;
+//
+//     StrSQL:=StartSQL;
+//     if cxCheckBox1.Checked then
+//     begin
+//       i:=0;
+////       IBPERIOD.First;
+////       while not IBPERIOD.Eof do
+////       begin
+////         if IBPERIODPERIOD.Value>=cxLookupComboBox1.EditValue then
+////         begin
+////         inc(i);
+////           StrSQL:=StringReplace(StrSQL,'0.00 as dolgmes'+int2str(i),'(select sum(dolgmes) as dolgmes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then dolg else 0.00 end dolgmes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as dolgmes'+int2str(i),[]);
+////           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Visible:=true;
+////           cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1DOLGMES'+int2str(i)).Caption:='Борг на '+DateTimeToStr(IBPERIODPERIOD.Value);
+////
+////         StrSQL:=StringReplace(StrSQL,'0.00 as mes'+int2str(i),'(select sum(mes) as mes from (Select schet,wid, Case when period='''+DateTimeToStr(IBPERIODPERIOD.Value)+''' then fullopl else 0.00 end mes from obor) ppp where (note.wid = ppp.wid) and (note.schet = ppp.schet) group by schet,wid) as mes'+int2str(i),[]);
+//////         cxGrid1DBTableView1MES+int2str(i).Visible:=true;
+////         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Visible:=true;
+////         cxGrid1DBTableView1.FindItemByName('cxGrid1DBTableView1MES'+int2str(i)).Caption:='Оплата '+DateTimeToStr(IBPERIODPERIOD.Value);
+////
+////         end;
+////
+////       IBPERIOD.Next;
+////       end;
+//
+//     end;

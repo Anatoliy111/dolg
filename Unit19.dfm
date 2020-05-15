@@ -2,8 +2,8 @@ object Form19: TForm19
   Left = 0
   Top = 0
   Caption = #1056#1077#1108#1089#1090#1088#1080' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
-  ClientHeight = 154
-  ClientWidth = 606
+  ClientHeight = 164
+  ClientWidth = 617
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

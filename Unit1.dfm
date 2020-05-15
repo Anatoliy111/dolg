@@ -603,6 +603,15 @@ object Form1: TForm1
       TabOrder = 5
       OnClick = cxButton6Click
     end
+    object cxButton7: TcxButton
+      Left = 608
+      Top = 144
+      Width = 185
+      Height = 25
+      Caption = #1041#1086#1088#1078#1085#1080#1082#1080' '#1076#1083#1103' '#1059#1055#1057#1047#1053
+      TabOrder = 6
+      OnClick = cxButton7Click
+    end
   end
   object cxCalcEdit1: TcxCalcEdit
     Left = 274
