@@ -91,10 +91,10 @@ begin
     kolst:= Pos('.',st1)-1;
     if kolst<>0 then
     begin
-      if (kolst=12) and (UpperCase(RightStr(st1,3))='DBF') then
+      if UpperCase(RightStr(st1,3))='DBF' then
           cxTextEdit4.Text:='Субсидія'
       else
-         if (kolst=8) and ((UpperCase(RightStr(st1,3))='P01') or (UpperCase(RightStr(st1,3))='S01')) then
+         if (UpperCase(RightStr(st1,3))='P01') or (UpperCase(RightStr(st1,3))='S01') then
          begin
              if UpperCase(RightStr(st1,3))='P01' then
                 cxTextEdit4.Text:='Пільга P01';
@@ -331,10 +331,10 @@ begin
         SaveDialog1.FileName:=cxTextEdit4.Text+' '+LeftStr(st1,Pos('.',st1)-1)+' боржники на '+DateTostr(cxLookupComboBox1.EditValue)+'.xls';
         if SaveDialog1.Execute then begin
 
-        MsExcel.ActiveWorkbook.SaveAs(SaveDialog1.FileName);
+        MsExcel.Application.Workbooks[1].SaveAs(SaveDialog1.FileName);
 //        MsExcel.ActiveWorkbook.SaveAs('c:\temp\test.xls');
       //  MsExcel.ActiveWorkbook.save;
-        MsExcel.ActiveWorkbook.Close;
+        MsExcel.Application.Workbooks[1].Close;
         MsExcel.Application.Quit;
         MsExcel := null;
         ShowMessage('Реєстр збережено в файл:'#10+SaveDialog1.FileName);
