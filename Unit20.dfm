@@ -2,7 +2,7 @@ object Form20: TForm20
   Left = 0
   Top = 0
   Caption = 'Form20'
-  ClientHeight = 263
+  ClientHeight = 491
   ClientWidth = 708
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -263,7 +263,6 @@ object Form20: TForm20
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_WID_ID'
-    Active = True
     Left = 309
     Top = 281
     object IBWIDWID: TIBStringField
@@ -287,6 +286,7 @@ object Form20: TForm20
     Top = 337
   end
   object SaveDialog1: TSaveDialog
+    Filter = 'Excel file|*.xls'
     Left = 480
     Top = 352
   end

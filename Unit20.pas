@@ -52,7 +52,7 @@ type
 
 var
   Form20: TForm20;
-  st1,poslug,tip:string;
+  st1,poslug,tip,nfile:string;
        MsExcel:Variant;
      period: TDateTime;
 
@@ -60,7 +60,7 @@ implementation
 
 {$R *.dfm}
 
-uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools;
+uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP;
 
 procedure TForm20.cxButton1Click(Sender: TObject);
 var i,ns,kolst:integer;
@@ -89,9 +89,12 @@ begin
     end;
 
     kolst:= Pos('.',st1)-1;
+    nfile:=trim(OpenDialog1.FileName);
+    Delete(nfile, Length(nfile)-3, 3);
+    nfile:=nfile+'.xls';
     if kolst<>0 then
     begin
-      if UpperCase(RightStr(st1,3))='DBF' then
+      if (UpperCase(RightStr(st1,3))='DBF') then
           cxTextEdit4.Text:='—убсид≥€'
       else
          if (UpperCase(RightStr(st1,3))='P01') or (UpperCase(RightStr(st1,3))='S01') then
@@ -147,6 +150,8 @@ begin
           exit;
        end;
 
+     CopyFile(PChar(OpenDialog1.FileName), PChar(nfile), false);
+
           MsExcel.ActiveWorkbook.Close;
           MsExcel.Application.Quit;
           MsExcel := null;
@@ -200,6 +205,9 @@ begin
 
       }
 
+
+
+
    if (Length(st1)=0) or (Length(OpenDialog1.FileName)=0) then
    begin
      ShowMessage('¬ибер≥ть файл');
@@ -207,9 +215,10 @@ begin
    end;
 
 
+
     MsExcel := CreateOleObject('Excel.Application');
     //    MsExcel.Workbooks.Add;
-    MsExcel.Workbooks.Open[OpenDialog1.FileName];
+    MsExcel.Workbooks.Open[nfile];
 
 
 
@@ -328,27 +337,30 @@ begin
 //     if tip='lg' then
 //       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
-        SaveDialog1.FileName:=cxTextEdit4.Text+' '+LeftStr(st1,Pos('.',st1)-1)+' боржники на '+DateTostr(cxLookupComboBox1.EditValue)+'.xls';
+        SaveDialog1.FileName:=cxTextEdit4.Text+' '+LeftStr(st1,Pos('.',st1)-1)+' боржники на '+DateTostr(cxLookupComboBox1.EditValue);
         if SaveDialog1.Execute then begin
 
-        MsExcel.Application.Workbooks[1].SaveAs(SaveDialog1.FileName);
+        MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
+       // MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName,xlNormal,' ',' ',False,False);
 //        MsExcel.ActiveWorkbook.SaveAs('c:\temp\test.xls');
       //  MsExcel.ActiveWorkbook.save;
-        MsExcel.Application.Workbooks[1].Close;
+        //MsExcel.Application.Workbooks[1].Close;
+        MsExcel.Application.ActiveWorkbook.Close;
         MsExcel.Application.Quit;
         MsExcel := null;
         ShowMessage('–еЇстр збережено в файл:'#10+SaveDialog1.FileName);
         Application.ProcessMessages;
 
+
         end
         else begin
-          MsExcel.DisplayAlerts := true;
-          MsExcel.Visible := True;
-          MsExcel := null;
-          ShowMessage('–еЇстр не збережено.  нига в≥дкрита в MS Excel.');
+        MsExcel.Application.ActiveWorkbook.Close;
+        MsExcel.Application.Quit;
+        MsExcel := null;
+          ShowMessage('–еЇстр не збережено.');
         end;
 
-
+      DeleteFile(nfile);
       cxTextEdit1.Text:='';
       st1:='';
       cxTextEdit4.Text:='';
