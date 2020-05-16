@@ -286,6 +286,7 @@ object Form20: TForm20
     Top = 337
   end
   object SaveDialog1: TSaveDialog
+    DefaultExt = 'xls'
     Filter = 'Excel file|*.xls'
     Left = 480
     Top = 352

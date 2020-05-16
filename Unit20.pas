@@ -89,9 +89,9 @@ begin
     end;
 
     kolst:= Pos('.',st1)-1;
-    nfile:=trim(OpenDialog1.FileName);
-    Delete(nfile, Length(nfile)-3, 3);
-    nfile:=nfile+'.xls';
+   // nfile:=trim(OpenDialog1.FileName);
+   // Delete(nfile, Length(nfile)-3, 3);
+    //nfile:=nfile+'.xls';
     if kolst<>0 then
     begin
       if (UpperCase(RightStr(st1,3))='DBF') then
@@ -150,7 +150,7 @@ begin
           exit;
        end;
 
-     CopyFile(PChar(OpenDialog1.FileName), PChar(nfile), false);
+     //CopyFile(PChar(OpenDialog1.FileName), PChar(nfile), false);
 
           MsExcel.ActiveWorkbook.Close;
           MsExcel.Application.Quit;
@@ -218,7 +218,7 @@ begin
 
     MsExcel := CreateOleObject('Excel.Application');
     //    MsExcel.Workbooks.Add;
-    MsExcel.Workbooks.Open[nfile];
+    MsExcel.Workbooks.Open[OpenDialog1.FileName];
 
 
 
@@ -337,15 +337,17 @@ begin
 //     if tip='lg' then
 //       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
-        SaveDialog1.FileName:=cxTextEdit4.Text+' '+LeftStr(st1,Pos('.',st1)-1)+' боржники на '+DateTostr(cxLookupComboBox1.EditValue);
+       // SaveDialog1.FileName:=cxTextEdit4.Text+' '+' боржники на '+'.xls';
+        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Боржники на '+DateTostr(cxLookupComboBox1.EditValue)+' '+cxTextEdit4.Text+'.xls';
         if SaveDialog1.Execute then begin
 
-        MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
-       // MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName,xlNormal,' ',' ',False,False);
+     //   MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
+//        MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName,xlNormal,' ',' ',False,False);
+        MsExcel.Application.Workbooks[1].SaveAs(SaveDialog1.FileName,-4143);
 //        MsExcel.ActiveWorkbook.SaveAs('c:\temp\test.xls');
       //  MsExcel.ActiveWorkbook.save;
-        //MsExcel.Application.Workbooks[1].Close;
-        MsExcel.Application.ActiveWorkbook.Close;
+        MsExcel.Application.Workbooks[1].Close;
+        //MsExcel.Application.ActiveWorkbook.Close;
         MsExcel.Application.Quit;
         MsExcel := null;
         ShowMessage('Реєстр збережено в файл:'#10+SaveDialog1.FileName);
@@ -360,7 +362,7 @@ begin
           ShowMessage('Реєстр не збережено.');
         end;
 
-      DeleteFile(nfile);
+     // DeleteFile(nfile);
       cxTextEdit1.Text:='';
       st1:='';
       cxTextEdit4.Text:='';
