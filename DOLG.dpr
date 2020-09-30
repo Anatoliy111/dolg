@@ -19,7 +19,8 @@ uses
   Unit17 in 'Unit17.pas' {Form17},
   Unit18 in 'Unit18.pas' {Form18},
   Unit19 in 'Unit19.pas' {Form19},
-  Unit20 in 'Unit20.pas' {Form20};
+  Unit20 in 'Unit20.pas' {Form20},
+  Unit21 in 'Unit21.pas' {Form21};
 
 {$R *.res}
 
@@ -44,5 +45,6 @@ begin
   Application.CreateForm(TForm18, Form18);
   Application.CreateForm(TForm19, Form19);
   Application.CreateForm(TForm20, Form20);
+  Application.CreateForm(TForm21, Form21);
   Application.Run;
 end.

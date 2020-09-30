@@ -553,7 +553,7 @@ implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
-  Unit16, Unit19, Unit20;
+  Unit16, Unit19, Unit20, Unit21;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -758,8 +758,8 @@ end;
 
 procedure TForm1.cxButton7Click(Sender: TObject);
 begin
-Form20.Caption:=cxButton7.Caption;
-Form20.show;
+Form21.Caption:=cxButton7.Caption;
+Form21.show;
 end;
 
 

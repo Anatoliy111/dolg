@@ -18,9 +18,9 @@ object Form1: TForm1
   TextHeight = 13
   object cxGrid1: TcxGrid
     Left = 0
-    Top = 211
+    Top = 209
     Width = 972
-    Height = 427
+    Height = 429
     Align = alClient
     TabOrder = 0
     object cxGrid1DBTableView1: TcxGridDBTableView
@@ -389,7 +389,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Top = 30
+    Top = 28
     Width = 972
     Height = 181
     Align = alTop
@@ -397,8 +397,8 @@ object Form1: TForm1
     object Label16: TLabel
       Left = 630
       Top = 0
-      Width = 161
-      Height = 22
+      Width = 133
+      Height = 23
       Alignment = taCenter
       Caption = #1055#1086#1090#1086#1095#1085#1080#1081' '#1087#1077#1088#1110#1086#1076
       Font.Charset = ANSI_CHARSET
@@ -411,8 +411,8 @@ object Form1: TForm1
     object Label17: TLabel
       Left = 630
       Top = 20
-      Width = 42
-      Height = 18
+      Width = 34
+      Height = 20
       Alignment = taCenter
       Caption = #1076#1072#1090#1072
       Font.Charset = ANSI_CHARSET
@@ -1451,7 +1451,7 @@ object Form1: TForm1
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -1469,7 +1469,7 @@ object Form1: TForm1
     DockControlHeights = (
       0
       0
-      30
+      28
       0)
     object dxBarManager1Bar1: TdxBar
       Caption = 'MainMenu'
