@@ -17,7 +17,6 @@ type
     FileOpenDialog: TFileOpenDialog;
     ButtonOK: TButton;
     ADOQuery: TADOQuery;
-    ADOConnection: TADOConnection;
     MemoLog: TMemo;
     ButtonOpen: TButton;
     Panel1: TPanel;
@@ -35,7 +34,6 @@ type
     RadioButton2: TRadioButton;
     Label1: TLabel;
     Label2: TLabel;
-    Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     cxLookupComboBox1: TcxLookupComboBox;
@@ -43,17 +41,16 @@ type
     cxLookupComboBox2: TcxLookupComboBox;
     cxLookupComboBox3: TcxLookupComboBox;
     cxLookupComboBox4: TcxLookupComboBox;
-    cxGrid1: TcxGrid;
-    cxGrid1DBTableView1: TcxGridDBTableView;
-    cxGrid1Level1: TcxGridLevel;
     cxProgressBar1: TcxProgressBar;
-    cxGrid1DBTableView1AbonentId: TcxGridDBColumn;
-    cxGrid1DBTableView1sch: TcxGridDBColumn;
-    cxGrid1DBTableView1summa: TcxGridDBColumn;
+    Label8: TLabel;
+    cxComboBox3: TcxComboBox;
     IBQuery1: TIBQuery;
-    DSQuery1: TDataSource;
+    DSIBQuery1: TDataSource;
     IBQuery1SCH: TIBStringField;
+    IBQuery1COD: TIntegerField;
     IBQuery1SUMMA: TFloatField;
+    ADOConnection1: TADOConnection;
+    RadioButton1: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure DateTimePicker1Change(Sender: TObject);
     procedure EditNumbPkChange(Sender: TObject);
@@ -66,6 +63,7 @@ type
     procedure RadioButton3Click(Sender: TObject);
     procedure RadioButton5Click(Sender: TObject);
     procedure RadioButton4Click(Sender: TObject);
+    procedure RadioButton1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -98,6 +96,20 @@ begin
 //    end;
 //    GenerateNewFilename := Copy(FileName, 1, 4) + FormatDateTime('yymmdd', DateTimePicker1.Date) + NumbPk;
 //  end;
+end;
+
+procedure TForm21.RadioButton1Click(Sender: TObject);
+begin
+cxLookupComboBox1.Visible:=true;
+cxLookupComboBox2.Visible:=false;
+cxLookupComboBox3.Visible:=true;
+cxLookupComboBox4.Visible:=true;
+Label1.Visible:=true;
+Label1.Caption:='Період з';
+
+Label2.Visible:=false;
+Label6.Visible:=true;
+Label7.Visible:=true;
 end;
 
 procedure TForm21.RadioButton2Click(Sender: TObject);
@@ -178,19 +190,46 @@ procedure TForm21.FormCreate(Sender: TObject);
 begin
   //FileOpenDialog.DefaultFolder := ExtractFileDir(Application.ExeName);
 //  DateTimePicker1.Date := Now;
+          cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+          cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
+          cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
+          cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
+
 end;
 
 procedure TForm21.ButtonOpenClick(Sender: TObject);
 var
-  FilePathSh: String;
+  FilePathSh,newfile: String;
   i:integer;
 begin
+
+
+
   if FileOpenDialog.Execute then begin
     MemoLog.Lines.Add('-----' + #13#10 + 'Обработка: ' + FileOpenDialog.FileName);
 
     FilePath := ExtractFilePath(FileOpenDialog.FileName);
     FilePathSh := Copy(FilePath, 1, Length(FilePath) - 1);
     FileName := ExtractFileName(FileOpenDialog.FileName);
+
+    if (UpperCase(RightStr(FileName,3))<>'DBF') then
+    begin
+       newfile:=LeftStr(FileName,Length(FileName)-3)+'dbf';
+       newfile:=StringReplace(newfile,'(','',[rfReplaceAll,rfIgnoreCase]);
+       newfile:=StringReplace(newfile,')','',[rfReplaceAll,rfIgnoreCase]);
+       newfile:=StringReplace(newfile,'-','',[rfReplaceAll,rfIgnoreCase]);
+       newfile:=StringReplace(newfile,'_','',[rfReplaceAll,rfIgnoreCase]);
+       newfile:=StringReplace(newfile,'/','',[rfReplaceAll,rfIgnoreCase]);
+       newfile:=StringReplace(newfile,'\','',[rfReplaceAll,rfIgnoreCase]);
+       newfile:=StringReplace(newfile,'*','',[rfReplaceAll,rfIgnoreCase]);
+       newfile:=StringReplace(newfile,' ','',[rfReplaceAll,rfIgnoreCase]);
+
+       CopyFile(PChar(FilePath+FileName),PChar(FilePath+newfile),false);
+       if FileExists(FilePath+newfile) then
+       FileName := newfile
+       else
+       exit;
+    end;
 
 //    if (Length(FileName) <> 16) or (Copy(FileName, 1, 1) <> '5') then begin
 //      //MessageBox(handle, PChar('Неверный файл!'), PChar('RenamePack'), 16);
@@ -199,18 +238,18 @@ begin
 //      Exit;
 //    end else begin
       fl := true;
-      ADOConnection.Connected := False;
+      ADOConnection1.Connected := False;
       ADOQuery.Active := False;
 //      ADOConnection.ConnectionString := 'Provider=Microsoft.Jet.OLEDB.4.0;Data Source="' + FilePathSh + '";Extended Properties="DBASE IV;";"';
-      ADOConnection.ConnectionString := 'Provider=MSDASQL.1;Persist Security Info=False;Data Source=dBASE Files;Initial Catalog='+ FilePath;
-      ADOConnection.Connected := True;
+      ADOConnection1.ConnectionString := 'Provider=MSDASQL.1;Persist Security Info=False;Data Source=dBASE Files;Initial Catalog='+ FilePath;
+      ADOConnection1.Connected := True;
 //      ADODataSet1.
      // ADOQuery.SQL.Text := 'SELECT mtime, pachka, sum_pack, count_pack FROM ' + FileName;
      // ADOQuery.Active := True;
 
 
 
-      if ADOConnection.Connected then begin
+      if ADOConnection1.Connected then begin
         cxLookupComboBox1.Visible:=true;
         Label1.Caption:='Період з';
         cxLookupComboBox2.Visible:=false;
@@ -232,6 +271,7 @@ begin
           begin
               cxComboBox1.Properties.Items.Add(ADODataSet1.Fields[i].FieldName);
               cxComboBox2.Properties.Items.Add(ADODataSet1.Fields[i].FieldName);
+              cxComboBox3.Properties.Items.Add(ADODataSet1.Fields[i].FieldName);
           end;
 
 
@@ -270,7 +310,7 @@ end;
 
 procedure TForm21.ButtonOKClick(Sender: TObject);
 var ex:boolean;
-    d1,d2,d3,d4,i:integer;
+    d1,d2,d3,d4,i,cod,rr:integer;
     s1,s2,s3,s4,sch:string;
     sum:Currency;
     ss:variant;
@@ -286,6 +326,12 @@ begin
   begin
     ex:=true;
     ShowMessage('Виберіть поле для заповнення');
+  end;
+
+  if cxComboBox3.EditValue=null then
+  begin
+    ex:=true;
+    ShowMessage('Виберіть поле кода послуги');
   end;
 
 
@@ -342,6 +388,13 @@ begin
       ShowMessage('Початковий період оплати більший за кінцевий');
     end;
 
+  if RadioButton1.Checked then
+    if d3 > d4 then
+    begin
+      ex:=true;
+      ShowMessage('Початковий період оплати більший за кінцевий');
+    end;
+
   if not ex then
   begin
     ADODataSet1.Close;
@@ -351,21 +404,26 @@ begin
     if RadioButton2.Checked then
     begin
     IBQuery1.close;
-    IBQuery1.SQL.Text:='select schet as sch, sal as summa from vw_obor where period=:d1';
-    IBQuery1.ParamByName('d1').Value:=s1;
+    IBQuery1.SQL.Text:=' select trim(ob.schet) sch, lg.cod cod, ob.dolg summa from vw_obor ob'+
+                       ' left join lg_cod lg on ob.wid=lg.wid';
+                      // ' where ob.period=:d1';
+//    IBQuery1.ParamByName('d1').Value:=s1;
     IBQuery1.open;
 
     end;
 
+    rr:=IBQuery1.RecordCount;
+
     if RadioButton3.Checked then
     begin
     IBQuery1.close;
-    IBQuery1.SQL.Text:='select t2.schet as sch, t2.fullnach-t2.fullopl as summa from'+
-                       ' (select t1.schet schet, sum(t1.fullnach) fullnach, sum(t1.fullopl) fullopl from'+
-                       ' (select schet, fullnach, 0 fullopl from vw_obor where period>=:d1 and period<=:d2'+
-                       ' union all'+
-                       ' select schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4) t1'+
-                       ' group by t1.schet) t2';
+    IBQuery1.SQL.Text:='select lg.cod, trim(t2.schet) as sch, t2.fullnach-t2.fullopl as summa from'+
+                       ' (select t1.wid, t1.schet schet, sum(t1.fullnach) fullnach, sum(t1.fullopl) fullopl from'+
+                       ' (select wid, schet, fullnach, 0 fullopl from vw_obor where period>=:d1 and period<=:d2'+
+                       '  union all'+
+                       ' select wid, schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4) t1'+
+                       ' group by t1.wid, t1.schet) t2'+
+                       ' left join lg_cod lg on t2.wid=lg.wid';
 
 
     IBQuery1.ParamByName('d1').Value:=s1;
@@ -379,13 +437,10 @@ begin
     if RadioButton5.Checked then
     begin
     IBQuery1.close;
-    IBQuery1.SQL.Text:='select t2.AbonentId, (b.BookName+right(''000''+CAST(a.Number AS varchar),3)) AS sch, t2.summa from'+
-                          ' (select AbonentId, sum(pwrsum) summa'+
-                          ' from raportall'+
-                          ' where StartDate>=:d1 and StartDate<=dateadd(dd,-1,dateadd(mm,1,:d2))'+
-                          ' group by AbonentId) t2'+
-                          ' JOIN Abonent AS a ON a.AbonentId = t2.AbonentId'+
-                          ' JOIN Book AS b ON a.BookId = b.BookId';
+    IBQuery1.SQL.Text:='select lg.cod, trim(t1.schet) schet, sum(t1.fullnach) as summa from'+
+                       ' (select wid, schet, fullnach from vw_obor where period>=:d1 and period<=:d2) t1'+
+                       ' left join lg_cod lg on t1.wid=lg.wid'+
+                       ' group by lg.cod, t1.schet';
 
 
     IBQuery1.ParamByName('d1').Value:=s1;
@@ -397,13 +452,10 @@ begin
     if RadioButton4.Checked then
     begin
     IBQuery1.close;
-    IBQuery1.SQL.Text:='select t2.AbonentId, (b.BookName+right(''000''+CAST(a.Number AS varchar),3)) AS sch, t2.summa from'+
-                          ' (select AbonentId,sum(PaySum) summa'+
-                          ' from PaymentsT'+
-                          ' where PaymentDate>=:d3 and PaymentDate<=:d4'+
-                          ' group by AbonentId) t2'+
-                          ' JOIN Abonent AS a ON a.AbonentId = t2.AbonentId'+
-                          ' JOIN Book AS b ON a.BookId = b.BookId';
+    IBQuery1.SQL.Text:='select lg.cod, trim(t1.schet) schet, sum(t1.fullopl) as summa from'+
+                       ' (select wid, schet, fullopl from vw_obor where period>=:d3 and period<=:d4) t1'+
+                       ' left join lg_cod lg on t1.wid=lg.wid'+
+                       ' group by lg.cod, t1.schet';
 
 
     IBQuery1.ParamByName('d3').Value:=s3;
@@ -412,20 +464,42 @@ begin
     IBQuery1.open;
     end;
 
+    if RadioButton1.Checked then
+    begin
+    IBQuery1.close;
+    IBQuery1.SQL.Text:='select lg.cod, trim(t2.schet) as sch, t2.dolg-t2.fullopl as summa from'+
+                       ' (select t1.wid, t1.schet schet, sum(t1.dolg) dolg, sum(t1.fullopl) fullopl from'+
+                       ' (select wid, schet, dolg, 0 fullopl from vw_obor where period=:d1'+
+                       ' union all'+
+                       ' select wid, schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4) t1'+
+                       ' group by t1.wid, t1.schet) t2'+
+                       ' left join lg_cod lg on t2.wid=lg.wid';
 
+    IBQuery1.ParamByName('d1').Value:=s1;
+    IBQuery1.ParamByName('d3').Value:=s3;
+    IBQuery1.ParamByName('d4').Value:=s4;
+
+    IBQuery1.open;
+    end;
+
+
+    rr:=IBQuery1.RecordCount;
     MemoLog.Lines.Add('-----' + #13#10 + 'Завантаження: ');
 
-    if Copy(VarToStr(ADODataSet1.FieldByName(cxComboBox1.EditValue).Value),1,2)<>Copy(IBQuery1sch.Value,1,2) then
-    begin
-    ShowMessage('Можливо неправильно вибрано поле рахунку: '+cxComboBox1.EditValue+' значення: '+VarToStr(ADODataSet1.FieldByName(cxComboBox1.EditValue).Value)+' .Рахунок повинен починатися на: '+Copy(IBQuery1sch.Value,1,2));
-    exit;
-//      case MessageBox(handle,pchar('Ви дійсно бажаєте видалити тариф?'),pchar(''),36) of
-//          IDYES:begin
-//          IBTARIF_MES.Delete;
-//          self.fl_post:=1;
-//          end;
-//      end;
-    end;
+//    if (Length(VarToStr(ADODataSet1.FieldByName(cxComboBox1.EditValue).Value))>8) or (Length(VarToStr(ADODataSet1.FieldByName(cxComboBox1.EditValue).Value))<7) then
+//    begin
+//    ShowMessage('Можливо неправильно вибрано поле рахунку: '+cxComboBox1.EditValue+' значення: '+VarToStr(ADODataSet1.FieldByName(cxComboBox1.EditValue).Value)+' .Рахунок повинен мати вид: '+IBQuery1sch.Value);
+//    exit;
+//
+//    end;
+//
+//    if (ADODataSet1.FieldByName(cxComboBox3.EditValue).Value<500) or (ADODataSet1.FieldByName(cxComboBox3.EditValue).Value>6000) then
+//    begin
+//    ShowMessage('Можливо неправильно вибрано поле код: '+cxComboBox3.EditValue+' значення: '+VarToStr(ADODataSet1.FieldByName(cxComboBox3.EditValue).Value)+' .Код повинен мати вид: '+IBQuery1COD.Value);
+//    exit;
+//
+//    end;
+
 
 
 
@@ -436,20 +510,37 @@ begin
         cxProgressBar1.Properties.Max:=ADODataSet1.RecordCount;
         Application.ProcessMessages;
 
+    IBQuery1.First;
     ADODataSet1.First;
     while not ADODataSet1.Eof do
-
        begin
        i:=1;
-       sch:=ADODataSet1.FieldByName(cxComboBox1.EditValue).Value;
-       ss:=IBQuery1.Lookup('sch',sch,'summa');
+       sch:=trim(ADODataSet1.FieldByName(cxComboBox1.EditValue).Value);
+       cod:=ADODataSet1.FieldByName(cxComboBox3.EditValue).Value;
+
+//       IBQuery1.First;
+       ss := IBQuery1.Lookup('sch;cod', VarArrayOf([sch, cod]), 'summa');
+//       ss := IBQuery1.Lookup('SCH', sch, 'SUMMA');
        if ss <> null then
           sum:=ss
        else
        begin
-         MemoLog.Lines.Add('Рахунок '+sch+' - не знайдено' + #13#10);
+         MemoLog.Lines.Add('Рахунок '+sch+' та код '+IntToStr(cod)+' - не знайдено' + #13#10);
          sum:=0;
        end;
+
+
+//       IBQuery1SCH.Value;
+//       IBQuery1.First;
+//
+//       if IBQuery1.Locate('sch',sch,[]) then
+//          ss:=IBQuery1SUMMA.value
+//       else
+//       begin
+//         MemoLog.Lines.Add('Рахунок '+sch+' та код '+IntToStr(cod)+' - не знайдено' + #13#10);
+//         sum:=0;
+//       end;
+
        if CheckBox1.Checked then
        begin
          if sum<0 then sum:=0;
