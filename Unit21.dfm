@@ -26,7 +26,6 @@ object Form21: TForm21
     ScrollBars = ssBoth
     TabOrder = 0
     WordWrap = False
-    ExplicitWidth = 1111
   end
   object Panel1: TPanel
     Left = 0
@@ -35,7 +34,6 @@ object Form21: TForm21
     Height = 281
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 1111
     object ButtonOK: TButton
       Left = 535
       Top = 125
@@ -250,7 +248,6 @@ object Form21: TForm21
     Width = 658
     Height = 19
     Panels = <>
-    ExplicitWidth = 1111
   end
   object CheckBox1: TCheckBox
     Left = 261
@@ -281,7 +278,6 @@ object Form21: TForm21
     Top = 288
   end
   object ADODataSet1: TADODataSet
-    Active = True
     Connection = ADOConnection1
     CursorType = ctStatic
     CommandText = 'select * from 36188893.dbf'
@@ -325,11 +321,11 @@ object Form21: TForm21
     Top = 344
   end
   object ADOConnection1: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=MSDASQL.1;Persist Security Info=False;Data Source=dBASE' +
-      ' Files;Initial Catalog=d:\WORK\KOMUN\'
+      ' Files;Initial Catalog=d:\WORK\KOMUN\;'
     LoginPrompt = False
+    Provider = 'MSDASQL.1'
     Left = 120
     Top = 296
   end

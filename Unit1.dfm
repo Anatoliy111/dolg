@@ -3986,4 +3986,8 @@ object Form1: TForm1
     Left = 384
     Top = 312
   end
+  object cxLocalizer1: TcxLocalizer
+    Left = 472
+    Top = 80
+  end
 end

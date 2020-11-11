@@ -16,7 +16,8 @@ uses
   cxGroupBox, cxNavigator, IBX.IBScript, IBX.IBSQL, cxCalc, Data.DBXMySQL,
   Data.DBXPool, Data.SqlExpr, Soap.InvokeRegistry, Soap.WSDLIntf,
   Soap.SOAPPasInv, Soap.SOAPHTTPPasInv, Soap.SOAPHTTPDisp, Soap.WebBrokerSOAP,
-  Soap.SOAPDomConv, Soap.OPToSOAPDomConv, Datasnap.DBClient, Soap.SOAPConn;
+  Soap.SOAPDomConv, Soap.OPToSOAPDomConv, Datasnap.DBClient, Soap.SOAPConn,
+  cxLocalization;
 
 type
   TForm1 = class(TForm)
@@ -496,6 +497,7 @@ type
     cxGrid1DBTableView1N_DOG: TcxGridDBColumn;
     cxGrid1DBTableView1D_DOG: TcxGridDBColumn;
     cxButton7: TcxButton;
+    cxLocalizer1: TcxLocalizer;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -923,7 +925,10 @@ begin
           if not DirectoryExists(PathTMP) then
              MkDir(PathTMP);
 
-
+   cxLocalizer1.Active:=false;
+   cxLocalizer1.FileName:=GetCurrentDir+'\Ukr.INI';
+   cxLocalizer1.Active:=true;
+   cxLocalizer1.Locale:=1058;
 
 
 
