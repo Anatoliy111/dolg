@@ -314,7 +314,7 @@ begin
           else
           begin
              MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=0;
-             MemoLog.Lines.Add('Рахунок '+sch+' - не знайдено' + #13#10);
+            // MemoLog.Lines.Add('Рахунок '+sch+' - не знайдено' + #13#10);
           end;
         end;
 
