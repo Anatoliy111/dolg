@@ -183,7 +183,7 @@ xlTop = -4160;
 xlCenter = -4108;
 xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
-var i,ns,kolst,kolborg,kolschet,k,cod:integer;
+var i,ns,kolst,k,cod:integer;
     sum,sumExcel:currency;
     str,nam,sch,klasf,vid_rob,n_kres,gost,dekada,sss:string;
     kolwith,rowh,rowh1:Variant;
@@ -234,13 +234,13 @@ begin
       kolst:=2;
       i:=0;
 
-      IBWID.First;
-      while not IBWID.eof do
-      begin
-        MsExcel.WorkSheets[1].Cells[1,kolborg+i]:='Борг '+IBWIDNAIM.Value;
-        i:=i+1;
-        IBWID.Next;
-      end;
+//      IBWID.First;
+//      while not IBWID.eof do
+//      begin
+        MsExcel.WorkSheets[1].Cells[1,kolborg]:='Заборгованість';
+//        i:=i+1;
+//        IBWID.Next;
+//      end;
 
    Form2.Label1.Caption:='Обрахування даних';
         Form2.cxProgressBar1.Properties.Min:=0;

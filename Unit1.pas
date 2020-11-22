@@ -559,7 +559,7 @@ implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
-  Unit16, Unit19, Unit20, Unit21;
+  Unit16, Unit19, Unit20, Unit21, Unit22;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -646,8 +646,8 @@ end;
 
 procedure TForm1.dxBarButton126Click(Sender: TObject);
 begin
-Form21.Caption:=dxBarButton126.Caption;
-Form21.show;
+Form22.Caption:=dxBarButton126.Caption;
+Form22.show;
 end;
 
 procedure TForm1.dxBarButton19Click(Sender: TObject);

@@ -52,6 +52,7 @@ object Form22: TForm22
       item
         FieldName = 'PERIOD'
       end>
+    Properties.ListSource = Form1.DSPERIOD
     TabOrder = 4
     Width = 129
   end
@@ -73,6 +74,7 @@ object Form22: TForm22
       item
         FieldName = 'PERIOD'
       end>
+    Properties.ListSource = Form1.DSPERIOD
     TabOrder = 7
     Width = 129
   end
@@ -84,6 +86,7 @@ object Form22: TForm22
       item
         FieldName = 'PERIOD'
       end>
+    Properties.ListSource = Form1.DSPERIOD
     TabOrder = 8
     Width = 129
   end
@@ -126,10 +129,12 @@ object Form22: TForm22
     WordWrap = False
   end
   object OpenDialog1: TOpenDialog
-    Left = 520
-    Top = 272
+    Left = 552
+    Top = 288
   end
   object IBQuery1: TIBQuery
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
     ParamCheck = True
@@ -185,6 +190,8 @@ object Form22: TForm22
     Top = 280
   end
   object IBWID: TIBDataSet
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
