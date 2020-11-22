@@ -44,18 +44,6 @@ object Form20: TForm20
     Top = 70
     Caption = #1055#1077#1088#1110#1086#1076' '#1073#1086#1088#1075#1091' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
   end
-  object cxTextEdit4: TcxTextEdit
-    Left = 158
-    Top = 153
-    Properties.ReadOnly = True
-    TabOrder = 4
-    Width = 201
-  end
-  object cxLabel3: TcxLabel
-    Left = 47
-    Top = 152
-    Caption = #1058#1080#1087' '#1088#1077#1108#1089#1090#1088#1091
-  end
   object cxLookupComboBox1: TcxLookupComboBox
     Left = 216
     Top = 70
@@ -65,7 +53,7 @@ object Form20: TForm20
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
-    TabOrder = 6
+    TabOrder = 4
     Width = 129
   end
   object cxLabel28: TcxLabel
@@ -87,7 +75,7 @@ object Form20: TForm20
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
-    TabOrder = 9
+    TabOrder = 7
     Width = 129
   end
   object cxLookupComboBox4: TcxLookupComboBox
@@ -99,7 +87,7 @@ object Form20: TForm20
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
-    TabOrder = 10
+    TabOrder = 8
     Width = 129
   end
   object cxLabel2: TcxLabel
@@ -114,9 +102,7 @@ object Form20: TForm20
   object cxLabel5: TcxLabel
     Left = 39
     Top = 8
-    Caption = 
-      #1042#1080#1073#1077#1088#1110#1090#1100' '#1092#1072#1081#1083#1080' '#1103#1082#1110' '#1087#1088#1080#1089#1080#1083#1072#1108' '#1059#1055#1057#1047#1053' *.DBF - '#1089#1091#1073#1089#1080#1076#1110#1103', *.S01 *.P01 ' +
-      '- '#1087#1110#1083#1100#1075#1072
+    Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1092#1072#1081#1083#1080' '#1103#1082#1110' '#1087#1088#1080#1089#1080#1083#1072#1108' '#1059#1055#1057#1047#1053' *.DBF - '#1089#1091#1073#1089#1080#1076#1110#1103
   end
   object cxLabel6: TcxLabel
     Left = 39
@@ -124,12 +110,23 @@ object Form20: TForm20
     Caption = '* - '#1073#1086#1088#1075#1080' '#1076#1086#1073#1072#1074#1083#1103#1102#1090#1100#1089#1103' '#1074' '#1082#1110#1085#1077#1094#1100' '#1090#1072#1073#1083#1080#1094#1110
   end
   object CheckBox1: TCheckBox
-    Left = 373
-    Top = 130
-    Width = 240
+    Left = 61
+    Top = 160
+    Width = 295
     Height = 17
     Caption = #1074#1110#1076#1108#1084#1085#1080#1081' '#1088#1077#1079#1091#1083#1100#1090#1072#1090' '#1079#1072#1087#1086#1074#1085#1102#1074#1072#1090#1080' '#1103#1082' '#1085#1091#1083#1100
-    TabOrder = 15
+    TabOrder = 13
+  end
+  object MemoLog: TMemo
+    Left = 0
+    Top = 250
+    Width = 708
+    Height = 241
+    Align = alBottom
+    ReadOnly = True
+    ScrollBars = ssBoth
+    TabOrder = 14
+    WordWrap = False
   end
   object OpenDialog1: TOpenDialog
     Left = 520

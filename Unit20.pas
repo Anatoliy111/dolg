@@ -16,8 +16,6 @@ type
     cxTextEdit1: TcxTextEdit;
     cxButton2: TcxButton;
     cxLabel1: TcxLabel;
-    cxTextEdit4: TcxTextEdit;
-    cxLabel3: TcxLabel;
     OpenDialog1: TOpenDialog;
     IBQuery1: TIBQuery;
     DSQuery1: TDataSource;
@@ -38,6 +36,7 @@ type
     cxLabel5: TcxLabel;
     cxLabel6: TcxLabel;
     CheckBox1: TCheckBox;
+    MemoLog: TMemo;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -53,6 +52,8 @@ var
   st1,poslug,tip,nfile:string;
        MsExcel:Variant;
      period: TDateTime;
+     kolborg,kolschet:integer;
+     Rows, Columns: Integer;
 
 implementation
 
@@ -64,11 +65,11 @@ procedure TForm20.cxButton1Click(Sender: TObject);
 var i,ns,kolst:integer;
     st:pchar;
     sss:string;
-    Rows, Columns: Integer;
 begin
 
-       cxTextEdit4.Text:='';
 
+       Rows:=0;
+       Columns:=0;
 //       if not VarIsEmpty(MsExcel) then
 //         if not MsExcel.Visible then
 //         begin
@@ -91,24 +92,24 @@ begin
    // nfile:=trim(OpenDialog1.FileName);
    // Delete(nfile, Length(nfile)-3, 3);
     //nfile:=nfile+'.xls';
-    if kolst<>0 then
-    begin
-      if (UpperCase(RightStr(st1,3))='DBF') then
-          cxTextEdit4.Text:='Субсидія'
-      else
-         begin
-            ShowMessage('Неправильний файл !!!');
-            exit;
-         end;
-
-
-
-    end
-    else
-    begin
-     ShowMessage('Неправильний файл !!!');
-     exit;
-    end;
+//    if kolst<>0 then
+//    begin
+//      if (UpperCase(RightStr(st1,3))='DBF') then
+//          cxTextEdit4.Text:='Субсидія'
+//      else
+//         begin
+//            ShowMessage('Неправильний файл !!!');
+//            exit;
+//         end;
+//
+//
+//
+//    end
+//    else
+//    begin
+//     ShowMessage('Неправильний файл !!!');
+//     exit;
+//    end;
 
 
 
@@ -120,14 +121,30 @@ begin
     Rows := MsExcel.ActiveSheet.UsedRange.Rows.Count;
     Columns := MsExcel.ActiveSheet.UsedRange.Columns.Count;
 
+              MemoLog.Lines.Add('  Файл:'+OpenDialog1.FileName);
+          MemoLog.Lines.Add('  Кіль.записів:'+IntToStr(Rows));
+           MemoLog.Lines.Add('  Кіль.колонок:'+IntToStr(Columns));
+
+    kolschet:=0;
+    kolborg:=0;
+    for I := 1 to Columns-1 do
+    begin
+      if (trim(MsExcel.WorkSheets[1].Cells[1,I])='RASH') or (trim(MsExcel.WorkSheets[1].Cells[1,I])='RAH') then
+      begin
+         kolschet:=i;
+         kolborg:=Columns+1;
+      end;
 
 
-    if cxTextEdit4.Text='Субсидія' then
-       if trim(MsExcel.WorkSheets[1].Cells[1,11])<>'RASH' then
+    end;
+
+
+
+
+       if kolschet=0 then
        begin
-          ShowMessage('Неправильний файл');
+          ShowMessage('Неправильний файл, поле рахунок не знайдено');
           cxTextEdit1.Text:='';
-          cxTextEdit4.Text:='';
           st1:='';
           Application.ProcessMessages;
           exit;
@@ -163,7 +180,7 @@ xlTop = -4160;
 xlCenter = -4108;
 xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
-var i,ns,kolst,kolborg,kolschet,k:integer;
+var i,ns,kolst,k:integer;
     sum,sumExcel:currency;
     str,nam,sch,klasf,vid_rob,n_kres,gost,dekada,sss:string;
     kolwith,rowh,rowh1:Variant;
@@ -211,17 +228,6 @@ begin
 
       f1:=true;
       kolst:=2;
-      if cxTextEdit4.Text='Субсидія' then
-      begin
-       kolschet:=11;
-       kolborg:=54;
-      end;
-
-      if (cxTextEdit4.Text='Пільга P01') or (cxTextEdit4.Text='Пільга S01') then
-      begin
-        kolschet:=16;
-        kolborg:=19;
-      end;
 
       i:=0;
 
@@ -239,26 +245,8 @@ begin
         Form2.cxProgressBar1.Position:=0;
    Application.ProcessMessages;
 
-//        MsExcel.Visible := True;
-        while f1 do
-        begin
-        if (Length(MsExcel.WorkSheets[1].Cells[kolst,1])=0) then
-           f1:=False
-        else
-          begin
-//            i:=0;
-//            IBWID.First;
-//            while not IBWID.eof do
-//            begin
-//              MsExcel.WorkSheets[1].Cells[kolst,kolborg+i]:=0;
-//              i:=i+1;
-//              IBWID.Next;
-//            end;
-          kolst:=kolst+1;
-          end;
 
-        end;
-
+   kolst:=Rows;
    MsExcel.DisplayAlerts := False;
 
 
@@ -324,7 +312,10 @@ begin
                 MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=IBQuery1.FieldByName('summa').Value;
           end
           else
+          begin
              MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=0;
+             MemoLog.Lines.Add('Рахунок '+sch+' - не знайдено' + #13#10);
+          end;
         end;
 
    k:=k+1;
@@ -339,7 +330,7 @@ begin
 //       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
        // SaveDialog1.FileName:=cxTextEdit4.Text+' '+' боржники на '+'.xls';
-        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(IncMonth(cxLookupComboBox4.EditValue))+' '+cxTextEdit4.Text+'.xls';
+        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(IncMonth(cxLookupComboBox4.EditValue))+' субсидія.xls';
         if SaveDialog1.Execute then begin
 
      //   MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
@@ -352,6 +343,7 @@ begin
         MsExcel.Application.Quit;
         MsExcel := null;
         ShowMessage('Реєстр збережено в файл:'#10+SaveDialog1.FileName);
+        MemoLog.Lines.Add('Реєстр збережено в файл:'#10+SaveDialog1.FileName);
         Application.ProcessMessages;
 
 
@@ -366,9 +358,11 @@ begin
      // DeleteFile(nfile);
       cxTextEdit1.Text:='';
       st1:='';
-      cxTextEdit4.Text:='';
+
       form2.Close;
       ShowMessage('Завантаження закінчено');
+      MemoLog.Lines.Add('Завантаження закінчено');
+      MemoLog.Lines.Add('---------------------------------------------');
       Form20.Enabled:=true;
 end;
 

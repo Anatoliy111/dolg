@@ -16,8 +16,6 @@ type
     cxTextEdit1: TcxTextEdit;
     cxButton2: TcxButton;
     cxLabel1: TcxLabel;
-    cxTextEdit4: TcxTextEdit;
-    cxLabel3: TcxLabel;
     OpenDialog1: TOpenDialog;
     IBQuery1: TIBQuery;
     DSQuery1: TDataSource;
@@ -38,6 +36,7 @@ type
     cxLabel5: TcxLabel;
     cxLabel6: TcxLabel;
     CheckBox1: TCheckBox;
+    MemoLog: TMemo;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -53,6 +52,8 @@ var
   st1,poslug,tip,nfile:string;
        MsExcel:Variant;
      period: TDateTime;
+          kolborg,kolschet,kollgcode:integer;
+     Rows, Columns: Integer;
 
 implementation
 
@@ -66,7 +67,8 @@ var i,ns,kolst:integer;
     sss:string;
 begin
 
-       cxTextEdit4.Text:='';
+           Rows:=0;
+       Columns:=0;
 
 //       if not VarIsEmpty(MsExcel) then
 //         if not MsExcel.Visible then
@@ -89,35 +91,6 @@ begin
     kolst:= Pos('.',st1)-1;
    // nfile:=trim(OpenDialog1.FileName);
    // Delete(nfile, Length(nfile)-3, 3);
-    //nfile:=nfile+'.xls';
-    if kolst<>0 then
-    begin
-      if (UpperCase(RightStr(st1,3))='DBF') then
-          cxTextEdit4.Text:='Субсидія'
-      else
-         if (UpperCase(RightStr(st1,3))='P01') or (UpperCase(RightStr(st1,3))='S01') then
-         begin
-             if UpperCase(RightStr(st1,3))='P01' then
-                cxTextEdit4.Text:='Пільга P01';
-             if UpperCase(RightStr(st1,3))='S01' then
-                cxTextEdit4.Text:='Пільга S01';
-         end
-         else
-         begin
-            ShowMessage('Неправильний файл !!!');
-            exit;
-         end;
-
-
-
-    end
-    else
-    begin
-     ShowMessage('Неправильний файл !!!');
-     exit;
-    end;
-
-
 
 
 
@@ -125,24 +98,56 @@ begin
     //    MsExcel.Workbooks.Add;
     MsExcel.Workbooks.Open[OpenDialog1.FileName];
 
+    Rows := MsExcel.ActiveSheet.UsedRange.Rows.Count;
+    Columns := MsExcel.ActiveSheet.UsedRange.Columns.Count;
 
-    if cxTextEdit4.Text='Субсидія' then
-       if trim(MsExcel.WorkSheets[1].Cells[1,11])<>'RASH' then
+              MemoLog.Lines.Add('  Файл:'+OpenDialog1.FileName);
+          MemoLog.Lines.Add('  Кіль.записів:'+IntToStr(Rows));
+           MemoLog.Lines.Add('  Кіль.колонок:'+IntToStr(Columns));
+
+
+    kolschet:=0;
+    kollgcode:=0;
+    kolborg:=0;
+
+    for I := 1 to Columns-1 do
+    begin
+      if (trim(MsExcel.WorkSheets[1].Cells[1,I])='RASH') or (trim(MsExcel.WorkSheets[1].Cells[1,I])='RAH') then
+      begin
+         kolschet:=i;
+
+      end;
+      if (trim(MsExcel.WorkSheets[1].Cells[1,I])='LGCODE') then
+      begin
+         kollgcode:=i;
+      end;
+      if (trim(MsExcel.WorkSheets[1].Cells[1,I])='Summ_Borg') then
+      begin
+         kolborg:=i;
+      end;
+
+
+    end;
+
+    if kolborg=0 then kolborg:=Columns+1;
+
+
+
+
+
+       if kolschet=0 then
        begin
-          ShowMessage('Неправильний файл');
+          ShowMessage('Неправильний файл, поле рахунок не знайдено');
           cxTextEdit1.Text:='';
-          cxTextEdit4.Text:='';
           st1:='';
           Application.ProcessMessages;
           exit;
        end;
 
-    if (cxTextEdit4.Text='Пільга P01') or (cxTextEdit4.Text='Пільга S01') then
-       if trim(MsExcel.WorkSheets[1].Cells[1,16])<>'RAH' then
+       if kollgcode=0 then
        begin
-          ShowMessage('Неправильний файл');
+          ShowMessage('Неправильний файл, поле код категорії не знайдено');
           cxTextEdit1.Text:='';
-          cxTextEdit4.Text:='';
           st1:='';
           Application.ProcessMessages;
           exit;
@@ -178,7 +183,7 @@ xlTop = -4160;
 xlCenter = -4108;
 xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
-var i,ns,kolst,kolborg,kolschet,k:integer;
+var i,ns,kolst,kolborg,kolschet,k,cod:integer;
     sum,sumExcel:currency;
     str,nam,sch,klasf,vid_rob,n_kres,gost,dekada,sss:string;
     kolwith,rowh,rowh1:Variant;
@@ -186,6 +191,7 @@ var i,ns,kolst,kolborg,kolschet,k:integer;
     pathDBF,Path:string;
     adostr,cmd:WideString;
     ob,table:TDbf;
+    ss:variant;
 
 
 begin
@@ -226,18 +232,6 @@ begin
 
       f1:=true;
       kolst:=2;
-      if cxTextEdit4.Text='Субсидія' then
-      begin
-       kolschet:=11;
-       kolborg:=54;
-      end;
-
-      if (cxTextEdit4.Text='Пільга P01') or (cxTextEdit4.Text='Пільга S01') then
-      begin
-        kolschet:=16;
-        kolborg:=19;
-      end;
-
       i:=0;
 
       IBWID.First;
@@ -255,24 +249,7 @@ begin
    Application.ProcessMessages;
 
 //        MsExcel.Visible := True;
-        while f1 do
-        begin
-        if (Length(MsExcel.WorkSheets[1].Cells[kolst,1])=0) then
-           f1:=False
-        else
-          begin
-//            i:=0;
-//            IBWID.First;
-//            while not IBWID.eof do
-//            begin
-//              MsExcel.WorkSheets[1].Cells[kolst,kolborg+i]:=0;
-//              i:=i+1;
-//              IBWID.Next;
-//            end;
-          kolst:=kolst+1;
-          end;
-
-        end;
+   kolst:=Rows;
 
    MsExcel.DisplayAlerts := False;
 
@@ -281,38 +258,20 @@ begin
    Form2.Label1.Caption:='Завантаження даних';
    Application.ProcessMessages;
    k:=0;
-   IBWID.First;
-   while not IBWID.eof do
-   begin
-
-     Form2.Label1.Caption:='Завантаження даних '+IBWIDNAIM.Value;
-  // period:=StrToDate('01.'+MidStr(MsExcel.WorkSheets[1].Cells[1,4],6,2)+'.'+LeftStr(MsExcel.WorkSheets[1].Cells[1,4],4));
-
-
-    //  form1.IBWID.First
-    //  form1.IBWID.Locate('naim',cxLookupComboBox1.EditValue,[]);
-    //  form1.IBWID.Lookup('naim',cxLookupComboBox1.EditValue,'wid');
-//      IBQuery1.Close;
-//      IBQuery1.SQL.Text:='select trim(vo.schet) schet, vo.dolg, op.opl from vw_obkr vo '+
-//                         'inner join (select schet, sum(fullopl) opl from vw_obkr where wid=:wid and period>=:dt2 and period<=:dt3 group by schet) op on op.schet=vo.schet where vo.wid=:wid and vo.period=:dt1 and op.opl=0 and vo.dolg>0';
-//      IBQuery1.ParamByName('dt1').AsDate:=cxLookupComboBox1.EditValue;
-//      IBQuery1.ParamByName('dt2').AsDate:=cxLookupComboBox3.EditValue;
-//      IBQuery1.ParamByName('dt3').AsDate:=cxLookupComboBox4.EditValue;
-//      IBQuery1.ParamByName('wid').Value:=IBWIDWID.Value;
-//      IBQuery1.Open;
 
     IBQuery1.close;
-    IBQuery1.SQL.Text:='select trim(t2.schet) as schet, t2.dolg-t2.fullopl as summa from'+
+    IBQuery1.SQL.Text:='select lg.cod, trim(t2.schet) as sch, t2.dolg-t2.fullopl as summa from'+
                        ' (select t1.wid, t1.schet schet, sum(t1.dolg) dolg, sum(t1.fullopl) fullopl from'+
-                       ' (select wid, schet, dolg, 0 fullopl from vw_obor where period=:d1 and wid=:wid'+
+                       ' (select wid, schet, dolg, 0 fullopl from vw_obor where period=:d1'+
                        ' union all'+
-                       ' select wid, schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4 and wid=:wid) t1'+
-                       ' group by t1.wid, t1.schet) t2';
+                       ' select wid, schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4) t1'+
+                       ' group by t1.wid, t1.schet) t2'+
+                       ' left join lg_cod lg on t2.wid=lg.wid';
 
       IBQuery1.ParamByName('d1').AsDate:=cxLookupComboBox1.EditValue;
       IBQuery1.ParamByName('d3').AsDate:=cxLookupComboBox3.EditValue;
       IBQuery1.ParamByName('d4').AsDate:=cxLookupComboBox4.EditValue;
-      IBQuery1.ParamByName('wid').Value:=IBWIDWID.Value;
+      //IBQuery1.ParamByName('wid').Value:=IBWIDWID.Value;
 
     IBQuery1.open;
 
@@ -328,23 +287,57 @@ begin
           Application.ProcessMessages;
 
           sch:=MsExcel.WorkSheets[1].Cells[i,kolschet];
+          cod:=MsExcel.WorkSheets[1].Cells[i,kollgcode];
+
           IBQuery1.First;
          // IBQuery1SCHET.Value;
-          if IBQuery1.Locate('schet',sch,[]) then
-          begin
-             //IBQuery1SCHET.Value;
-             if (CheckBox1.Checked) and (IBQuery1.FieldByName('summa').Value<0) then
-                MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=0
-             else
-                MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=IBQuery1.FieldByName('summa').Value;
-          end
-          else
-             MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=0;
+
+
+
+
+//          if IBQuery1.Locate('schet',sch,[]) then
+//          begin
+//             //IBQuery1SCHET.Value;
+//             if (CheckBox1.Checked) and (IBQuery1.FieldByName('summa').Value<0) then
+//                MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=0
+//             else
+//                MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=IBQuery1.FieldByName('summa').Value;
+//          end
+//          else
+//             MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=0;
+
+
+         ss := IBQuery1.Lookup('sch;cod', VarArrayOf([sch, cod]), 'summa');
+  //       ss := IBQuery1.Lookup('SCH', sch, 'SUMMA');
+         if ss <> null then
+            sum:=ss
+         else
+         begin
+           MemoLog.Lines.Add('Рахунок '+sch+' та код '+IntToStr(cod)+' - не знайдено' + #13#10);
+           sum:=0;
+         end;
+
+
+//       IBQuery1SCH.Value;
+//       IBQuery1.First;
+//
+//       if IBQuery1.Locate('sch',sch,[]) then
+//          ss:=IBQuery1SUMMA.value
+//       else
+//       begin
+//         MemoLog.Lines.Add('Рахунок '+sch+' та код '+IntToStr(cod)+' - не знайдено' + #13#10);
+//         sum:=0;
+//       end;
+
+         if CheckBox1.Checked then
+         begin
+           if sum<0 then sum:=0;
+         end;
+
+        MsExcel.WorkSheets[1].Cells[i,kolborg]:=sum;
         end;
 
-   k:=k+1;
-   IBWID.Next;
-   end;
+
 
 
 
@@ -354,7 +347,7 @@ begin
 //       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
        // SaveDialog1.FileName:=cxTextEdit4.Text+' '+' боржники на '+'.xls';
-        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(IncMonth(cxLookupComboBox4.EditValue))+' '+cxTextEdit4.Text+'.xls';
+        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(IncMonth(cxLookupComboBox4.EditValue))+' субсидія.xls';
         if SaveDialog1.Execute then begin
 
      //   MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
@@ -381,7 +374,6 @@ begin
      // DeleteFile(nfile);
       cxTextEdit1.Text:='';
       st1:='';
-      cxTextEdit4.Text:='';
       form2.Close;
       ShowMessage('Завантаження закінчено');
       Form22.Enabled:=true;
