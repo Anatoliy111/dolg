@@ -1,7 +1,7 @@
-object Form20: TForm20
+object Form22: TForm22
   Left = 0
   Top = 0
-  Caption = 'Form20'
+  Caption = 'Form22'
   ClientHeight = 491
   ClientWidth = 708
   Color = clBtnFace
@@ -64,7 +64,6 @@ object Form20: TForm20
       item
         FieldName = 'PERIOD'
       end>
-    Properties.ListSource = Form1.DSPERIOD
     TabOrder = 6
     Width = 129
   end
@@ -86,7 +85,6 @@ object Form20: TForm20
       item
         FieldName = 'PERIOD'
       end>
-    Properties.ListSource = Form1.DSPERIOD
     TabOrder = 9
     Width = 129
   end
@@ -98,7 +96,6 @@ object Form20: TForm20
       item
         FieldName = 'PERIOD'
       end>
-    Properties.ListSource = Form1.DSPERIOD
     TabOrder = 10
     Width = 129
   end
@@ -136,8 +133,6 @@ object Form20: TForm20
     Top = 272
   end
   object IBQuery1: TIBQuery
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
     ParamCheck = True
@@ -193,8 +188,6 @@ object Form20: TForm20
     Top = 280
   end
   object IBWID: TIBDataSet
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (

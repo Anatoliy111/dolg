@@ -1,4 +1,4 @@
-unit Unit20;
+unit Unit22;
 
 interface
 
@@ -11,7 +11,7 @@ uses
   cxDBLookupEdit, cxDBLookupComboBox, dbf,dbf_common;
 
 type
-  TForm20 = class(TForm)
+  TForm22 = class(TForm)
     cxButton1: TcxButton;
     cxTextEdit1: TcxTextEdit;
     cxButton2: TcxButton;
@@ -49,7 +49,7 @@ type
   end;
 
 var
-  Form20: TForm20;
+  Form22: TForm22;
   st1,poslug,tip,nfile:string;
        MsExcel:Variant;
      period: TDateTime;
@@ -60,11 +60,10 @@ implementation
 
 uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP;
 
-procedure TForm20.cxButton1Click(Sender: TObject);
+procedure TForm22.cxButton1Click(Sender: TObject);
 var i,ns,kolst:integer;
     st:pchar;
     sss:string;
-    Rows, Columns: Integer;
 begin
 
        cxTextEdit4.Text:='';
@@ -96,6 +95,14 @@ begin
       if (UpperCase(RightStr(st1,3))='DBF') then
           cxTextEdit4.Text:='Субсидія'
       else
+         if (UpperCase(RightStr(st1,3))='P01') or (UpperCase(RightStr(st1,3))='S01') then
+         begin
+             if UpperCase(RightStr(st1,3))='P01' then
+                cxTextEdit4.Text:='Пільга P01';
+             if UpperCase(RightStr(st1,3))='S01' then
+                cxTextEdit4.Text:='Пільга S01';
+         end
+         else
          begin
             ShowMessage('Неправильний файл !!!');
             exit;
@@ -117,13 +124,21 @@ begin
     MsExcel := CreateOleObject('Excel.Application');
     //    MsExcel.Workbooks.Add;
     MsExcel.Workbooks.Open[OpenDialog1.FileName];
-    Rows := MsExcel.ActiveSheet.UsedRange.Rows.Count;
-    Columns := MsExcel.ActiveSheet.UsedRange.Columns.Count;
-
 
 
     if cxTextEdit4.Text='Субсидія' then
        if trim(MsExcel.WorkSheets[1].Cells[1,11])<>'RASH' then
+       begin
+          ShowMessage('Неправильний файл');
+          cxTextEdit1.Text:='';
+          cxTextEdit4.Text:='';
+          st1:='';
+          Application.ProcessMessages;
+          exit;
+       end;
+
+    if (cxTextEdit4.Text='Пільга P01') or (cxTextEdit4.Text='Пільга S01') then
+       if trim(MsExcel.WorkSheets[1].Cells[1,16])<>'RAH' then
        begin
           ShowMessage('Неправильний файл');
           cxTextEdit1.Text:='';
@@ -155,7 +170,7 @@ end;
 
 
 
-procedure TForm20.cxButton2Click(Sender: TObject);
+procedure TForm22.cxButton2Click(Sender: TObject);
 const
 xlContinuous=1;
 xlThin=2;
@@ -206,7 +221,7 @@ begin
 
 
 
-   Form20.Enabled:=false;
+   Form22.Enabled:=false;
    Form2.Show;
 
       f1:=true;
@@ -369,10 +384,10 @@ begin
       cxTextEdit4.Text:='';
       form2.Close;
       ShowMessage('Завантаження закінчено');
-      Form20.Enabled:=true;
+      Form22.Enabled:=true;
 end;
 
-procedure TForm20.FormShow(Sender: TObject);
+procedure TForm22.FormShow(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;

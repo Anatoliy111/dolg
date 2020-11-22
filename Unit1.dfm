@@ -603,15 +603,6 @@ object Form1: TForm1
       TabOrder = 5
       OnClick = cxButton6Click
     end
-    object cxButton7: TcxButton
-      Left = 608
-      Top = 144
-      Width = 185
-      Height = 25
-      Caption = #1041#1086#1088#1078#1085#1080#1082#1080' '#1076#1083#1103' '#1059#1055#1057#1047#1053
-      TabOrder = 6
-      OnClick = cxButton7Click
-    end
   end
   object cxCalcEdit1: TcxCalcEdit
     Left = 274
@@ -1495,6 +1486,10 @@ object Form1: TForm1
         item
           Visible = True
           ItemName = 'dxBarSubItem27'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarSubItem28'
         end
         item
           Visible = True
@@ -2694,6 +2689,40 @@ object Form1: TForm1
       Category = 0
       Hint = #1047#1074#1110#1090' '#1087#1086' '#1086#1088#1075#1072#1085#1110#1079#1072#1094#1110#1103#1084' ('#1086#1073#1086#1088#1086#1090' '#1079#1072' '#1087#1077#1088#1110#1086#1076') '
       Visible = ivAlways
+    end
+    object dxBarButton124: TdxBarButton
+      Caption = #1059#1055#1057#1047#1053
+      Category = 0
+      Hint = #1059#1055#1057#1047#1053
+      Visible = ivAlways
+    end
+    object dxBarSubItem28: TdxBarSubItem
+      Caption = #1059#1055#1057#1047#1053
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarButton125'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton126'
+        end>
+    end
+    object dxBarButton125: TdxBarButton
+      Caption = #1047#1072#1087#1086#1074#1085#1077#1085#1085#1103' '#1092#1072#1081#1083#1091' *.DBF - '#1089#1091#1073#1089#1080#1076#1110#1103
+      Category = 0
+      Hint = #1047#1072#1087#1086#1074#1085#1077#1085#1085#1103' '#1092#1072#1081#1083#1091' *.DBF - '#1089#1091#1073#1089#1080#1076#1110#1103
+      Visible = ivAlways
+      OnClick = dxBarButton125Click
+    end
+    object dxBarButton126: TdxBarButton
+      Caption = #1047#1072#1087#1086#1074#1085#1077#1085#1085#1103' '#1092#1072#1081#1083#1091' *.M09, *.S01 *.P01 '#1087#1110#1083#1100#1075#1072
+      Category = 0
+      Hint = #1047#1072#1087#1086#1074#1085#1077#1085#1085#1103' '#1092#1072#1081#1083#1091' *.M09, *.S01 *.P01 '#1087#1110#1083#1100#1075#1072
+      Visible = ivAlways
+      OnClick = dxBarButton126Click
     end
   end
   object IBPERIOD: TIBDataSet

@@ -496,8 +496,11 @@ type
     IBREPDD_DOG: TIBStringField;
     cxGrid1DBTableView1N_DOG: TcxGridDBColumn;
     cxGrid1DBTableView1D_DOG: TcxGridDBColumn;
-    cxButton7: TcxButton;
     cxLocalizer1: TcxLocalizer;
+    dxBarButton124: TdxBarButton;
+    dxBarSubItem28: TdxBarSubItem;
+    dxBarButton125: TdxBarButton;
+    dxBarButton126: TdxBarButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -513,7 +516,6 @@ type
     procedure cxButton3Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
-    procedure cxButton7Click(Sender: TObject);
     procedure IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
     procedure cxButton5Click(Sender: TObject);
     procedure cxTextEdit4PropertiesChange(Sender: TObject);
@@ -524,6 +526,8 @@ type
     procedure dxBarButton121Click(Sender: TObject);
     procedure dxBarButton122Click(Sender: TObject);
     procedure cxButton6Click(Sender: TObject);
+    procedure dxBarButton125Click(Sender: TObject);
+    procedure dxBarButton126Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -632,6 +636,18 @@ begin
 ////       end;
 //
 //     end;
+end;
+
+procedure TForm1.dxBarButton125Click(Sender: TObject);
+begin
+Form20.Caption:=dxBarButton125.Caption;
+Form20.show;
+end;
+
+procedure TForm1.dxBarButton126Click(Sender: TObject);
+begin
+Form21.Caption:=dxBarButton126.Caption;
+Form21.show;
 end;
 
 procedure TForm1.dxBarButton19Click(Sender: TObject);
@@ -757,14 +773,6 @@ Form19.Caption:=cxButton6.Caption;
 Form19.mode:=2;
 Form19.show;
 end;
-
-procedure TForm1.cxButton7Click(Sender: TObject);
-begin
-Form21.Caption:=cxButton7.Caption;
-Form21.show;
-end;
-
-
 
 procedure TForm1.cxGrid1DBTableView1Column1PropertiesButtonClick(
   Sender: TObject; AButtonIndex: Integer);
