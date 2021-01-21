@@ -273,6 +273,24 @@ object Form1: TForm1
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.ReadOnly = True
       end
+      object cxGrid1DBTableView1PLOS_OB: TcxGridDBColumn
+        Caption = #1047#1072#1075'.'#1087#1083#1086#1097
+        DataBinding.FieldName = 'PLOS_OB'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = True
+      end
+      object cxGrid1DBTableView1PLOS_BB: TcxGridDBColumn
+        Caption = #1054#1087'.'#1087#1083#1086#1097
+        DataBinding.FieldName = 'PLOS_BB'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = True
+      end
+      object cxGrid1DBTableView1PRIV: TcxGridDBColumn
+        Caption = #1055#1088#1080#1074#1072#1090#1080#1079#1072#1094#1110#1103
+        DataBinding.FieldName = 'PRIV'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = True
+      end
       object cxGrid1DBTableView1ORGNAME: TcxGridDBColumn
         Caption = #1054#1088#1075#1072#1085#1110#1079#1072#1094#1110#1103
         DataBinding.FieldName = 'ORGNAME'
@@ -397,8 +415,8 @@ object Form1: TForm1
     object Label16: TLabel
       Left = 630
       Top = 0
-      Width = 133
-      Height = 23
+      Width = 161
+      Height = 22
       Alignment = taCenter
       Caption = #1055#1086#1090#1086#1095#1085#1080#1081' '#1087#1077#1088#1110#1086#1076
       Font.Charset = ANSI_CHARSET
@@ -411,8 +429,8 @@ object Form1: TForm1
     object Label17: TLabel
       Left = 630
       Top = 20
-      Width = 34
-      Height = 20
+      Width = 42
+      Height = 18
       Alignment = taCenter
       Caption = #1076#1072#1090#1072
       Font.Charset = ANSI_CHARSET
@@ -935,6 +953,9 @@ object Form1: TForm1
       'vw_obkr.nomkv kv,'
       'vw_obkr.koli_p,'
       'vw_obkr.koli_pf,'
+      'vw_obkr.plos_bb,'
+      'vw_obkr.plos_ob,'
+      'vw_obkr.priv,'
       'organ.name as orgname,'
       'vw_obkr.kontrol,'
       'vw_obkr.nach,'
@@ -1110,6 +1131,19 @@ object Form1: TForm1
       FieldName = 'D_DOG'
       Origin = '"VW_OBKR"."D_DOG"'
       Size = 8
+    end
+    object IBREPDPLOS_BB: TFloatField
+      FieldName = 'PLOS_BB'
+      Origin = '"VW_OBKR"."PLOS_BB"'
+    end
+    object IBREPDPLOS_OB: TFloatField
+      FieldName = 'PLOS_OB'
+      Origin = '"VW_OBKR"."PLOS_OB"'
+    end
+    object IBREPDPRIV: TIBStringField
+      FieldName = 'PRIV'
+      Origin = '"VW_OBKR"."PRIV"'
+      Size = 1
     end
   end
   object IBQuery1: TIBQuery

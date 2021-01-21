@@ -501,6 +501,12 @@ type
     dxBarSubItem28: TdxBarSubItem;
     dxBarButton125: TdxBarButton;
     dxBarButton126: TdxBarButton;
+    IBREPDPLOS_BB: TFloatField;
+    IBREPDPLOS_OB: TFloatField;
+    IBREPDPRIV: TIBStringField;
+    cxGrid1DBTableView1PLOS_BB: TcxGridDBColumn;
+    cxGrid1DBTableView1PLOS_OB: TcxGridDBColumn;
+    cxGrid1DBTableView1PRIV: TcxGridDBColumn;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
