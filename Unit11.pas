@@ -54,6 +54,7 @@ begin
        if Form1.IBUSERSMS.Value=0 then
        begin
          Form1.cxButton4.Enabled:=false;
+         Form1.cxButton7.Enabled:=false;
 
        end;
 

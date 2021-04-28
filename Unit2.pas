@@ -305,7 +305,7 @@ begin
 //
 //        Form1.IBTransaction2.CommitRetaining;
 //        Form1.IBTransaction1.CommitRetaining;
-
+        Form1.IBVIBER_SEND.Open;
 
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;

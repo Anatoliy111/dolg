@@ -507,6 +507,15 @@ type
     cxGrid1DBTableView1PLOS_BB: TcxGridDBColumn;
     cxGrid1DBTableView1PLOS_OB: TcxGridDBColumn;
     cxGrid1DBTableView1PRIV: TcxGridDBColumn;
+    cxButton7: TcxButton;
+    IBVIBER_SEND: TIBDataSet;
+    DSVIBER_SEND: TDataSource;
+    IBVIBER_SENDID: TIntegerField;
+    IBVIBER_SENDDATA: TDateTimeField;
+    IBVIBER_SENDDATE_SEND: TDateTimeField;
+    IBVIBER_SENDKOLSEND: TIntegerField;
+    IBVIBER_SENDTEXT: TWideMemoField;
+    IBVIBER_SENDSMALLTEXT: TIBStringField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -534,6 +543,7 @@ type
     procedure cxButton6Click(Sender: TObject);
     procedure dxBarButton125Click(Sender: TObject);
     procedure dxBarButton126Click(Sender: TObject);
+    procedure cxButton7Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -545,8 +555,8 @@ type
     DateKVART:TDate;
     UpdateBase:Boolean;
     iniFile:TIniFile;
-    PathKvart,StartSQL,PathFox,ORG,PathTMP:string;
-    translit,textsms1,textsms2:string;
+    PathKvart,StartSQL,PathFox,ORG,PathTMP,orgpoint:string;
+    translit,textsms1,textsms2,urlsend:string;
     posl:TStrings;
 
 
@@ -565,7 +575,7 @@ implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
-  Unit16, Unit19, Unit20, Unit21, Unit22;
+  Unit16, Unit19, Unit20, Unit21, Unit22, Unit23;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -780,6 +790,11 @@ Form19.mode:=2;
 Form19.show;
 end;
 
+procedure TForm1.cxButton7Click(Sender: TObject);
+begin
+Form23.Show;
+end;
+
 procedure TForm1.cxGrid1DBTableView1Column1PropertiesButtonClick(
   Sender: TObject; AButtonIndex: Integer);
 begin
@@ -930,9 +945,11 @@ begin
   log:=iniFile.ReadString('Data','Login','');
   pw:=iniFile.ReadString('Data','PW','');
   ORG:=iniFile.ReadString('Data','org','');
+  orgpoint:=iniFile.ReadString('Data','orgpoint','');
   PathKvart:=iniFile.ReadString('DBF','base','');
   PathFOX:=iniFile.ReadString('DBF','fox','');
   PathTMP:=iniFile.ReadString('TMP','tmp','');
+  urlsend:=iniFile.ReadString('site','urlsend','');
 
   posl := TStringList.Create;
 
@@ -986,6 +1003,7 @@ begin
   IBSP_ADRES.open;
   IBSERVICES.open;
   IBPERIOD.open;
+  IBVIBER_SEND.Open;
 
 
     IBWID.open;

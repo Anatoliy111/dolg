@@ -595,12 +595,13 @@ object Form1: TForm1
       Caption = #1076#1072#1090#1072' '
     end
     object cxButton4: TcxButton
-      Left = 608
-      Top = 51
-      Width = 185
+      Left = 808
+      Top = 81
+      Width = 121
       Height = 25
       Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' SMS'
       TabOrder = 3
+      Visible = False
       OnClick = cxButton4Click
     end
     object cxButton10: TcxButton
@@ -626,8 +627,17 @@ object Form1: TForm1
     Left = 274
     Top = 74
     EditValue = 0c
-    TabOrder = 6
+    TabOrder = 4
     Width = 121
+  end
+  object cxButton7: TcxButton
+    Left = 608
+    Top = 79
+    Width = 183
+    Height = 25
+    Caption = 'Viber '#1087#1086#1074#1110#1076#1086#1084#1083#1077#1085#1085#1103
+    TabOrder = 7
+    OnClick = cxButton7Click
   end
   object IBDatabase1: TIBDatabase
     Connected = True
@@ -3241,7 +3251,6 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
-    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (
@@ -3826,7 +3835,7 @@ object Form1: TForm1
     end
   end
   object DSSMSORDEREDS: TDataSource
-    DataSet = IBSMSORDEREDS
+    DataSet = IBVIBER_SEND
     Left = 472
     Top = 312
   end
@@ -4052,5 +4061,85 @@ object Form1: TForm1
   object cxLocalizer1: TcxLocalizer
     Left = 472
     Top = 80
+  end
+  object IBVIBER_SEND: TIBDataSet
+    Database = IBDatabase1
+    Transaction = IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from VIBER_SEND'
+      'where'
+      '  ID = :OLD_ID')
+    InsertSQL.Strings = (
+      'insert into VIBER_SEND'
+      '  (ID, DATA, DATE_SEND, KOLSEND, TEXT, SMALLTEXT)'
+      'values'
+      '  (:ID, :DATA, :DATE_SEND, :KOLSEND, :TEXT, :SMALLTEXT)')
+    RefreshSQL.Strings = (
+      'Select '
+      '  ID,'
+      '  DATA,'
+      '  DATE_SEND,'
+      '  KOLSEND,'
+      '  TEXT,'
+      '  SMALLTEXT'
+      'from VIBER_SEND '
+      'where'
+      '  ID = :ID')
+    SelectSQL.Strings = (
+      'select *  from VIBER_SEND order by ID desc'
+      '')
+    ModifySQL.Strings = (
+      'update VIBER_SEND'
+      'set'
+      '  ID = :ID,'
+      '  DATA = :DATA,'
+      '  DATE_SEND = :DATE_SEND,'
+      '  KOLSEND = :KOLSEND,'
+      '  TEXT = :TEXT,'
+      '  SMALLTEXT = :SMALLTEXT'
+      'where'
+      '  ID = :OLD_ID')
+    ParamCheck = True
+    UniDirectional = False
+    GeneratorField.Field = 'ID'
+    GeneratorField.Generator = 'GEN_VIBER_SEND_ID'
+    Left = 784
+    Top = 464
+    object IBVIBER_SENDID: TIntegerField
+      FieldName = 'ID'
+      Origin = '"VIBER_SEND"."ID"'
+      Required = True
+    end
+    object IBVIBER_SENDDATA: TDateTimeField
+      FieldName = 'DATA'
+      Origin = '"VIBER_SEND"."DATA"'
+    end
+    object IBVIBER_SENDDATE_SEND: TDateTimeField
+      FieldName = 'DATE_SEND'
+      Origin = '"VIBER_SEND"."DATE_SEND"'
+    end
+    object IBVIBER_SENDKOLSEND: TIntegerField
+      FieldName = 'KOLSEND'
+      Origin = '"VIBER_SEND"."KOLSEND"'
+    end
+    object IBVIBER_SENDTEXT: TWideMemoField
+      FieldName = 'TEXT'
+      Origin = '"VIBER_SEND"."TEXT"'
+      ProviderFlags = [pfInUpdate]
+      BlobType = ftWideMemo
+      Size = 8
+    end
+    object IBVIBER_SENDSMALLTEXT: TIBStringField
+      FieldName = 'SMALLTEXT'
+      Origin = '"VIBER_SEND"."SMALLTEXT"'
+      Size = 50
+    end
+  end
+  object DSVIBER_SEND: TDataSource
+    DataSet = IBVIBER_SEND
+    Left = 784
+    Top = 520
   end
 end
