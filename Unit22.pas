@@ -37,6 +37,9 @@ type
     cxLabel6: TcxLabel;
     CheckBox1: TCheckBox;
     MemoLog: TMemo;
+    cxLookupComboBox2: TcxLookupComboBox;
+    cxLabel3: TcxLabel;
+    cxLabel7: TcxLabel;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -238,6 +241,7 @@ begin
 //      while not IBWID.eof do
 //      begin
         MsExcel.WorkSheets[1].Cells[1,kolborg]:='Заборгованість';
+        MsExcel.columns[kolborg].NumberFormat:='0,00';
 //        i:=i+1;
 //        IBWID.Next;
 //      end;
@@ -260,15 +264,16 @@ begin
    k:=0;
 
     IBQuery1.close;
-    IBQuery1.SQL.Text:='select lg.cod, trim(t2.schet) as sch, t2.dolg-t2.fullopl as summa from'+
-                       ' (select t1.wid, t1.schet schet, sum(t1.dolg) dolg, sum(t1.fullopl) fullopl from'+
-                       ' (select wid, schet, dolg, 0 fullopl from vw_obor where period=:d1'+
+    IBQuery1.SQL.Text:='select lg.cod, trim(t2.schet) as sch, t2.nach-t2.fullopl as summa from'+
+                       ' (select t1.wid, t1.schet schet, sum(t1.nach) nach, sum(t1.fullopl) fullopl from'+
+                       ' (select wid, schet, nach, 0 fullopl from vw_obor where period>=:d1 and period<=:d2'+
                        ' union all'+
                        ' select wid, schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4) t1'+
                        ' group by t1.wid, t1.schet) t2'+
                        ' left join lg_cod lg on t2.wid=lg.wid';
 
       IBQuery1.ParamByName('d1').AsDate:=cxLookupComboBox1.EditValue;
+      IBQuery1.ParamByName('d2').AsDate:=cxLookupComboBox2.EditValue;
       IBQuery1.ParamByName('d3').AsDate:=cxLookupComboBox3.EditValue;
       IBQuery1.ParamByName('d4').AsDate:=cxLookupComboBox4.EditValue;
       //IBQuery1.ParamByName('wid').Value:=IBWIDWID.Value;
@@ -347,7 +352,7 @@ begin
 //       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
        // SaveDialog1.FileName:=cxTextEdit4.Text+' '+' боржники на '+'.xls';
-        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(IncMonth(cxLookupComboBox4.EditValue))+' субсидія.xls';
+        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(IncMonth(cxLookupComboBox4.EditValue))+' пільги.xls';
         if SaveDialog1.Execute then begin
 
      //   MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
@@ -382,6 +387,7 @@ end;
 procedure TForm22.FormShow(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
 IBWID.Open;

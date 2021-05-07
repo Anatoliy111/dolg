@@ -37,6 +37,9 @@ type
     cxLabel6: TcxLabel;
     CheckBox1: TCheckBox;
     MemoLog: TMemo;
+    cxLabel3: TcxLabel;
+    cxLabel7: TcxLabel;
+    cxLookupComboBox2: TcxLookupComboBox;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -234,7 +237,8 @@ begin
       IBWID.First;
       while not IBWID.eof do
       begin
-        MsExcel.WorkSheets[1].Cells[1,kolborg+i]:='Борг '+IBWIDNAIM.Value;
+        MsExcel.WorkSheets[1].Cells[1,kolborg+i]:='Заборг. '+IBWIDNAIM.Value;
+        MsExcel.columns[kolborg+i].NumberFormat:='0,00';
         i:=i+1;
         IBWID.Next;
       end;
@@ -275,14 +279,15 @@ begin
 //      IBQuery1.Open;
 
     IBQuery1.close;
-    IBQuery1.SQL.Text:='select trim(t2.schet) as schet, t2.dolg-t2.fullopl as summa from'+
-                       ' (select t1.wid, t1.schet schet, sum(t1.dolg) dolg, sum(t1.fullopl) fullopl from'+
-                       ' (select wid, schet, dolg, 0 fullopl from vw_obor where period=:d1 and wid=:wid'+
+    IBQuery1.SQL.Text:='select trim(t2.schet) as schet, t2.nach-t2.fullopl as summa from'+
+                       ' (select t1.wid, t1.schet schet, sum(t1.nach) nach, sum(t1.fullopl) fullopl from'+
+                       ' (select wid, schet, nach, 0 fullopl from vw_obor where period>=:d1 and period<=:d2 and wid=:wid'+
                        ' union all'+
                        ' select wid, schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4 and wid=:wid) t1'+
                        ' group by t1.wid, t1.schet) t2';
 
       IBQuery1.ParamByName('d1').AsDate:=cxLookupComboBox1.EditValue;
+      IBQuery1.ParamByName('d2').AsDate:=cxLookupComboBox2.EditValue;
       IBQuery1.ParamByName('d3').AsDate:=cxLookupComboBox3.EditValue;
       IBQuery1.ParamByName('d4').AsDate:=cxLookupComboBox4.EditValue;
       IBQuery1.ParamByName('wid').Value:=IBWIDWID.Value;
@@ -369,6 +374,7 @@ end;
 procedure TForm20.FormShow(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
 IBWID.Open;

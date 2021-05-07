@@ -1,7 +1,7 @@
 object Form20: TForm20
   Left = 0
   Top = 0
-  Caption = 'Form20'
+  Caption = #1047#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1090#1100' '#1089#1091#1073#1089#1080#1076#1110#1103
   ClientHeight = 491
   ClientWidth = 708
   Color = clBtnFace
@@ -42,10 +42,10 @@ object Form20: TForm20
   object cxLabel1: TcxLabel
     Left = 47
     Top = 70
-    Caption = #1055#1077#1088#1110#1086#1076' '#1073#1086#1088#1075#1091' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
+    Caption = #1055#1077#1088#1110#1086#1076' '#1085#1072#1088#1072#1093#1091#1074#1072#1085#1100
   end
   object cxLookupComboBox1: TcxLookupComboBox
-    Left = 216
+    Left = 192
     Top = 70
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
@@ -57,18 +57,18 @@ object Form20: TForm20
     Width = 129
   end
   object cxLabel28: TcxLabel
-    Left = 48
-    Top = 126
+    Left = 172
+    Top = 100
     Caption = ' '#1079
   end
   object cxLabel29: TcxLabel
-    Left = 208
-    Top = 122
+    Left = 327
+    Top = 96
     Caption = #1087#1086
   end
   object cxLookupComboBox3: TcxLookupComboBox
-    Left = 70
-    Top = 123
+    Left = 192
+    Top = 96
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
       item
@@ -79,8 +79,8 @@ object Form20: TForm20
     Width = 129
   end
   object cxLookupComboBox4: TcxLookupComboBox
-    Left = 230
-    Top = 122
+    Left = 352
+    Top = 95
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
       item
@@ -97,7 +97,7 @@ object Form20: TForm20
   object cxLabel4: TcxLabel
     Left = 48
     Top = 100
-    Caption = #1055#1077#1088#1110#1086#1076' '#1086#1087#1083#1072#1090#1080' ('#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1086#1089#1090#1110')'
+    Caption = #1055#1077#1088#1110#1086#1076' '#1086#1087#1083#1072#1090#1080
   end
   object cxLabel5: TcxLabel
     Left = 39
@@ -127,6 +127,28 @@ object Form20: TForm20
     ScrollBars = ssBoth
     TabOrder = 14
     WordWrap = False
+  end
+  object cxLabel3: TcxLabel
+    Left = 172
+    Top = 70
+    Caption = ' '#1079
+  end
+  object cxLabel7: TcxLabel
+    Left = 327
+    Top = 70
+    Caption = #1087#1086
+  end
+  object cxLookupComboBox2: TcxLookupComboBox
+    Left = 351
+    Top = 70
+    Properties.KeyFieldNames = 'PERIOD'
+    Properties.ListColumns = <
+      item
+        FieldName = 'PERIOD'
+      end>
+    Properties.ListSource = Form1.DSPERIOD
+    TabOrder = 17
+    Width = 129
   end
   object OpenDialog1: TOpenDialog
     Left = 520
