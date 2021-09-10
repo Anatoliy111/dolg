@@ -372,31 +372,17 @@ object Form12: TForm12
       Alignment = taCenter
       Caption = #1050#1110#1083#1100#1082#1110#1089#1090#1100' '#1087#1088#1086#1078'.'
     end
-    object Label16: TLabel
-      Left = 510
-      Top = 139
-      Width = 140
-      Height = 23
-      Alignment = taCenter
-      Caption = #1055#1086#1090#1086#1095#1085#1080#1081' '#1087#1077#1088#1110#1086#1076
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Style = [fsBold, fsItalic]
-      ParentFont = False
-    end
     object Label17: TLabel
-      Left = 656
-      Top = 139
-      Width = 42
-      Height = 23
+      Left = 181
+      Top = 146
+      Width = 40
+      Height = 21
       Alignment = taCenter
       Caption = #1076#1072#1090#1072
-      Font.Charset = ANSI_CHARSET
+      Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
+      Font.Height = -16
+      Font.Name = 'Courier New'
       Font.Style = [fsBold, fsItalic]
       ParentFont = False
     end

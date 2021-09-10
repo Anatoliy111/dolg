@@ -8,41 +8,36 @@ uses
   cxLookAndFeelPainters, Vcl.Menus, cxControls, cxContainer, cxEdit,
   Data.Win.ADODB, Data.DB, IBX.IBCustomDataSet, IBX.IBQuery, cxLabel,
   Vcl.StdCtrls, cxTextEdit, cxButtons, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox, dbf,dbf_common;
+  cxDBLookupEdit, cxDBLookupComboBox, dbf,dbf_common,DateUtils;
 
 type
   TForm22 = class(TForm)
     cxButton1: TcxButton;
     cxTextEdit1: TcxTextEdit;
     cxButton2: TcxButton;
-    cxLabel1: TcxLabel;
     OpenDialog1: TOpenDialog;
     IBQuery1: TIBQuery;
     DSQuery1: TDataSource;
     ADOCommand1: TADOCommand;
-    cxLookupComboBox1: TcxLookupComboBox;
     IBWID: TIBDataSet;
     IBWIDWID: TIBStringField;
     IBWIDNAIM: TIBStringField;
     IBWIDCH: TIntegerField;
     DSWID: TDataSource;
-    cxLabel28: TcxLabel;
-    cxLabel29: TcxLabel;
-    cxLookupComboBox3: TcxLookupComboBox;
-    cxLookupComboBox4: TcxLookupComboBox;
     cxLabel2: TcxLabel;
-    cxLabel4: TcxLabel;
     SaveDialog1: TSaveDialog;
     cxLabel5: TcxLabel;
     cxLabel6: TcxLabel;
-    CheckBox1: TCheckBox;
     MemoLog: TMemo;
-    cxLookupComboBox2: TcxLookupComboBox;
+    cxLabel1: TcxLabel;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxLabel4: TcxLabel;
     cxLabel3: TcxLabel;
     cxLabel7: TcxLabel;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
+    procedure cxLookupComboBox1PropertiesChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -186,15 +181,16 @@ xlTop = -4160;
 xlCenter = -4108;
 xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
-var i,ns,kolst,k,cod:integer;
-    sum,sumExcel:currency;
-    str,nam,sch,klasf,vid_rob,n_kres,gost,dekada,sss:string;
+var i,ns,kolst,k,cod,stsch,ii:integer;
+    sum,sumExcel,allsum:currency;
+    str,nam,sch,klasf,vid_rob,n_kres,gost,dekada,sss,ppsch:string;
     kolwith,rowh,rowh1:Variant;
     f1:boolean;
     pathDBF,Path:string;
     adostr,cmd:WideString;
     ob,table:TDbf;
     ss:variant;
+    d0,d1,d2,d3,d4:TDate;
 
 
 begin
@@ -233,6 +229,13 @@ begin
    Form22.Enabled:=false;
    Form2.Show;
 
+      d0:= IncMonth(cxLookupComboBox1.EditValue,-4);
+      d1:= IncMonth(cxLookupComboBox1.EditValue,-4);
+      d2:= IncMonth(cxLookupComboBox1.EditValue,-2);
+      d3:= IncMonth(cxLookupComboBox1.EditValue,-4);
+      d4:= IncMonth(cxLookupComboBox1.EditValue,-1);
+
+
       f1:=true;
       kolst:=2;
       i:=0;
@@ -264,22 +267,26 @@ begin
    k:=0;
 
     IBQuery1.close;
-    IBQuery1.SQL.Text:='select lg.cod, trim(t2.schet) as sch, t2.nach-t2.fullopl as summa from'+
+    IBQuery1.SQL.Text:='select lg.cod, trim(t2.schet) as sch, vo.dolg+t2.nach-t2.fullopl as summa from'+
                        ' (select t1.wid, t1.schet schet, sum(t1.nach) nach, sum(t1.fullopl) fullopl from'+
                        ' (select wid, schet, nach, 0 fullopl from vw_obor where period>=:d1 and period<=:d2'+
                        ' union all'+
                        ' select wid, schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4) t1'+
                        ' group by t1.wid, t1.schet) t2'+
-                       ' left join lg_cod lg on t2.wid=lg.wid';
+                       ' left join lg_cod lg on t2.wid=lg.wid'+
+                       ' left join vw_obor vo on vo.wid=t2.wid and vo.schet=t2.schet and vo.period=:d0';
 
-      IBQuery1.ParamByName('d1').AsDate:=cxLookupComboBox1.EditValue;
-      IBQuery1.ParamByName('d2').AsDate:=cxLookupComboBox2.EditValue;
-      IBQuery1.ParamByName('d3').AsDate:=cxLookupComboBox3.EditValue;
-      IBQuery1.ParamByName('d4').AsDate:=cxLookupComboBox4.EditValue;
+      IBQuery1.ParamByName('d0').AsDate:=d0;
+      IBQuery1.ParamByName('d1').AsDate:=d1;
+      IBQuery1.ParamByName('d2').AsDate:=d2;
+      IBQuery1.ParamByName('d3').AsDate:=d3;
+      IBQuery1.ParamByName('d4').AsDate:=d4;
       //IBQuery1.ParamByName('wid').Value:=IBWIDWID.Value;
 
     IBQuery1.open;
 
+        stsch:=0;
+        ppsch:='';
 
 
         //MsExcel.Visible := True;
@@ -334,12 +341,31 @@ begin
 //         sum:=0;
 //       end;
 
-         if CheckBox1.Checked then
-         begin
-           if sum<0 then sum:=0;
-         end;
+
+           if sum<=0 then sum:=0;
+
 
         MsExcel.WorkSheets[1].Cells[i,kolborg]:=sum;
+
+        if sch<>ppsch then
+        begin
+          if (allsum<340) and (allsum<>0) then
+          begin
+             for ii := stsch to i-1 do
+               MsExcel.WorkSheets[1].Cells[ii,kolborg]:=0;
+          end;
+
+          ppsch:=sch;
+          stsch:=i;
+          allsum:=sum;
+        end
+        else
+        begin
+        allsum:=allsum+sum;
+
+        end;
+
+
         end;
 
 
@@ -352,7 +378,7 @@ begin
 //       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
        // SaveDialog1.FileName:=cxTextEdit4.Text+' '+' боржники на '+'.xls';
-        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(IncMonth(cxLookupComboBox4.EditValue))+' пільги.xls';
+        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(cxLookupComboBox1.EditValue)+' пільги.xls';
         if SaveDialog1.Execute then begin
 
      //   MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
@@ -384,12 +410,15 @@ begin
       Form22.Enabled:=true;
 end;
 
+procedure TForm22.cxLookupComboBox1PropertiesChange(Sender: TObject);
+begin
+cxLabel3.Caption:='Борг('+DateTostr(IncMonth(cxLookupComboBox1.EditValue,-4))+') + нарахування('+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-4)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-3)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-2)))+') - оплата('+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-4)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-3)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-2)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-1)))+')';
+
+end;
+
 procedure TForm22.FormShow(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
 IBWID.Open;
 end;
 

@@ -8,7 +8,7 @@ uses
   cxLookAndFeelPainters, Vcl.Menus, cxControls, cxContainer, cxEdit,
   Data.Win.ADODB, Data.DB, IBX.IBCustomDataSet, IBX.IBQuery, cxLabel,
   Vcl.StdCtrls, cxTextEdit, cxButtons, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox, dbf,dbf_common;
+  cxDBLookupEdit, cxDBLookupComboBox, dbf,dbf_common,DateUtils;
 
 type
   TForm20 = class(TForm)
@@ -26,23 +26,17 @@ type
     IBWIDNAIM: TIBStringField;
     IBWIDCH: TIntegerField;
     DSWID: TDataSource;
-    cxLabel28: TcxLabel;
-    cxLabel29: TcxLabel;
-    cxLookupComboBox3: TcxLookupComboBox;
-    cxLookupComboBox4: TcxLookupComboBox;
     cxLabel2: TcxLabel;
     cxLabel4: TcxLabel;
     SaveDialog1: TSaveDialog;
     cxLabel5: TcxLabel;
     cxLabel6: TcxLabel;
-    CheckBox1: TCheckBox;
     MemoLog: TMemo;
     cxLabel3: TcxLabel;
-    cxLabel7: TcxLabel;
-    cxLookupComboBox2: TcxLookupComboBox;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
+    procedure cxLookupComboBox1PropertiesChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -183,14 +177,15 @@ xlTop = -4160;
 xlCenter = -4108;
 xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
-var i,ns,kolst,k:integer;
-    sum,sumExcel:currency;
+var i,ns,kolst,k,kk:integer;
+    sum,sumExcel,ksum,kksum:currency;
     str,nam,sch,klasf,vid_rob,n_kres,gost,dekada,sss:string;
     kolwith,rowh,rowh1:Variant;
     f1:boolean;
     pathDBF,Path:string;
     adostr,cmd:WideString;
     ob,table:TDbf;
+    d0,d1,d2,d3,d4:TDate;
 
 
 begin
@@ -229,6 +224,15 @@ begin
    Form20.Enabled:=false;
    Form2.Show;
 
+      d0:= IncMonth(cxLookupComboBox1.EditValue,-4);
+      d1:= IncMonth(cxLookupComboBox1.EditValue,-4);
+      d2:= IncMonth(cxLookupComboBox1.EditValue,-2);
+      d3:= IncMonth(cxLookupComboBox1.EditValue,-4);
+      d4:= IncMonth(cxLookupComboBox1.EditValue,-1);
+
+
+
+
       f1:=true;
       kolst:=2;
 
@@ -237,11 +241,18 @@ begin
       IBWID.First;
       while not IBWID.eof do
       begin
-        MsExcel.WorkSheets[1].Cells[1,kolborg+i]:='Заборг. '+IBWIDNAIM.Value;
-        MsExcel.columns[kolborg+i].NumberFormat:='0,00';
-        i:=i+1;
+        if (IBWIDWID.Value<>'el') and (IBWIDWID.Value<>'om') and (IBWIDWID.Value<>'kv') then
+        begin
+          MsExcel.WorkSheets[1].Cells[1,kolborg+i]:='Заборг. '+IBWIDNAIM.Value;
+          MsExcel.columns[kolborg+i].NumberFormat:='0,00';
+          i:=i+1;
+        end;
         IBWID.Next;
       end;
+
+        MsExcel.WorkSheets[1].Cells[1,kolborg+i]:='Заборгованість. заг.';
+        MsExcel.columns[kolborg+i].NumberFormat:='0,00';
+
 
    Form2.Label1.Caption:='Обрахування даних';
         Form2.cxProgressBar1.Properties.Min:=0;
@@ -261,6 +272,8 @@ begin
    IBWID.First;
    while not IBWID.eof do
    begin
+     if (IBWIDWID.Value<>'el') and (IBWIDWID.Value<>'om') and (IBWIDWID.Value<>'kv') then
+     begin
 
      Form2.Label1.Caption:='Завантаження даних '+IBWIDNAIM.Value;
   // period:=StrToDate('01.'+MidStr(MsExcel.WorkSheets[1].Cells[1,4],6,2)+'.'+LeftStr(MsExcel.WorkSheets[1].Cells[1,4],4));
@@ -278,21 +291,23 @@ begin
 //      IBQuery1.ParamByName('wid').Value:=IBWIDWID.Value;
 //      IBQuery1.Open;
 
-    IBQuery1.close;
-    IBQuery1.SQL.Text:='select trim(t2.schet) as schet, t2.nach-t2.fullopl as summa from'+
+      IBQuery1.close;
+      IBQuery1.SQL.Text:='select trim(t2.schet) as schet, vo.dolg+t2.nach-t2.fullopl as summa from'+
                        ' (select t1.wid, t1.schet schet, sum(t1.nach) nach, sum(t1.fullopl) fullopl from'+
                        ' (select wid, schet, nach, 0 fullopl from vw_obor where period>=:d1 and period<=:d2 and wid=:wid'+
                        ' union all'+
                        ' select wid, schet, 0, fullopl from vw_obor where period>=:d3 and period<=:d4 and wid=:wid) t1'+
-                       ' group by t1.wid, t1.schet) t2';
+                       ' group by t1.wid, t1.schet) t2'+
+                       ' left join vw_obor vo on vo.wid=t2.wid and vo.schet=t2.schet and vo.period=:d0';
 
-      IBQuery1.ParamByName('d1').AsDate:=cxLookupComboBox1.EditValue;
-      IBQuery1.ParamByName('d2').AsDate:=cxLookupComboBox2.EditValue;
-      IBQuery1.ParamByName('d3').AsDate:=cxLookupComboBox3.EditValue;
-      IBQuery1.ParamByName('d4').AsDate:=cxLookupComboBox4.EditValue;
+      IBQuery1.ParamByName('d0').AsDate:=d0;
+      IBQuery1.ParamByName('d1').AsDate:=d1;
+      IBQuery1.ParamByName('d2').AsDate:=d2;
+      IBQuery1.ParamByName('d3').AsDate:=d3;
+      IBQuery1.ParamByName('d4').AsDate:=d4;
       IBQuery1.ParamByName('wid').Value:=IBWIDWID.Value;
 
-    IBQuery1.open;
+      IBQuery1.open;
 
 
 
@@ -311,7 +326,7 @@ begin
           if IBQuery1.Locate('schet',sch,[]) then
           begin
              //IBQuery1SCHET.Value;
-             if (CheckBox1.Checked) and (IBQuery1.FieldByName('summa').Value<0) then
+             if IBQuery1.FieldByName('summa').Value<=0 then
                 MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=0
              else
                 MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=IBQuery1.FieldByName('summa').Value;
@@ -321,11 +336,44 @@ begin
              MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=0;
             // MemoLog.Lines.Add('Рахунок '+sch+' - не знайдено' + #13#10);
           end;
+
         end;
 
-   k:=k+1;
+     k:=k+1;
+     end;
    IBWID.Next;
    end;
+
+   Form2.Label1.Caption:='Розрахунок ';
+   Application.ProcessMessages;
+
+Form2.cxProgressBar1.Properties.Min:=0;
+        Form2.cxProgressBar1.Properties.Max:=kolst-1;
+        Form2.cxProgressBar1.Position:=5;
+        for I := 2 to kolst-1 do
+        begin
+          Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+          Application.ProcessMessages;
+          kksum:=MsExcel.WorkSheets[1].Cells[i,kolborg];
+          for kk := 0 to k-1 do
+          begin
+            ksum:=MsExcel.WorkSheets[1].Cells[i,kolborg+kk];
+            kksum:=kksum+ksum;
+          end;
+
+
+
+          if kksum<340 then
+          begin
+            if kksum<>0 then
+            for kk := 0 to k-1 do
+            begin
+              MsExcel.WorkSheets[1].Cells[i,kolborg+kk]:=0;
+            end;
+          end
+          else
+            MsExcel.WorkSheets[1].Cells[i,kolborg+k]:=kksum;
+        end;
 
 
 
@@ -335,7 +383,7 @@ begin
 //       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
 
        // SaveDialog1.FileName:=cxTextEdit4.Text+' '+' боржники на '+'.xls';
-        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(IncMonth(cxLookupComboBox4.EditValue))+' субсидія.xls';
+        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(cxLookupComboBox1.EditValue)+' субсидія.xls';
         if SaveDialog1.Execute then begin
 
      //   MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
@@ -371,12 +419,14 @@ begin
       Form20.Enabled:=true;
 end;
 
+procedure TForm20.cxLookupComboBox1PropertiesChange(Sender: TObject);
+begin
+cxLabel3.Caption:='Борг('+DateTostr(IncMonth(cxLookupComboBox1.EditValue,-4))+') + нарахування('+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-4)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-3)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-2)))+') - оплата('+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-4)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-3)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-2)))+','+int2str(MonthOf(IncMonth(cxLookupComboBox1.EditValue,-1)))+')';
+end;
+
 procedure TForm20.FormShow(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
-cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
 IBWID.Open;
 end;
 

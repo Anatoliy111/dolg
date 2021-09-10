@@ -39,65 +39,9 @@ object Form22: TForm22
     TabOrder = 2
     OnClick = cxButton2Click
   end
-  object cxLabel1: TcxLabel
-    Left = 47
-    Top = 70
-    Caption = #1055#1077#1088#1110#1086#1076' '#1085#1072#1088#1072#1093#1091#1074#1072#1085#1100
-  end
-  object cxLookupComboBox1: TcxLookupComboBox
-    Left = 184
-    Top = 70
-    Properties.KeyFieldNames = 'PERIOD'
-    Properties.ListColumns = <
-      item
-        FieldName = 'PERIOD'
-      end>
-    Properties.ListSource = Form1.DSPERIOD
-    TabOrder = 4
-    Width = 129
-  end
-  object cxLabel28: TcxLabel
-    Left = 164
-    Top = 100
-    Caption = ' '#1079
-  end
-  object cxLabel29: TcxLabel
-    Left = 319
-    Top = 96
-    Caption = #1087#1086
-  end
-  object cxLookupComboBox3: TcxLookupComboBox
-    Left = 183
-    Top = 97
-    Properties.KeyFieldNames = 'PERIOD'
-    Properties.ListColumns = <
-      item
-        FieldName = 'PERIOD'
-      end>
-    Properties.ListSource = Form1.DSPERIOD
-    TabOrder = 7
-    Width = 129
-  end
-  object cxLookupComboBox4: TcxLookupComboBox
-    Left = 343
-    Top = 96
-    Properties.KeyFieldNames = 'PERIOD'
-    Properties.ListColumns = <
-      item
-        FieldName = 'PERIOD'
-      end>
-    Properties.ListSource = Form1.DSPERIOD
-    TabOrder = 8
-    Width = 129
-  end
   object cxLabel2: TcxLabel
     Left = 47
     Top = 100
-  end
-  object cxLabel4: TcxLabel
-    Left = 48
-    Top = 100
-    Caption = #1055#1077#1088#1110#1086#1076' '#1086#1087#1083#1072#1090#1080
   end
   object cxLabel5: TcxLabel
     Left = 39
@@ -109,14 +53,6 @@ object Form22: TForm22
     Top = 224
     Caption = '* - '#1073#1086#1088#1075#1080' '#1076#1086#1073#1072#1074#1083#1103#1102#1090#1100#1089#1103' '#1074' '#1082#1110#1085#1077#1094#1100' '#1090#1072#1073#1083#1080#1094#1110
   end
-  object CheckBox1: TCheckBox
-    Left = 39
-    Top = 160
-    Width = 320
-    Height = 17
-    Caption = #1074#1110#1076#1108#1084#1085#1080#1081' '#1088#1077#1079#1091#1083#1100#1090#1072#1090' '#1079#1072#1087#1086#1074#1085#1102#1074#1072#1090#1080' '#1103#1082' '#1085#1091#1083#1100
-    TabOrder = 13
-  end
   object MemoLog: TMemo
     Left = 0
     Top = 250
@@ -125,11 +61,16 @@ object Form22: TForm22
     Align = alBottom
     ReadOnly = True
     ScrollBars = ssBoth
-    TabOrder = 14
+    TabOrder = 6
     WordWrap = False
   end
-  object cxLookupComboBox2: TcxLookupComboBox
-    Left = 342
+  object cxLabel1: TcxLabel
+    Left = 47
+    Top = 70
+    Caption = #1047#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1090#1100' '#1085#1072' '
+  end
+  object cxLookupComboBox1: TcxLookupComboBox
+    Left = 169
     Top = 70
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
@@ -137,18 +78,25 @@ object Form22: TForm22
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
-    TabOrder = 15
+    Properties.OnChange = cxLookupComboBox1PropertiesChange
+    TabOrder = 8
     Width = 129
   end
+  object cxLabel4: TcxLabel
+    Left = 48
+    Top = 98
+    Caption = #1047#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1090#1100' ='
+  end
   object cxLabel3: TcxLabel
-    Left = 164
-    Top = 70
-    Caption = ' '#1079
+    Left = 169
+    Top = 98
+    Caption = #1041#1086#1088#1075
   end
   object cxLabel7: TcxLabel
-    Left = 319
-    Top = 70
-    Caption = #1087#1086
+    Left = 48
+    Top = 126
+    Caption = #1047#1072#1087#1086#1074#1085#1102#1108#1090#1100#1089#1103' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1100' '#1085#1077' '#1084#1077#1085#1100#1096#1077' 340 '#1075#1088#1085'.'
+    Visible = False
   end
   object OpenDialog1: TOpenDialog
     Left = 552

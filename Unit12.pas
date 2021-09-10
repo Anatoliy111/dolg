@@ -87,7 +87,6 @@ type
     IBKOBORMESSUBS: TFloatField;
     IBKOBORMESUDER: TFloatField;
     IBKOBORMESSAL: TFloatField;
-    Label16: TLabel;
     Label17: TLabel;
     IBPERKL: TIntegerField;
     IBPERPERIOD: TDateField;
