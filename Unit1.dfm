@@ -627,7 +627,7 @@ object Form1: TForm1
     Left = 274
     Top = 74
     EditValue = 0c
-    TabOrder = 4
+    TabOrder = 3
     Width = 121
   end
   object cxButton7: TcxButton
