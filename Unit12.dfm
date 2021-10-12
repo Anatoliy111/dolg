@@ -2,7 +2,7 @@ object Form12: TForm12
   Left = 0
   Top = 0
   Caption = #1050#1072#1088#1090#1082#1072' '#1072#1073#1086#1085#1077#1085#1090#1072
-  ClientHeight = 681
+  ClientHeight = 738
   ClientWidth = 897
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -74,11 +74,36 @@ object Form12: TForm12
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSKOBORMES
       DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1DOLG
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1NACH
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1OPL
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1SUBS
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1UDER
+        end
+        item
+          Kind = skSum
+          Column = cxGrid1DBTableView1SAL
+        end>
       DataController.Summary.SummaryGroups = <>
       OptionsData.Editing = False
       OptionsView.CellAutoHeight = True
       OptionsView.ColumnAutoWidth = True
+      OptionsView.Footer = True
       OptionsView.GroupByBox = False
       object cxGrid1DBTableView1POSLUG: TcxGridDBColumn
         Caption = #1055#1086#1089#1083#1091#1075#1072
@@ -163,34 +188,88 @@ object Form12: TForm12
     Left = 0
     Top = 448
     Width = 897
-    Height = 16
+    Height = 33
     Align = alTop
     TabOrder = 4
+    ExplicitLeft = 1
+    ExplicitTop = 453
     object Label13: TLabel
-      Left = 18
-      Top = 0
+      Left = 15
+      Top = 14
       Width = 160
       Height = 13
       Alignment = taCenter
       Caption = #1054#1073#1086#1088#1086#1090#1082#1072' '#1079#1072' '#1087#1086#1087#1077#1088#1077#1076#1085#1110' '#1087#1077#1088#1110#1086#1076#1080
     end
+    object cxButton4: TcxButton
+      Left = 181
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = 'Excel'
+      TabOrder = 0
+      OnClick = cxButton4Click
+    end
   end
   object cxGrid4: TcxGrid
     Left = 0
-    Top = 464
+    Top = 481
     Width = 897
-    Height = 217
+    Height = 257
     Align = alClient
     TabOrder = 5
+    ExplicitTop = 464
+    ExplicitHeight = 217
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSKOBOR
       DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3DOLG
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3NACH
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3OPL
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3SUBS
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3UDER
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3KOMP
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3WZMZ
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3WOZW
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3PERE
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView3SAL
+        end>
       DataController.Summary.SummaryGroups = <>
       OptionsData.Editing = False
       OptionsView.CellAutoHeight = True
       OptionsView.ColumnAutoWidth = True
+      OptionsView.Footer = True
       OptionsView.GroupByBox = False
       object cxGridDBTableView3PERIOD: TcxGridDBColumn
         Caption = #1055#1077#1088#1110#1086#1076
@@ -376,7 +455,7 @@ object Form12: TForm12
       Left = 181
       Top = 146
       Width = 40
-      Height = 21
+      Height = 19
       Alignment = taCenter
       Caption = #1076#1072#1090#1072
       Font.Charset = RUSSIAN_CHARSET
@@ -393,6 +472,7 @@ object Form12: TForm12
       Height = 13
       Alignment = taCenter
       Caption = #1054#1073#1086#1088#1086#1090#1082#1072' '#1079#1072' '#1087#1077#1088#1110#1086#1076
+      Visible = False
     end
     object cxDBTextEdit1: TcxDBTextEdit
       Left = 135
@@ -484,6 +564,7 @@ object Form12: TForm12
           FieldName = 'PERIOD'
         end>
       TabOrder = 9
+      Visible = False
       Width = 135
     end
     object cxLookupComboBox2: TcxLookupComboBox
@@ -495,6 +576,7 @@ object Form12: TForm12
           FieldName = 'PERIOD'
         end>
       TabOrder = 10
+      Visible = False
       Width = 135
     end
     object cxDBTextEdit12: TcxDBTextEdit
@@ -507,12 +589,13 @@ object Form12: TForm12
       Width = 49
     end
     object cxButton2: TcxButton
-      Left = 672
-      Top = 99
+      Left = 792
+      Top = 24
       Width = 75
       Height = 25
       Caption = #1044#1088#1091#1082
       TabOrder = 12
+      Visible = False
     end
     object cxDBTextEdit10: TcxDBTextEdit
       Left = 15
@@ -522,6 +605,16 @@ object Form12: TForm12
       Properties.ReadOnly = True
       TabOrder = 13
       Width = 114
+    end
+    object cxButton3: TcxButton
+      Left = 480
+      Top = 118
+      Width = 75
+      Height = 25
+      Caption = #1047#1074#1110#1090#1080
+      DropDownMenu = PopupMenu1
+      Kind = cxbkOfficeDropDown
+      TabOrder = 14
     end
   end
   object IBKART: TIBDataSet
@@ -1076,5 +1169,13 @@ object Form12: TForm12
     ParamCheck = True
     Left = 536
     Top = 112
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 617
+    Top = 169
+    object N11: TMenuItem
+      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1110#1079' '#1086#1089#1086#1073#1086#1074#1086#1075#1086' '#1088#1072#1093#1091#1085#1082#1091
+      OnClick = N11Click
+    end
   end
 end

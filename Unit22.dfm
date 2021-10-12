@@ -95,7 +95,7 @@ object Form22: TForm22
   object cxLabel7: TcxLabel
     Left = 48
     Top = 126
-    Caption = #1047#1072#1087#1086#1074#1085#1102#1108#1090#1100#1089#1103' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1100' '#1085#1077' '#1084#1077#1085#1100#1096#1077' 340 '#1075#1088#1085'.'
+    Caption = #1047#1072#1087#1086#1074#1085#1102#1108#1090#1100#1089#1103' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1100' '#1073#1110#1083#1100#1096#1077' 340 '#1075#1088#1085'.'
     Visible = False
   end
   object OpenDialog1: TOpenDialog
@@ -252,5 +252,23 @@ object Form22: TForm22
     Filter = 'Excel file|*.xls'
     Left = 480
     Top = 352
+  end
+  object ADOQueryTAB: TADOQuery
+    ConnectionString = 
+      'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=d:\WORK\KOMUN\kvpl\' +
+      'subs\;Mode=ReadWrite;Extended Properties=dBase IV;Persist Securi' +
+      'ty Info=False'
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      '')
+    Left = 160
+    Top = 280
+  end
+  object DSADOQueryTAB: TDataSource
+    DataSet = ADOQueryTAB
+    Enabled = False
+    Left = 160
+    Top = 328
   end
 end

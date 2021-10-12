@@ -4,7 +4,8 @@ interface
 
 uses Controls,SysUtils,dbgrids,Types,Forms,DB,
      Messages, Graphics,Classes,StdCtrls,
-     TypInfo,bde,dbtables;
+     TypInfo,bde,dbtables,Tlhelp32,IOUtils;
+
 
 const DELTA_YEAR=10;
 {$M+}
@@ -90,9 +91,65 @@ function mon_slovo(mon:integer):string;
 function mon_slovoDt(date:TDate):string;
 function Translit2Lat(const Str: string): string;
 
+function GetComputerNetName: string;
+function _GetTempPath: String;
+function _GetCurrentDirectory: String;
+function _GetSystemDirectory: String;
+function _GetWindowsDirectory: String;
+function _GetTempDirectory: String;
+
 implementation
 
-uses DateUtils,Windows,Dialogs,activex,comobj,variants,math;
+uses DateUtils,Windows,Dialogs,activex,comobj,variants,math,Registry;
+
+
+function GetComputerNetName: string;
+var
+ buffer: array[0..255] of char;
+ size: dword;
+begin
+ size := 256;
+ if GetComputerName(buffer, size) then
+   Result := buffer
+ else
+   Result := ''
+end;
+
+function _GetTempPath: String;
+var
+  Buffer: array[0..1023] of Char;
+begin
+  SetString(Result, Buffer, GetTempPath(Sizeof(Buffer)-1,Buffer));
+end;
+
+function _GetCurrentDirectory: String;
+var
+  Buffer: array[0..1023] of Char;
+begin
+  SetString(Result, Buffer, GetCurrentDirectory(Sizeof(Buffer)-1,Buffer));
+end;
+
+function _GetSystemDirectory: String;
+var
+  Buffer: array[0..1023] of Char;
+begin
+  SetString(Result, Buffer, GetSystemDirectory(Buffer,Sizeof(Buffer)-1));
+end;
+
+function _GetWindowsDirectory: String;
+var
+  Buffer: array[0..1023] of Char;
+begin
+  SetString(Result, Buffer, GetWindowsDirectory(Buffer,Sizeof(Buffer)-1));
+end;
+
+function _GetTempDirectory: String;
+var
+  Buffer: array[0..1023] of Char;
+begin
+  SetString(Result, Buffer, Windows.GetTempPath(Sizeof(Buffer)-1,Buffer));
+end;
+
 
 
 function Translit2Lat(const Str: string): string;

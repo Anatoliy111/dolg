@@ -166,10 +166,16 @@ type
     cxButton2: TcxButton;
     cxDBTextEdit10: TcxDBTextEdit;
     Label19: TLabel;
+    cxButton3: TcxButton;
+    PopupMenu1: TPopupMenu;
+    N11: TMenuItem;
+    cxButton4: TcxButton;
     procedure cxButton1Click(Sender: TObject);
     procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
+    procedure N11Click(Sender: TObject);
+    procedure cxButton4Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -182,7 +188,7 @@ var
 
 implementation
 
-uses Unit1, MyTools;
+uses Unit1, MyTools, Unit25;
 
 {$R *.dfm}
 
@@ -191,6 +197,11 @@ begin
  Find();
 end;
 
+
+procedure TForm12.cxButton4Click(Sender: TObject);
+begin
+Form1.ExportGrid(cxGrid4,Label13.Caption+' '+cxTextEdit1.Text);
+end;
 
 procedure TForm12.cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -390,6 +401,14 @@ procedure TForm12.FormCreate(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
+end;
+
+procedure TForm12.N11Click(Sender: TObject);
+begin
+Form25.sch:=cxTextEdit1.Text;
+Form25.Caption:=Form12.N11.Caption+' '+cxTextEdit1.Text;
+Form25.cxLabel1.Caption:=Form12.N11.Caption+' '+cxTextEdit1.Text;
+Form25.Show;
 end;
 
 end.

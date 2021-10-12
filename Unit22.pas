@@ -34,6 +34,8 @@ type
     cxLabel4: TcxLabel;
     cxLabel3: TcxLabel;
     cxLabel7: TcxLabel;
+    ADOQueryTAB: TADOQuery;
+    DSADOQueryTAB: TDataSource;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -53,6 +55,7 @@ var
           kolborg,kolschet,kollgcode:integer;
      Rows, Columns: Integer;
 
+
 implementation
 
 {$R *.dfm}
@@ -60,7 +63,7 @@ implementation
 uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP;
 
 procedure TForm22.cxButton1Click(Sender: TObject);
-var i,ns,kolst:integer;
+var i,ns,kolst,FileHandle:integer;
     st:pchar;
     sss:string;
 begin
@@ -85,10 +88,24 @@ begin
          st1:=st1+st[ns]
       else st1:='';
     end;
+    FileHandle:=FileOpen(OpenDialog1.FileName, fmShareExclusive);
+    FileClose(FileHandle);
+
+    if FileHandle<0 then
+       begin
+          ShowMessage('Файл зайнятий іншою програмою. Обробка не можлива!!!');
+          cxTextEdit1.Text:='';
+          st1:='';
+          Application.ProcessMessages;
+          exit;
+       end;
 
     kolst:= Pos('.',st1)-1;
    // nfile:=trim(OpenDialog1.FileName);
    // Delete(nfile, Length(nfile)-3, 3);
+
+
+
 
 
 
@@ -119,7 +136,7 @@ begin
       begin
          kollgcode:=i;
       end;
-      if (trim(MsExcel.WorkSheets[1].Cells[1,I])='Summ_Borg') then
+      if (trim(MsExcel.WorkSheets[1].Cells[1,I])='Sum_Borg') then
       begin
          kolborg:=i;
       end;
@@ -191,6 +208,8 @@ var i,ns,kolst,k,cod,stsch,ii:integer;
     ob,table:TDbf;
     ss:variant;
     d0,d1,d2,d3,d4:TDate;
+    FilePath, FileName,StartFileName,StartFilePath : String;
+
 
 
 begin
@@ -217,13 +236,49 @@ begin
      exit;
    end;
 
+   StartFilePath := ExtractFilePath(OpenDialog1.FileName);
+   StartFileName:= ExtractFileName(OpenDialog1.FileName);
+
+    FilePath:=_GetWindowsDirectory+'\temp\';
+
+//   FileName := StringReplace(ExtractFileName(OpenDialog1.FileName),ExtractFileExt(OpenDialog1.FileName),'.dbf',[rfReplaceAll]);
+   FileName := 'temp.dbf';
+   CopyFile(PChar(OpenDialog1.FileName), PChar(FilePath+FileName), false);
 
 
-    MsExcel := CreateOleObject('Excel.Application');
-    //    MsExcel.Workbooks.Add;
-    MsExcel.Workbooks.Open[OpenDialog1.FileName];
+
+     try
+            Application.ProcessMessages;
 
 
+                  ADOQueryTAB.SQL.Text:='select * from '+FileName;
+
+             ADOQueryTAB.Close;
+             ADOQueryTAB.ConnectionString:='Provider=VFPOLEDB.1;Data Source='+FilePath+';Mode=ReadWrite;Password="";Collating Sequence=MACHINE;CODEPAGE=866;ANSI=False';
+             ADOQueryTAB.Open;
+
+
+
+
+
+            ADOQueryTAB.Close;
+//            ADOConnectionDBF.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+Form1.PathKvart+'dbf\;Mode=Share Deny Read|Share Deny Write;Extended Properties=dBase IV;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
+            ADOQueryTAB.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+FilePath+';Mode=ReadWrite;Extended Properties=dBase III;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
+
+            ADOQueryTAB.Open;
+
+
+            ADOCommand1.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Data Source='+FilePath+';Mode=ReadWrite;Extended Properties=dBase III;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0';
+
+
+
+       except
+       on E : Exception do
+       begin
+        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+        exit;
+       end;
+     end;
 
 
    Form22.Enabled:=false;
@@ -240,14 +295,6 @@ begin
       kolst:=2;
       i:=0;
 
-//      IBWID.First;
-//      while not IBWID.eof do
-//      begin
-        MsExcel.WorkSheets[1].Cells[1,kolborg]:='Заборгованість';
-        MsExcel.columns[kolborg].NumberFormat:='0,00';
-//        i:=i+1;
-//        IBWID.Next;
-//      end;
 
    Form2.Label1.Caption:='Обрахування даних';
         Form2.cxProgressBar1.Properties.Min:=0;
@@ -258,9 +305,17 @@ begin
 //        MsExcel.Visible := True;
    kolst:=Rows;
 
-   MsExcel.DisplayAlerts := False;
+           Form2.Label1.Caption:='Очищення файлу реєстру';
+           Application.ProcessMessages;
 
-
+                   ADOQueryTAB.First;
+            while not ADOQueryTAB.Eof do
+            begin
+               ADOQueryTAB.Edit;
+               ADOQueryTAB.FieldByName('Sum_Borg').AsFloat:=0;
+               ADOQueryTAB.Post;
+               ADOQueryTAB.Next;
+            end;
 
    Form2.Label1.Caption:='Завантаження даних';
    Application.ProcessMessages;
@@ -291,15 +346,17 @@ begin
 
         //MsExcel.Visible := True;
         Form2.cxProgressBar1.Properties.Min:=0;
-        Form2.cxProgressBar1.Properties.Max:=kolst-1;
+        Form2.cxProgressBar1.Properties.Max:=ADOQueryTAB.RecordCount-1;
         Form2.cxProgressBar1.Position:=5;
-        for I := 2 to kolst-1 do
+
+           ADOQueryTAB.First;
+        while not ADOQueryTAB.Eof do
         begin
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
 
-          sch:=MsExcel.WorkSheets[1].Cells[i,kolschet];
-          cod:=MsExcel.WorkSheets[1].Cells[i,kollgcode];
+          sch:=ADOQueryTAB.FieldByName('RAH').AsString;
+          cod:=ADOQueryTAB.FieldByName('LGCODE').AsInteger;
 
           IBQuery1.First;
          // IBQuery1SCHET.Value;
@@ -345,68 +402,47 @@ begin
            if sum<=0 then sum:=0;
 
 
-        MsExcel.WorkSheets[1].Cells[i,kolborg]:=sum;
+                       ADOQueryTAB.Edit;
+               ADOQueryTAB.FieldByName('Sum_Borg').AsFloat:=sum;
+               ADOQueryTAB.Post;
 
-        if sch<>ppsch then
-        begin
-          if (allsum<340) and (allsum<>0) then
+
+          if sch<>ppsch then
           begin
-             for ii := stsch to i-1 do
-               MsExcel.WorkSheets[1].Cells[ii,kolborg]:=0;
+            if (allsum<340) and (allsum<>0) then
+            begin
+               for ii := stsch to i-1 do
+               begin
+                         ADOQueryTAB.Edit;
+                 ADOQueryTAB.FieldByName('Sum_Borg').AsFloat:=0;
+                 ADOQueryTAB.Post;
+               end;
+            end;
+
+            ppsch:=sch;
+            stsch:=i;
+            allsum:=sum;
+          end
+          else
+          begin
+          allsum:=allsum+sum;
+
           end;
 
-          ppsch:=sch;
-          stsch:=i;
-          allsum:=sum;
-        end
-        else
-        begin
-        allsum:=allsum+sum;
 
-        end;
-
-
+        ADOQueryTAB.Next;
         end;
 
 
 
 
 
-//     if tip='sub' then
-//       CopyFile(PChar(Form1.PathDIR+'subs.dbf'), PChar(Form1.PathKvart+'dbf\subs.dbf'), false);
-//     if tip='lg' then
-//       CopyFile(PChar(Form1.PathDIR+'slgot.dbf'), PChar(Form1.PathKvart+'dbf\slgot.dbf'), false);
-
-       // SaveDialog1.FileName:=cxTextEdit4.Text+' '+' боржники на '+'.xls';
-        SaveDialog1.FileName:=LeftStr(st1,Pos('.',st1)-1)+' Заборгованість на '+DateTostr(cxLookupComboBox1.EditValue)+' пільги.xls';
-        if SaveDialog1.Execute then begin
-
-     //   MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
-//        MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName,xlNormal,' ',' ',False,False);
-        MsExcel.Application.Workbooks[1].SaveAs(SaveDialog1.FileName,-4143);
-//        MsExcel.ActiveWorkbook.SaveAs('c:\temp\test.xls');
-      //  MsExcel.ActiveWorkbook.save;
-        MsExcel.Application.Workbooks[1].Close;
-        //MsExcel.Application.ActiveWorkbook.Close;
-        MsExcel.Application.Quit;
-        MsExcel := null;
-        ShowMessage('Реєстр збережено в файл:'#10+SaveDialog1.FileName);
-        Application.ProcessMessages;
-
-
-        end
-        else begin
-        MsExcel.Application.ActiveWorkbook.Close;
-        MsExcel.Application.Quit;
-        MsExcel := null;
-          ShowMessage('Реєстр не збережено.');
-        end;
-
-     // DeleteFile(nfile);
+      ADOQueryTAB.Close;
       cxTextEdit1.Text:='';
       st1:='';
       form2.Close;
-      ShowMessage('Завантаження закінчено');
+      CopyFile(PChar(FilePath+FileName),PChar(OpenDialog1.FileName), false);
+      ShowMessage('Завантаження закінчено '+OpenDialog1.FileName);
       Form22.Enabled:=true;
 end;
 

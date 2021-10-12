@@ -23,7 +23,8 @@ uses
   Unit21 in 'Unit21.pas' {Form21},
   Unit22 in 'Unit22.pas' {Form22},
   Unit23 in 'Unit23.pas' {Form23},
-  Unit24 in 'Unit24.pas' {Form24};
+  Unit24 in 'Unit24.pas' {Form24},
+  Unit25 in 'Unit25.pas' {Form25};
 
 {$R *.res}
 
@@ -52,5 +53,6 @@ begin
   Application.CreateForm(TForm22, Form22);
   Application.CreateForm(TForm23, Form23);
   Application.CreateForm(TForm24, Form24);
+  Application.CreateForm(TForm25, Form25);
   Application.Run;
 end.
