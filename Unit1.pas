@@ -516,6 +516,8 @@ type
     IBVIBER_SENDKOLSEND: TIntegerField;
     IBVIBER_SENDTEXT: TWideMemoField;
     IBVIBER_SENDSMALLTEXT: TIBStringField;
+    dxBarButton127: TdxBarButton;
+    dxBarButton128: TdxBarButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -544,6 +546,7 @@ type
     procedure dxBarButton125Click(Sender: TObject);
     procedure dxBarButton126Click(Sender: TObject);
     procedure cxButton7Click(Sender: TObject);
+    procedure dxBarButton127Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -575,7 +578,7 @@ implementation
 
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
-  Unit16, Unit19, Unit20, Unit21, Unit22, Unit23;
+  Unit16, Unit19, Unit20, Unit21, Unit22, Unit23, Unit26;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -664,6 +667,12 @@ procedure TForm1.dxBarButton126Click(Sender: TObject);
 begin
 Form22.Caption:=dxBarButton126.Caption;
 Form22.show;
+end;
+
+procedure TForm1.dxBarButton127Click(Sender: TObject);
+begin
+Form26.Caption:=dxBarButton127.Caption;
+Form26.Show;
 end;
 
 procedure TForm1.dxBarButton19Click(Sender: TObject);

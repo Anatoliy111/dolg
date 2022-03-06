@@ -92,12 +92,6 @@ object Form20: TForm20
     Top = 98
     Caption = #1041#1086#1088#1075
   end
-  object cxLabel7: TcxLabel
-    Left = 48
-    Top = 126
-    Caption = #1047#1072#1087#1086#1074#1085#1102#1108#1090#1100#1089#1103' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1100' '#1073#1110#1083#1100#1096#1077' 340 '#1075#1088#1085'.'
-    Visible = False
-  end
   object OpenDialog1: TOpenDialog
     Left = 520
     Top = 272
@@ -252,23 +246,5 @@ object Form20: TForm20
     Filter = 'Excel file|*.xls'
     Left = 480
     Top = 352
-  end
-  object ADOQueryTAB: TADOQuery
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\windows\temp\;Mo' +
-      'de=Share Deny Read|Share Deny Write;Extended Properties=dBase 5.' +
-      '0;Persist Security Info=False;Jet OLEDB:Database Locking Mode=0'
-    CursorType = ctStatic
-    Parameters = <>
-    SQL.Strings = (
-      'select * from temp1.dbf')
-    Left = 88
-    Top = 272
-  end
-  object DSADOQueryTAB: TDataSource
-    DataSet = ADOQueryTAB
-    Enabled = False
-    Left = 88
-    Top = 320
   end
 end

@@ -384,6 +384,8 @@ begin
                if tip='lg' then
                   ADOQueryTAB.SQL.Text:='select * from slgotree';
 
+
+
              ADOQueryTAB.Close;
              ADOQueryTAB.ConnectionString:='Provider=VFPOLEDB.1;Data Source='+Form1.PathKvart+'subs\;Mode=ReadWrite;Password="";Collating Sequence=MACHINE;CODEPAGE=866;ANSI=False';
              ADOQueryTAB.Open;
