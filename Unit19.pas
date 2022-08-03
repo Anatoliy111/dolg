@@ -517,7 +517,8 @@ begin
 //          if sch='0113275А' then
              sch:=AnsiLowerCase(trim(MsExcel.WorkSheets[1].Cells[i,4]));
 
-
+          if i = 204 then
+            Application.ProcessMessages;
 
 
           sumExcel:=StrToFloat(StringReplace(MsExcel.WorkSheets[1].Cells[i,7],'.',',',[]));
@@ -612,7 +613,7 @@ begin
 
       cxTextEdit1.Text:='';
       st1:='';
-
+    //  MsExcel.free;
       form2.Close;
       ShowMessage('Завантаження закінчено');
       Form19.Enabled:=true;

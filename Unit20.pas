@@ -33,6 +33,7 @@ type
     cxLabel6: TcxLabel;
     MemoLog: TMemo;
     cxLabel3: TcxLabel;
+    IBWIDFL_NONACH: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -241,7 +242,7 @@ begin
       IBWID.First;
       while not IBWID.eof do
       begin
-        if (IBWIDWID.Value<>'el') and (IBWIDWID.Value<>'om') and (IBWIDWID.Value<>'kv') and (IBWIDWID.Value<>'sz') then
+        if (IBWIDWID.Value<>'el') and (IBWIDWID.Value<>'om') and (IBWIDWID.Value<>'kv') and (IBWIDWID.Value<>'sz') and (IBWIDFL_NONACH.Value<>'1') then
         begin
           MsExcel.WorkSheets[1].Cells[1,kolborg+i]:='Заборг. '+IBWIDNAIM.Value;
           MsExcel.columns[kolborg+i].NumberFormat:='0,00';
@@ -272,7 +273,7 @@ begin
    IBWID.First;
    while not IBWID.eof do
    begin
-     if (IBWIDWID.Value<>'el') and (IBWIDWID.Value<>'om') and (IBWIDWID.Value<>'kv') and (IBWIDWID.Value<>'sz') then
+     if (IBWIDWID.Value<>'el') and (IBWIDWID.Value<>'om') and (IBWIDWID.Value<>'kv') and (IBWIDWID.Value<>'sz') and (IBWIDFL_NONACH.Value<>'1') then
      begin
 
      Form2.Label1.Caption:='Завантаження даних '+IBWIDNAIM.Value;
@@ -354,7 +355,8 @@ Form2.cxProgressBar1.Properties.Min:=0;
         begin
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
-          kksum:=MsExcel.WorkSheets[1].Cells[i,kolborg];
+          //kksum:=MsExcel.WorkSheets[1].Cells[i,kolborg];
+          kksum:=0;
           for kk := 0 to k-1 do
           begin
             ksum:=MsExcel.WorkSheets[1].Cells[i,kolborg+kk];

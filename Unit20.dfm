@@ -164,15 +164,9 @@ object Form20: TForm20
       '  WID = :OLD_WID')
     InsertSQL.Strings = (
       'insert into WID'
-      
-        '  (WID, ID_ORG, NAIM, SNAIM, PAR, FL0, FL, NPP, FL_NONACH, FL_NO' +
-        'OPL, FL_VTCH, '
-      '   FL_NOOBOR, FL_GROPL, FL_SUBS, VAL)'
+      '  (WID, NAIM, FL_NONACH)'
       'values'
-      
-        '  (:WID, :ID_ORG, :NAIM, :SNAIM, :PAR, :FL0, :FL, :NPP, :FL_NONA' +
-        'CH, :FL_NOOPL, '
-      '   :FL_VTCH, :FL_NOOBOR, :FL_GROPL, :FL_SUBS, :VAL)')
+      '  (:WID, :NAIM, :FL_NONACH)')
     RefreshSQL.Strings = (
       'Select '
       '  WID,'
@@ -194,25 +188,13 @@ object Form20: TForm20
       'where'
       '  WID = :WID')
     SelectSQL.Strings = (
-      ' select wid,naim, 0 as ch from WID')
+      ' select wid,naim, 0 as ch, FL_NONACH from WID')
     ModifySQL.Strings = (
       'update WID'
       'set'
       '  WID = :WID,'
-      '  ID_ORG = :ID_ORG,'
       '  NAIM = :NAIM,'
-      '  SNAIM = :SNAIM,'
-      '  PAR = :PAR,'
-      '  FL0 = :FL0,'
-      '  FL = :FL,'
-      '  NPP = :NPP,'
-      '  FL_NONACH = :FL_NONACH,'
-      '  FL_NOOPL = :FL_NOOPL,'
-      '  FL_VTCH = :FL_VTCH,'
-      '  FL_NOOBOR = :FL_NOOBOR,'
-      '  FL_GROPL = :FL_GROPL,'
-      '  FL_SUBS = :FL_SUBS,'
-      '  VAL = :VAL'
+      '  FL_NONACH = :FL_NONACH'
       'where'
       '  WID = :OLD_WID')
     ParamCheck = True
@@ -234,6 +216,11 @@ object Form20: TForm20
     object IBWIDCH: TIntegerField
       FieldName = 'CH'
       ProviderFlags = []
+    end
+    object IBWIDFL_NONACH: TIBStringField
+      FieldName = 'FL_NONACH'
+      Origin = '"WID"."FL_NONACH"'
+      Size = 1
     end
   end
   object DSWID: TDataSource
