@@ -50,7 +50,7 @@ type
 
 var
   Form19: TForm19;
-       st1,poslug,tip:string;
+       st1,poslug,tip,path:string;
      MsExcel:Variant;
      period: TDateTime;
 
@@ -86,7 +86,7 @@ begin
 
   if OpenDialog1.Execute then
   begin
-
+    path:=OpenDialog1.FileName;
     st:=pchar(OpenDialog1.FileName);
     for ns := 0 to Length(OpenDialog1.FileName) - 1 do
     begin
@@ -94,6 +94,8 @@ begin
          st1:=st1+st[ns]
       else st1:='';
     end;
+
+    cxTextEdit1.Text:=st1;
 
 
 
@@ -139,18 +141,23 @@ begin
     if (Length(poslug)=0) then
        begin
          ShowMessage('Послуга не знайдена!!!');
-         st1:='';
+         path:='';
+         cxTextEdit1.Text:='';
        end;
 
     if  (Length(tip)=0)then
        begin
          ShowMessage('Тип реєстру не знайдено!!!');
-         st1:='';
+         path:='';
+         cxTextEdit1.Text:='';
        end;
 
-     cxTextEdit1.Text:=st1;
 
 
+
+              MsExcel.ActiveWorkbook.Close;
+          MsExcel.Application.Quit;
+          MsExcel := null;
 
 
 
@@ -192,11 +199,15 @@ begin
 
       }
 
-   if Length(st1)=0 then
+   if Length(path)=0 then
    begin
      ShowMessage('Виберіть файл');
      exit;
    end;
+
+         MsExcel := CreateOleObject('Excel.Application');
+    //    MsExcel.Workbooks.Add;
+    MsExcel.Workbooks.Open[path];
 
 
       if mode=2 then

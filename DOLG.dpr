@@ -25,7 +25,10 @@ uses
   Unit23 in 'Unit23.pas' {Form23},
   Unit24 in 'Unit24.pas' {Form24},
   Unit25 in 'Unit25.pas' {Form25},
-  Unit26 in 'Unit26.pas' {Form26};
+  Unit26 in 'Unit26.pas' {Form26},
+  Unit27 in 'Unit27.pas' {Form27},
+  Unit28 in 'Unit28.pas' {Form28},
+  Unit29 in 'Unit29.pas' {Form29};
 
 {$R *.res}
 
@@ -56,5 +59,8 @@ begin
   Application.CreateForm(TForm24, Form24);
   Application.CreateForm(TForm25, Form25);
   Application.CreateForm(TForm26, Form26);
+  Application.CreateForm(TForm27, Form27);
+  Application.CreateForm(TForm28, Form28);
+  Application.CreateForm(TForm29, Form29);
   Application.Run;
 end.

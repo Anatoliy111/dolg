@@ -48,6 +48,7 @@ begin
        if Form1.IBUSERFIO.Value<>'admin' then
        begin
          Form1.dxBarButton114.Enabled:=false;
+         Form1.dxBarButton129.Enabled:=false;
 
        end;
 

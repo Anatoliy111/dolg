@@ -622,6 +622,16 @@ object Form1: TForm1
       TabOrder = 5
       OnClick = cxButton6Click
     end
+    object cxButton8: TcxButton
+      Left = 808
+      Top = 112
+      Width = 153
+      Height = 25
+      Caption = #1047#1072#1074#1072#1085#1090#1072#1078#1077#1085#1085#1103' '#1086#1087#1083#1072#1090#1080
+      TabOrder = 6
+      Visible = False
+      OnClick = cxButton8Click
+    end
   end
   object cxCalcEdit1: TcxCalcEdit
     Left = 274
@@ -1537,6 +1547,10 @@ object Form1: TForm1
         end
         item
           Visible = True
+          ItemName = 'dxBarSubItem30'
+        end
+        item
+          Visible = True
           ItemName = 'dxBarButton19'
         end>
       MultiLine = True
@@ -1567,6 +1581,10 @@ object Form1: TForm1
         item
           Visible = True
           ItemName = 'dxBarButton114'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton129'
         end>
     end
     object dxBarSubItem5: TdxBarSubItem
@@ -2785,6 +2803,48 @@ object Form1: TForm1
       Hint = #1053#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103' '#1087#1086' '#1089#1091#1073#1089#1080#1076#1110#1072#1085#1090#1072#1084' '#1079#1072' '#1087#1077#1088#1110#1086#1076
       Visible = ivAlways
     end
+    object dxBarButton129: TdxBarButton
+      Caption = #1044#1086#1074#1110#1076#1085#1080#1082' '#1041#1072#1085#1082#1110#1074
+      Category = 0
+      Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1041#1072#1085#1082#1110#1074
+      Visible = ivAlways
+      OnClick = dxBarButton129Click
+    end
+    object dxBarButton130: TdxBarButton
+      Caption = #1055#1077#1085#1089#1110#1081#1085#1080#1081' '#1092#1086#1085#1076
+      Category = 0
+      Hint = #1055#1077#1085#1089#1110#1081#1085#1080#1081' '#1092#1086#1085#1076
+      Visible = ivAlways
+    end
+    object dxBarSubItem29: TdxBarSubItem
+      Caption = 'New SubItem'
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <>
+    end
+    object dxBarButton131: TdxBarButton
+      Caption = 'New Button'
+      Category = 0
+      Hint = 'New Button'
+      Visible = ivAlways
+    end
+    object dxBarSubItem30: TdxBarSubItem
+      Caption = #1055#1077#1085#1089#1110#1081#1085#1080#1081' '#1092#1086#1085#1076
+      Category = 0
+      Visible = ivAlways
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarButton132'
+        end>
+    end
+    object dxBarButton132: TdxBarButton
+      Caption = #1056#1077#1108#1089#1090#1088' '#1087#1086' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1086#1089#1090#1110
+      Category = 0
+      Hint = #1056#1077#1108#1089#1090#1088' '#1087#1086' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1086#1089#1090#1110
+      Visible = ivAlways
+      OnClick = dxBarButton132Click
+    end
   end
   object IBPERIOD: TIBDataSet
     Database = IBDatabase1
@@ -3268,7 +3328,6 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
-    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (
@@ -3276,8 +3335,8 @@ object Form1: TForm1
       'rec_version'
       'nowait')
     AutoStopAction = saCommitRetaining
-    Left = 72
-    Top = 240
+    Left = 64
+    Top = 296
   end
   object IBWID: TIBDataSet
     Database = IBDatabase1
@@ -3320,7 +3379,7 @@ object Form1: TForm1
       'where'
       '  WID = :WID')
     SelectSQL.Strings = (
-      ' select * from WID')
+      ' select * from WID where upd=1')
     ModifySQL.Strings = (
       'update WID'
       'set'
