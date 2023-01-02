@@ -28,7 +28,8 @@ uses
   Unit26 in 'Unit26.pas' {Form26},
   Unit27 in 'Unit27.pas' {Form27},
   Unit28 in 'Unit28.pas' {Form28},
-  Unit29 in 'Unit29.pas' {Form29};
+  Unit29 in 'Unit29.pas' {Form29},
+  sevenzip in 'sevenzip.pas';
 
 {$R *.res}
 

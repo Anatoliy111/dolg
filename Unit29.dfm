@@ -15,8 +15,8 @@ object Form29: TForm29
   PixelsPerInch = 120
   TextHeight = 16
   object cxButton1: TcxButton
-    Left = 351
-    Top = 39
+    Left = 519
+    Top = 40
     Width = 161
     Height = 25
     Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1092#1072#1081#1083
@@ -28,7 +28,7 @@ object Form29: TForm29
     Top = 40
     TabOrder = 1
     Text = #1060#1072#1081#1083
-    Width = 306
+    Width = 474
   end
   object cxButton2: TcxButton
     Left = 39
@@ -46,7 +46,7 @@ object Form29: TForm29
   object cxLabel5: TcxLabel
     Left = 39
     Top = 8
-    Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1092#1072#1081#1083#1080' '#1103#1082#1110' '#1087#1088#1080#1089#1080#1083#1072#1108' '#1087#1077#1085#1089#1110#1081#1085#1080#1081' '#1092#1086#1085#1076' *.'#1089'sv - '#1087#1110#1083#1100#1075#1072
+    Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1092#1072#1081#1083#1080' '#1103#1082#1110' '#1087#1088#1080#1089#1080#1083#1072#1108' '#1087#1077#1085#1089#1110#1081#1085#1080#1081' '#1092#1086#1085#1076' *.zip - query '#1087#1110#1083#1100#1075#1072
   end
   object MemoLog: TMemo
     Left = 0
@@ -73,6 +73,7 @@ object Form29: TForm29
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
+    Properties.ReadOnly = True
     Properties.OnChange = cxLookupComboBox1PropertiesChange
     TabOrder = 7
     Width = 129
@@ -99,62 +100,9 @@ object Form29: TForm29
     Left = 552
     Top = 288
   end
-  object IBQuery1: TIBQuery
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    ParamCheck = True
-    SQL.Strings = (
-      
-        'select trim(vo.schet) schet, vo.dolg, op.opl from vw_obkr vo inn' +
-        'er join (select schet, sum(fullopl) opl from vw_obkr where wid=w' +
-        'id=:wid and period>=:dt2 and period<=:dt3 group by schet) op on ' +
-        'op.schet=vo.schet where vo.wid=:wid and vo.period=:dt1 and op.op' +
-        'l=0 and vo.dolg>0')
-    Left = 415
-    Top = 274
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'wid'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'dt2'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'dt3'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'wid'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'dt1'
-        ParamType = ptUnknown
-      end>
-  end
   object DSQuery1: TDataSource
-    DataSet = IBQuery1
     Left = 471
     Top = 274
-  end
-  object ADOCommand1: TADOCommand
-    CommandText = 'delete from subsree where len(schet) is null'#13#10
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=d:\WORK\KOMUN\kvpl\' +
-      'subs\;Mode=ReadWrite;Extended Properties=dBase IV;Persist Securi' +
-      'ty Info=False'
-    Parameters = <>
-    Left = 232
-    Top = 280
   end
   object IBWID: TIBDataSet
     Database = Form1.IBDatabase1
@@ -164,18 +112,13 @@ object Form29: TForm29
     DeleteSQL.Strings = (
       'delete from WID'
       'where'
-      '  WID = :OLD_WID')
+      '  WID = :OLD_WID and'
+      '  COD = :OLD_COD')
     InsertSQL.Strings = (
       'insert into WID'
-      
-        '  (WID, ID_ORG, NAIM, SNAIM, PAR, FL0, FL, NPP, FL_NONACH, FL_NO' +
-        'OPL, FL_VTCH, '
-      '   FL_NOOBOR, FL_GROPL, FL_SUBS, VAL)'
+      '  (WID, COD)'
       'values'
-      
-        '  (:WID, :ID_ORG, :NAIM, :SNAIM, :PAR, :FL0, :FL, :NPP, :FL_NONA' +
-        'CH, :FL_NOOPL, '
-      '   :FL_VTCH, :FL_NOOBOR, :FL_GROPL, :FL_SUBS, :VAL)')
+      '  (:WID, :COD)')
     RefreshSQL.Strings = (
       'Select '
       '  WID,'
@@ -185,6 +128,7 @@ object Form29: TForm29
       '  PAR,'
       '  FL0,'
       '  FL,'
+      '  COD,'
       '  NPP,'
       '  FL_NONACH,'
       '  FL_NOOPL,'
@@ -192,32 +136,22 @@ object Form29: TForm29
       '  FL_NOOBOR,'
       '  FL_GROPL,'
       '  FL_SUBS,'
-      '  VAL'
+      '  VAL,'
+      '  UPD'
       'from WID '
       'where'
-      '  WID = :WID')
+      '  WID = :WID and'
+      '  COD = :COD')
     SelectSQL.Strings = (
-      ' select wid,naim, 0 as ch from WID')
+      ' select wid,cod from WID')
     ModifySQL.Strings = (
       'update WID'
       'set'
       '  WID = :WID,'
-      '  ID_ORG = :ID_ORG,'
-      '  NAIM = :NAIM,'
-      '  SNAIM = :SNAIM,'
-      '  PAR = :PAR,'
-      '  FL0 = :FL0,'
-      '  FL = :FL,'
-      '  NPP = :NPP,'
-      '  FL_NONACH = :FL_NONACH,'
-      '  FL_NOOPL = :FL_NOOPL,'
-      '  FL_VTCH = :FL_VTCH,'
-      '  FL_NOOBOR = :FL_NOOBOR,'
-      '  FL_GROPL = :FL_GROPL,'
-      '  FL_SUBS = :FL_SUBS,'
-      '  VAL = :VAL'
+      '  COD = :COD'
       'where'
-      '  WID = :OLD_WID')
+      '  WID = :OLD_WID and'
+      '  COD = :OLD_COD')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
@@ -229,14 +163,10 @@ object Form29: TForm29
       Origin = '"WID"."WID"'
       Size = 2
     end
-    object IBWIDNAIM: TIBStringField
-      FieldName = 'NAIM'
-      Origin = '"WID"."NAIM"'
-      Size = 15
-    end
-    object IBWIDCH: TIntegerField
-      FieldName = 'CH'
-      ProviderFlags = []
+    object IBWIDCOD: TIBStringField
+      FieldName = 'COD'
+      Origin = '"WID"."COD"'
+      Size = 5
     end
   end
   object DSWID: TDataSource
@@ -249,5 +179,83 @@ object Form29: TForm29
     Filter = 'Excel file|*.xls'
     Left = 480
     Top = 352
+  end
+  object IBQuery1: TIBQuery
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    ParamCheck = True
+    SQL.Strings = (
+      
+        'select wid.cod, t2.wid, trim(t2.schet) as sch, oo.tarsubs,vo.dol' +
+        'g,t2.fullopl,vo.dolg-t2.fullopl as summa from'
+      
+        '                        (select wid, schet, sum(fullopl) fullopl' +
+        ' from vw_obor where period>=:d3 and period<=:d4'
+      '                        group by wid, schet) t2'
+      '                        left join wid on t2.wid=wid.wid'
+      
+        '                        left join vw_obor vo on vo.wid=t2.wid an' +
+        'd vo.schet=t2.schet and vo.period=:d0'
+      
+        '                        left join obor oo on oo.wid=t2.wid and o' +
+        'o.schet=t2.schet and oo.period=:d4'
+      '                        where wid.cod is not null'
+      '                        order by t2.schet, t2.wid')
+    Left = 415
+    Top = 274
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'd3'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'd4'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'd0'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'd4'
+        ParamType = ptUnknown
+      end>
+    object IBQuery1COD: TIBStringField
+      FieldName = 'COD'
+      Origin = '"WID"."COD"'
+      Size = 5
+    end
+    object IBQuery1WID: TIBStringField
+      FieldName = 'WID'
+      ProviderFlags = []
+      Size = 2
+    end
+    object IBQuery1SCH: TIBStringField
+      FieldName = 'SCH'
+      ProviderFlags = []
+      Size = 10
+    end
+    object IBQuery1TARSUBS: TFloatField
+      FieldName = 'TARSUBS'
+      Origin = '"OBOR"."TARSUBS"'
+    end
+    object IBQuery1DOLG: TFloatField
+      FieldName = 'DOLG'
+      Origin = '"VW_OBOR"."DOLG"'
+    end
+    object IBQuery1FULLOPL: TFloatField
+      FieldName = 'FULLOPL'
+      ProviderFlags = []
+    end
+    object IBQuery1SUMMA: TFloatField
+      FieldName = 'SUMMA'
+      ProviderFlags = []
+    end
   end
 end

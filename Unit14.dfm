@@ -22,16 +22,12 @@ object Form14: TForm14
     Height = 337
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 951
     object cxGroupBox1: TcxGroupBox
       Left = 1
       Top = 1
       Align = alClient
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080' '#1074#1110#1076#1073#1086#1088#1091
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = -4
-      ExplicitWidth = 949
       Height = 335
       Width = 948
       object cxCheckBox2: TcxCheckBox
@@ -673,9 +669,6 @@ object Form14: TForm14
     Height = 319
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 352
-    ExplicitWidth = 951
-    ExplicitHeight = 304
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSREP

@@ -415,8 +415,8 @@ object Form1: TForm1
     object Label16: TLabel
       Left = 630
       Top = 0
-      Width = 161
-      Height = 22
+      Width = 133
+      Height = 23
       Alignment = taCenter
       Caption = #1055#1086#1090#1086#1095#1085#1080#1081' '#1087#1077#1088#1110#1086#1076
       Font.Charset = ANSI_CHARSET
@@ -429,8 +429,8 @@ object Form1: TForm1
     object Label17: TLabel
       Left = 630
       Top = 20
-      Width = 42
-      Height = 18
+      Width = 34
+      Height = 20
       Alignment = taCenter
       Caption = #1076#1072#1090#1072
       Font.Charset = ANSI_CHARSET

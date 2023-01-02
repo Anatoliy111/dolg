@@ -851,6 +851,7 @@ procedure TForm14.FormShow(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
+IBWID.Open;
 visible;
 end;
 
