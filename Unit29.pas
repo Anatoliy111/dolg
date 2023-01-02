@@ -297,6 +297,7 @@ var i,nn,kolst,kk,stsch,ii,kolsch:integer;
    // FilePath, FileName,StartFileName,StartFilePath,
     oldsch,strsch : String;
     schchar:pchar;
+    Arch: I7zOutArchive;
 
 
 begin
@@ -496,22 +497,40 @@ begin
 
      //   SaveDialog1.FileName:=OpenDialog1.FileName;
     //    if SaveDialog1.Execute then begin
-          FileName:=DirExtrFile+'\'+LeftStr(StartFileName,23)+'.csv';
-     //   MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName);
-//        MsExcel.Application.Workbooks[1].SaveCopyAs(SaveDialog1.FileName,xlNormal,' ',' ',False,False);
-        MsExcel.Application.Workbooks[1].SaveAs(FileName,-4143);
-        MsExcel.Application.Workbooks[1].save;
-//        MsExcel.ActiveWorkbook.SaveAs('c:\temp\test.xls');
-      //  MsExcel.ActiveWorkbook.save;
-        MsExcel.Application.Workbooks[1].Close;
-        //MsExcel.Application.ActiveWorkbook.Close;
-        MsExcel.Application.Quit;
-        MsExcel := null;
-        ShowMessage('Реєстр збережено в файл:'#10+FileName);
-        MemoLog.Lines.Add('Реєстр збережено в файл:'#10+FileName);
-        Application.ProcessMessages;
-        DeleteFile(DirExtrFile+'\query_36188893.csv');
-        DeleteFile(DirExtrFile+'\query_36188893.xml');
+          if zip=1 then
+          begin
+            FileName:=DirExtrFile+'\'+LeftStr(StartFileName,23)+'.csv';
+            MsExcel.Application.Workbooks[1].SaveAs(FileName,-4143);
+            MsExcel.Application.Workbooks[1].save;
+            MsExcel.Application.Workbooks[1].Close;
+            MsExcel.Application.Quit;
+            MsExcel := null;
+            DeleteFile(DirExtrFile+'\query_36188893.csv');
+            DeleteFile(DirExtrFile+'\query_36188893.xml');
+            Arch := CreateOutArchive(CLSID_CFormat7z);
+            Arch.AddFile(FileName,LeftStr(StartFileName,23)+'.csv');
+            Arch.SaveToFile(StartFilePath+LeftStr(StartFileName,23)+'.zip');
+            if DirectoryExists(DirExtrFile) then  TDirectory.Delete(DirExtrFile, true);
+            ShowMessage('Реєстр збережено в файл:'#10+StartFilePath+LeftStr(StartFileName,23)+'.zip');
+            MemoLog.Lines.Add('Реєстр збережено в файл:'#10+StartFilePath+LeftStr(StartFileName,23)+'.zip');
+            Application.ProcessMessages;
+          end
+          else
+          begin
+            FileName:=OpenDialog1.FileName;
+            MsExcel.Application.Workbooks[1].SaveAs(FileName,-4143);
+            MsExcel.Application.Workbooks[1].save;
+            MsExcel.Application.Workbooks[1].Close;
+            MsExcel.Application.Quit;
+            MsExcel := null;
+            ShowMessage('Реєстр збережено в файл:'#10+OpenDialog1.FileName);
+            MemoLog.Lines.Add('Реєстр збережено в файл:'#10+OpenDialog1.FileName);
+            Application.ProcessMessages;
+          end;
+
+
+
+
 
 //
 //        end
@@ -523,7 +542,6 @@ begin
 //        end;
 
 
-     //  if zip=1 then if DirectoryExists(DirExtrFile) then  TDirectory.Delete(DirExtrFile, true);
        cxTextEdit1.Text:='';
       st1:='';
 
