@@ -595,8 +595,8 @@ object Form1: TForm1
       Caption = #1076#1072#1090#1072' '
     end
     object cxButton4: TcxButton
-      Left = 808
-      Top = 81
+      Left = 799
+      Top = 94
       Width = 121
       Height = 25
       Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' SMS'
@@ -606,7 +606,7 @@ object Form1: TForm1
     end
     object cxButton10: TcxButton
       Left = 608
-      Top = 82
+      Top = 94
       Width = 185
       Height = 25
       Caption = #1053#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103' '#1074' '#1088#1077#1108#1089#1090#1088' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
@@ -615,7 +615,7 @@ object Form1: TForm1
     end
     object cxButton6: TcxButton
       Left = 608
-      Top = 113
+      Top = 125
       Width = 185
       Height = 25
       Caption = #1054#1087#1083#1072#1090#1072' '#1079' '#1088#1077#1108#1089#1090#1088#1091' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
@@ -623,13 +623,12 @@ object Form1: TForm1
       OnClick = cxButton6Click
     end
     object cxButton8: TcxButton
-      Left = 808
-      Top = 112
+      Left = 799
+      Top = 125
       Width = 153
       Height = 25
       Caption = #1047#1072#1074#1072#1085#1090#1072#1078#1077#1085#1085#1103' '#1086#1087#1083#1072#1090#1080
       TabOrder = 6
-      Visible = False
       OnClick = cxButton8Click
     end
   end
@@ -642,7 +641,7 @@ object Form1: TForm1
   end
   object cxButton7: TcxButton
     Left = 608
-    Top = 79
+    Top = 91
     Width = 183
     Height = 25
     Caption = 'Viber '#1087#1086#1074#1110#1076#1086#1084#1083#1077#1085#1085#1103
@@ -1585,6 +1584,10 @@ object Form1: TForm1
         item
           Visible = True
           ItemName = 'dxBarButton129'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton133'
         end>
     end
     object dxBarSubItem5: TdxBarSubItem
@@ -2804,9 +2807,9 @@ object Form1: TForm1
       Visible = ivAlways
     end
     object dxBarButton129: TdxBarButton
-      Caption = #1044#1086#1074#1110#1076#1085#1080#1082' '#1041#1072#1085#1082#1110#1074
+      Caption = #1044#1086#1074#1110#1076#1085#1080#1082' '#1041#1072#1085#1082#1110#1074' '#1076#1083#1103' '#1074#1080#1087#1080#1089#1086#1082
       Category = 0
-      Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1041#1072#1085#1082#1110#1074
+      Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1041#1072#1085#1082#1110#1074' '#1076#1083#1103' '#1074#1080#1087#1080#1089#1086#1082
       Visible = ivAlways
       OnClick = dxBarButton129Click
     end
@@ -2844,6 +2847,13 @@ object Form1: TForm1
       Hint = #1056#1077#1108#1089#1090#1088' '#1087#1086' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1086#1089#1090#1110
       Visible = ivAlways
       OnClick = dxBarButton132Click
+    end
+    object dxBarButton133: TdxBarButton
+      Caption = #1044#1086#1074#1110#1076#1085#1080#1082' '#1087#1072#1088#1072#1084#1077#1090#1088#1110#1074' '#1074#1080#1087#1080#1089#1086#1082
+      Category = 0
+      Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1087#1072#1088#1072#1084#1077#1090#1088#1110#1074' '#1074#1080#1087#1080#1089#1086#1082
+      Visible = ivAlways
+      OnClick = dxBarButton133Click
     end
   end
   object IBPERIOD: TIBDataSet
@@ -3328,6 +3338,7 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
+    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (

@@ -525,6 +525,7 @@ type
     dxBarButton131: TdxBarButton;
     dxBarSubItem30: TdxBarSubItem;
     dxBarButton132: TdxBarButton;
+    dxBarButton133: TdxBarButton;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -557,6 +558,7 @@ type
     procedure cxButton8Click(Sender: TObject);
     procedure dxBarButton129Click(Sender: TObject);
     procedure dxBarButton132Click(Sender: TObject);
+    procedure dxBarButton133Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -589,7 +591,7 @@ implementation
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
   Unit16, Unit19, Unit20, Unit21, Unit22, Unit23, Unit26, Unit27, Unit28,
-  Unit29;
+  Unit29, Unit30;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -696,6 +698,12 @@ procedure TForm1.dxBarButton132Click(Sender: TObject);
 begin
 Form29.Caption:=dxBarButton132.Caption;
 Form29.show;
+end;
+
+procedure TForm1.dxBarButton133Click(Sender: TObject);
+begin
+Form30.Caption:=dxBarButton133.Caption;
+Form30.Show;
 end;
 
 procedure TForm1.dxBarButton19Click(Sender: TObject);

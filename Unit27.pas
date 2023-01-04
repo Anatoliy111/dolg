@@ -144,6 +144,7 @@ end;
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
     i,ns,kolst:integer;
+    sss:string;
 begin
    if Length(path)=0 then
    begin
@@ -168,6 +169,17 @@ begin
    Form2.Show;
 
    f1:=true;
+    IBQueryBank.First;
+    while not IBQueryBank.Eof do
+    begin
+       if  Pos(IBQueryBankRAH.Text,trim(MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
+       begin
+         Break;
+       end;
+
+    IBQueryBank.Next;
+    end;
+
 
 
 
@@ -207,12 +219,13 @@ begin
         Form2.cxProgressBar1.Properties.Min:=0;
         Form2.cxProgressBar1.Properties.Max:=kolst-1;
         Form2.cxProgressBar1.Position:=5;
-        for I := 13 to kolst-1 do
+        for I := IBQueryBankSTR_ST.Value to kolst do
         begin
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
-          if Length(MsExcel.WorkSheets[1].Cells[I,3])=0 then Next;
-          if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[I,26])<>0 then Next;
+          if Length(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value])=0 then Next;
+          if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2])<>0 then Next;
+
 
 
 

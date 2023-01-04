@@ -179,7 +179,7 @@ var i,ns,kolst:integer;
     str,nam,sch,klasf,vid_rob,n_kres,gost,dekada,sss:string;
     kolwith,rowh,rowh1:Variant;
     f1:boolean;
-    pathDBF,Path:string;
+    pathDBF:string;
     adostr,cmd:WideString;
     ob,table:TDbf;
 

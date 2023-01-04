@@ -67,8 +67,6 @@ object Form27: TForm27
     ScrollBars = ssBoth
     TabOrder = 6
     WordWrap = False
-    ExplicitTop = 250
-    ExplicitWidth = 708
   end
   object cxDateEdit1: TcxDateEdit
     Left = 137
