@@ -2,8 +2,8 @@ object Form28: TForm28
   Left = 0
   Top = 0
   Caption = 'Form28'
-  ClientHeight = 298
-  ClientWidth = 653
+  ClientHeight = 359
+  ClientWidth = 650
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -63,7 +63,7 @@ object Form28: TForm28
   end
   object cxButton1: TcxButton
     Left = 469
-    Top = 268
+    Top = 326
     Width = 161
     Height = 25
     Caption = #1047#1072#1087#1080#1089#1072#1090#1080
@@ -206,6 +206,40 @@ object Form28: TForm28
     TabOrder = 24
     Width = 36
   end
+  object cxLabel12: TcxLabel
+    Left = 272
+    Top = 294
+    AutoSize = False
+    Caption = 
+      #8470' '#1028#1044#1056#1055#1054#1059' '#1075#1086#1090#1110#1074#1082#1086#1074#1080#1093' '#1087#1083#1072#1090#1077#1078#1110#1074' '#1087#1088#1080' '#1103#1082#1080#1093' '#1089#1091#1084#1072' '#1073#1077#1088#1077#1090#1100#1089#1103' '#1079' '#1082#1110#1085#1094#1103' '#1087#1088#1080#1079 +
+      #1085#1072#1095#1077#1085#1085#1103' '#1087#1083#1072#1090#1077#1078#1091
+    ParentShowHint = False
+    ShowHint = False
+    Properties.WordWrap = True
+    Height = 43
+    Width = 191
+  end
+  object cxDBTextEdit12: TcxDBTextEdit
+    Left = 469
+    Top = 299
+    DataBinding.DataField = 'STR_EDRPOU'
+    DataBinding.DataSource = DSBANK
+    TabOrder = 26
+    Width = 163
+  end
+  object cxLabel13: TcxLabel
+    Left = 272
+    Top = 267
+    Caption = #8470' '#1082#1086#1083#1086#1085#1082#1080' '#1028#1044#1056#1055#1054#1059
+  end
+  object cxDBTextEdit13: TcxDBTextEdit
+    Left = 392
+    Top = 266
+    DataBinding.DataField = 'COL_EDRPOU'
+    DataBinding.DataSource = DSBANK
+    TabOrder = 28
+    Width = 36
+  end
   object IBBANK: TIBDataSet
     Database = Form1.IBDatabase1
     Transaction = Form1.IBTransaction1
@@ -222,14 +256,16 @@ object Form28: TForm28
         'COL_PRIZN, '
       
         '   COL_SUM, COL_DT, COL_DOK, COL_END, STR_POISK_RAH, COL_POISK_R' +
-        'AH)'
+        'AH, COL_EDRPOU, '
+      '   STR_EDRPOU)'
       'values'
       
         '  (:KL, :NAIM, :RAH, :STR_ST, :COL_POISK_ENDDATA, :STR_PRIZN_END' +
         'DATA, :COL_PRIZN, '
       
         '   :COL_SUM, :COL_DT, :COL_DOK, :COL_END, :STR_POISK_RAH, :COL_P' +
-        'OISK_RAH)')
+        'OISK_RAH, '
+      '   :COL_EDRPOU, :STR_EDRPOU)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
@@ -244,7 +280,9 @@ object Form28: TForm28
       '  COL_DOK,'
       '  COL_END,'
       '  STR_POISK_RAH,'
-      '  COL_POISK_RAH'
+      '  COL_POISK_RAH,'
+      '  COL_EDRPOU,'
+      '  STR_EDRPOU'
       'from SPR_BANK '
       'where'
       '  KL = :KL')
@@ -265,7 +303,9 @@ object Form28: TForm28
       '  COL_DOK = :COL_DOK,'
       '  COL_END = :COL_END,'
       '  STR_POISK_RAH = :STR_POISK_RAH,'
-      '  COL_POISK_RAH = :COL_POISK_RAH'
+      '  COL_POISK_RAH = :COL_POISK_RAH,'
+      '  COL_EDRPOU = :COL_EDRPOU,'
+      '  STR_EDRPOU = :STR_EDRPOU'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -330,6 +370,15 @@ object Form28: TForm28
     object IBBANKCOL_POISK_RAH: TIntegerField
       FieldName = 'COL_POISK_RAH'
       Origin = '"SPR_BANK"."COL_POISK_RAH"'
+    end
+    object IBBANKCOL_EDRPOU: TIntegerField
+      FieldName = 'COL_EDRPOU'
+      Origin = '"SPR_BANK"."COL_EDRPOU"'
+    end
+    object IBBANKSTR_EDRPOU: TIBStringField
+      FieldName = 'STR_EDRPOU'
+      Origin = '"SPR_BANK"."STR_EDRPOU"'
+      Size = 10
     end
   end
   object DSBANK: TDataSource

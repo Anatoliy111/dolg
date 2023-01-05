@@ -22,7 +22,6 @@ object Form30: TForm30
     Height = 73
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 658
     object DBNavigator1: TDBNavigator
       Left = 602
       Top = 24
@@ -31,69 +30,26 @@ object Form30: TForm30
       DataSource = DSSPR_VIPISKA
       TabOrder = 0
     end
-    object cxLabel1: TcxLabel
-      Left = 61
-      Top = 50
-      Caption = #1041#1072#1085#1082
-    end
     object cxLabel2: TcxLabel
-      Left = 357
+      Left = 309
       Top = 50
       Caption = #1055#1086#1089#1083#1091#1075#1072
     end
     object cxLabel3: TcxLabel
-      Left = 194
+      Left = 82
       Top = 50
       Caption = #1042#1080#1076' '#1087#1086#1096#1091#1082#1091
     end
   end
-  object cxGrid1: TcxGrid
-    Left = 0
-    Top = 73
-    Width = 137
-    Height = 407
-    Align = alLeft
-    TabOrder = 1
-    LookAndFeel.NativeStyle = False
-    object cxGrid1DBTableView1: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = DSSPR_BANK
-      DataController.DetailKeyFieldNames = 'KL'
-      DataController.KeyFieldNames = 'KL'
-      DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsData.Deleting = False
-      OptionsData.DeletingConfirmation = False
-      OptionsData.Editing = False
-      OptionsData.Inserting = False
-      OptionsView.CellEndEllipsis = True
-      OptionsView.CellAutoHeight = True
-      OptionsView.ColumnAutoWidth = True
-      OptionsView.GroupByBox = False
-      OptionsView.Indicator = True
-      Preview.AutoHeight = False
-      object cxGrid1DBTableView1NAIM: TcxGridDBColumn
-        Caption = #1041#1072#1085#1082
-        DataBinding.FieldName = 'NAIM'
-        Options.Editing = False
-      end
-    end
-    object cxGrid1Level1: TcxGridLevel
-      GridView = cxGrid1DBTableView1
-    end
-  end
   object cxGrid2: TcxGrid
-    Left = 434
+    Left = 265
     Top = 73
     Width = 128
     Height = 407
     Align = alLeft
-    TabOrder = 2
+    TabOrder = 1
     LookAndFeel.NativeStyle = False
-    ExplicitLeft = 385
-    ExplicitTop = 65
+    ExplicitLeft = 434
     object cxGridDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSWID
@@ -123,34 +79,23 @@ object Form30: TForm30
     end
   end
   object Panel2: TPanel
-    Left = 402
+    Left = 233
     Top = 73
     Width = 32
     Height = 407
     Align = alLeft
-    TabOrder = 3
-    ExplicitLeft = 265
-    ExplicitTop = 79
-  end
-  object Panel3: TPanel
-    Left = 137
-    Top = 73
-    Width = 32
-    Height = 407
-    Align = alLeft
-    TabOrder = 4
-    ExplicitLeft = 17
-    ExplicitTop = 1
-    ExplicitHeight = 468
+    TabOrder = 2
+    ExplicitLeft = 402
   end
   object cxGrid3: TcxGrid
-    Left = 169
+    Left = 0
     Top = 73
     Width = 233
     Height = 407
     Align = alLeft
-    TabOrder = 5
+    TabOrder = 3
     LookAndFeel.NativeStyle = False
+    ExplicitLeft = 169
     object cxGridDBTableView2: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSSPR_VIDPOISK
@@ -181,28 +126,24 @@ object Form30: TForm30
     end
   end
   object Panel4: TPanel
-    Left = 562
+    Left = 393
     Top = 73
     Width = 32
     Height = 407
     Align = alLeft
-    TabOrder = 6
-    ExplicitLeft = 769
-    ExplicitTop = 79
-    ExplicitHeight = 420
+    TabOrder = 4
+    ExplicitLeft = 562
   end
   object cxGrid4: TcxGrid
-    Left = 594
+    Left = 425
     Top = 73
-    Width = 368
+    Width = 537
     Height = 407
     Align = alClient
-    TabOrder = 7
+    TabOrder = 5
     LookAndFeel.NativeStyle = False
-    ExplicitLeft = 849
-    ExplicitTop = 79
-    ExplicitWidth = 192
-    ExplicitHeight = 420
+    ExplicitLeft = 594
+    ExplicitWidth = 368
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSSPR_VIPISKA
@@ -231,138 +172,6 @@ object Form30: TForm30
     Left = 669
     Top = 50
     Caption = #1055#1072#1088#1072#1084#1077#1090#1088' '#1087#1086#1096#1091#1082#1091
-  end
-  object IBSPR_BANK: TIBDataSet
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
-    AfterScroll = IBSPR_BANKAfterScroll
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from SPR_BANK'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into SPR_BANK'
-      
-        '  (KL, NAIM, RAH, STR_ST, COL_POISK_ENDDATA, STR_PRIZN_ENDDATA, ' +
-        'COL_PRIZN, '
-      
-        '   COL_SUM, COL_DT, COL_DOK, COL_END, STR_POISK_RAH, COL_POISK_R' +
-        'AH)'
-      'values'
-      
-        '  (:KL, :NAIM, :RAH, :STR_ST, :COL_POISK_ENDDATA, :STR_PRIZN_END' +
-        'DATA, :COL_PRIZN, '
-      
-        '   :COL_SUM, :COL_DT, :COL_DOK, :COL_END, :STR_POISK_RAH, :COL_P' +
-        'OISK_RAH)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  NAIM,'
-      '  RAH,'
-      '  STR_ST,'
-      '  COL_POISK_ENDDATA,'
-      '  STR_PRIZN_ENDDATA,'
-      '  COL_PRIZN,'
-      '  COL_SUM,'
-      '  COL_DT,'
-      '  COL_DOK,'
-      '  COL_END,'
-      '  STR_POISK_RAH,'
-      '  COL_POISK_RAH'
-      'from SPR_BANK '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      'select * from  SPR_BANK')
-    ModifySQL.Strings = (
-      'update SPR_BANK'
-      'set'
-      '  KL = :KL,'
-      '  NAIM = :NAIM,'
-      '  RAH = :RAH,'
-      '  STR_ST = :STR_ST,'
-      '  COL_POISK_ENDDATA = :COL_POISK_ENDDATA,'
-      '  STR_PRIZN_ENDDATA = :STR_PRIZN_ENDDATA,'
-      '  COL_PRIZN = :COL_PRIZN,'
-      '  COL_SUM = :COL_SUM,'
-      '  COL_DT = :COL_DT,'
-      '  COL_DOK = :COL_DOK,'
-      '  COL_END = :COL_END,'
-      '  STR_POISK_RAH = :STR_POISK_RAH,'
-      '  COL_POISK_RAH = :COL_POISK_RAH'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_SPR_BANK_ID'
-    Left = 664
-    Top = 152
-    object IBSPR_BANKKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"SPR_BANK"."KL"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object IBSPR_BANKNAIM: TIBStringField
-      FieldName = 'NAIM'
-      Origin = '"SPR_BANK"."NAIM"'
-      Size = 30
-    end
-    object IBSPR_BANKRAH: TIBStringField
-      FieldName = 'RAH'
-      Origin = '"SPR_BANK"."RAH"'
-      Size = 50
-    end
-    object IBSPR_BANKSTR_ST: TIntegerField
-      FieldName = 'STR_ST'
-      Origin = '"SPR_BANK"."STR_ST"'
-    end
-    object IBSPR_BANKCOL_POISK_ENDDATA: TIntegerField
-      FieldName = 'COL_POISK_ENDDATA'
-      Origin = '"SPR_BANK"."COL_POISK_ENDDATA"'
-    end
-    object IBSPR_BANKSTR_PRIZN_ENDDATA: TIBStringField
-      FieldName = 'STR_PRIZN_ENDDATA'
-      Origin = '"SPR_BANK"."STR_PRIZN_ENDDATA"'
-      Size = 50
-    end
-    object IBSPR_BANKCOL_PRIZN: TIntegerField
-      FieldName = 'COL_PRIZN'
-      Origin = '"SPR_BANK"."COL_PRIZN"'
-    end
-    object IBSPR_BANKCOL_SUM: TIntegerField
-      FieldName = 'COL_SUM'
-      Origin = '"SPR_BANK"."COL_SUM"'
-    end
-    object IBSPR_BANKCOL_DT: TIntegerField
-      FieldName = 'COL_DT'
-      Origin = '"SPR_BANK"."COL_DT"'
-    end
-    object IBSPR_BANKCOL_DOK: TIntegerField
-      FieldName = 'COL_DOK'
-      Origin = '"SPR_BANK"."COL_DOK"'
-    end
-    object IBSPR_BANKCOL_END: TIntegerField
-      FieldName = 'COL_END'
-      Origin = '"SPR_BANK"."COL_END"'
-    end
-    object IBSPR_BANKSTR_POISK_RAH: TIntegerField
-      FieldName = 'STR_POISK_RAH'
-      Origin = '"SPR_BANK"."STR_POISK_RAH"'
-    end
-    object IBSPR_BANKCOL_POISK_RAH: TIntegerField
-      FieldName = 'COL_POISK_RAH'
-      Origin = '"SPR_BANK"."COL_POISK_RAH"'
-    end
-  end
-  object DSSPR_BANK: TDataSource
-    DataSet = IBSPR_BANK
-    Left = 664
-    Top = 200
   end
   object IBWID: TIBDataSet
     Database = Form1.IBDatabase1
@@ -624,7 +433,7 @@ object Form30: TForm30
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_USERS_ID'
+    GeneratorField.Generator = 'GEN_SPR_VIPISKA_ID'
     Left = 880
     Top = 152
     object IBSPR_VIPISKAKL: TIntegerField

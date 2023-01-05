@@ -44,6 +44,13 @@ type
     IBQueryBankCOL_END: TIntegerField;
     IBQueryBankSTR_POISK_RAH: TIntegerField;
     IBQueryBankCOL_POISK_RAH: TIntegerField;
+    IBQueryVipiska: TIBQuery;
+    DSQueryVipiska: TDataSource;
+    IBQueryVipiskaKL: TIntegerField;
+    IBQueryVipiskaKL_BANK: TIntegerField;
+    IBQueryVipiskaWID: TIBStringField;
+    IBQueryVipiskaVIDPOISK: TIBStringField;
+    IBQueryVipiskaPOISK: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);

@@ -105,7 +105,7 @@ object Form27: TForm27
   object DSADOQueryOBOR: TDataSource
     DataSet = ADOQueryOBOR
     Enabled = False
-    Left = 64
+    Left = 96
     Top = 56
   end
   object ADOQueryOBOR: TADOQuery
@@ -136,8 +136,8 @@ object Form27: TForm27
   end
   object DSQueryBank: TDataSource
     DataSet = IBQueryBank
-    Left = 527
-    Top = 66
+    Left = 495
+    Top = 306
   end
   object IBQueryBank: TIBQuery
     Database = Form1.IBDatabase1
@@ -147,8 +147,8 @@ object Form27: TForm27
     ParamCheck = True
     SQL.Strings = (
       'select * from SPR_BANK')
-    Left = 479
-    Top = 66
+    Left = 423
+    Top = 306
     object IBQueryBankKL: TIntegerField
       FieldName = 'KL'
       Origin = '"SPR_BANK"."KL"'
@@ -210,5 +210,46 @@ object Form27: TForm27
   object OpenDialog1: TOpenDialog
     Left = 516
     Top = 8
+  end
+  object IBQueryVipiska: TIBQuery
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    ParamCheck = True
+    SQL.Strings = (
+      'select *  from SPR_VIPISKA')
+    Left = 423
+    Top = 354
+    object IBQueryVipiskaKL: TIntegerField
+      FieldName = 'KL'
+      Origin = '"SPR_VIPISKA"."KL"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object IBQueryVipiskaKL_BANK: TIntegerField
+      FieldName = 'KL_BANK'
+      Origin = '"SPR_VIPISKA"."KL_BANK"'
+    end
+    object IBQueryVipiskaWID: TIBStringField
+      FieldName = 'WID'
+      Origin = '"SPR_VIPISKA"."WID"'
+      Size = 2
+    end
+    object IBQueryVipiskaVIDPOISK: TIBStringField
+      FieldName = 'VIDPOISK'
+      Origin = '"SPR_VIPISKA"."VIDPOISK"'
+      Size = 5
+    end
+    object IBQueryVipiskaPOISK: TIBStringField
+      FieldName = 'POISK'
+      Origin = '"SPR_VIPISKA"."POISK"'
+      Size = 100
+    end
+  end
+  object DSQueryVipiska: TDataSource
+    DataSet = IBQueryVipiska
+    Left = 495
+    Top = 354
   end
 end

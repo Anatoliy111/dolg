@@ -15,14 +15,10 @@ type
   TForm30 = class(TForm)
     Panel1: TPanel;
     DBNavigator1: TDBNavigator;
-    cxGrid1: TcxGrid;
-    cxGrid1DBTableView1: TcxGridDBTableView;
-    cxGrid1Level1: TcxGridLevel;
     cxGrid2: TcxGrid;
     cxGridDBTableView1: TcxGridDBTableView;
     cxGridLevel1: TcxGridLevel;
     Panel2: TPanel;
-    Panel3: TPanel;
     cxGrid3: TcxGrid;
     cxGridDBTableView2: TcxGridDBTableView;
     cxGridLevel2: TcxGridLevel;
@@ -30,25 +26,9 @@ type
     cxGrid4: TcxGrid;
     cxGridDBTableView3: TcxGridDBTableView;
     cxGridLevel3: TcxGridLevel;
-    cxLabel1: TcxLabel;
     cxLabel2: TcxLabel;
     cxLabel3: TcxLabel;
     cxLabel4: TcxLabel;
-    IBSPR_BANK: TIBDataSet;
-    DSSPR_BANK: TDataSource;
-    IBSPR_BANKKL: TIntegerField;
-    IBSPR_BANKNAIM: TIBStringField;
-    IBSPR_BANKRAH: TIBStringField;
-    IBSPR_BANKSTR_ST: TIntegerField;
-    IBSPR_BANKCOL_POISK_ENDDATA: TIntegerField;
-    IBSPR_BANKSTR_PRIZN_ENDDATA: TIBStringField;
-    IBSPR_BANKCOL_PRIZN: TIntegerField;
-    IBSPR_BANKCOL_SUM: TIntegerField;
-    IBSPR_BANKCOL_DT: TIntegerField;
-    IBSPR_BANKCOL_DOK: TIntegerField;
-    IBSPR_BANKCOL_END: TIntegerField;
-    IBSPR_BANKSTR_POISK_RAH: TIntegerField;
-    IBSPR_BANKCOL_POISK_RAH: TIntegerField;
     IBWID: TIBDataSet;
     DSWID: TDataSource;
     IBSPR_VIDPOISK: TIBDataSet;
@@ -79,7 +59,6 @@ type
     IBSPR_VIPISKAKL_BANK: TIntegerField;
     IBSPR_VIPISKAWID: TIBStringField;
     IBSPR_VIPISKAPOISK: TIBStringField;
-    cxGrid1DBTableView1NAIM: TcxGridDBColumn;
     cxGridDBTableView1NAIM: TcxGridDBColumn;
     cxGridDBTableView2NAME_VID: TcxGridDBColumn;
     cxGridDBTableView3POISK: TcxGridDBColumn;
@@ -109,11 +88,11 @@ uses Unit1;
 procedure TForm30.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  if IBSPR_VIPISKA.State in [dsInsert,dsEdit] then IBSPR_VIPISKA.Post;
+ Form1.IBTransaction1.CommitRetaining;
 end;
 
 procedure TForm30.FormShow(Sender: TObject);
 begin
-IBSPR_BANK.Open;
 IBWID.Open;
 IBSPR_VIDPOISK.Open;
 UpdateVipiska();
@@ -134,15 +113,11 @@ procedure TForm30.IBSPR_VIPISKAAfterInsert(DataSet: TDataSet);
 begin
 if IBSPR_VIDPOISKVIDPOISK.Value='posl' then
 begin
-  IBSPR_VIPISKAKL_BANK.Value:=IBSPR_BANKKL.Value;
   IBSPR_VIPISKAWID.Value:=IBWIDWID.Value;
   IBSPR_VIPISKAVIDPOISK.Value:=IBSPR_VIDPOISKVIDPOISK.Value;
 end
 else
-begin
-  IBSPR_VIPISKAKL_BANK.Value:=IBSPR_BANKKL.Value;
   IBSPR_VIPISKAVIDPOISK.Value:=IBSPR_VIDPOISKVIDPOISK.Value;
-end;
 end;
 
 procedure TForm30.IBWIDAfterScroll(DataSet: TDataSet);
@@ -158,8 +133,7 @@ if IBSPR_VIDPOISKVIDPOISK.Value='posl' then
 begin
   cxGrid2.Visible:=true;
   cxLabel2.Visible:=true;
-  IBSPR_VIPISKA.SelectSQL.Text:='select * from SPR_VIPISKA where kl_bank=:klbank and wid=:wid and vidpoisk=:vidpoisk';
-  IBSPR_VIPISKA.ParamByName('klbank').AsInteger:=IBSPR_BANKKL.Value;
+  IBSPR_VIPISKA.SelectSQL.Text:='select * from SPR_VIPISKA where wid=:wid and vidpoisk=:vidpoisk';
   IBSPR_VIPISKA.ParamByName('wid').AsString:=IBWIDWID.Value;
   IBSPR_VIPISKA.ParamByName('vidpoisk').AsString:=IBSPR_VIDPOISKVIDPOISK.Value;
 end
@@ -167,8 +141,7 @@ else
 begin
   cxGrid2.Visible:=false;
   cxLabel2.Visible:=false;
-  IBSPR_VIPISKA.SelectSQL.Text:='select * from SPR_VIPISKA where kl_bank=:klbank and vidpoisk=:vidpoisk';
-  IBSPR_VIPISKA.ParamByName('klbank').AsInteger:=IBSPR_BANKKL.Value;
+  IBSPR_VIPISKA.SelectSQL.Text:='select * from SPR_VIPISKA where vidpoisk=:vidpoisk';
   IBSPR_VIPISKA.ParamByName('vidpoisk').AsString:=IBSPR_VIDPOISKVIDPOISK.Value;
 end;
 

@@ -56,6 +56,12 @@ type
     IBBANKCOL_END: TIntegerField;
     IBBANKSTR_POISK_RAH: TIntegerField;
     IBBANKCOL_POISK_RAH: TIntegerField;
+    cxLabel12: TcxLabel;
+    cxDBTextEdit12: TcxDBTextEdit;
+    cxLabel13: TcxLabel;
+    cxDBTextEdit13: TcxDBTextEdit;
+    IBBANKCOL_EDRPOU: TIntegerField;
+    IBBANKSTR_EDRPOU: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
