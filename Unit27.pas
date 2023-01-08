@@ -8,7 +8,7 @@ uses
   cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.Menus, Vcl.StdCtrls,
   cxButtons, cxLabel, Data.DB, IBX.IBCustomDataSet, IBX.IBQuery, Data.Win.ADODB,
   cxTextEdit, Vcl.ComCtrls, dxCore, cxDateUtils, cxMaskEdit, cxDropDownEdit,
-  cxCalendar;
+  cxCalendar,System.RegularExpressions;
 
 type
   TForm27 = class(TForm)
@@ -51,10 +51,85 @@ type
     IBQueryVipiskaWID: TIBStringField;
     IBQueryVipiskaVIDPOISK: TIBStringField;
     IBQueryVipiskaPOISK: TIBStringField;
+    IBQueryBankCOL_EDRPOU: TIntegerField;
+    IBQueryBankSTR_EDRPOU: TIBStringField;
+    IBQueryBankCOL_DT_VIP: TIntegerField;
+    IBQueryBankSTR_DT_VIP: TIntegerField;
+    IBQueryObor: TIBQuery;
+    DSQueryObor: TDataSource;
+    IBPERIOD: TIBDataSet;
+    IBPERIODKL: TIntegerField;
+    IBPERIODPERIOD: TDateField;
+    IBPERIODAKTIV: TIntegerField;
+    DSPERIOD: TDataSource;
+    IBQueryOborSCHET: TIBStringField;
+    IBQueryOborWID: TIBStringField;
+    IBQueryOborFIO: TIBStringField;
+    IBQueryOborKOEF: TFloatField;
+    IBQueryOborTARIF: TFloatField;
+    IBQueryOborBL: TIBStringField;
+    IBQueryOborSU_DT: TDateField;
+    IBQueryOborSU_DOLG0: TFloatField;
+    IBQueryOborSU_DOLG: TFloatField;
+    IBQueryOborSU_DTR: TDateField;
+    IBQueryOborSU_NR: TIBStringField;
+    IBQueryOborSU_PERIOD: TIBStringField;
+    IBQueryOborSU_VIDM: TFloatField;
+    IBQueryOborN_DOG: TIBStringField;
+    IBQueryOborD_DOG: TIBStringField;
+    IBQueryOborDOLG: TFloatField;
+    IBQueryOborNACH: TFloatField;
+    IBQueryOborNACH_FULL: TFloatField;
+    IBQueryOborWOZB: TFloatField;
+    IBQueryOborSUBS: TFloatField;
+    IBQueryOborKOMP: TFloatField;
+    IBQueryOborFL1: TIBStringField;
+    IBQueryOborOPL: TFloatField;
+    IBQueryOborOPL_UD: TFloatField;
+    IBQueryOborOPL_DT: TDateField;
+    IBQueryOborUDER: TFloatField;
+    IBQueryOborWOZW: TFloatField;
+    IBQueryOborWOZW_KAS: TFloatField;
+    IBQueryOborWZMZ: TFloatField;
+    IBQueryOborPERE: TFloatField;
+    IBQueryOborPLOMB: TIBStringField;
+    IBQueryOborMOVW: TFloatField;
+    IBQueryOborNORMA: TFloatField;
+    IBQueryOborNEWREC: TFloatField;
+    IBQueryOborSAL: TFloatField;
+    IBQueryOborKL_NTAR: TFloatField;
+    IBQueryOborNACH_OLD: TFloatField;
+    IBQueryOborTARSUBS: TFloatField;
+    IBQueryOborKL: TIntegerField;
+    IBQueryOborPERIOD: TDateField;
+    IBQueryOborUPD: TIntegerField;
+    IBQueryWid: TIBQuery;
+    DSQueryWid: TDataSource;
+    IBQueryWidWID: TIBStringField;
+    IBQueryWidID_ORG: TFloatField;
+    IBQueryWidNAIM: TIBStringField;
+    IBQueryWidSNAIM: TIBStringField;
+    IBQueryWidPAR: TIBStringField;
+    IBQueryWidFL0: TIBStringField;
+    IBQueryWidFL: TIBStringField;
+    IBQueryWidCOD: TIBStringField;
+    IBQueryWidABONPL: TIBStringField;
+    IBQueryWidNPP: TFloatField;
+    IBQueryWidFL_NONACH: TIBStringField;
+    IBQueryWidFL_NOOPL: TIBStringField;
+    IBQueryWidFL_VTCH: TIBStringField;
+    IBQueryWidFL_NOOBOR: TIBStringField;
+    IBQueryWidFL_GROPL: TFloatField;
+    IBQueryWidFL_SUBS: TFloatField;
+    IBQueryWidVAL: TFloatField;
+    IBQueryWidUPD: TIntegerField;
+    IBQueryWidVNESK: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
+    function TrimAll(s:string):string;
+    function SearchSchet(str:string):string;
     { Private declarations }
   public
     { Public declarations }
@@ -72,10 +147,23 @@ implementation
 
 uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP;
 
+function TForm27.TrimAll(s:string):string;
+begin
+ s := StringReplace(s , ' ','', [rfReplaceAll, rfIgnoreCase]);
+ s := StringReplace(s, Chr(160), '', [rfReplaceAll, rfIgnoreCase]);
+ result:=s;
+end;
+
+
+
+
 procedure TForm27.cxButton1Click(Sender: TObject);
 var i,ns,kolst,nstr:integer;
     st:pchar;
     sss,str:string;
+    RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
 begin
        cxDateEdit1.Text:='';
        cxDateEdit2.Text:='';
@@ -108,24 +196,15 @@ begin
     begin
        if  Pos(IBQueryBankRAH.Text,trim(MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
        begin
+           MC:=RegularExpression.Matches(MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_DT_VIP.Value,IBQueryBankCOL_DT_VIP.Value],'[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}',[roMultiLine]);//получаем коллекцию совпадений
+           for  i:=0 to MC.Count-1 do
+             begin
+              if i=0 then cxDateEdit1.Date:=StrToDate(MC.Item[i].Value);
+              if i=1 then cxDateEdit2.Date:=StrToDate(MC.Item[i].Value);
+             end;
           cxTextEdit4.Text:=IBQueryBankNAIM.Text;
-          if IBQueryBankNAIM.Text='Ощадбанк' then
-          begin
-             str:=trim(MsExcel.WorkSheets[1].Cells[7,6]);
-             if Pos('за',str)<>0 then cxDateEdit1.Date:=StrToDate(Copy(str,Pos('за',str)+3,10));
-          end;
-
-          if IBQueryBankNAIM.Text='Приватбанк' then
-          begin
-            str:=trim(MsExcel.WorkSheets[1].Cells[2,1]);
-            str:=Copy(str,Pos('з',str),Length(str));
-            if Pos('з',str)<>0 then cxDateEdit1.Date:=StrToDate(Copy(str,Pos('з',str)+2,10));
-            if Pos('по',str)<>0 then cxDateEdit2.Date:=StrToDate(Copy(str,Pos('по',str)+3,10));
-          end;
-
        end;
-
-    IBQueryBank.Next;
+     IBQueryBank.Next;
     end;
 
     if  (Length(cxTextEdit4.Text)=0)then
@@ -151,7 +230,11 @@ end;
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
     i,ns,kolst:integer;
-    sss:string;
+    sss,fio,str,sch:string;
+    RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
+
 begin
    if Length(path)=0 then
    begin
@@ -169,6 +252,7 @@ begin
         Form2.cxProgressBar1.Properties.Max:=0;
         Form2.cxProgressBar1.Position:=0;
    Application.ProcessMessages;
+   IBPERIOD.Open;
 
 //        MsExcel.Visible := True;
 
@@ -228,11 +312,17 @@ begin
         Form2.cxProgressBar1.Position:=5;
         for I := IBQueryBankSTR_ST.Value to kolst do
         begin
+          sch:='';
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
           if Length(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value])=0 then Next;
           if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2])<>0 then Next;
-
+          sch:=SearchSchet(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_PRIZN.Value]);
+          if sch='' then
+          begin
+            MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+2]:='Ос.рахунок не знайдено';
+            Next;
+          end;
 
 
 
@@ -259,5 +349,28 @@ begin
 IBQueryBank.Close;
 IBQueryBank.Open;
 end;
+
+function TForm27.SearchSchet(str:string):string;
+var RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
+    sch:string;
+begin
+          Match:=RegularExpression.Match(str,'\b[0-9]{7}[а-я]{1}|\b[0-9]{7}\b',[roIgnoreCase]);
+          if Match.Success then
+          begin
+            IBQueryObor.Close;
+            IBQueryObor.SQL.Text:='select * from obor where upd=1 and period=:dt and schet=:sch';
+            IBQueryObor.ParamByName('sch').Value:=Match.Value;
+            IBQueryObor.ParamByName('dt').Value:=IBPERIODPERIOD.Value;
+            IBQueryObor.Open;
+            if IBQueryObor.RecordCount<>0 then
+               Result:=Match.Value
+            else Result:='';
+          end
+          else Result:='';
+end;
+
+
 
 end.

@@ -49,16 +49,16 @@ object Form28: TForm28
     TabOrder = 1
   end
   object cxDBTextEdit1: TcxDBTextEdit
-    Left = 357
-    Top = 55
+    Left = 359
+    Top = 21
     DataBinding.DataField = 'RAH'
     DataBinding.DataSource = DSBANK
     TabOrder = 2
     Width = 273
   end
   object cxLabel1: TcxLabel
-    Left = 272
-    Top = 56
+    Left = 274
+    Top = 22
     Caption = #1056#1072#1093#1091#1085#1086#1082' '#1073#1072#1085#1082#1072
   end
   object cxButton1: TcxButton
@@ -156,12 +156,12 @@ object Form28: TForm28
   end
   object cxLabel8: TcxLabel
     Left = 272
-    Top = 79
+    Top = 48
     Caption = #8470' '#1088#1103#1076#1082#1072' '#1087#1086#1096#1091#1082#1091' '#1088#1072#1093#1091#1085#1082#1072
   end
   object cxDBTextEdit8: TcxDBTextEdit
     Left = 413
-    Top = 79
+    Top = 48
     DataBinding.DataField = 'STR_POISK_RAH'
     DataBinding.DataSource = DSBANK
     TabOrder = 18
@@ -169,12 +169,12 @@ object Form28: TForm28
   end
   object cxLabel9: TcxLabel
     Left = 455
-    Top = 79
+    Top = 48
     Caption = #8470' '#1082#1086#1083#1086#1085#1082#1080' '#1087#1086#1096#1091#1082#1091' '#1088#1072#1093#1091#1085#1082#1072
   end
   object cxDBTextEdit9: TcxDBTextEdit
     Left = 596
-    Top = 79
+    Top = 48
     DataBinding.DataField = 'COL_POISK_RAH'
     DataBinding.DataSource = DSBANK
     TabOrder = 20
@@ -195,7 +195,7 @@ object Form28: TForm28
   end
   object cxLabel11: TcxLabel
     Left = 432
-    Top = 241
+    Top = 242
     Caption = #8470' '#1086#1089#1090#1072#1085#1085#1100#1086#1111' '#1082#1086#1083#1086#1085#1082#1080' '#1076#1072#1085#1080#1093
   end
   object cxDBTextEdit11: TcxDBTextEdit
@@ -240,6 +240,32 @@ object Form28: TForm28
     TabOrder = 28
     Width = 36
   end
+  object cxLabel14: TcxLabel
+    Left = 274
+    Top = 75
+    Caption = #8470' '#1088#1103#1076#1082#1072' '#1076#1072#1090#1080' '#1074#1080#1087#1080#1089#1082#1080
+  end
+  object cxDBTextEdit14: TcxDBTextEdit
+    Left = 415
+    Top = 75
+    DataBinding.DataField = 'STR_DT_VIP'
+    DataBinding.DataSource = DSBANK
+    TabOrder = 30
+    Width = 36
+  end
+  object cxLabel15: TcxLabel
+    Left = 457
+    Top = 75
+    Caption = #8470' '#1082#1086#1083#1086#1085#1082#1080' '#1076#1072#1090#1080' '#1074#1080#1087#1080#1089#1082#1080
+  end
+  object cxDBTextEdit15: TcxDBTextEdit
+    Left = 598
+    Top = 75
+    DataBinding.DataField = 'COL_DT_VIP'
+    DataBinding.DataSource = DSBANK
+    TabOrder = 32
+    Width = 36
+  end
   object IBBANK: TIBDataSet
     Database = Form1.IBDatabase1
     Transaction = Form1.IBTransaction1
@@ -257,7 +283,7 @@ object Form28: TForm28
       
         '   COL_SUM, COL_DT, COL_DOK, COL_END, STR_POISK_RAH, COL_POISK_R' +
         'AH, COL_EDRPOU, '
-      '   STR_EDRPOU)'
+      '   STR_EDRPOU, COL_DT_VIP, STR_DT_VIP)'
       'values'
       
         '  (:KL, :NAIM, :RAH, :STR_ST, :COL_POISK_ENDDATA, :STR_PRIZN_END' +
@@ -265,7 +291,7 @@ object Form28: TForm28
       
         '   :COL_SUM, :COL_DT, :COL_DOK, :COL_END, :STR_POISK_RAH, :COL_P' +
         'OISK_RAH, '
-      '   :COL_EDRPOU, :STR_EDRPOU)')
+      '   :COL_EDRPOU, :STR_EDRPOU, :COL_DT_VIP, :STR_DT_VIP)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
@@ -282,7 +308,9 @@ object Form28: TForm28
       '  STR_POISK_RAH,'
       '  COL_POISK_RAH,'
       '  COL_EDRPOU,'
-      '  STR_EDRPOU'
+      '  STR_EDRPOU,'
+      '  COL_DT_VIP,'
+      '  STR_DT_VIP'
       'from SPR_BANK '
       'where'
       '  KL = :KL')
@@ -305,15 +333,17 @@ object Form28: TForm28
       '  STR_POISK_RAH = :STR_POISK_RAH,'
       '  COL_POISK_RAH = :COL_POISK_RAH,'
       '  COL_EDRPOU = :COL_EDRPOU,'
-      '  STR_EDRPOU = :STR_EDRPOU'
+      '  STR_EDRPOU = :STR_EDRPOU,'
+      '  COL_DT_VIP = :COL_DT_VIP,'
+      '  STR_DT_VIP = :STR_DT_VIP'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_SPR_BANK_ID'
-    Left = 280
-    Top = 7
+    Left = 32
+    Top = 295
     object IBBANKKL: TIntegerField
       FieldName = 'KL'
       Origin = '"SPR_BANK"."KL"'
@@ -380,10 +410,18 @@ object Form28: TForm28
       Origin = '"SPR_BANK"."STR_EDRPOU"'
       Size = 10
     end
+    object IBBANKCOL_DT_VIP: TIntegerField
+      FieldName = 'COL_DT_VIP'
+      Origin = '"SPR_BANK"."COL_DT_VIP"'
+    end
+    object IBBANKSTR_DT_VIP: TIntegerField
+      FieldName = 'STR_DT_VIP'
+      Origin = '"SPR_BANK"."STR_DT_VIP"'
+    end
   end
   object DSBANK: TDataSource
     DataSet = IBBANK
-    Left = 320
-    Top = 7
+    Left = 80
+    Top = 295
   end
 end

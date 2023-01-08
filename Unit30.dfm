@@ -3,7 +3,7 @@ object Form30: TForm30
   Top = 0
   Caption = 'Form30'
   ClientHeight = 480
-  ClientWidth = 962
+  ClientWidth = 495
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,12 +18,13 @@ object Form30: TForm30
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 962
+    Width = 495
     Height = 73
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 962
     object DBNavigator1: TDBNavigator
-      Left = 602
+      Left = 242
       Top = 24
       Width = 240
       Height = 25
@@ -31,25 +32,20 @@ object Form30: TForm30
       TabOrder = 0
     end
     object cxLabel2: TcxLabel
-      Left = 309
+      Left = 45
       Top = 50
       Caption = #1055#1086#1089#1083#1091#1075#1072
     end
-    object cxLabel3: TcxLabel
-      Left = 82
-      Top = 50
-      Caption = #1042#1080#1076' '#1087#1086#1096#1091#1082#1091
-    end
   end
   object cxGrid2: TcxGrid
-    Left = 265
+    Left = 0
     Top = 73
     Width = 128
     Height = 407
     Align = alLeft
     TabOrder = 1
     LookAndFeel.NativeStyle = False
-    ExplicitLeft = 434
+    ExplicitLeft = 265
     object cxGridDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSWID
@@ -78,72 +74,25 @@ object Form30: TForm30
       GridView = cxGridDBTableView1
     end
   end
-  object Panel2: TPanel
-    Left = 233
+  object Panel4: TPanel
+    Left = 128
     Top = 73
     Width = 32
     Height = 407
     Align = alLeft
     TabOrder = 2
-    ExplicitLeft = 402
-  end
-  object cxGrid3: TcxGrid
-    Left = 0
-    Top = 73
-    Width = 233
-    Height = 407
-    Align = alLeft
-    TabOrder = 3
-    LookAndFeel.NativeStyle = False
-    ExplicitLeft = 169
-    object cxGridDBTableView2: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = DSSPR_VIDPOISK
-      DataController.DetailKeyFieldNames = 'KL'
-      DataController.MasterKeyFieldNames = 'KL'
-      DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsData.Deleting = False
-      OptionsData.DeletingConfirmation = False
-      OptionsData.Editing = False
-      OptionsData.Inserting = False
-      OptionsView.CellEndEllipsis = True
-      OptionsView.CellAutoHeight = True
-      OptionsView.ColumnAutoWidth = True
-      OptionsView.GroupByBox = False
-      OptionsView.Indicator = True
-      Preview.AutoHeight = False
-      object cxGridDBTableView2NAME_VID: TcxGridDBColumn
-        Caption = #1042#1080#1076' '#1087#1086#1096#1091#1082#1091
-        DataBinding.FieldName = 'NAME_VID'
-        Options.Editing = False
-      end
-    end
-    object cxGridLevel2: TcxGridLevel
-      GridView = cxGridDBTableView2
-    end
-  end
-  object Panel4: TPanel
-    Left = 393
-    Top = 73
-    Width = 32
-    Height = 407
-    Align = alLeft
-    TabOrder = 4
-    ExplicitLeft = 562
+    ExplicitLeft = 393
   end
   object cxGrid4: TcxGrid
-    Left = 425
+    Left = 160
     Top = 73
-    Width = 537
+    Width = 335
     Height = 407
     Align = alClient
-    TabOrder = 5
+    TabOrder = 3
     LookAndFeel.NativeStyle = False
-    ExplicitLeft = 594
-    ExplicitWidth = 368
+    ExplicitTop = 79
+    ExplicitWidth = 802
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSSPR_VIPISKA
@@ -169,7 +118,7 @@ object Form30: TForm30
     end
   end
   object cxLabel4: TcxLabel
-    Left = 669
+    Left = 301
     Top = 50
     Caption = #1055#1072#1088#1072#1084#1077#1090#1088' '#1087#1086#1096#1091#1082#1091
   end
@@ -219,7 +168,7 @@ object Form30: TForm30
       'where'
       '  WID = :WID')
     SelectSQL.Strings = (
-      'select *  from WID')
+      'select *  from WID where abonpl is null and vnesk is null')
     ModifySQL.Strings = (
       'update WID'
       'set'
@@ -246,8 +195,8 @@ object Form30: TForm30
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_USERS_ID'
-    Left = 728
-    Top = 152
+    Left = 224
+    Top = 160
     object IBWIDWID: TIBStringField
       FieldName = 'WID'
       Origin = '"WID"."WID"'
@@ -330,68 +279,8 @@ object Form30: TForm30
   end
   object DSWID: TDataSource
     DataSet = IBWID
-    Left = 728
-    Top = 200
-  end
-  object IBSPR_VIDPOISK: TIBDataSet
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
-    AfterScroll = IBSPR_VIDPOISKAfterScroll
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from SPR_VIDPOISK'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into SPR_VIDPOISK'
-      '  (KL, NAME_VID, VIDPOISK)'
-      'values'
-      '  (:KL, :NAME_VID, :VIDPOISK)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  NAME_VID,'
-      '  VIDPOISK'
-      'from SPR_VIDPOISK '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      'select *  from SPR_VIDPOISK')
-    ModifySQL.Strings = (
-      'update SPR_VIDPOISK'
-      'set'
-      '  KL = :KL,'
-      '  NAME_VID = :NAME_VID,'
-      '  VIDPOISK = :VIDPOISK'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_SPR_VIDPOISK_ID'
-    Left = 800
-    Top = 152
-    object IBSPR_VIDPOISKKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"SPR_VIDPOISK"."KL"'
-      Required = True
-    end
-    object IBSPR_VIDPOISKNAME_VID: TIBStringField
-      FieldName = 'NAME_VID'
-      Origin = '"SPR_VIDPOISK"."NAME_VID"'
-      Size = 10
-    end
-    object IBSPR_VIDPOISKVIDPOISK: TIBStringField
-      FieldName = 'VIDPOISK'
-      Origin = '"SPR_VIDPOISK"."VIDPOISK"'
-      Size = 5
-    end
-  end
-  object DSSPR_VIDPOISK: TDataSource
-    DataSet = IBSPR_VIDPOISK
-    Left = 800
-    Top = 200
+    Left = 224
+    Top = 208
   end
   object IBSPR_VIPISKA: TIBDataSet
     Database = Form1.IBDatabase1
@@ -434,8 +323,8 @@ object Form30: TForm30
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_SPR_VIPISKA_ID'
-    Left = 880
-    Top = 152
+    Left = 288
+    Top = 160
     object IBSPR_VIPISKAKL: TIntegerField
       FieldName = 'KL'
       Origin = '"SPR_VIPISKA"."KL"'
@@ -464,7 +353,7 @@ object Form30: TForm30
   end
   object DSSPR_VIPISKA: TDataSource
     DataSet = IBSPR_VIPISKA
-    Left = 880
-    Top = 200
+    Left = 288
+    Top = 208
   end
 end
