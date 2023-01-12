@@ -13,6 +13,7 @@ object Form13: TForm13
   OldCreateOrder = False
   WindowState = wsMaximized
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object cxPageControl1: TcxPageControl
@@ -35,7 +36,7 @@ object Form13: TForm13
         Left = 0
         Top = 0
         Width = 906
-        Height = 65
+        Height = 145
         Align = alTop
         TabOrder = 0
         object cxLabel3: TcxLabel
@@ -84,8 +85,8 @@ object Form13: TForm13
           OnClick = cxButton1Click
         end
         object cxButton2: TcxButton
-          Left = 384
-          Top = 8
+          Left = 8
+          Top = 66
           Width = 145
           Height = 25
           Caption = #1047#1092#1086#1088#1084#1091#1074#1072#1090#1080
@@ -118,12 +119,58 @@ object Form13: TForm13
           Top = 39
           Caption = ' - '#1079#1085#1072#1095#1077#1085#1085#1103' '#1074#1087#1083#1080#1074#1072#1108' '#1085#1072'  '#1082#1110#1083#1100#1082#1110#1089#1090#1100' '#1073#1086#1088#1078#1085#1080#1082#1110#1074
         end
+        object cxGrid4: TcxGrid
+          Left = 533
+          Top = 0
+          Width = 166
+          Height = 144
+          TabOrder = 10
+          object cxGridDBTableView4: TcxGridDBTableView
+            Navigator.Buttons.CustomButtons = <>
+            DataController.DataSource = DSWID
+            DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <>
+            DataController.Summary.SummaryGroups = <>
+            OptionsView.CellAutoHeight = True
+            OptionsView.ColumnAutoWidth = True
+            OptionsView.GroupByBox = False
+            object cxGridDBTableView1CH: TcxGridDBColumn
+              DataBinding.FieldName = 'CH'
+              PropertiesClassName = 'TcxCheckBoxProperties'
+              Properties.ImmediatePost = True
+              Properties.ValueChecked = 1
+              Properties.ValueUnchecked = 0
+              Width = 60
+            end
+            object cxGridDBTableView1NAIM: TcxGridDBColumn
+              Caption = #1055#1086#1089#1083#1091#1075#1080
+              DataBinding.FieldName = 'NAIM'
+              Options.Editing = False
+              Width = 227
+            end
+          end
+          object cxGridLevel4: TcxGridLevel
+            GridView = cxGridDBTableView4
+          end
+        end
+        object cxLabel13: TcxLabel
+          Left = 407
+          Top = 14
+          Caption = ' - '#1042#1110#1076#1084#1110#1090#1080#1090#1080' '#1074#1089#1110' '#1087#1086#1089#1083#1091#1075#1080
+        end
+        object cxCheckBox3: TcxCheckBox
+          Left = 390
+          Top = 12
+          Properties.OnChange = cxCheckBox3PropertiesChange
+          TabOrder = 12
+        end
       end
       object cxGrid2: TcxGrid
         Left = 0
-        Top = 65
+        Top = 145
         Width = 906
-        Height = 549
+        Height = 469
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
@@ -180,6 +227,18 @@ object Form13: TForm13
             item
               Kind = skAverage
               Column = cxGridDBTableView1PROCENT
+            end
+            item
+              Kind = skSum
+              Column = cxGridDBTableView1KOLI_PF
+            end
+            item
+              Kind = skSum
+              Column = cxGridDBTableView1KOLI_P
+            end
+            item
+              Kind = skSum
+              Column = cxGridDBTableView1KOL_KV
             end>
           DataController.Summary.SummaryGroups = <>
           OptionsData.Editing = False
@@ -189,11 +248,6 @@ object Form13: TForm13
           OptionsView.FooterMultiSummaries = True
           OptionsView.Indicator = True
           Preview.AutoHeight = False
-          object cxGridDBTableView1FIO: TcxGridDBColumn
-            Caption = #1050#1086#1085#1090#1088#1086#1083#1077#1088
-            DataBinding.FieldName = 'FIO'
-            Width = 118
-          end
           object cxGridDBTableView1UL: TcxGridDBColumn
             Caption = #1042#1091#1083#1080#1094#1103
             DataBinding.FieldName = 'UL'
@@ -206,6 +260,14 @@ object Form13: TForm13
           object cxGridDBTableView1KOL_KV: TcxGridDBColumn
             Caption = #1050#1110#1083#1100'.'#1082#1074'.'
             DataBinding.FieldName = 'KOL_KV'
+          end
+          object cxGridDBTableView1KOLI_P: TcxGridDBColumn
+            Caption = #1047#1072#1088#1077#1108#1089#1090#1088#1086#1074#1072#1085#1086
+            DataBinding.FieldName = 'KOLI_P'
+          end
+          object cxGridDBTableView1KOLI_PF: TcxGridDBColumn
+            Caption = #1055#1088#1086#1078#1080#1074#1072#1108
+            DataBinding.FieldName = 'KOLI_PF'
           end
           object cxGridDBTableView1DOLG: TcxGridDBColumn
             Caption = #1057#1072#1083#1100#1076#1086' '#1085#1072' '#1087#1086#1095'.'
@@ -357,31 +419,21 @@ object Form13: TForm13
           TabOrder = 9
           Width = 45
         end
-        object RadioButton1: TRadioButton
-          Left = 536
-          Top = 12
-          Width = 121
-          Height = 17
-          Caption = #1050#1086#1085#1090#1088#1086#1083#1077#1088' - '#1087#1086#1089#1083#1091#1075#1072
-          Checked = True
-          TabOrder = 10
-          TabStop = True
-        end
         object RadioButton2: TRadioButton
           Left = 536
-          Top = 35
+          Top = 14
           Width = 121
           Height = 17
-          Caption = #1055#1086#1089#1083#1091#1075#1072' - '#1082#1086#1085#1090#1088#1086#1083#1077#1088
-          TabOrder = 11
+          Caption = #1055#1086#1089#1083#1091#1075#1072
+          TabOrder = 10
         end
         object RadioButton6: TRadioButton
           Left = 536
-          Top = 58
+          Top = 40
           Width = 121
           Height = 17
-          Caption = #1050#1086#1085#1090#1088#1086#1083#1077#1088' - '#1072#1076#1088#1077#1089#1072
-          TabOrder = 12
+          Caption = #1040#1076#1088#1077#1089#1072
+          TabOrder = 11
         end
       end
       object cxGrid1: TcxGrid
@@ -454,11 +506,6 @@ object Form13: TForm13
           OptionsView.FooterMultiSummaries = True
           OptionsView.Indicator = True
           Preview.AutoHeight = False
-          object cxGridDBColumn1: TcxGridDBColumn
-            Caption = #1050#1086#1085#1090#1088#1086#1083#1077#1088
-            DataBinding.FieldName = 'FIO'
-            Width = 118
-          end
           object cxGridDBTableView2POSL: TcxGridDBColumn
             Caption = #1055#1086#1089#1083#1091#1075#1072
             DataBinding.FieldName = 'POSL'
@@ -475,6 +522,14 @@ object Form13: TForm13
           object cxGridDBColumn4: TcxGridDBColumn
             Caption = #1050#1110#1083#1100'.'#1082#1074'.'
             DataBinding.FieldName = 'KOL_KV'
+          end
+          object cxGridDBTableView2KOLI_P: TcxGridDBColumn
+            Caption = #1047#1072#1088#1077#1108#1089#1090#1088#1086#1074#1072#1085#1086
+            DataBinding.FieldName = 'KOLI_P'
+          end
+          object cxGridDBTableView2KOLI_PF: TcxGridDBColumn
+            Caption = #1055#1088#1086#1078#1080#1074#1072#1108
+            DataBinding.FieldName = 'KOLI_PF'
           end
           object cxGridDBColumn5: TcxGridDBColumn
             Caption = #1057#1072#1083#1100#1076#1086' '#1085#1072' '#1087#1086#1095'.'
@@ -630,31 +685,21 @@ object Form13: TForm13
           TabOrder = 9
           Width = 45
         end
-        object RadioButton3: TRadioButton
-          Left = 536
-          Top = 12
-          Width = 121
-          Height = 17
-          Caption = #1050#1086#1085#1090#1088#1086#1083#1077#1088' - '#1087#1086#1089#1083#1091#1075#1072
-          Checked = True
-          TabOrder = 10
-          TabStop = True
-        end
         object RadioButton4: TRadioButton
           Left = 536
-          Top = 35
+          Top = 14
           Width = 121
           Height = 17
-          Caption = #1055#1086#1089#1083#1091#1075#1072' - '#1082#1086#1085#1090#1088#1086#1083#1077#1088
-          TabOrder = 11
+          Caption = #1055#1086#1089#1083#1091#1075#1072
+          TabOrder = 10
         end
         object RadioButton5: TRadioButton
           Left = 536
-          Top = 58
+          Top = 37
           Width = 121
           Height = 17
-          Caption = #1050#1086#1085#1090#1088#1086#1083#1077#1088' - '#1072#1076#1088#1077#1089#1072
-          TabOrder = 12
+          Caption = #1040#1076#1088#1077#1089#1072
+          TabOrder = 11
         end
       end
       object cxGrid3: TcxGrid
@@ -731,11 +776,6 @@ object Form13: TForm13
             Caption = #1055#1077#1088#1110#1086#1076
             DataBinding.FieldName = 'PERIOD'
           end
-          object cxGridDBColumn17: TcxGridDBColumn
-            Caption = #1050#1086#1085#1090#1088#1086#1083#1077#1088
-            DataBinding.FieldName = 'FIO'
-            Width = 118
-          end
           object cxGridDBColumn18: TcxGridDBColumn
             Caption = #1055#1086#1089#1083#1091#1075#1072
             DataBinding.FieldName = 'POSL'
@@ -752,6 +792,14 @@ object Form13: TForm13
           object cxGridDBColumn21: TcxGridDBColumn
             Caption = #1050#1110#1083#1100'.'#1082#1074'.'
             DataBinding.FieldName = 'KOL_KV'
+          end
+          object cxGridDBTableView3KOLI_P: TcxGridDBColumn
+            Caption = #1047#1072#1088#1077#1108#1089#1090#1088#1086#1074#1072#1085#1086
+            DataBinding.FieldName = 'KOLI_P'
+          end
+          object cxGridDBTableView3KOLI_PF: TcxGridDBColumn
+            Caption = #1055#1088#1086#1078#1080#1074#1072#1108
+            DataBinding.FieldName = 'KOLI_PF'
           end
           object cxGridDBColumn22: TcxGridDBColumn
             Caption = #1057#1072#1083#1100#1076#1086' '#1085#1072' '#1087#1086#1095'.'
@@ -813,6 +861,9 @@ object Form13: TForm13
             DataBinding.FieldName = 'PROCENT'
             Width = 90
           end
+          object cxGridDBTableView3FIO: TcxGridDBColumn
+            DataBinding.FieldName = 'FIO'
+          end
         end
         object cxGridLevel3: TcxGridLevel
           GridView = cxGridDBTableView3
@@ -826,16 +877,45 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select *'
+      'select'
+      '    ul,'
+      '    dom,'
+      '    fio,'
+      '    kol_kv,'
+      '    sum(koli_p) koli_p,'
+      '    sum(koli_pf) koli_pf,'
+      '    sum(dolg) dolg,'
+      '    sum(bgst) bgst,'
+      '    sum(prst) prst,'
+      '    sum(nach) nach,'
+      '    sum(pere) pere,'
+      '    sum(subs) subs,'
+      '    sum(oplnotsubs) oplnotsubs,'
+      '    sum(sal) sal,'
+      '    sum(bgend) as bgend,'
+      '    sum(prend) as prend,'
+      '    sum(borgniki) borgniki,'
+      
+        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
+        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
+        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
+        're))) end'
+      
+        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
+        'se null end'
+      '        end) AS procent'
       'from'
       '(select'
+      '    aa.schet,'
       '    kart.ulnaim ul,'
       '    kart.nomdom dom,'
       '    kontrol.fio fio,'
       '    adres.kol_kv,'
+      '    kart.koli_p,'
+      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
-      '    sum( aa.bgst) bgst,'
-      '    sum( aa.prst) prst,'
+      '    sum(aa.bgst) bgst,'
+      '    sum(aa.prst) prst,'
       '    sum(aa.nach) nach,'
       '    sum(aa.pere) pere,'
       '    sum(aa.subs) subs,'
@@ -843,16 +923,7 @@ object Form13: TForm13
       '    sum(aa.sal) sal,'
       '    sum( aa.bgend) as bgend,'
       '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki,'
-      
-        '    (case when (sum(aa.nach)+sum(aa.pere))>0 then case when roun' +
-        'd(((sum(aa.oplnotsubs)+sum(aa.subs))*100)/(sum(aa.nach)+sum(aa.p' +
-        'ere)))>100 then 100 else round(((sum(aa.oplnotsubs)+sum(aa.subs)' +
-        ')*100)/(sum(aa.nach)+sum(aa.pere))) end'
-      
-        '        else case when (sum(aa.oplnotsubs)+sum(aa.subs))>0 then ' +
-        '100 else null end'
-      '        end) AS procent'
+      '    sum(aa.borgniki) borgniki'
       'from'
       '(select'
       '    schet,'
@@ -912,11 +983,14 @@ object Form13: TForm13
         '= adres.dom)'
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
       '   where kart.ulnaim is not null'
-      'group by kart.ulnaim, kart.nomdom, kontrol.fio, adres.kol_kv'
+      
+        'group by aa.schet,kart.ulnaim, kart.nomdom, kontrol.fio, adres.k' +
+        'ol_kv, kart.koli_p, kart.koli_pf'
       
         'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
         'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      'order by kontrol.fio,kart.ulnaim, kart.nomdom)')
+      'order by kontrol.fio,kart.ulnaim, kart.nomdom) bb'
+      'group by ul, dom, fio, kol_kv')
     ParamCheck = True
     UniDirectional = False
     Left = 56
@@ -988,6 +1062,14 @@ object Form13: TForm13
       ProviderFlags = []
       Size = 5
     end
+    object IBORDERALLKOLI_P: TFloatField
+      FieldName = 'KOLI_P'
+      ProviderFlags = []
+    end
+    object IBORDERALLKOLI_PF: TFloatField
+      FieldName = 'KOLI_PF'
+      ProviderFlags = []
+    end
   end
   object DSORDERALL: TDataSource
     DataSet = IBORDERALL
@@ -1000,7 +1082,34 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select *'
+      'select'
+      '    posl,'
+      '    ul,'
+      '    dom,'
+      '    fio,'
+      '    kol_kv,'
+      '    sum(koli_p) koli_p,'
+      '    sum(koli_pf) koli_pf,'
+      '    sum(dolg) dolg,'
+      '    sum(bgst) bgst,'
+      '    sum(prst) prst,'
+      '    sum(nach) nach,'
+      '    sum(pere) pere,'
+      '    sum(subs) subs,'
+      '    sum(oplnotsubs) oplnotsubs,'
+      '    sum(sal) sal,'
+      '    sum(bgend) as bgend,'
+      '    sum(prend) as prend,'
+      '    sum(borgniki) borgniki,'
+      
+        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
+        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
+        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
+        're))) end'
+      
+        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
+        'se null end'
+      '        end) AS procent'
       'from'
       '(select'
       '    kart.ulnaim ul,'
@@ -1008,6 +1117,8 @@ object Form13: TForm13
       '    kontrol.fio,'
       '    adres.kol_kv,'
       '    wid.naim posl,'
+      '    kart.koli_p,'
+      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
       '    sum( aa.bgst) bgst,'
       '    sum( aa.prst) prst,'
@@ -1018,16 +1129,7 @@ object Form13: TForm13
       '    sum(aa.sal) sal,'
       '    sum( aa.bgend) as bgend,'
       '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki,'
-      
-        '    (case when (sum(aa.nach)+sum(aa.pere))>0 then case when roun' +
-        'd(((sum(aa.oplnotsubs)+sum(aa.subs))*100)/(sum(aa.nach)+sum(aa.p' +
-        'ere)))>100 then 100 else round(((sum(aa.oplnotsubs)+sum(aa.subs)' +
-        ')*100)/(sum(aa.nach)+sum(aa.pere))) end'
-      
-        '        else case when (sum(aa.oplnotsubs)+sum(aa.subs))>0 then ' +
-        '100 else null end'
-      '        end) AS procent'
+      '    sum(aa.borgniki) borgniki'
       'from'
       '(select'
       '    schet,'
@@ -1093,11 +1195,12 @@ object Form13: TForm13
       '   where kart.ulnaim is not null'
       
         'group by wid.naim,kart.ulnaim, kart.nomdom, kontrol.fio, adres.k' +
-        'ol_kv'
+        'ol_kv, kart.koli_p, kart.koli_pf'
       
         'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
         'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      'order by kontrol.fio,wid.naim,kart.ulnaim, kart.nomdom)')
+      'order by kontrol.fio,wid.naim,kart.ulnaim, kart.nomdom) bb'
+      'group by posl, ul, dom, fio, kol_kv')
     ParamCheck = True
     UniDirectional = False
     Left = 128
@@ -1174,6 +1277,14 @@ object Form13: TForm13
       FieldName = 'PROCENT'
       ProviderFlags = []
     end
+    object IBORDERKOLI_P: TFloatField
+      FieldName = 'KOLI_P'
+      ProviderFlags = []
+    end
+    object IBORDERKOLI_PF: TFloatField
+      FieldName = 'KOLI_PF'
+      ProviderFlags = []
+    end
   end
   object DSORDER: TDataSource
     DataSet = IBORDER
@@ -1186,16 +1297,45 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select *'
+      'select'
+      '    ul,'
+      '    dom,'
+      '    fio,'
+      '    kol_kv,'
+      '    sum(koli_p) koli_p,'
+      '    sum(koli_pf) koli_pf,'
+      '    sum(dolg) dolg,'
+      '    sum(bgst) bgst,'
+      '    sum(prst) prst,'
+      '    sum(nach) nach,'
+      '    sum(pere) pere,'
+      '    sum(subs) subs,'
+      '    sum(oplnotsubs) oplnotsubs,'
+      '    sum(sal) sal,'
+      '    sum(bgend) as bgend,'
+      '    sum(prend) as prend,'
+      '    sum(borgniki) borgniki,'
+      
+        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
+        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
+        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
+        're))) end'
+      
+        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
+        'se null end'
+      '        end) AS procent'
       'from'
       '(select'
+      '    aa.schet,'
       '    kart.ulnaim ul,'
       '    kart.nomdom dom,'
       '    kontrol.fio fio,'
       '    adres.kol_kv,'
+      '    kart.koli_p,'
+      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
-      '    sum( aa.bgst) bgst,'
-      '    sum( aa.prst) prst,'
+      '    sum(aa.bgst) bgst,'
+      '    sum(aa.prst) prst,'
       '    sum(aa.nach) nach,'
       '    sum(aa.pere) pere,'
       '    sum(aa.subs) subs,'
@@ -1203,16 +1343,7 @@ object Form13: TForm13
       '    sum(aa.sal) sal,'
       '    sum( aa.bgend) as bgend,'
       '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki,'
-      
-        '    (case when (sum(aa.nach)+sum(aa.pere))>0 then case when roun' +
-        'd(((sum(aa.oplnotsubs)+sum(aa.subs))*100)/(sum(aa.nach)+sum(aa.p' +
-        'ere)))>100 then 100 else round(((sum(aa.oplnotsubs)+sum(aa.subs)' +
-        ')*100)/(sum(aa.nach)+sum(aa.pere))) end'
-      
-        '        else case when (sum(aa.oplnotsubs)+sum(aa.subs))>0 then ' +
-        '100 else null end'
-      '        end) AS procent'
+      '    sum(aa.borgniki) borgniki'
       'from'
       '(select'
       '    schet,'
@@ -1272,11 +1403,14 @@ object Form13: TForm13
         '= adres.dom)'
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
       '   where kart.ulnaim is not null'
-      'group by kart.ulnaim, kart.nomdom, kontrol.fio, adres.kol_kv'
+      
+        'group by aa.schet,kart.ulnaim, kart.nomdom, kontrol.fio, adres.k' +
+        'ol_kv, kart.koli_p, kart.koli_pf'
       
         'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
         'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      'order by kontrol.fio,kart.ulnaim, kart.nomdom)')
+      'order by kontrol.fio,kart.ulnaim, kart.nomdom) bb'
+      'group by ul, dom, fio, kol_kv')
     ParamCheck = True
     UniDirectional = False
     Left = 304
@@ -1348,6 +1482,14 @@ object Form13: TForm13
       ProviderFlags = []
       Size = 5
     end
+    object IBREPALLKOLI_P: TFloatField
+      FieldName = 'KOLI_P'
+      ProviderFlags = []
+    end
+    object IBREPALLKOLI_PF: TFloatField
+      FieldName = 'KOLI_PF'
+      ProviderFlags = []
+    end
   end
   object IBREP: TIBDataSet
     Database = Form1.IBDatabase1
@@ -1355,7 +1497,34 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select *'
+      'select'
+      '    posl,'
+      '    ul,'
+      '    dom,'
+      '    fio,'
+      '    kol_kv,'
+      '    sum(koli_p) koli_p,'
+      '    sum(koli_pf) koli_pf,'
+      '    sum(dolg) dolg,'
+      '    sum(bgst) bgst,'
+      '    sum(prst) prst,'
+      '    sum(nach) nach,'
+      '    sum(pere) pere,'
+      '    sum(subs) subs,'
+      '    sum(oplnotsubs) oplnotsubs,'
+      '    sum(sal) sal,'
+      '    sum(bgend) as bgend,'
+      '    sum(prend) as prend,'
+      '    sum(borgniki) borgniki,'
+      
+        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
+        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
+        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
+        're))) end'
+      
+        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
+        'se null end'
+      '        end) AS procent'
       'from'
       '(select'
       '    kart.ulnaim ul,'
@@ -1363,6 +1532,8 @@ object Form13: TForm13
       '    kontrol.fio,'
       '    adres.kol_kv,'
       '    wid.naim posl,'
+      '    kart.koli_p,'
+      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
       '    sum( aa.bgst) bgst,'
       '    sum( aa.prst) prst,'
@@ -1373,16 +1544,7 @@ object Form13: TForm13
       '    sum(aa.sal) sal,'
       '    sum( aa.bgend) as bgend,'
       '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki,'
-      
-        '    (case when (sum(aa.nach)+sum(aa.pere))>0 then case when roun' +
-        'd(((sum(aa.oplnotsubs)+sum(aa.subs))*100)/(sum(aa.nach)+sum(aa.p' +
-        'ere)))>100 then 100 else round(((sum(aa.oplnotsubs)+sum(aa.subs)' +
-        ')*100)/(sum(aa.nach)+sum(aa.pere))) end'
-      
-        '        else case when (sum(aa.oplnotsubs)+sum(aa.subs))>0 then ' +
-        '100 else null end'
-      '        end) AS procent'
+      '    sum(aa.borgniki) borgniki'
       'from'
       '(select'
       '    schet,'
@@ -1448,11 +1610,12 @@ object Form13: TForm13
       '   where kart.ulnaim is not null'
       
         'group by wid.naim,kart.ulnaim, kart.nomdom, kontrol.fio, adres.k' +
-        'ol_kv'
+        'ol_kv, kart.koli_p, kart.koli_pf'
       
         'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
         'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      'order by kontrol.fio,wid.naim,kart.ulnaim, kart.nomdom)')
+      'order by kontrol.fio,wid.naim,kart.ulnaim, kart.nomdom) bb'
+      'group by posl, ul, dom, fio, kol_kv')
     ParamCheck = True
     UniDirectional = False
     Left = 360
@@ -1529,6 +1692,14 @@ object Form13: TForm13
       FieldName = 'PROCENT'
       ProviderFlags = []
     end
+    object IBREPKOLI_P: TFloatField
+      FieldName = 'KOLI_P'
+      ProviderFlags = []
+    end
+    object IBREPKOLI_PF: TFloatField
+      FieldName = 'KOLI_PF'
+      ProviderFlags = []
+    end
   end
   object IBORDERMES: TIBDataSet
     Database = Form1.IBDatabase1
@@ -1536,7 +1707,35 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select *'
+      'select'
+      '    period,'
+      '    posl,'
+      '    ul,'
+      '    dom,'
+      '    fio,'
+      '    kol_kv,'
+      '    sum(koli_p) koli_p,'
+      '    sum(koli_pf) koli_pf,'
+      '    sum(dolg) dolg,'
+      '    sum(bgst) bgst,'
+      '    sum(prst) prst,'
+      '    sum(nach) nach,'
+      '    sum(pere) pere,'
+      '    sum(subs) subs,'
+      '    sum(oplnotsubs) oplnotsubs,'
+      '    sum(sal) sal,'
+      '    sum(bgend) as bgend,'
+      '    sum(prend) as prend,'
+      '    sum(borgniki) borgniki,'
+      
+        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
+        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
+        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
+        're))) end'
+      
+        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
+        'se null end'
+      '        end) AS procent'
       'from'
       '(select'
       '    period, '
@@ -1545,6 +1744,8 @@ object Form13: TForm13
       '    kontrol.fio,'
       '    adres.kol_kv,'
       '    wid.naim posl,'
+      '    kart.koli_p,'
+      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
       '    sum( aa.bgst) bgst,'
       '    sum( aa.prst) prst,'
@@ -1555,16 +1756,7 @@ object Form13: TForm13
       '    sum(aa.sal) sal,'
       '    sum( aa.bgend) as bgend,'
       '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki,'
-      
-        '    (case when (sum(aa.nach)+sum(aa.pere))>0 then case when roun' +
-        'd(((sum(aa.oplnotsubs)+sum(aa.subs))*100)/(sum(aa.nach)+sum(aa.p' +
-        'ere)))>100 then 100 else round(((sum(aa.oplnotsubs)+sum(aa.subs)' +
-        ')*100)/(sum(aa.nach)+sum(aa.pere))) end'
-      
-        '        else case when (sum(aa.oplnotsubs)+sum(aa.subs))>0 then ' +
-        '100 else null end'
-      '        end) AS procent'
+      '    sum(aa.borgniki) borgniki'
       'from'
       '('
       'select'
@@ -1594,13 +1786,14 @@ object Form13: TForm13
       '   where kart.ulnaim is not null'
       
         'group by period,wid.naim,kart.ulnaim, kart.nomdom, kontrol.fio, ' +
-        'adres.kol_kv'
+        'adres.kol_kv, kart.koli_p, kart.koli_pf'
       
         'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
         'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
       
         'order by wid.naim, kontrol.fio,kart.ulnaim, kart.nomdom, period ' +
-        ')')
+        ') bb'
+      'group by period, posl, ul, dom, fio, kol_kv')
     ParamCheck = True
     UniDirectional = False
     Left = 200
@@ -1681,6 +1874,14 @@ object Form13: TForm13
       FieldName = 'PROCENT'
       ProviderFlags = []
     end
+    object IBORDERMESKOLI_P: TFloatField
+      FieldName = 'KOLI_P'
+      ProviderFlags = []
+    end
+    object IBORDERMESKOLI_PF: TFloatField
+      FieldName = 'KOLI_PF'
+      ProviderFlags = []
+    end
   end
   object DSORDERMES: TDataSource
     DataSet = IBORDERMES
@@ -1693,7 +1894,35 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select *'
+      'select'
+      '    period,'
+      '    posl,'
+      '    ul,'
+      '    dom,'
+      '    fio,'
+      '    kol_kv,'
+      '    sum(koli_p) koli_p,'
+      '    sum(koli_pf) koli_pf,'
+      '    sum(dolg) dolg,'
+      '    sum(bgst) bgst,'
+      '    sum(prst) prst,'
+      '    sum(nach) nach,'
+      '    sum(pere) pere,'
+      '    sum(subs) subs,'
+      '    sum(oplnotsubs) oplnotsubs,'
+      '    sum(sal) sal,'
+      '    sum(bgend) as bgend,'
+      '    sum(prend) as prend,'
+      '    sum(borgniki) borgniki,'
+      
+        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
+        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
+        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
+        're))) end'
+      
+        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
+        'se null end'
+      '        end) AS procent'
       'from'
       '(select'
       '    period, '
@@ -1702,6 +1931,8 @@ object Form13: TForm13
       '    kontrol.fio,'
       '    adres.kol_kv,'
       '    wid.naim posl,'
+      '    kart.koli_p,'
+      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
       '    sum( aa.bgst) bgst,'
       '    sum( aa.prst) prst,'
@@ -1712,16 +1943,7 @@ object Form13: TForm13
       '    sum(aa.sal) sal,'
       '    sum( aa.bgend) as bgend,'
       '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki,'
-      
-        '    (case when (sum(aa.nach)+sum(aa.pere))>0 then case when roun' +
-        'd(((sum(aa.oplnotsubs)+sum(aa.subs))*100)/(sum(aa.nach)+sum(aa.p' +
-        'ere)))>100 then 100 else round(((sum(aa.oplnotsubs)+sum(aa.subs)' +
-        ')*100)/(sum(aa.nach)+sum(aa.pere))) end'
-      
-        '        else case when (sum(aa.oplnotsubs)+sum(aa.subs))>0 then ' +
-        '100 else null end'
-      '        end) AS procent'
+      '    sum(aa.borgniki) borgniki'
       'from'
       '('
       'select'
@@ -1751,13 +1973,14 @@ object Form13: TForm13
       '   where kart.ulnaim is not null'
       
         'group by period,wid.naim,kart.ulnaim, kart.nomdom, kontrol.fio, ' +
-        'adres.kol_kv'
+        'adres.kol_kv, kart.koli_p, kart.koli_pf'
       
         'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
         'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
       
         'order by wid.naim, kontrol.fio,kart.ulnaim, kart.nomdom, period ' +
-        ')')
+        ') bb'
+      'group by period, posl, ul, dom, fio, kol_kv')
     ParamCheck = True
     UniDirectional = False
     Left = 416
@@ -1838,6 +2061,14 @@ object Form13: TForm13
       FieldName = 'PROCENT'
       ProviderFlags = []
     end
+    object IBREPMESKOLI_P: TFloatField
+      FieldName = 'KOLI_P'
+      ProviderFlags = []
+    end
+    object IBREPMESKOLI_PF: TFloatField
+      FieldName = 'KOLI_PF'
+      ProviderFlags = []
+    end
   end
   object frxReport1: TfrxReport
     Version = '5.3.16'
@@ -1848,7 +2079,7 @@ object Form13: TForm13
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 43425.596407557900000000
-    ReportOptions.LastChange = 43490.480034363420000000
+    ReportOptions.LastChange = 44938.370540208350000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -2158,32 +2389,10 @@ object Form13: TForm13
           VAlign = vaCenter
         end
       end
-      object GroupHeader1: TfrxGroupHeader
-        FillType = ftBrush
-        Height = 41.574830000000000000
-        Top = 241.889920000000000000
-        Width = 1046.929810000000000000
-        Condition = 'frxDBDataset3."FIO"'
-        object Memo2: TfrxMemoView
-          Top = 15.118119999999890000
-          Width = 884.410020000000000000
-          Height = 26.456710000000000000
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Memo.UTF8W = (
-            #1050#1086#1085#1090#1088#1086#1083#1077#1088' "[frxDBDataset3."FIO"]')
-          ParentFont = False
-        end
-      end
       object MasterData1: TfrxMasterData
         FillType = ftBrush
         Height = 18.897650000000000000
-        Top = 404.409710000000000000
+        Top = 340.157700000000000000
         Width = 1046.929810000000000000
         AllowSplit = True
         DataSet = frxDBDataset3
@@ -2456,175 +2665,10 @@ object Form13: TForm13
           VAlign = vaCenter
         end
       end
-      object GroupFooter1: TfrxGroupFooter
-        FillType = ftBrush
-        Height = 18.897650000000000000
-        Top = 529.134199999999900000
-        Width = 1046.929810000000000000
-        Stretched = True
-        object frxDBDataset1VID1: TfrxMemoView
-          Left = 3.779530000000000000
-          Width = 192.756030000000000000
-          Height = 18.897650000000000000
-          StretchMode = smMaxHeight
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Memo.UTF8W = (
-            #1042#1089#1100#1086#1075#1086' '#1087#1086' "[frxDBDataset3."FIO"]')
-          ParentFont = False
-        end
-        object Memo27: TfrxMemoView
-          Left = 423.307360000000000000
-          Width = 75.590551180000000000
-          Height = 18.897650000000000000
-          StretchMode = smMaxHeight
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          DisplayFormat.FormatStr = '%2.2n'
-          DisplayFormat.Kind = fkNumeric
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8W = (
-            '[SUM(<frxDBDataset3."NACH">,MasterData1)]')
-          ParentFont = False
-          VAlign = vaCenter
-        end
-        object Memo28: TfrxMemoView
-          Left = 498.897960000000000000
-          Width = 75.590551180000000000
-          Height = 18.897650000000000000
-          StretchMode = smMaxHeight
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8W = (
-            '[SUM(<frxDBDataset3."PERE">,MasterData1)]')
-          ParentFont = False
-          VAlign = vaCenter
-          Formats = <
-            item
-              FormatStr = '%2.2n'
-              Kind = fkNumeric
-            end
-            item
-            end>
-        end
-        object Memo29: TfrxMemoView
-          Left = 574.488560000000000000
-          Width = 75.590551180000000000
-          Height = 18.897650000000000000
-          StretchMode = smMaxHeight
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8W = (
-            '[SUM(<frxDBDataset3."SUBS">,MasterData1)]')
-          ParentFont = False
-          VAlign = vaCenter
-          Formats = <
-            item
-              FormatStr = '%2.2n'
-              Kind = fkNumeric
-            end
-            item
-            end>
-        end
-        object Memo30: TfrxMemoView
-          Left = 650.079160000000000000
-          Width = 75.590551180000000000
-          Height = 18.897650000000000000
-          StretchMode = smMaxHeight
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8W = (
-            '[SUM(<frxDBDataset3."OPLNOTSUBS">,MasterData1)]')
-          ParentFont = False
-          VAlign = vaCenter
-          Formats = <
-            item
-              FormatStr = '%2.2n'
-              Kind = fkNumeric
-            end
-            item
-            end>
-        end
-        object Memo34: TfrxMemoView
-          Left = 952.441560000000000000
-          Width = 52.913371180000000000
-          Height = 18.897650000000000000
-          StretchMode = smMaxHeight
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8W = (
-            '[SUM(<frxDBDataset3."BORGNIKI">,MasterData1)]')
-          ParentFont = False
-          VAlign = vaCenter
-          Formats = <
-            item
-            end
-            item
-            end>
-        end
-        object Memo58: TfrxMemoView
-          Left = 1005.354980000000000000
-          Width = 41.574830000000000000
-          Height = 18.897650000000000000
-          StretchMode = smMaxHeight
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8W = (
-            '[round(AVG(<frxDBDataset3."PROCENT">,MasterData1))]')
-          ParentFont = False
-          VAlign = vaCenter
-        end
-      end
       object PageFooter1: TfrxPageFooter
         FillType = ftBrush
         Height = 18.897650000000000000
-        Top = 706.772110000000000000
+        Top = 600.945270000000000000
         Width = 1046.929810000000000000
         object Page: TfrxMemoView
           Left = 963.780150000000000000
@@ -2643,12 +2687,12 @@ object Form13: TForm13
       object Footer1: TfrxFooter
         FillType = ftBrush
         Height = 75.590600000000000000
-        Top = 570.709030000000000000
+        Top = 464.882190000000000000
         Width = 1046.929810000000000000
         Stretched = True
         object Memo10: TfrxMemoView
           Left = 3.779530000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000190000
           Width = 192.756030000000000000
           Height = 18.897650000000000000
           DataSet = frxDBDataset1
@@ -2664,7 +2708,7 @@ object Form13: TForm13
         end
         object Memo35: TfrxMemoView
           Left = 423.307360000000000000
-          Top = 22.677180000000020000
+          Top = 22.677179999999960000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2686,7 +2730,7 @@ object Form13: TForm13
         end
         object Memo36: TfrxMemoView
           Left = 498.897960000000000000
-          Top = 22.677180000000020000
+          Top = 22.677179999999960000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2713,7 +2757,7 @@ object Form13: TForm13
         end
         object Memo37: TfrxMemoView
           Left = 574.488560000000000000
-          Top = 22.677180000000020000
+          Top = 22.677179999999960000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2740,7 +2784,7 @@ object Form13: TForm13
         end
         object Memo38: TfrxMemoView
           Left = 650.079160000000000000
-          Top = 22.677180000000020000
+          Top = 22.677179999999960000
           Width = 75.590551180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2767,7 +2811,7 @@ object Form13: TForm13
         end
         object Memo42: TfrxMemoView
           Left = 952.441560000000000000
-          Top = 22.677180000000130000
+          Top = 22.677180000000190000
           Width = 52.913371180000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2792,7 +2836,7 @@ object Form13: TForm13
         end
         object Memo59: TfrxMemoView
           Left = 1005.354980000000000000
-          Top = 22.677180000000020000
+          Top = 22.677179999999960000
           Width = 41.574830000000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
@@ -2827,7 +2871,7 @@ object Form13: TForm13
       object GroupHeader3: TfrxGroupHeader
         FillType = ftBrush
         Height = 30.236240000000000000
-        Top = 306.141930000000000000
+        Top = 241.889920000000000000
         Width = 1046.929810000000000000
         Condition = 'frxDBDataset3."DOM"'
         object Memo13: TfrxMemoView
@@ -2861,7 +2905,7 @@ object Form13: TForm13
       object GroupFooter3: TfrxGroupFooter
         FillType = ftBrush
         Height = 18.897650000000000000
-        Top = 487.559370000000000000
+        Top = 423.307360000000000000
         Width = 1046.929810000000000000
         Stretched = True
         object Memo45: TfrxMemoView
@@ -3021,7 +3065,7 @@ object Form13: TForm13
       object GroupHeader2: TfrxGroupHeader
         FillType = ftBrush
         Height = 22.677180000000000000
-        Top = 359.055350000000000000
+        Top = 294.803340000000000000
         Width = 1046.929810000000000000
         Condition = 'frxDBDataset3."POSL"'
         object frxDBDataset1UL: TfrxMemoView
@@ -3047,7 +3091,7 @@ object Form13: TForm13
       object GroupFooter2: TfrxGroupFooter
         FillType = ftBrush
         Height = 18.897650000000000000
-        Top = 445.984540000000000000
+        Top = 381.732530000000000000
         Width = 1046.929810000000000000
         Stretched = True
         object Memo61: TfrxMemoView
@@ -3230,7 +3274,9 @@ object Form13: TForm13
       'BORGNIKI=BORGNIKI'
       'PROCENT=PROCENT'
       'UL=UL'
-      'DOM=DOM')
+      'DOM=DOM'
+      'KOLI_P=KOLI_P'
+      'KOLI_PF=KOLI_PF')
     DataSet = IBREPALL
     BCDToCurrency = False
     Left = 44
@@ -3256,7 +3302,9 @@ object Form13: TForm13
       'BGEND=BGEND'
       'PREND=PREND'
       'BORGNIKI=BORGNIKI'
-      'PROCENT=PROCENT')
+      'PROCENT=PROCENT'
+      'KOLI_P=KOLI_P'
+      'KOLI_PF=KOLI_PF')
     DataSet = IBREP
     BCDToCurrency = False
     Left = 116
@@ -3283,10 +3331,100 @@ object Form13: TForm13
       'BGEND=BGEND'
       'PREND=PREND'
       'BORGNIKI=BORGNIKI'
-      'PROCENT=PROCENT')
+      'PROCENT=PROCENT'
+      'KOLI_P=KOLI_P'
+      'KOLI_PF=KOLI_PF')
     DataSet = IBREPMES
     BCDToCurrency = False
     Left = 188
     Top = 296
+  end
+  object IBWID: TIBDataSet
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from WID'
+      'where'
+      '  WID = :OLD_WID')
+    InsertSQL.Strings = (
+      'insert into WID'
+      
+        '  (WID, ID_ORG, NAIM, SNAIM, PAR, FL0, FL, NPP, FL_NONACH, FL_NO' +
+        'OPL, FL_VTCH, '
+      '   FL_NOOBOR, FL_GROPL, FL_SUBS, VAL)'
+      'values'
+      
+        '  (:WID, :ID_ORG, :NAIM, :SNAIM, :PAR, :FL0, :FL, :NPP, :FL_NONA' +
+        'CH, :FL_NOOPL, '
+      '   :FL_VTCH, :FL_NOOBOR, :FL_GROPL, :FL_SUBS, :VAL)')
+    RefreshSQL.Strings = (
+      'Select '
+      '  WID,'
+      '  ID_ORG,'
+      '  NAIM,'
+      '  SNAIM,'
+      '  PAR,'
+      '  FL0,'
+      '  FL,'
+      '  NPP,'
+      '  FL_NONACH,'
+      '  FL_NOOPL,'
+      '  FL_VTCH,'
+      '  FL_NOOBOR,'
+      '  FL_GROPL,'
+      '  FL_SUBS,'
+      '  VAL'
+      'from WID '
+      'where'
+      '  WID = :WID')
+    SelectSQL.Strings = (
+      ' select wid,naim, 0 as ch from WID')
+    ModifySQL.Strings = (
+      'update WID'
+      'set'
+      '  WID = :WID,'
+      '  ID_ORG = :ID_ORG,'
+      '  NAIM = :NAIM,'
+      '  SNAIM = :SNAIM,'
+      '  PAR = :PAR,'
+      '  FL0 = :FL0,'
+      '  FL = :FL,'
+      '  NPP = :NPP,'
+      '  FL_NONACH = :FL_NONACH,'
+      '  FL_NOOPL = :FL_NOOPL,'
+      '  FL_VTCH = :FL_VTCH,'
+      '  FL_NOOBOR = :FL_NOOBOR,'
+      '  FL_GROPL = :FL_GROPL,'
+      '  FL_SUBS = :FL_SUBS,'
+      '  VAL = :VAL'
+      'where'
+      '  WID = :OLD_WID')
+    ParamCheck = True
+    UniDirectional = False
+    GeneratorField.Field = 'KL'
+    GeneratorField.Generator = 'GEN_WID_ID'
+    Left = 480
+    Top = 416
+    object IBWIDWID: TIBStringField
+      FieldName = 'WID'
+      Origin = '"WID"."WID"'
+      Size = 2
+    end
+    object IBWIDNAIM: TIBStringField
+      FieldName = 'NAIM'
+      Origin = '"WID"."NAIM"'
+      Size = 15
+    end
+    object IBWIDCH: TIntegerField
+      FieldName = 'CH'
+      ProviderFlags = []
+    end
+  end
+  object DSWID: TDataSource
+    DataSet = IBWID
+    Left = 480
+    Top = 472
   end
 end

@@ -36,10 +36,10 @@ object Form14: TForm14
         TabOrder = 0
       end
       object cxButton2: TcxButton
-        Left = 280
-        Top = 25
-        Width = 218
-        Height = 48
+        Left = 3
+        Top = 61
+        Width = 264
+        Height = 29
         Caption = #1047#1092#1086#1088#1084#1091#1074#1072#1090#1080' '#1079#1074#1110#1090
         TabOrder = 1
         OnClick = cxButton2Click
@@ -261,35 +261,35 @@ object Form14: TForm14
         Width = 121
       end
       object cxLabel13: TcxLabel
-        Left = 554
-        Top = 25
+        Left = 378
+        Top = 26
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1082#1086#1085#1090#1088#1086#1083#1077#1088
       end
       object cxCheckBox10: TcxCheckBox
-        Left = 524
-        Top = 22
+        Left = 348
+        Top = 24
         TabOrder = 27
       end
       object cxCheckBox11: TcxCheckBox
-        Left = 524
-        Top = 60
+        Left = 348
+        Top = 62
         State = cbsChecked
         TabOrder = 28
       end
       object cxLabel14: TcxLabel
-        Left = 554
-        Top = 63
+        Left = 378
+        Top = 65
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1055#1030#1041
       end
       object cxLabel15: TcxLabel
-        Left = 554
-        Top = 82
+        Left = 378
+        Top = 84
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1072#1076#1088#1077#1089#1091
       end
       object cxCheckBox12: TcxCheckBox
-        Left = 524
-        Top = 78
-        State = cbsChecked
+        Left = 348
+        Top = 82
+        Properties.OnChange = cxCheckBox12PropertiesChange
         TabOrder = 31
       end
       object cxCheckBox13: TcxCheckBox
@@ -304,29 +304,29 @@ object Form14: TForm14
       end
       object cxLabel17: TcxLabel
         Left = 63
-        Top = 82
+        Top = 93
         Caption = #1055#1077#1088#1110#1086#1076' '#1086#1087#1083#1072#1090#1080
       end
       object cxCheckBox14: TcxCheckBox
-        Left = 33
-        Top = 78
+        Left = 36
+        Top = 91
         Properties.OnChange = cxCheckBox14PropertiesChange
         TabOrder = 35
       end
       object cxLabel18: TcxLabel
         Left = 57
-        Top = 158
+        Top = 168
         Caption = #1055#1077#1088#1110#1086#1076' '#1085#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103
       end
       object cxCheckBox15: TcxCheckBox
         Left = 33
-        Top = 155
+        Top = 165
         Properties.OnChange = cxCheckBox15PropertiesChange
         TabOrder = 37
       end
       object cxLookupComboBox3: TcxLookupComboBox
-        Left = 32
-        Top = 101
+        Left = 33
+        Top = 115
         Enabled = False
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
@@ -338,8 +338,8 @@ object Form14: TForm14
         Width = 129
       end
       object cxLookupComboBox4: TcxLookupComboBox
-        Left = 32
-        Top = 128
+        Left = 33
+        Top = 142
         Enabled = False
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
@@ -352,7 +352,7 @@ object Form14: TForm14
       end
       object cxLookupComboBox5: TcxLookupComboBox
         Left = 35
-        Top = 185
+        Top = 189
         Enabled = False
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
@@ -365,7 +365,7 @@ object Form14: TForm14
       end
       object cxLookupComboBox6: TcxLookupComboBox
         Left = 35
-        Top = 212
+        Top = 216
         Enabled = False
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
@@ -377,14 +377,14 @@ object Form14: TForm14
         Width = 129
       end
       object cxCheckBox19: TcxCheckBox
-        Left = 524
-        Top = 41
+        Left = 348
+        Top = 43
         State = cbsChecked
         TabOrder = 42
       end
       object cxLabel22: TcxLabel
-        Left = 554
-        Top = 44
+        Left = 378
+        Top = 46
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1088#1072#1093#1091#1085#1086#1082
       end
       object cxLabel19: TcxLabel
@@ -418,13 +418,13 @@ object Form14: TForm14
         TabOrder = 49
       end
       object cxCheckBox20: TcxCheckBox
-        Left = 524
-        Top = 3
+        Left = 348
+        Top = 5
         TabOrder = 50
       end
       object cxLabel23: TcxLabel
-        Left = 554
-        Top = 6
+        Left = 378
+        Top = 8
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1086#1088#1075#1072#1085#1110#1079#1072#1094#1110#1102
       end
       object cxLabel1: TcxLabel
@@ -464,23 +464,23 @@ object Form14: TForm14
         Width = 121
       end
       object cxLabel28: TcxLabel
-        Left = 10
-        Top = 101
+        Left = 11
+        Top = 115
         Caption = #1079
       end
       object cxLabel29: TcxLabel
-        Left = 10
-        Top = 128
+        Left = 11
+        Top = 142
         Caption = #1087#1086
       end
       object cxLabel30: TcxLabel
         Left = 13
-        Top = 185
+        Top = 189
         Caption = #1079
       end
       object cxLabel31: TcxLabel
         Left = 13
-        Top = 212
+        Top = 216
         Caption = #1087#1086
       end
       object Panel2: TPanel
@@ -659,6 +659,36 @@ object Form14: TForm14
           Top = 73
           Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1073#1086#1088#1075' '#1085#1072' '#1082#1110#1085'. '#1087#1086' '#1087#1086#1089#1083#1091#1075#1072#1084
         end
+      end
+      object cxLabel32: TcxLabel
+        Left = 554
+        Top = 10
+        Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1074#1091#1083#1080#1094#1102
+      end
+      object cxCheckBox25: TcxCheckBox
+        Left = 524
+        Top = 8
+        TabOrder = 63
+      end
+      object cxLabel33: TcxLabel
+        Left = 554
+        Top = 29
+        Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1073#1091#1076#1080#1085#1086#1082
+      end
+      object cxCheckBox26: TcxCheckBox
+        Left = 524
+        Top = 27
+        TabOrder = 65
+      end
+      object cxCheckBox27: TcxCheckBox
+        Left = 524
+        Top = 45
+        TabOrder = 66
+      end
+      object cxLabel34: TcxLabel
+        Left = 554
+        Top = 46
+        Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1082#1074#1072#1088#1090#1080#1088#1091
       end
     end
   end

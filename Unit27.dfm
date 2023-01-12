@@ -629,4 +629,109 @@ object Form27: TForm27
     Left = 255
     Top = 362
   end
+  object IBQueryWidAll: TIBQuery
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    ParamCheck = True
+    SQL.Strings = (
+      'select *  from WID')
+    Left = 183
+    Top = 306
+    object IBQueryWidAllWID: TIBStringField
+      FieldName = 'WID'
+      Origin = '"WID"."WID"'
+      Size = 2
+    end
+    object IBQueryWidAllID_ORG: TFloatField
+      FieldName = 'ID_ORG'
+      Origin = '"WID"."ID_ORG"'
+    end
+    object IBQueryWidAllNAIM: TIBStringField
+      FieldName = 'NAIM'
+      Origin = '"WID"."NAIM"'
+      Size = 15
+    end
+    object IBQueryWidAllSNAIM: TIBStringField
+      FieldName = 'SNAIM'
+      Origin = '"WID"."SNAIM"'
+      Size = 8
+    end
+    object IBQueryWidAllPAR: TIBStringField
+      FieldName = 'PAR'
+      Origin = '"WID"."PAR"'
+      Size = 10
+    end
+    object IBQueryWidAllFL0: TIBStringField
+      FieldName = 'FL0'
+      Origin = '"WID"."FL0"'
+      Size = 1
+    end
+    object IBQueryWidAllFL: TIBStringField
+      FieldName = 'FL'
+      Origin = '"WID"."FL"'
+      Size = 1
+    end
+    object IBQueryWidAllCOD: TIBStringField
+      FieldName = 'COD'
+      Origin = '"WID"."COD"'
+      Size = 5
+    end
+    object IBQueryWidAllABONPL: TIBStringField
+      FieldName = 'ABONPL'
+      Origin = '"WID"."ABONPL"'
+      Size = 2
+    end
+    object IBQueryWidAllNPP: TFloatField
+      FieldName = 'NPP'
+      Origin = '"WID"."NPP"'
+    end
+    object IBQueryWidAllFL_NONACH: TIBStringField
+      FieldName = 'FL_NONACH'
+      Origin = '"WID"."FL_NONACH"'
+      Size = 1
+    end
+    object IBQueryWidAllFL_NOOPL: TIBStringField
+      FieldName = 'FL_NOOPL'
+      Origin = '"WID"."FL_NOOPL"'
+      Size = 1
+    end
+    object IBQueryWidAllFL_VTCH: TIBStringField
+      FieldName = 'FL_VTCH'
+      Origin = '"WID"."FL_VTCH"'
+      Size = 1
+    end
+    object IBQueryWidAllFL_NOOBOR: TIBStringField
+      FieldName = 'FL_NOOBOR'
+      Origin = '"WID"."FL_NOOBOR"'
+      Size = 1
+    end
+    object IBQueryWidAllFL_GROPL: TFloatField
+      FieldName = 'FL_GROPL'
+      Origin = '"WID"."FL_GROPL"'
+    end
+    object IBQueryWidAllFL_SUBS: TFloatField
+      FieldName = 'FL_SUBS'
+      Origin = '"WID"."FL_SUBS"'
+    end
+    object IBQueryWidAllVAL: TFloatField
+      FieldName = 'VAL'
+      Origin = '"WID"."VAL"'
+    end
+    object IBQueryWidAllUPD: TIntegerField
+      FieldName = 'UPD'
+      Origin = '"WID"."UPD"'
+    end
+    object IBQueryWidAllVNESK: TIBStringField
+      FieldName = 'VNESK'
+      Origin = '"WID"."VNESK"'
+      Size = 2
+    end
+  end
+  object DSQueryWidAll: TDataSource
+    DataSet = IBQueryWidAll
+    Left = 183
+    Top = 362
+  end
 end

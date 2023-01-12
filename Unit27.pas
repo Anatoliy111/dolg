@@ -11,6 +11,7 @@ uses
   cxCalendar,System.RegularExpressions;
 
 type
+    Arr = array[0..10] of string;
   TForm27 = class(TForm)
     cxTextEdit1: TcxTextEdit;
     ADOCommand1: TADOCommand;
@@ -124,12 +125,37 @@ type
     IBQueryWidVAL: TFloatField;
     IBQueryWidUPD: TIntegerField;
     IBQueryWidVNESK: TIBStringField;
+    IBQueryWidAll: TIBQuery;
+    DSQueryWidAll: TDataSource;
+    IBQueryWidAllWID: TIBStringField;
+    IBQueryWidAllID_ORG: TFloatField;
+    IBQueryWidAllNAIM: TIBStringField;
+    IBQueryWidAllSNAIM: TIBStringField;
+    IBQueryWidAllPAR: TIBStringField;
+    IBQueryWidAllFL0: TIBStringField;
+    IBQueryWidAllFL: TIBStringField;
+    IBQueryWidAllCOD: TIBStringField;
+    IBQueryWidAllABONPL: TIBStringField;
+    IBQueryWidAllNPP: TFloatField;
+    IBQueryWidAllFL_NONACH: TIBStringField;
+    IBQueryWidAllFL_NOOPL: TIBStringField;
+    IBQueryWidAllFL_VTCH: TIBStringField;
+    IBQueryWidAllFL_NOOBOR: TIBStringField;
+    IBQueryWidAllFL_GROPL: TFloatField;
+    IBQueryWidAllFL_SUBS: TFloatField;
+    IBQueryWidAllVAL: TFloatField;
+    IBQueryWidAllUPD: TIntegerField;
+    IBQueryWidAllVNESK: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
+
   private
+
     function TrimAll(s:string):string;
     function SearchSchet(str:string):string;
+    function SearchAllPosl(str:string;regallposl:string):string;
+    function SearchPosl(str:string):Arr;
     { Private declarations }
   public
     { Public declarations }
@@ -140,6 +166,9 @@ var
    st1,poslug,tip,path:string;
      MsExcel:Variant;
      period: TDateTime;
+
+
+
 
 implementation
 
@@ -229,11 +258,13 @@ end;
 
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
-    i,ns,kolst:integer;
-    sss,fio,str,sch:string;
+    i,ns,kolst,k:integer;
+    sss,fio,str,sch,regallposl,strprizn:string;
     RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
+    Findposl:Arr;
+
 
 begin
    if Length(path)=0 then
@@ -253,6 +284,7 @@ begin
         Form2.cxProgressBar1.Position:=0;
    Application.ProcessMessages;
    IBPERIOD.Open;
+   IBQueryWidAll.Open;
 
 //        MsExcel.Visible := True;
 
@@ -271,7 +303,19 @@ begin
     IBQueryBank.Next;
     end;
 
+    IBQueryVipiska.close;
+    IBQueryVipiska.SQL.Text:='select *  from SPR_VIPISKA where vidpoisk=:vid';
+    IBQueryVipiska.ParamByName('vid').AsString:='posl';
+    IBQueryVipiska.open;
+    regallposl:='(';
+    while not IBQueryVipiska.Eof do
+    begin
+      regallposl:=regallposl+IBQueryVipiskaPOISK.AsString+'{1}|';
 
+    IBQueryVipiska.Next;
+    end;
+    regallposl:=Copy(regallposl,1,Length(regallposl)-1);
+    regallposl:=regallposl+')';
 
 
        MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+1]:='Параметри обробки';
@@ -313,16 +357,64 @@ begin
         for I := IBQueryBankSTR_ST.Value to kolst do
         begin
           sch:='';
+          strprizn:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_PRIZN.Value];
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
           if Length(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value])=0 then Next;
           if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2])<>0 then Next;
-          sch:=SearchSchet(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_PRIZN.Value]);
+          sch:=SearchSchet(strprizn);
           if sch='' then
           begin
-            MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+2]:='Ос.рахунок не знайдено';
+            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Ос.рахунок не знайдено';
             Next;
           end;
+          if SearchAllPosl(strprizn,regallposl)='' then
+          begin
+            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги не знайдено';
+            Next;
+          end;
+          Findposl:=SearchPosl(strprizn);
+          if Length(Findposl)=0 then
+          begin
+            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги не знайдено';
+            Next;
+          end;
+          if Findposl[0]='many posl' then
+          begin
+            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Знайдено декілька різних послуг';
+            Next;
+          end;
+          if Findposl[0]='not found posl' then
+          begin
+            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуг не знайдено';
+            Next;
+          end;
+          for k:=0 to Length(Findposl) do
+          begin
+              IBQueryObor.first;
+              if not IBQueryObor.Locate('wid',Findposl[0],[]) then
+              begin
+                IBQueryWidAll.First;
+                IBQueryWidAll.Locate('wid',Findposl[0],[]);
+                MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги '+IBQueryWidAllNAIM.Value+' в абонента '+sch+' не знайдено';
+                Next;
+              end;
+
+          end;
+          for k:=0 to Length(Findposl) do
+          begin
+              IBQueryObor.first;
+              if not IBQueryObor.Locate('wid',Findposl[0],[]) then
+              begin
+                IBQueryWidAll.First;
+                IBQueryWidAll.Locate('wid',Findposl[0],[]);
+                MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги '+IBQueryWidAllNAIM.Value+' в абонента '+sch+' не знайдено';
+                Next;
+              end;
+
+          end;
+
+
 
 
 
@@ -371,6 +463,112 @@ begin
           else Result:='';
 end;
 
+function TForm27.SearchAllPosl(str:string;regallposl:string):string;
+var RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
+    sch:string;
+begin
+          Match:=RegularExpression.Match(str,regallposl,[roIgnoreCase]);
+          if Match.Success then
+          begin
+               Result:=Match.Value;
+          end
+          else Result:='';
+end;
+
+function TForm27.SearchPosl(str:string):Arr;
+var RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
+    sch,regposl,wid:string;
+    a:integer;
+    posl:Arr;
+begin
+          a:=0;
+          wid:='';
+          IBQueryVipiska.first;
+          while not IBQueryVipiska.Eof do
+          begin
+            if IBQueryVipiskaWID.AsString<>wid then
+            begin
+              Match:=RegularExpression.Match(str,'('+IBQueryVipiskaPOISK.AsString+'{1})',[roIgnoreCase]);
+              if Match.Success then
+              begin
+                   posl[a]:=Match.Value;
+                   a:=a+1;
+              end;
+            end;
+
+          IBQueryVipiska.Next;
+          end;
+          if Length(posl)>1 then
+          begin
+            Result[0]:='many posl';
+            exit;
+          end;
+          if Length(posl)=0 then
+          begin
+            Result[0]:='not found posl';
+            exit;
+          end;
+          Match:=RegularExpression.Match(str,'(та абон{1})',[roIgnoreCase]);
+              if Match.Success then
+              begin
+                 IBQueryWid.Close;
+                 IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
+                 IBQueryWid.ParamByName('wid').AsString:=posl[a-1];
+                 IBQueryWid.open;
+                 if IBQueryWid.RecordCount<>0 then
+                 begin
+                    posl[a]:=IBQueryWidWID.Value;
+                    Result:=posl;
+                    exit;
+                 end;
+              end;
+          Match:=RegularExpression.Match(str,'(та внеск{1})',[roIgnoreCase]);
+              if Match.Success then
+              begin
+                 IBQueryWid.Close;
+                 IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
+                 IBQueryWid.ParamByName('wid').AsString:=posl[a-1];
+                 IBQueryWid.open;
+                 if IBQueryWid.RecordCount<>0 then
+                 begin
+                    posl[a]:=IBQueryWidWID.Value;
+                    Result:=posl;
+                    exit;
+                 end;
+              end;
+            Match:=RegularExpression.Match(str,'(абон{1})',[roIgnoreCase]);
+              if Match.Success then
+              begin
+                 IBQueryWid.Close;
+                 IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
+                 IBQueryWid.ParamByName('wid').AsString:=posl[a-1];
+                 IBQueryWid.open;
+                 if IBQueryWid.RecordCount<>0 then
+                 begin
+                    Result[0]:=IBQueryWidWID.Value;
+                    exit;
+                 end;
+              end;
+            Match:=RegularExpression.Match(str,'(внеск{1})',[roIgnoreCase]);
+              if Match.Success then
+              begin
+                 IBQueryWid.Close;
+                 IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
+                 IBQueryWid.ParamByName('wid').AsString:=posl[a-1];
+                 IBQueryWid.open;
+                 if IBQueryWid.RecordCount<>0 then
+                 begin
+                    Result[0]:=IBQueryWidWID.Value;
+                    exit;
+                 end;
+              end;
+
+
+end;
 
 
 end.

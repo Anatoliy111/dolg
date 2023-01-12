@@ -122,6 +122,12 @@ type
     cxLabel9: TcxLabel;
     cxLabel7: TcxLabel;
     cxLabel10: TcxLabel;
+    cxLabel32: TcxLabel;
+    cxCheckBox25: TcxCheckBox;
+    cxLabel33: TcxLabel;
+    cxCheckBox26: TcxCheckBox;
+    cxCheckBox27: TcxCheckBox;
+    cxLabel34: TcxLabel;
     procedure cxButton2Click(Sender: TObject);
     procedure cxCheckBox3PropertiesChange(Sender: TObject);
     procedure IBREPFilterRecord(DataSet: TDataSet; var Accept: Boolean);
@@ -132,6 +138,7 @@ type
     procedure cxCheckBox14PropertiesChange(Sender: TObject);
     procedure cxCheckBox15PropertiesChange(Sender: TObject);
     procedure IBWIDAfterPost(DataSet: TDataSet);
+    procedure cxCheckBox12PropertiesChange(Sender: TObject);
   private
     { Private declarations }
     procedure visible;
@@ -172,7 +179,7 @@ procedure TForm14.cxButton2Click(Sender: TObject);
 var
     colum:TcxGridColumn;
     AColumn: TcxGridDBColumn;
-    SQL,having,group,strSAL,strFIELD,strSUMFIELD,strMAXFIELD,strSUMSAL,strHavingSAL,strHavingDOLG,strHavingNACH,strHavingOPL,strSUMOPL,strOPL,strDOLG,strSUMDOLG,strNACH,strSUMNACH:string;
+    SQL,having,group,strSAL,strFIELD,strSUMFIELD,strMAXFIELD,strSUMSAL,strHavingSAL,strHavingDOLG,strHavingNACH,strHavingOPL,strSUMOPL,strOPL,strDOLG,strSUMDOLG,strNACH,strSUMNACH,strSUMKOLIP,strSUMKOLIPF,strKOLIKV:string;
     chwid:integer;
     prop:TPersistent;
 
@@ -344,6 +351,99 @@ begin
 
         group:=group+'NOMKV,';
       end;
+
+      if cxCheckBox25.Checked then
+      begin
+        acolumn:=cxGrid1DBTableView1.CreateColumn;
+        cxGridDBTableView1.BeginUpdate;
+        acolumn.DataBinding.FieldName:='ULNAIM';
+        acolumn.DataBinding.valuetype:='string';
+        acolumn.Width:=200;
+        acolumn.Options.Editing:=false;
+        cxGridDBTableView1.EndUpdate;
+
+        //AColumn.Summary.GroupFooterKind := skSum;
+
+        acolumn.Caption:='Вулиця';
+
+        group:=group+'ULNAIM,';
+
+      end;
+
+      if cxCheckBox26.Checked then
+      begin
+
+        acolumn:=cxGrid1DBTableView1.CreateColumn;
+        cxGridDBTableView1.BeginUpdate;
+        acolumn.DataBinding.FieldName:='NOMDOM';
+        acolumn.DataBinding.valuetype:='string';
+        acolumn.Options.Editing:=false;
+        cxGridDBTableView1.EndUpdate;
+
+        //AColumn.Summary.GroupFooterKind := skSum;
+
+        acolumn.Caption:='Будинок';
+
+        group:=group+'NOMDOM,';
+      end;
+
+      if cxCheckBox27.Checked then
+      begin
+        acolumn:=cxGrid1DBTableView1.CreateColumn;
+        cxGridDBTableView1.BeginUpdate;
+        acolumn.DataBinding.FieldName:='NOMKV';
+        acolumn.DataBinding.valuetype:='string';
+        acolumn.Options.Editing:=false;
+        cxGridDBTableView1.EndUpdate;
+
+        //AColumn.Summary.GroupFooterKind := skSum;
+
+        acolumn.Caption:='Квартира';
+
+        group:=group+'NOMKV,';
+      end;
+
+//        if cxCheckBox28.Checked then
+//        begin
+//
+//        acolumn:=cxGrid1DBTableView1.CreateColumn;
+//        cxGrid1DBTableView1.BeginUpdate;
+//        acolumn.DataBinding.FieldName:='KOLI_P';
+//        acolumn.DataBinding.valuetype:='Currency';
+//        acolumn.Width:=80;
+//        acolumn.Options.Editing:=false;
+//        acolumn.PropertiesClass:=TcxCurrencyEditProperties;
+//        TcxCurrencyEditProperties(acolumn.Properties).DisplayFormat:= ',0.00;-,0.00';
+//        cxGrid1DBTableView1.EndUpdate;
+//
+//        AColumn.Summary.GroupFooterKind := skSum;
+//
+//        acolumn.Caption:='Зареєстровано';
+//
+//        strFIELD:=strFIELD+'KOLI_P,';
+//        strSUMFIELD:=strSUMFIELD+'sum(KOLI_P) KOLI_P,';
+//        end;
+//
+//        if cxCheckBox29.Checked then
+//        begin
+//
+//        acolumn:=cxGrid1DBTableView1.CreateColumn;
+//        cxGrid1DBTableView1.BeginUpdate;
+//        acolumn.DataBinding.FieldName:='KOLI_PF';
+//        acolumn.DataBinding.valuetype:='Currency';
+//        acolumn.Width:=80;
+//        acolumn.Options.Editing:=false;
+//        acolumn.PropertiesClass:=TcxCurrencyEditProperties;
+//        TcxCurrencyEditProperties(acolumn.Properties).DisplayFormat:= ',0.00;-,0.00';
+//        cxGrid1DBTableView1.EndUpdate;
+//
+//        AColumn.Summary.GroupFooterKind := skSum;
+//
+//        acolumn.Caption:='Проживає';
+//
+//        strFIELD:=strFIELD+'KOLI_PF,';
+//        strSUMFIELD:=strSUMFIELD+'sum(KOLI_PF) KOLI_PF,';
+//        end;
 
 
 
@@ -578,35 +678,35 @@ begin
                 IBWID.Next;
                 end;
 
-                if chwid=0 then
-                begin
-                  IBWID.First;
-                  while not IBWID.eof do
-                  begin
-                      strSUMDOLG:=strSUMDOLG+'COALESCE(max(d'+IBWIDWID.Value+'),0)+';
-                      strSUMSAL:=strSUMSAL+'COALESCE(max(s'+IBWIDWID.Value+'),0)+';
-                      strSUMOPL:=strSUMOPL+'COALESCE(max(opl_'+IBWIDWID.Value+'),0)+';
-                      strSUMNACH:=strSUMNACH+'COALESCE(max(nach_'+IBWIDWID.Value+'),0)+';
-                      strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period=:dt1 then dolg else null end as d'+IBWIDWID.Value+',';
-                      strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period=:dt2 then sal else null end as s'+IBWIDWID.Value+',';
-                      if cxCheckBox15.Checked then
-                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period>=:dtn1 and period<=:dtn2 then nach else null end as nach_'+IBWIDWID.Value+','
-                      else
-                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then nach else null end as nach_'+IBWIDWID.Value+',';
-                      if cxCheckBox14.Checked then
-                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period>=:dto1 and period<=:dto2 then fullopl else null end as opl_'+IBWIDWID.Value+','
-                      else
-                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then fullopl else null end as opl_'+IBWIDWID.Value+',';
-
-
-
-//                      strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then nach else null end as nach_'+IBWIDWID.Value+',';
-//                      strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then fullopl else null end as opl_'+IBWIDWID.Value+',';
-                   //   strWhere:=strWhere+IBWIDWID.Value+cxComboBox1.EditValue+StringReplace(FloatToStr(cxCalcEdit1.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' or ';
-
-                  IBWID.Next;
-                  end;
-                end;
+//                if chwid=0 then
+//                begin
+//                  IBWID.First;
+//                  while not IBWID.eof do
+//                  begin
+//                      strSUMDOLG:=strSUMDOLG+'COALESCE(max(d'+IBWIDWID.Value+'),0)+';
+//                      strSUMSAL:=strSUMSAL+'COALESCE(max(s'+IBWIDWID.Value+'),0)+';
+//                      strSUMOPL:=strSUMOPL+'COALESCE(max(opl_'+IBWIDWID.Value+'),0)+';
+//                      strSUMNACH:=strSUMNACH+'COALESCE(max(nach_'+IBWIDWID.Value+'),0)+';
+//                      strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period=:dt1 then dolg else null end as d'+IBWIDWID.Value+',';
+//                      strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period=:dt2 then sal else null end as s'+IBWIDWID.Value+',';
+//                      if cxCheckBox15.Checked then
+//                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period>=:dtn1 and period<=:dtn2 then nach else null end as nach_'+IBWIDWID.Value+','
+//                      else
+//                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then nach else null end as nach_'+IBWIDWID.Value+',';
+//                      if cxCheckBox14.Checked then
+//                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period>=:dto1 and period<=:dto2 then fullopl else null end as opl_'+IBWIDWID.Value+','
+//                      else
+//                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then fullopl else null end as opl_'+IBWIDWID.Value+',';
+//
+//
+//
+////                      strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then nach else null end as nach_'+IBWIDWID.Value+',';
+////                      strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then fullopl else null end as opl_'+IBWIDWID.Value+',';
+//                   //   strWhere:=strWhere+IBWIDWID.Value+cxComboBox1.EditValue+StringReplace(FloatToStr(cxCalcEdit1.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+' or ';
+//
+//                  IBWID.Next;
+//                  end;
+//                end;
 
 
                 Delete(strSUMSAL, Length(strSUMSAL), 1);
@@ -626,17 +726,18 @@ begin
                 strSAL:=strSUMSAL+' as SAL,';
                 strOPL:=strSUMOPL+' as SOPL,';
                 strNACH:=strSUMNACH+' as SNACH,';
-                if chwid=0 then Delete(strSAL, Length(strSAL), 1)
-                else
-                begin
+//                if chwid=0 then Delete(strSAL, Length(strSAL), 1)
 
+                if chwid=0 then
+                begin
+                  Delete(SQL, Length(SQL), 1);
+                  strDOLG:='';
+                  strNACH:='';
+                  strSAL:='';
+                  strOPL:='';
+                  strMAXFIELD:='';
+                  Delete(group, Length(group), 1);
                 end;
-//                if chwid=0 then
-//                begin
-//                  Delete(SQL, Length(SQL), 1);
-//                  strSAL:='';
-//                  strOPL:='';
-//                end;
 
 
                   //SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from(select '+group+strFIELD;
@@ -655,7 +756,11 @@ begin
 
                   end;
 
+
+                if chwid<>0 then
+                begin
                   Delete(SQL, Length(SQL), 1);
+                end;
 
 
                   having:='';
@@ -689,7 +794,10 @@ begin
 
                   SQL:=SQL+' group by '+group;
 
+                if chwid<>0 then
+                begin
                   Delete(SQL, Length(SQL), 1);
+                end;
 
                having:='';
 
@@ -780,6 +888,29 @@ frxReport1.Variables['datemes']:=''''+mon_slovoDt(repdt)+'''';
 frxReport1.Variables['datenow']:=''''+mon_slovoDt(now())+'''';
 frxReport1.Variables['org']:=''''+Form1.ORG+'''';
 frxReport1.ShowReport;
+
+end;
+
+procedure TForm14.cxCheckBox12PropertiesChange(Sender: TObject);
+begin
+if cxCheckBox12.Checked then
+begin
+  cxCheckBox25.Checked:=false;
+  cxCheckBox25.Visible:=false;
+  cxCheckBox26.Checked:=false;
+  cxCheckBox26.Visible:=false;
+  cxCheckBox27.Checked:=false;
+  cxCheckBox27.Visible:=false;
+end
+else
+begin
+  cxCheckBox25.Checked:=false;
+  cxCheckBox25.Visible:=true;
+  cxCheckBox26.Checked:=false;
+  cxCheckBox26.Visible:=true;
+  cxCheckBox27.Checked:=false;
+  cxCheckBox27.Visible:=true;
+end;
 
 end;
 

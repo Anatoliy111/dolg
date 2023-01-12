@@ -1,0 +1,16 @@
+diff a/Unit30.pas b/Unit30.pas	(rejected hunks)
+@@ -15,14 +15,10 @@
+   TForm30 = class(TForm)
+     Panel1: TPanel;
+     DBNavigator1: TDBNavigator;
+-    cxGrid1: TcxGrid;
+-    cxGrid1DBTableView1: TcxGridDBTableView;
+-    cxGrid1Level1: TcxGridLevel;
+     cxGrid2: TcxGrid;
+     cxGridDBTableView1: TcxGridDBTableView;
+     cxGridLevel1: TcxGridLevel;
+     Panel2: TPanel;
+-    Panel3: TPanel;
+     cxGrid3: TcxGrid;
+     cxGridDBTableView2: TcxGridDBTableView;
+     cxGridLevel2: TcxGridLevel;

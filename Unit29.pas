@@ -93,7 +93,10 @@ begin
          if (UpperCase(RightStr(StartFileName,3))<>'ZIP') and (UpperCase(RightStr(StartFileName,3))<>'CSV') then
          begin
             ShowMessage('Неправильний файл !!! Файл повинен бути архівом zip або файлом csv');
-            exit;
+          cxTextEdit1.Text:='';
+          st1:='';
+          Application.ProcessMessages;
+          exit;
          end;
 
             if (UpperCase(RightStr(StartFileName,3))='ZIP') then
@@ -109,6 +112,14 @@ begin
          begin
             zip:=0;
             cxLookupComboBox1.EditValue:=StrToDate('01.'+MidStr(StartFileName,20,2)+'.'+MidStr(StartFileName,16,4));
+         end;
+         if cxLookupComboBox1.Text='' then
+         begin
+            ShowMessage('Відсутні дані за період реєстру!!! Можливо ще не закритий місяць');
+          cxTextEdit1.Text:='';
+          st1:='';
+          Application.ProcessMessages;
+          exit;
          end;
 
 //   s2:=MidStr(DirExtrFile,23,2);
@@ -126,7 +137,11 @@ begin
       if Pos('query_36188893',StartFileName)=0 then
          begin
             ShowMessage('Неправильний файл !!! Файл повинен мати назву query_36188893');
-            exit;
+          cxTextEdit1.Text:='';
+          st1:='';
+          Application.ProcessMessages;
+          exit;
+
          end;
 
     FileHandle:=FileOpen(OpenDialog1.FileName, fmShareExclusive);
@@ -136,6 +151,7 @@ begin
        begin
           ShowMessage('Файл зайнятий іншою програмою. Обробка не можлива!!!');
           cxTextEdit1.Text:='';
+          st1:='';
           Application.ProcessMessages;
           exit;
        end;
@@ -160,6 +176,9 @@ begin
        begin
           ShowMessage('Файл реєстру query_36188893.csv не знайдено!!!');
           TDirectory.Delete(DirExtrFile, True);
+          cxTextEdit1.Text:='';
+          st1:='';
+          Application.ProcessMessages;
           exit;
        end;
            MsExcel := CreateOleObject('Excel.Application');

@@ -1,0 +1,171 @@
+diff a/Unit30.dfm b/Unit30.dfm	(rejected hunks)
+@@ -22,7 +22,6 @@
+     Height = 73
+     Align = alTop
+     TabOrder = 0
+-    ExplicitWidth = 658
+     object DBNavigator1: TDBNavigator
+       Left = 602
+       Top = 24
+@@ -31,69 +30,26 @@
+       DataSource = DSSPR_VIPISKA
+       TabOrder = 0
+     end
+-    object cxLabel1: TcxLabel
+-      Left = 61
+-      Top = 50
+-      Caption = #1041#1072#1085#1082
+-    end
+     object cxLabel2: TcxLabel
+-      Left = 357
++      Left = 309
+       Top = 50
+       Caption = #1055#1086#1089#1083#1091#1075#1072
+     end
+     object cxLabel3: TcxLabel
+-      Left = 194
++      Left = 82
+       Top = 50
+       Caption = #1042#1080#1076' '#1087#1086#1096#1091#1082#1091
+     end
+   end
+-  object cxGrid1: TcxGrid
+-    Left = 0
+-    Top = 73
+-    Width = 137
+-    Height = 407
+-    Align = alLeft
+-    TabOrder = 1
+-    LookAndFeel.NativeStyle = False
+-    object cxGrid1DBTableView1: TcxGridDBTableView
+-      Navigator.Buttons.CustomButtons = <>
+-      DataController.DataSource = DSSPR_BANK
+-      DataController.DetailKeyFieldNames = 'KL'
+-      DataController.KeyFieldNames = 'KL'
+-      DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
+-      DataController.Summary.DefaultGroupSummaryItems = <>
+-      DataController.Summary.FooterSummaryItems = <>
+-      DataController.Summary.SummaryGroups = <>
+-      OptionsData.Deleting = False
+-      OptionsData.DeletingConfirmation = False
+-      OptionsData.Editing = False
+-      OptionsData.Inserting = False
+-      OptionsView.CellEndEllipsis = True
+-      OptionsView.CellAutoHeight = True
+-      OptionsView.ColumnAutoWidth = True
+-      OptionsView.GroupByBox = False
+-      OptionsView.Indicator = True
+-      Preview.AutoHeight = False
+-      object cxGrid1DBTableView1NAIM: TcxGridDBColumn
+-        Caption = #1041#1072#1085#1082
+-        DataBinding.FieldName = 'NAIM'
+-        Options.Editing = False
+-      end
+-    end
+-    object cxGrid1Level1: TcxGridLevel
+-      GridView = cxGrid1DBTableView1
+-    end
+-  end
+   object cxGrid2: TcxGrid
+-    Left = 434
++    Left = 265
+     Top = 73
+     Width = 128
+     Height = 407
+     Align = alLeft
+-    TabOrder = 2
++    TabOrder = 1
+     LookAndFeel.NativeStyle = False
+-    ExplicitLeft = 385
+-    ExplicitTop = 65
++    ExplicitLeft = 434
+     object cxGridDBTableView1: TcxGridDBTableView
+       Navigator.Buttons.CustomButtons = <>
+       DataController.DataSource = DSWID
+@@ -123,34 +79,23 @@
+     end
+   end
+   object Panel2: TPanel
+-    Left = 402
+-    Top = 73
+-    Width = 32
+-    Height = 407
+-    Align = alLeft
+-    TabOrder = 3
+-    ExplicitLeft = 265
+-    ExplicitTop = 79
+-  end
+-  object Panel3: TPanel
+-    Left = 137
++    Left = 233
+     Top = 73
+     Width = 32
+     Height = 407
+     Align = alLeft
+-    TabOrder = 4
+-    ExplicitLeft = 17
+-    ExplicitTop = 1
+-    ExplicitHeight = 468
++    TabOrder = 2
++    ExplicitLeft = 402
+   end
+   object cxGrid3: TcxGrid
+-    Left = 169
++    Left = 0
+     Top = 73
+     Width = 233
+     Height = 407
+     Align = alLeft
+-    TabOrder = 5
++    TabOrder = 3
+     LookAndFeel.NativeStyle = False
++    ExplicitLeft = 169
+     object cxGridDBTableView2: TcxGridDBTableView
+       Navigator.Buttons.CustomButtons = <>
+       DataController.DataSource = DSSPR_VIDPOISK
+@@ -181,28 +126,24 @@
+     end
+   end
+   object Panel4: TPanel
+-    Left = 562
++    Left = 393
+     Top = 73
+     Width = 32
+     Height = 407
+     Align = alLeft
+-    TabOrder = 6
+-    ExplicitLeft = 769
+-    ExplicitTop = 79
+-    ExplicitHeight = 420
++    TabOrder = 4
++    ExplicitLeft = 562
+   end
+   object cxGrid4: TcxGrid
+-    Left = 594
++    Left = 425
+     Top = 73
+-    Width = 368
++    Width = 537
+     Height = 407
+     Align = alClient
+-    TabOrder = 7
++    TabOrder = 5
+     LookAndFeel.NativeStyle = False
+-    ExplicitLeft = 849
+-    ExplicitTop = 79
+-    ExplicitWidth = 192
+-    ExplicitHeight = 420
++    ExplicitLeft = 594
++    ExplicitWidth = 368
+     object cxGridDBTableView3: TcxGridDBTableView
+       Navigator.Buttons.CustomButtons = <>
+       DataController.DataSource = DSSPR_VIPISKA
+@@ -624,7 +433,7 @@
+     ParamCheck = True
+     UniDirectional = False
+     GeneratorField.Field = 'KL'
+-    GeneratorField.Generator = 'GEN_USERS_ID'
++    GeneratorField.Generator = 'GEN_SPR_VIPISKA_ID'
+     Left = 880
+     Top = 152
+     object IBSPR_VIPISKAKL: TIntegerField

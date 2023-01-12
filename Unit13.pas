@@ -12,7 +12,7 @@ uses
   cxDBData, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGridLevel, cxClasses, cxGridCustomView, cxGrid, Vcl.ExtCtrls, Vcl.Tabs,
   Vcl.DockTabSet, dxBarBuiltInMenu, cxPC, cxCalc, frxClass, frxDBSet,
-  frxExportRTF, frxExportXLS, frxExportPDF;
+  frxExportRTF, frxExportXLS, frxExportPDF, cxCheckBox;
 
 type
   TForm13 = class(TForm)
@@ -44,7 +44,6 @@ type
     DSORDER: TDataSource;
     cxGridDBTableView1UL: TcxGridDBColumn;
     cxGridDBTableView1DOM: TcxGridDBColumn;
-    cxGridDBTableView1FIO: TcxGridDBColumn;
     cxGridDBTableView1KOL_KV: TcxGridDBColumn;
     cxGridDBTableView1DOLG: TcxGridDBColumn;
     cxGridDBTableView1BGST: TcxGridDBColumn;
@@ -60,7 +59,6 @@ type
     cxGridDBTableView1PROCENT: TcxGridDBColumn;
     cxGrid1: TcxGrid;
     cxGridDBTableView2: TcxGridDBTableView;
-    cxGridDBColumn1: TcxGridDBColumn;
     cxGridDBColumn2: TcxGridDBColumn;
     cxGridDBColumn3: TcxGridDBColumn;
     cxGridDBColumn4: TcxGridDBColumn;
@@ -86,7 +84,6 @@ type
     cxGridDBTableView2POSL: TcxGridDBColumn;
     IBREPALL: TIBDataSet;
     IBREP: TIBDataSet;
-    RadioButton1: TRadioButton;
     RadioButton2: TRadioButton;
     cxTabSheet3: TcxTabSheet;
     Panel3: TPanel;
@@ -100,11 +97,9 @@ type
     cxLabel11: TcxLabel;
     cxLabel12: TcxLabel;
     cxCalcEdit3: TcxCalcEdit;
-    RadioButton3: TRadioButton;
     RadioButton4: TRadioButton;
     cxGrid3: TcxGrid;
     cxGridDBTableView3: TcxGridDBTableView;
-    cxGridDBColumn17: TcxGridDBColumn;
     cxGridDBColumn18: TcxGridDBColumn;
     cxGridDBColumn19: TcxGridDBColumn;
     cxGridDBColumn20: TcxGridDBColumn;
@@ -234,6 +229,36 @@ type
     IBREPPREND: TFloatField;
     IBREPBORGNIKI: TLargeintField;
     IBREPPROCENT: TFloatField;
+    IBORDERALLKOLI_P: TFloatField;
+    IBORDERALLKOLI_PF: TFloatField;
+    cxGridDBTableView1KOLI_P: TcxGridDBColumn;
+    cxGridDBTableView1KOLI_PF: TcxGridDBColumn;
+    IBORDERKOLI_P: TFloatField;
+    IBORDERKOLI_PF: TFloatField;
+    IBREPALLKOLI_P: TFloatField;
+    IBREPALLKOLI_PF: TFloatField;
+    IBREPKOLI_P: TFloatField;
+    IBREPKOLI_PF: TFloatField;
+    IBREPMESKOLI_P: TFloatField;
+    IBREPMESKOLI_PF: TFloatField;
+    cxGridDBTableView2KOLI_P: TcxGridDBColumn;
+    cxGridDBTableView2KOLI_PF: TcxGridDBColumn;
+    IBORDERMESKOLI_P: TFloatField;
+    IBORDERMESKOLI_PF: TFloatField;
+    cxGridDBTableView3KOLI_P: TcxGridDBColumn;
+    cxGridDBTableView3KOLI_PF: TcxGridDBColumn;
+    cxGrid4: TcxGrid;
+    cxGridDBTableView4: TcxGridDBTableView;
+    cxGridDBTableView1CH: TcxGridDBColumn;
+    cxGridDBTableView1NAIM: TcxGridDBColumn;
+    cxGridLevel4: TcxGridLevel;
+    cxLabel13: TcxLabel;
+    cxCheckBox3: TcxCheckBox;
+    IBWID: TIBDataSet;
+    IBWIDWID: TIBStringField;
+    IBWIDNAIM: TIBStringField;
+    IBWIDCH: TIntegerField;
+    DSWID: TDataSource;
     procedure cxButton5Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -244,6 +269,8 @@ type
     procedure cxButton9Click(Sender: TObject);
     procedure cxButton8Click(Sender: TObject);
     procedure cxButton7Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure cxCheckBox3PropertiesChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -295,6 +322,24 @@ end;
 
 procedure TForm13.cxButton2Click(Sender: TObject);
 begin
+IBWID.First;
+if not IBWID.Locate('ch',1,[]) then
+begin
+  ShowMessage('Виберіть послугу!!!');
+  exit;
+end;
+
+
+                IBWID.First;
+                while not IBWID.eof do
+                begin
+                      if IBWIDCH.Value=1 then
+                      begin
+
+                      end;
+                end;
+
+
 IBORDERALL.Close;
 IBORDERALL.ParamByName('dt1').Value:=cxLookupComboBox3.EditValue;
 IBORDERALL.ParamByName('dt2').Value:=cxLookupComboBox4.EditValue;
@@ -323,15 +368,15 @@ end
 else
  IBREP.SelectSQL.Text:=SQLORDER;
 
-if RadioButton1.Checked then
-begin
-   IBREP.SelectSQL.Text:=IBREP.SelectSQL.Text+' order by fio,posl,ul,dom';
-   frxReport1.LoadFromFile('report/orderfioposladres.fr3');
-end;
+//if RadioButton1.Checked then
+//begin
+//   IBREP.SelectSQL.Text:=IBREP.SelectSQL.Text+' order by fio,posl,ul,dom';
+//   frxReport1.LoadFromFile('report/orderfioposladres.fr3');
+//end;
 if RadioButton2.Checked then
 begin
    IBREP.SelectSQL.Text:=IBREP.SelectSQL.Text+' order by posl,fio,ul,dom';
-   frxReport1.LoadFromFile('report/orderposlfioadres.fr3');
+   frxReport1.LoadFromFile('report/orderposladres.fr3');
 end;
 if RadioButton6.Checked then
 begin
@@ -384,20 +429,20 @@ end
 else
  IBREPMES.SelectSQL.Text:=SQLORDERMES;
 
-if RadioButton3.Checked then
-begin
-   IBREPMES.SelectSQL.Text:=IBREPMES.SelectSQL.Text+' order by fio,posl,ul,dom';
-   frxReport1.LoadFromFile('report/orderfioposladresmes.fr3');
-end;
+//if RadioButton3.Checked then
+//begin
+//   IBREPMES.SelectSQL.Text:=IBREPMES.SelectSQL.Text+' order by fio,posl,ul,dom';
+//   frxReport1.LoadFromFile('report/orderfioposladresmes.fr3');
+//end;
 if RadioButton4.Checked then
 begin
    IBREPMES.SelectSQL.Text:=IBREPMES.SelectSQL.Text+' order by posl,fio,ul,dom';
-   frxReport1.LoadFromFile('report/orderposlfioadresmes.fr3');
+   frxReport1.LoadFromFile('report/orderposladresmes.fr3');
 end;
 if RadioButton5.Checked then
 begin
    IBREPMES.SelectSQL.Text:=IBREPMES.SelectSQL.Text+' order by fio,ul,dom,posl';
-   frxReport1.LoadFromFile('report/orderfioadresposlmes.fr3');
+   frxReport1.LoadFromFile('report/orderadresposlmes.fr3');
 end;
 
 
@@ -437,6 +482,38 @@ begin
 Form1.ExportGrid(cxGrid3,cxTabSheet3.Caption);
 end;
 
+procedure TForm13.cxCheckBox3PropertiesChange(Sender: TObject);
+begin
+     if cxCheckBox3.Checked then
+     begin
+                IBWID.First;
+                while not IBWID.eof do
+                begin
+                  IBWID.Edit;
+                  IBWIDCH.Value:=1;
+                  IBWID.Post;
+
+                IBWID.Next;
+                end;
+                IBWID.First;
+     end
+     else
+     begin
+                IBWID.First;
+                while not IBWID.eof do
+                begin
+                  IBWID.Edit;
+                  IBWIDCH.Value:=0;
+                  IBWID.Post;
+
+                IBWID.Next;
+                end;
+                IBWID.First;
+
+     end;
+
+end;
+
 procedure TForm13.FormCreate(Sender: TObject);
 begin
 
@@ -446,6 +523,17 @@ SQLORDERMES:=IBORDERMES.SelectSQL.Text;
 
 
 
+end;
+
+procedure TForm13.FormShow(Sender: TObject);
+begin
+cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
+cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
+cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
+cxLookupComboBox5.EditValue:=Form1.IBPERIODPERIOD.Value;
+cxLookupComboBox6.EditValue:=Form1.IBPERIODPERIOD.Value;
+IBWID.Open;
 end;
 
 end.
