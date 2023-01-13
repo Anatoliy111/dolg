@@ -522,14 +522,17 @@ object Form13: TForm13
           object cxGridDBColumn4: TcxGridDBColumn
             Caption = #1050#1110#1083#1100'.'#1082#1074'.'
             DataBinding.FieldName = 'KOL_KV'
+            Visible = False
           end
           object cxGridDBTableView2KOLI_P: TcxGridDBColumn
             Caption = #1047#1072#1088#1077#1108#1089#1090#1088#1086#1074#1072#1085#1086
             DataBinding.FieldName = 'KOLI_P'
+            Visible = False
           end
           object cxGridDBTableView2KOLI_PF: TcxGridDBColumn
             Caption = #1055#1088#1086#1078#1080#1074#1072#1108
             DataBinding.FieldName = 'KOLI_PF'
+            Visible = False
           end
           object cxGridDBColumn5: TcxGridDBColumn
             Caption = #1057#1072#1083#1100#1076#1086' '#1085#1072' '#1087#1086#1095'.'
@@ -792,14 +795,17 @@ object Form13: TForm13
           object cxGridDBColumn21: TcxGridDBColumn
             Caption = #1050#1110#1083#1100'.'#1082#1074'.'
             DataBinding.FieldName = 'KOL_KV'
+            Visible = False
           end
           object cxGridDBTableView3KOLI_P: TcxGridDBColumn
             Caption = #1047#1072#1088#1077#1108#1089#1090#1088#1086#1074#1072#1085#1086
             DataBinding.FieldName = 'KOLI_P'
+            Visible = False
           end
           object cxGridDBTableView3KOLI_PF: TcxGridDBColumn
             Caption = #1055#1088#1086#1078#1080#1074#1072#1108
             DataBinding.FieldName = 'KOLI_PF'
+            Visible = False
           end
           object cxGridDBColumn22: TcxGridDBColumn
             Caption = #1057#1072#1083#1100#1076#1086' '#1085#1072' '#1087#1086#1095'.'
@@ -877,13 +883,15 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select'
-      '    ul,'
-      '    dom,'
-      '    fio,'
-      '    kol_kv,'
-      '    sum(koli_p) koli_p,'
-      '    sum(koli_pf) koli_pf,'
+      ' select *'
+      ' from'
+      ' (select'
+      '    kart.ulnaim ul,'
+      '    kart.nomdom dom,'
+      '    kontrol.fio fio,'
+      '    adres.kol_kv,'
+      '    sum(kart.koli_p) koli_p,'
+      '    sum(kart.koli_pf) koli_pf,'
       '    sum(dolg) dolg,'
       '    sum(bgst) bgst,'
       '    sum(prst) prst,'
@@ -907,12 +915,6 @@ object Form13: TForm13
       'from'
       '(select'
       '    aa.schet,'
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio fio,'
-      '    adres.kol_kv,'
-      '    kart.koli_p,'
-      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
       '    sum(aa.bgst) bgst,'
       '    sum(aa.prst) prst,'
@@ -939,7 +941,7 @@ object Form13: TForm13
       '    0.00 as prend,'
       '    0 AS borgniki'
       'from vw_obor'
-      'where vw_obor.period=:dt1'
+      'where vw_obor.period=:dt1 @w'
       'group by schet'
       'union all'
       'select'
@@ -956,7 +958,7 @@ object Form13: TForm13
       '    0.00 as prend,'
       '    0 AS borgniki'
       'from vw_obor'
-      'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2'
+      'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2 @w'
       'group by schet'
       'union all'
       'select'
@@ -975,22 +977,17 @@ object Form13: TForm13
         '    case when sum( vw_obor.bgend) >:bg then 1 else 0 end AS borg' +
         'niki'
       'from vw_obor'
-      'where vw_obor.period=:dt2'
+      'where vw_obor.period=:dt2 @w'
       'group by schet) aa'
-      '   inner join kart on (aa.schet = kart.schet)'
+      'group by aa.schet) bb'
+      '   inner join kart on (bb.schet = kart.schet)'
       
         '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
         '= adres.dom)'
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
       '   where kart.ulnaim is not null'
-      
-        'group by aa.schet,kart.ulnaim, kart.nomdom, kontrol.fio, adres.k' +
-        'ol_kv, kart.koli_p, kart.koli_pf'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      'order by kontrol.fio,kart.ulnaim, kart.nomdom) bb'
-      'group by ul, dom, fio, kol_kv')
+      'group by ul, dom, fio, kol_kv'
+      'order by ul, dom)')
     ParamCheck = True
     UniDirectional = False
     Left = 56
@@ -1082,14 +1079,16 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select'
-      '    posl,'
-      '    ul,'
-      '    dom,'
-      '    fio,'
-      '    kol_kv,'
-      '    sum(koli_p) koli_p,'
-      '    sum(koli_pf) koli_pf,'
+      'select *'
+      ' from'
+      ' (select'
+      '    wid.naim posl,'
+      '    kart.ulnaim ul,'
+      '    kart.nomdom dom,'
+      '    kontrol.fio fio,'
+      '    adres.kol_kv,'
+      '    sum(kart.koli_p) koli_p,'
+      '    sum(kart.koli_pf) koli_pf,'
       '    sum(dolg) dolg,'
       '    sum(bgst) bgst,'
       '    sum(prst) prst,'
@@ -1112,13 +1111,8 @@ object Form13: TForm13
       '        end) AS procent'
       'from'
       '(select'
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio,'
-      '    adres.kol_kv,'
-      '    wid.naim posl,'
-      '    kart.koli_p,'
-      '    kart.koli_pf,'
+      '    schet,'
+      '    wid,'
       '    sum(aa.dolg) dolg,'
       '    sum( aa.bgst) bgst,'
       '    sum( aa.prst) prst,'
@@ -1186,21 +1180,18 @@ object Form13: TForm13
       'from vw_obor'
       'where vw_obor.period=:dt2'
       'group by schet,wid) aa'
-      '   inner join kart on (aa.schet = kart.schet)'
+      'group by aa.schet,aa.wid'
+      
+        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
+        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0) bb'
+      '   inner join kart on (bb.schet = kart.schet)'
       
         '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
         '= adres.dom)'
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
-      '   left join wid on (aa.wid = wid.wid)'
+      '   left join wid on (bb.wid = wid.wid)'
       '   where kart.ulnaim is not null'
-      
-        'group by wid.naim,kart.ulnaim, kart.nomdom, kontrol.fio, adres.k' +
-        'ol_kv, kart.koli_p, kart.koli_pf'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      'order by kontrol.fio,wid.naim,kart.ulnaim, kart.nomdom) bb'
-      'group by posl, ul, dom, fio, kol_kv')
+      'group by posl, ul, dom, fio, kol_kv)')
     ParamCheck = True
     UniDirectional = False
     Left = 128
@@ -1297,13 +1288,15 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select'
-      '    ul,'
-      '    dom,'
-      '    fio,'
-      '    kol_kv,'
-      '    sum(koli_p) koli_p,'
-      '    sum(koli_pf) koli_pf,'
+      ' select *'
+      ' from'
+      ' (select'
+      '    kart.ulnaim ul,'
+      '    kart.nomdom dom,'
+      '    kontrol.fio fio,'
+      '    adres.kol_kv,'
+      '    sum(kart.koli_p) koli_p,'
+      '    sum(kart.koli_pf) koli_pf,'
       '    sum(dolg) dolg,'
       '    sum(bgst) bgst,'
       '    sum(prst) prst,'
@@ -1327,12 +1320,6 @@ object Form13: TForm13
       'from'
       '(select'
       '    aa.schet,'
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio fio,'
-      '    adres.kol_kv,'
-      '    kart.koli_p,'
-      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
       '    sum(aa.bgst) bgst,'
       '    sum(aa.prst) prst,'
@@ -1359,7 +1346,7 @@ object Form13: TForm13
       '    0.00 as prend,'
       '    0 AS borgniki'
       'from vw_obor'
-      'where vw_obor.period=:dt1'
+      'where vw_obor.period=:dt1 @w'
       'group by schet'
       'union all'
       'select'
@@ -1376,7 +1363,7 @@ object Form13: TForm13
       '    0.00 as prend,'
       '    0 AS borgniki'
       'from vw_obor'
-      'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2'
+      'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2 @w'
       'group by schet'
       'union all'
       'select'
@@ -1395,22 +1382,20 @@ object Form13: TForm13
         '    case when sum( vw_obor.bgend) >:bg then 1 else 0 end AS borg' +
         'niki'
       'from vw_obor'
-      'where vw_obor.period=:dt2'
+      'where vw_obor.period=:dt2 @w'
       'group by schet) aa'
-      '   inner join kart on (aa.schet = kart.schet)'
+      'group by aa.schet'
+      
+        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
+        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0) bb'
+      '   inner join kart on (bb.schet = kart.schet)'
       
         '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
         '= adres.dom)'
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
       '   where kart.ulnaim is not null'
-      
-        'group by aa.schet,kart.ulnaim, kart.nomdom, kontrol.fio, adres.k' +
-        'ol_kv, kart.koli_p, kart.koli_pf'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      'order by kontrol.fio,kart.ulnaim, kart.nomdom) bb'
-      'group by ul, dom, fio, kol_kv')
+      'group by ul, dom, fio, kol_kv'
+      'order by ul, dom)')
     ParamCheck = True
     UniDirectional = False
     Left = 304
@@ -1497,14 +1482,16 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select'
-      '    posl,'
-      '    ul,'
-      '    dom,'
-      '    fio,'
-      '    kol_kv,'
-      '    sum(koli_p) koli_p,'
-      '    sum(koli_pf) koli_pf,'
+      'select *'
+      ' from'
+      ' (select'
+      '    wid.naim posl,'
+      '    kart.ulnaim ul,'
+      '    kart.nomdom dom,'
+      '    kontrol.fio fio,'
+      '    adres.kol_kv,'
+      '    sum(kart.koli_p) koli_p,'
+      '    sum(kart.koli_pf) koli_pf,'
       '    sum(dolg) dolg,'
       '    sum(bgst) bgst,'
       '    sum(prst) prst,'
@@ -1527,13 +1514,8 @@ object Form13: TForm13
       '        end) AS procent'
       'from'
       '(select'
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio,'
-      '    adres.kol_kv,'
-      '    wid.naim posl,'
-      '    kart.koli_p,'
-      '    kart.koli_pf,'
+      '    schet,'
+      '    wid,'
       '    sum(aa.dolg) dolg,'
       '    sum( aa.bgst) bgst,'
       '    sum( aa.prst) prst,'
@@ -1601,21 +1583,18 @@ object Form13: TForm13
       'from vw_obor'
       'where vw_obor.period=:dt2'
       'group by schet,wid) aa'
-      '   inner join kart on (aa.schet = kart.schet)'
+      'group by aa.schet,aa.wid'
+      
+        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
+        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0) bb'
+      '   inner join kart on (bb.schet = kart.schet)'
       
         '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
         '= adres.dom)'
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
-      '   left join wid on (aa.wid = wid.wid)'
+      '   left join wid on (bb.wid = wid.wid)'
       '   where kart.ulnaim is not null'
-      
-        'group by wid.naim,kart.ulnaim, kart.nomdom, kontrol.fio, adres.k' +
-        'ol_kv, kart.koli_p, kart.koli_pf'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      'order by kontrol.fio,wid.naim,kart.ulnaim, kart.nomdom) bb'
-      'group by posl, ul, dom, fio, kol_kv')
+      'group by posl, ul, dom, fio, kol_kv)')
     ParamCheck = True
     UniDirectional = False
     Left = 360
@@ -1707,15 +1686,17 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select'
+      ' select *'
+      ' from'
+      ' (select'
       '    period,'
-      '    posl,'
-      '    ul,'
-      '    dom,'
-      '    fio,'
-      '    kol_kv,'
-      '    sum(koli_p) koli_p,'
-      '    sum(koli_pf) koli_pf,'
+      '    wid.naim posl,'
+      '    kart.ulnaim ul,'
+      '    kart.nomdom dom,'
+      '    kontrol.fio fio,'
+      '    adres.kol_kv,'
+      '    sum(kart.koli_p) koli_p,'
+      '    sum(kart.koli_pf) koli_pf,'
       '    sum(dolg) dolg,'
       '    sum(bgst) bgst,'
       '    sum(prst) prst,'
@@ -1738,14 +1719,9 @@ object Form13: TForm13
       '        end) AS procent'
       'from'
       '(select'
+      '    schet,'
+      '    wid,'
       '    period, '
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio,'
-      '    adres.kol_kv,'
-      '    wid.naim posl,'
-      '    kart.koli_p,'
-      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
       '    sum( aa.bgst) bgst,'
       '    sum( aa.prst) prst,'
@@ -1777,23 +1753,19 @@ object Form13: TForm13
       'from vw_obor'
       'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2'
       ') aa'
-      '   inner join kart on (aa.schet = kart.schet)'
+      'group by period,wid,schet'
+      
+        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
+        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0) bb'
+      '   inner join kart on (bb.schet = kart.schet)'
       
         '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
         '= adres.dom)'
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
-      '   left join wid on (aa.wid = wid.wid)'
+      '   left join wid on (bb.wid = wid.wid)'
       '   where kart.ulnaim is not null'
-      
-        'group by period,wid.naim,kart.ulnaim, kart.nomdom, kontrol.fio, ' +
-        'adres.kol_kv, kart.koli_p, kart.koli_pf'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      
-        'order by wid.naim, kontrol.fio,kart.ulnaim, kart.nomdom, period ' +
-        ') bb'
-      'group by period, posl, ul, dom, fio, kol_kv')
+      'group by period, posl, ul, dom, fio, kol_kv'
+      'order by ul, dom, posl, period)')
     ParamCheck = True
     UniDirectional = False
     Left = 200
@@ -1894,15 +1866,17 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select'
+      ' select *'
+      ' from'
+      ' (select'
       '    period,'
-      '    posl,'
-      '    ul,'
-      '    dom,'
-      '    fio,'
-      '    kol_kv,'
-      '    sum(koli_p) koli_p,'
-      '    sum(koli_pf) koli_pf,'
+      '    wid.naim posl,'
+      '    kart.ulnaim ul,'
+      '    kart.nomdom dom,'
+      '    kontrol.fio fio,'
+      '    adres.kol_kv,'
+      '    sum(kart.koli_p) koli_p,'
+      '    sum(kart.koli_pf) koli_pf,'
       '    sum(dolg) dolg,'
       '    sum(bgst) bgst,'
       '    sum(prst) prst,'
@@ -1925,14 +1899,9 @@ object Form13: TForm13
       '        end) AS procent'
       'from'
       '(select'
+      '    schet,'
+      '    wid,'
       '    period, '
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio,'
-      '    adres.kol_kv,'
-      '    wid.naim posl,'
-      '    kart.koli_p,'
-      '    kart.koli_pf,'
       '    sum(aa.dolg) dolg,'
       '    sum( aa.bgst) bgst,'
       '    sum( aa.prst) prst,'
@@ -1964,23 +1933,19 @@ object Form13: TForm13
       'from vw_obor'
       'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2'
       ') aa'
-      '   inner join kart on (aa.schet = kart.schet)'
+      'group by period,wid,schet'
+      
+        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
+        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0) bb'
+      '   inner join kart on (bb.schet = kart.schet)'
       
         '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
         '= adres.dom)'
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
-      '   left join wid on (aa.wid = wid.wid)'
+      '   left join wid on (bb.wid = wid.wid)'
       '   where kart.ulnaim is not null'
-      
-        'group by period,wid.naim,kart.ulnaim, kart.nomdom, kontrol.fio, ' +
-        'adres.kol_kv, kart.koli_p, kart.koli_pf'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0'
-      
-        'order by wid.naim, kontrol.fio,kart.ulnaim, kart.nomdom, period ' +
-        ') bb'
-      'group by period, posl, ul, dom, fio, kol_kv')
+      'group by period, posl, ul, dom, fio, kol_kv'
+      'order by ul, dom, posl, period)')
     ParamCheck = True
     UniDirectional = False
     Left = 416

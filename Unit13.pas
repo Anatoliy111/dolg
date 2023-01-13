@@ -279,7 +279,7 @@ type
 
 var
   Form13: TForm13;
-  SQLORDERALL,SQLORDER,SQLORDERMES:string;
+  SQLORDERALL,SQLORDER,SQLORDERMES,SelectSQL:string;
   OrdAlldt1,OrdAlldt2,Ordposldt1,Ordposldt2,Ordposlmesdt1,Ordposlmesdt2:variant;
   OrdAllbg,Ordposlbg,Ordposlmesbg:double;
 
@@ -287,7 +287,7 @@ implementation
 
 {$R *.dfm}
 
-uses Unit1, mytools;
+uses Unit1, mytools, Unit2;
 
 procedure TForm13.cxButton1Click(Sender: TObject);
 var
@@ -295,20 +295,23 @@ var
   ss:string;
 begin
 
+Form2.Show;
+Form2.Label1.Caption:='Обрахування даних';
+Application.ProcessMessages;
 IBREPALL.Close;
 if cxGridDBTableView1.DataController.Filter.FilterText<>'' then
 begin
- IBREPALL.SelectSQL.Text:=SQLORDERALL+' where '+cxGridDBTableView1.DataController.Filter.FilterText;
+ IBREPALL.SelectSQL.Text:=IBORDERALL.SelectSQL.Text+' where '+cxGridDBTableView1.DataController.Filter.FilterText;
 end
 else
- IBREPALL.SelectSQL.Text:=SQLORDERALL;
+ IBREPALL.SelectSQL.Text:=IBORDERALL.SelectSQL.Text;
 
 
 IBREPALL.ParamByName('dt1').Value:=OrdAlldt1;
 IBREPALL.ParamByName('dt2').Value:=OrdAlldt1;
 IBREPALL.ParamByName('bg').Value:=OrdAllbg;
 IBREPALL.Open;
-
+Form2.close;
 
   frxReport1.LoadFromFile('report/orderbudall.fr3');
 //  frxXLSExport1.FileName:='Звіт за період '+Datename1+' '+Datename2;
@@ -321,6 +324,7 @@ frxReport1.ShowReport;
 end;
 
 procedure TForm13.cxButton2Click(Sender: TObject);
+var strSQL:string;
 begin
 IBWID.First;
 if not IBWID.Locate('ch',1,[]) then
@@ -329,18 +333,28 @@ begin
   exit;
 end;
 
+Form2.Show;
+Form2.Label1.Caption:='Обрахування даних';
+Application.ProcessMessages;
 
+                strSQL:=' and (';
                 IBWID.First;
                 while not IBWID.eof do
                 begin
                       if IBWIDCH.Value=1 then
                       begin
-
+                        strSQL:=strSQL+'wid='''+IBWIDWID.Value+'''';
+                        strSQL:=strSQL+' or ';
                       end;
+                IBWID.Next;
                 end;
+
+                Delete(strSQL, Length(strSQL)-3, 3);
+                strSQL:=strSQL+')';
 
 
 IBORDERALL.Close;
+IBORDERALL.SelectSQL.Text:=StringReplace(SQLORDERALL,'@w',strSQL,[rfReplaceAll, rfIgnoreCase]);
 IBORDERALL.ParamByName('dt1').Value:=cxLookupComboBox3.EditValue;
 IBORDERALL.ParamByName('dt2').Value:=cxLookupComboBox4.EditValue;
 IBORDERALL.ParamByName('bg').Value:=cxCalcEdit1.EditValue;
@@ -349,6 +363,7 @@ OrdAlldt1:=cxLookupComboBox3.EditValue;
 OrdAlldt2:=cxLookupComboBox4.EditValue;
 OrdAllbg:=cxCalcEdit1.EditValue;
 IBORDERALL.Open;
+Form2.close;
 ShowMessage('Звіт зформовано за '+mon_slovoDt(cxLookupComboBox3.EditValue)+' по '+mon_slovoDt(cxLookupComboBox4.EditValue));
 end;
 
@@ -359,7 +374,9 @@ end;
 
 procedure TForm13.cxButton4Click(Sender: TObject);
 begin
-
+Form2.Show;
+Form2.Label1.Caption:='Обрахування даних';
+Application.ProcessMessages;
 IBREP.Close;
 if cxGridDBTableView2.DataController.Filter.FilterText<>'' then
 begin
@@ -390,7 +407,7 @@ IBREP.ParamByName('dt1').Value:=Ordposldt1;
 IBREP.ParamByName('dt2').Value:=Ordposldt2;
 IBREP.ParamByName('bg').Value:=Ordposlbg;
 IBREP.Open;
-
+Form2.close;
 //  frxXLSExport1.FileName:='Звіт за період '+Datename1+' '+Datename2;
 
 frxReport1.Variables['datemes1']:=''''+mon_slovoDt(Ordposldt1)+'''';
@@ -401,6 +418,9 @@ end;
 
 procedure TForm13.cxButton5Click(Sender: TObject);
 begin
+Form2.Show;
+Form2.Label1.Caption:='Обрахування даних';
+Application.ProcessMessages;
 IBORDER.Close;
 IBORDER.ParamByName('dt1').Value:=cxLookupComboBox1.EditValue;
 IBORDER.ParamByName('dt2').Value:=cxLookupComboBox2.EditValue;
@@ -410,6 +430,7 @@ Ordposldt1:=cxLookupComboBox1.EditValue;
 Ordposldt2:=cxLookupComboBox2.EditValue;
 Ordposlbg:=cxCalcEdit2.EditValue;
 IBORDER.Open;
+Form2.close;
 ShowMessage('Звіт зформовано за '+mon_slovoDt(cxLookupComboBox1.EditValue)+' по '+mon_slovoDt(cxLookupComboBox2.EditValue));
 end;
 
@@ -420,7 +441,9 @@ end;
 
 procedure TForm13.cxButton7Click(Sender: TObject);
 begin
-
+Form2.Show;
+Form2.Label1.Caption:='Обрахування даних';
+Application.ProcessMessages;
 IBREPMES.Close;
 if cxGridDBTableView3.DataController.Filter.FilterText<>'' then
 begin
@@ -451,7 +474,7 @@ IBREPMES.ParamByName('dt1').Value:=Ordposlmesdt1;
 IBREPMES.ParamByName('dt2').Value:=Ordposlmesdt2;
 IBREPMES.ParamByName('bg').Value:=Ordposlmesbg;
 IBREPMES.Open;
-
+Form2.close;
 
 //  frxXLSExport1.FileName:='Звіт за період '+Datename1+' '+Datename2;
 
@@ -465,6 +488,9 @@ end;
 
 procedure TForm13.cxButton8Click(Sender: TObject);
 begin
+Form2.Show;
+Form2.Label1.Caption:='Обрахування даних';
+Application.ProcessMessages;
 IBORDERMES.Close;
 IBORDERMES.ParamByName('dt1').Value:=cxLookupComboBox5.EditValue;
 IBORDERMES.ParamByName('dt2').Value:=cxLookupComboBox6.EditValue;
@@ -474,6 +500,7 @@ Ordposlmesdt1:=cxLookupComboBox5.EditValue;
 Ordposlmesdt2:=cxLookupComboBox6.EditValue;
 Ordposlmesbg:=cxCalcEdit3.EditValue;
 IBORDERMES.Open;
+Form2.close;
 ShowMessage('Звіт зформовано за '+mon_slovoDt(cxLookupComboBox5.EditValue)+' по '+mon_slovoDt(cxLookupComboBox6.EditValue));
 end;
 
