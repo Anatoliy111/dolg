@@ -68,7 +68,7 @@ uses Unit1, Unit12;
 
 procedure TForm15.cxButton1Click(Sender: TObject);
 begin
-Form1.IBKART.LocateNext('schet',cxTextEdit1.Text,[]);
+Form1.IBKART.LocateNext('schet',cxTextEdit1.Text,[loCaseInsensitive, loPartialKey]);
 
 end;
 

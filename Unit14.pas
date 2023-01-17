@@ -11,7 +11,7 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, cxLookupEdit, cxDBLookupEdit, cxMaskEdit,
   cxDropDownEdit, Vcl.StdCtrls, cxButtons, cxCheckBox, cxLabel, cxGroupBox,
-  Vcl.ExtCtrls, cxCalc, frxClass, frxDBSet;
+  Vcl.ExtCtrls, cxCalc, frxClass, frxDBSet, IBX.IBDatabase, IBX.IBQuery;
 
 type
   TForm14 = class(TForm)
@@ -49,8 +49,6 @@ type
     cxLookupComboBox2: TcxLookupComboBox;
     cxGrid2: TcxGrid;
     cxGridDBTableView1: TcxGridDBTableView;
-    cxGridDBTableView1CH: TcxGridDBColumn;
-    cxGridDBTableView1NAIM: TcxGridDBColumn;
     cxGridLevel1: TcxGridLevel;
     cxCheckBox3: TcxCheckBox;
     cxLabel8: TcxLabel;
@@ -128,6 +126,8 @@ type
     cxCheckBox26: TcxCheckBox;
     cxCheckBox27: TcxCheckBox;
     cxLabel34: TcxLabel;
+    cxGridDBTableView1NAIM: TcxGridDBColumn;
+    cxGridDBTableView1CH: TcxGridDBColumn;
     procedure cxButton2Click(Sender: TObject);
     procedure cxCheckBox3PropertiesChange(Sender: TObject);
     procedure IBREPFilterRecord(DataSet: TDataSet; var Accept: Boolean);

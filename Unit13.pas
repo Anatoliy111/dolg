@@ -319,6 +319,23 @@ Form2.close;
 frxReport1.Variables['datemes1']:=''''+mon_slovoDt(OrdAlldt1)+'''';
 frxReport1.Variables['datemes2']:=''''+mon_slovoDt(OrdAlldt2)+'''';
 frxReport1.Variables['org']:=''''+Form1.ORG+'''';
+
+                ss:='(';
+                IBWID.First;
+                while not IBWID.eof do
+                begin
+                      if IBWIDCH.Value=1 then
+                      begin
+                        ss:=ss+trim(IBWIDNAIM.Value)+',';
+                      end;
+                IBWID.Next;
+                end;
+
+                Delete(ss, Length(ss)-1, 1);
+                ss:=ss+')';
+
+
+frxReport1.Variables['posl']:=''''+ss+'''';
 frxReport1.ShowReport;
 
 end;

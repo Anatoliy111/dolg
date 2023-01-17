@@ -51,7 +51,6 @@ object Form15: TForm15
       Left = 107
       Top = 16
       TabOrder = 3
-      Text = 'cxTextEdit1'
       Width = 121
     end
   end

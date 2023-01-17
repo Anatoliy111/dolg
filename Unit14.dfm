@@ -172,15 +172,14 @@ object Form14: TForm14
           object cxGridDBTableView1CH: TcxGridDBColumn
             DataBinding.FieldName = 'CH'
             PropertiesClassName = 'TcxCheckBoxProperties'
-            Properties.ImmediatePost = True
-            Properties.ValueChecked = 1
-            Properties.ValueUnchecked = 0
-            Width = 60
+            Properties.ValueChecked = '1'
+            Properties.ValueUnchecked = '0'
+            Width = 29
           end
           object cxGridDBTableView1NAIM: TcxGridDBColumn
             DataBinding.FieldName = 'NAIM'
             Options.Editing = False
-            Width = 227
+            Width = 135
           end
         end
         object cxGridLevel1: TcxGridLevel
@@ -843,24 +842,21 @@ object Form14: TForm14
   object IBWID: TIBDataSet
     Database = Form1.IBDatabase1
     Transaction = Form1.IBTransaction1
+    AutoCalcFields = False
+    FieldOptions.AutoCreateMode = acCombineComputed
+    FieldOptions.PositionMode = poFirst
     AfterPost = IBWIDAfterPost
     BufferChunks = 1000
-    CachedUpdates = False
+    CachedUpdates = True
     DeleteSQL.Strings = (
       'delete from WID'
       'where'
       '  WID = :OLD_WID')
     InsertSQL.Strings = (
       'insert into WID'
-      
-        '  (WID, ID_ORG, NAIM, SNAIM, PAR, FL0, FL, NPP, FL_NONACH, FL_NO' +
-        'OPL, FL_VTCH, '
-      '   FL_NOOBOR, FL_GROPL, FL_SUBS, VAL)'
+      '  (WID, NAIM)'
       'values'
-      
-        '  (:WID, :ID_ORG, :NAIM, :SNAIM, :PAR, :FL0, :FL, :NPP, :FL_NONA' +
-        'CH, :FL_NOOPL, '
-      '   :FL_VTCH, :FL_NOOBOR, :FL_GROPL, :FL_SUBS, :VAL)')
+      '  (:WID, :NAIM)')
     RefreshSQL.Strings = (
       'Select '
       '  WID,'
@@ -870,6 +866,9 @@ object Form14: TForm14
       '  PAR,'
       '  FL0,'
       '  FL,'
+      '  COD,'
+      '  ABONPL,'
+      '  VNESK,'
       '  NPP,'
       '  FL_NONACH,'
       '  FL_NOOPL,'
@@ -877,7 +876,8 @@ object Form14: TForm14
       '  FL_NOOBOR,'
       '  FL_GROPL,'
       '  FL_SUBS,'
-      '  VAL'
+      '  VAL,'
+      '  UPD'
       'from WID '
       'where'
       '  WID = :WID')
@@ -887,23 +887,10 @@ object Form14: TForm14
       'update WID'
       'set'
       '  WID = :WID,'
-      '  ID_ORG = :ID_ORG,'
-      '  NAIM = :NAIM,'
-      '  SNAIM = :SNAIM,'
-      '  PAR = :PAR,'
-      '  FL0 = :FL0,'
-      '  FL = :FL,'
-      '  NPP = :NPP,'
-      '  FL_NONACH = :FL_NONACH,'
-      '  FL_NOOPL = :FL_NOOPL,'
-      '  FL_VTCH = :FL_VTCH,'
-      '  FL_NOOBOR = :FL_NOOBOR,'
-      '  FL_GROPL = :FL_GROPL,'
-      '  FL_SUBS = :FL_SUBS,'
-      '  VAL = :VAL'
+      '  NAIM = :NAIM'
       'where'
       '  WID = :OLD_WID')
-    ParamCheck = True
+    ParamCheck = False
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_WID_ID'
