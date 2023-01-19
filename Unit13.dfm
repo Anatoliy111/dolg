@@ -174,6 +174,8 @@ object Form13: TForm13
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
+        ExplicitLeft = 96
+        ExplicitTop = 150
         object cxGridDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDERALL
@@ -248,10 +250,15 @@ object Form13: TForm13
           OptionsView.FooterMultiSummaries = True
           OptionsView.Indicator = True
           Preview.AutoHeight = False
+          object cxGridDBTableView1NAME: TcxGridDBColumn
+            Caption = #1056#1072#1081#1086#1085
+            DataBinding.FieldName = 'NAME'
+            Width = 89
+          end
           object cxGridDBTableView1UL: TcxGridDBColumn
             Caption = #1042#1091#1083#1080#1094#1103
             DataBinding.FieldName = 'UL'
-            Width = 252
+            Width = 315
           end
           object cxGridDBTableView1DOM: TcxGridDBColumn
             Caption = #1041#1091#1076#1080#1085#1086#1082
@@ -290,7 +297,7 @@ object Form13: TForm13
             Width = 90
           end
           object cxGridDBTableView1PERE: TcxGridDBColumn
-            Caption = #1055#1077#1088#1077#1087#1083#1072#1090#1072
+            Caption = #1055#1077#1088#1077#1088#1072#1093#1091#1085#1086#1082
             DataBinding.FieldName = 'PERE'
             Width = 90
           end
@@ -510,10 +517,15 @@ object Form13: TForm13
             Caption = #1055#1086#1089#1083#1091#1075#1072
             DataBinding.FieldName = 'POSL'
           end
+          object cxGridDBTableView2NAME: TcxGridDBColumn
+            Caption = #1056#1072#1081#1086#1085
+            DataBinding.FieldName = 'NAME'
+            Width = 120
+          end
           object cxGridDBColumn2: TcxGridDBColumn
             Caption = #1042#1091#1083#1080#1094#1103
             DataBinding.FieldName = 'UL'
-            Width = 325
+            Width = 409
           end
           object cxGridDBColumn3: TcxGridDBColumn
             Caption = #1041#1091#1076#1080#1085#1086#1082
@@ -555,7 +567,7 @@ object Form13: TForm13
             Width = 90
           end
           object cxGridDBColumn9: TcxGridDBColumn
-            Caption = #1055#1077#1088#1077#1087#1083#1072#1090#1072
+            Caption = #1055#1077#1088#1077#1088#1072#1093#1091#1085#1086#1082
             DataBinding.FieldName = 'PERE'
             Width = 90
           end
@@ -783,10 +795,15 @@ object Form13: TForm13
             Caption = #1055#1086#1089#1083#1091#1075#1072
             DataBinding.FieldName = 'POSL'
           end
+          object cxGridDBTableView3NAME: TcxGridDBColumn
+            Caption = #1056#1072#1081#1086#1085
+            DataBinding.FieldName = 'NAME'
+            Width = 121
+          end
           object cxGridDBColumn19: TcxGridDBColumn
             Caption = #1042#1091#1083#1080#1094#1103
             DataBinding.FieldName = 'UL'
-            Width = 316
+            Width = 434
           end
           object cxGridDBColumn20: TcxGridDBColumn
             Caption = #1041#1091#1076#1080#1085#1086#1082
@@ -828,7 +845,7 @@ object Form13: TForm13
             Width = 90
           end
           object cxGridDBColumn26: TcxGridDBColumn
-            Caption = #1055#1077#1088#1077#1087#1083#1072#1090#1072
+            Caption = #1055#1077#1088#1077#1088#1072#1093#1091#1085#1086#1082
             DataBinding.FieldName = 'PERE'
             Width = 90
           end
@@ -883,7 +900,7 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      ' select *'
+      ' select qq.*,spr_raion.name'
       ' from'
       ' (select'
       '    kart.ulnaim ul,'
@@ -904,14 +921,24 @@ object Form13: TForm13
       '    sum(prend) as prend,'
       '    sum(borgniki) borgniki,'
       
-        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
-        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
-        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
-        're))) end'
+        '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))>0 then'
       
-        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
-        'se null end'
-      '        end) AS procent'
+        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere)))>100 then 100'
+      
+        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere))) end'
+      
+        '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
+        ')+sum(subs))>0 then 100'
+      
+        '          when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))<=0 then 0'
+      
+        '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
+        '(subs))<=0 then 0 end'
+      '     end) AS procent'
       'from'
       '(select'
       '    aa.schet,'
@@ -987,7 +1014,10 @@ object Form13: TForm13
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
       '   where kart.ulnaim is not null'
       'group by ul, dom, fio, kol_kv'
-      'order by ul, dom)')
+      'order by ul, dom) qq'
+      ' left join adres on (qq.ul = adres.ul) and (qq.dom = adres.dom)'
+      ' left join spr_raion on (adres.kl_raion = spr_raion.kl)'
+      '')
     ParamCheck = True
     UniDirectional = False
     Left = 56
@@ -1067,6 +1097,11 @@ object Form13: TForm13
       FieldName = 'KOLI_PF'
       ProviderFlags = []
     end
+    object IBORDERALLNAME: TIBStringField
+      FieldName = 'NAME'
+      Origin = '"SPR_RAION"."NAME"'
+      Size = 30
+    end
   end
   object DSORDERALL: TDataSource
     DataSet = IBORDERALL
@@ -1079,7 +1114,7 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      'select *'
+      ' select qq.*,spr_raion.name'
       ' from'
       ' (select'
       '    wid.naim posl,'
@@ -1101,14 +1136,24 @@ object Form13: TForm13
       '    sum(prend) as prend,'
       '    sum(borgniki) borgniki,'
       
-        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
-        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
-        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
-        're))) end'
+        '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))>0 then'
       
-        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
-        'se null end'
-      '        end) AS procent'
+        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere)))>100 then 100'
+      
+        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere))) end'
+      
+        '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
+        ')+sum(subs))>0 then 100'
+      
+        '          when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))<=0 then 0'
+      
+        '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
+        '(subs))<=0 then 0 end'
+      '     end) AS procent'
       'from'
       '(select'
       '    schet,'
@@ -1191,7 +1236,10 @@ object Form13: TForm13
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
       '   left join wid on (bb.wid = wid.wid)'
       '   where kart.ulnaim is not null'
-      'group by posl, ul, dom, fio, kol_kv)')
+      'group by posl, ul, dom, fio, kol_kv) qq'
+      ' left join adres on (qq.ul = adres.ul) and (qq.dom = adres.dom)'
+      ' left join spr_raion on (adres.kl_raion = spr_raion.kl)'
+      'order by ul,dom,posl')
     ParamCheck = True
     UniDirectional = False
     Left = 128
@@ -1276,6 +1324,11 @@ object Form13: TForm13
       FieldName = 'KOLI_PF'
       ProviderFlags = []
     end
+    object IBORDERNAME: TIBStringField
+      FieldName = 'NAME'
+      Origin = '"SPR_RAION"."NAME"'
+      Size = 30
+    end
   end
   object DSORDER: TDataSource
     DataSet = IBORDER
@@ -1288,7 +1341,7 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      ' select *'
+      ' select qq.*,spr_raion.name'
       ' from'
       ' (select'
       '    kart.ulnaim ul,'
@@ -1309,14 +1362,24 @@ object Form13: TForm13
       '    sum(prend) as prend,'
       '    sum(borgniki) borgniki,'
       
-        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
-        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
-        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
-        're))) end'
+        '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))>0 then'
       
-        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
-        'se null end'
-      '        end) AS procent'
+        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere)))>100 then 100'
+      
+        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere))) end'
+      
+        '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
+        ')+sum(subs))>0 then 100'
+      
+        '          when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))<=0 then 0'
+      
+        '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
+        '(subs))<=0 then 0 end'
+      '     end) AS procent'
       'from'
       '(select'
       '    aa.schet,'
@@ -1384,10 +1447,7 @@ object Form13: TForm13
       'from vw_obor'
       'where vw_obor.period=:dt2 @w'
       'group by schet) aa'
-      'group by aa.schet'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0) bb'
+      'group by aa.schet) bb'
       '   inner join kart on (bb.schet = kart.schet)'
       
         '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
@@ -1395,7 +1455,9 @@ object Form13: TForm13
       '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
       '   where kart.ulnaim is not null'
       'group by ul, dom, fio, kol_kv'
-      'order by ul, dom)')
+      'order by ul, dom) qq'
+      ' left join adres on (qq.ul = adres.ul) and (qq.dom = adres.dom)'
+      ' left join spr_raion on (adres.kl_raion = spr_raion.kl)')
     ParamCheck = True
     UniDirectional = False
     Left = 304
@@ -1481,120 +1543,6 @@ object Form13: TForm13
     Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
-    SelectSQL.Strings = (
-      'select *'
-      ' from'
-      ' (select'
-      '    wid.naim posl,'
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio fio,'
-      '    adres.kol_kv,'
-      '    sum(kart.koli_p) koli_p,'
-      '    sum(kart.koli_pf) koli_pf,'
-      '    sum(dolg) dolg,'
-      '    sum(bgst) bgst,'
-      '    sum(prst) prst,'
-      '    sum(nach) nach,'
-      '    sum(pere) pere,'
-      '    sum(subs) subs,'
-      '    sum(oplnotsubs) oplnotsubs,'
-      '    sum(sal) sal,'
-      '    sum(bgend) as bgend,'
-      '    sum(prend) as prend,'
-      '    sum(borgniki) borgniki,'
-      
-        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
-        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
-        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
-        're))) end'
-      
-        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
-        'se null end'
-      '        end) AS procent'
-      'from'
-      '(select'
-      '    schet,'
-      '    wid,'
-      '    sum(aa.dolg) dolg,'
-      '    sum( aa.bgst) bgst,'
-      '    sum( aa.prst) prst,'
-      '    sum(aa.nach) nach,'
-      '    sum(aa.pere) pere,'
-      '    sum(aa.subs) subs,'
-      '    sum(aa.oplnotsubs) oplnotsubs,'
-      '    sum(aa.sal) sal,'
-      '    sum( aa.bgend) as bgend,'
-      '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki'
-      'from'
-      '(select'
-      '    schet,'
-      '    wid,'
-      '    sum( vw_obor.dolg) dolg,'
-      '    sum( vw_obor.bgst) bgst,'
-      '    sum( vw_obor.prst) prst,'
-      '    0.00 as nach,'
-      '    0.00 pere,'
-      '    0.00 as subs,'
-      '    0.00 as oplnotsubs,'
-      '    0.00 as sal,'
-      '    0.00 as bgend,'
-      '    0.00 as prend,'
-      '    0 AS borgniki'
-      'from vw_obor'
-      'where vw_obor.period=:dt1'
-      'group by schet,wid'
-      'union all'
-      'select'
-      '    schet,'
-      '    wid,'
-      '    0.00 as dolg,'
-      '    0.00 as bgst,'
-      '    0.00 as prst,'
-      '    sum( vw_obor.nach) nach,'
-      '    sum( vw_obor.pere+vw_obor.wozw) pere,'
-      '    sum( vw_obor.subs) subs,'
-      '    sum( vw_obor.oplnotsubs) oplnotsubs,'
-      '    0.00 as sal,'
-      '    0.00 as bgend,'
-      '    0.00 as prend,'
-      '    0 AS borgniki'
-      'from vw_obor'
-      'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2'
-      'group by schet,wid'
-      'union all'
-      'select'
-      '    schet,'
-      '    wid,'
-      '    0.00 as dolg,'
-      '    0.00 as bgst,'
-      '    0.00 as prst,'
-      '    0.00 as nach,'
-      '    0.00 as pere,'
-      '    0.00 as subs,'
-      '    0.00 as oplnotsubs,'
-      '    sum( vw_obor.sal) as sal,'
-      '    sum( vw_obor.bgend) as bgend,'
-      '    sum( vw_obor.prend) as prend,'
-      
-        '    case when sum( vw_obor.bgend) >:bg then 1 else 0 end AS borg' +
-        'niki'
-      'from vw_obor'
-      'where vw_obor.period=:dt2'
-      'group by schet,wid) aa'
-      'group by aa.schet,aa.wid'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0) bb'
-      '   inner join kart on (bb.schet = kart.schet)'
-      
-        '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
-        '= adres.dom)'
-      '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
-      '   left join wid on (bb.wid = wid.wid)'
-      '   where kart.ulnaim is not null'
-      'group by posl, ul, dom, fio, kol_kv)')
     ParamCheck = True
     UniDirectional = False
     Left = 360
@@ -1679,6 +1627,11 @@ object Form13: TForm13
       FieldName = 'KOLI_PF'
       ProviderFlags = []
     end
+    object IBREPNAME: TIBStringField
+      FieldName = 'NAME'
+      Origin = '"SPR_RAION"."NAME"'
+      Size = 30
+    end
   end
   object IBORDERMES: TIBDataSet
     Database = Form1.IBDatabase1
@@ -1686,7 +1639,7 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      ' select *'
+      ' select qq.*,spr_raion.name'
       ' from'
       ' (select'
       '    period,'
@@ -1709,14 +1662,24 @@ object Form13: TForm13
       '    sum(prend) as prend,'
       '    sum(borgniki) borgniki,'
       
-        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
-        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
-        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
-        're))) end'
+        '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))>0 then'
       
-        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
-        'se null end'
-      '        end) AS procent'
+        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere)))>100 then 100'
+      
+        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere))) end'
+      
+        '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
+        ')+sum(subs))>0 then 100'
+      
+        '          when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))<=0 then 0'
+      
+        '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
+        '(subs))<=0 then 0 end'
+      '     end) AS procent'
       'from'
       '(select'
       '    schet,'
@@ -1765,7 +1728,9 @@ object Form13: TForm13
       '   left join wid on (bb.wid = wid.wid)'
       '   where kart.ulnaim is not null'
       'group by period, posl, ul, dom, fio, kol_kv'
-      'order by ul, dom, posl, period)')
+      'order by ul, dom, posl, period) qq'
+      ' left join adres on (qq.ul = adres.ul) and (qq.dom = adres.dom)'
+      ' left join spr_raion on (adres.kl_raion = spr_raion.kl)')
     ParamCheck = True
     UniDirectional = False
     Left = 200
@@ -1854,6 +1819,11 @@ object Form13: TForm13
       FieldName = 'KOLI_PF'
       ProviderFlags = []
     end
+    object IBORDERMESNAME: TIBStringField
+      FieldName = 'NAME'
+      Origin = '"SPR_RAION"."NAME"'
+      Size = 30
+    end
   end
   object DSORDERMES: TDataSource
     DataSet = IBORDERMES
@@ -1889,14 +1859,24 @@ object Form13: TForm13
       '    sum(prend) as prend,'
       '    sum(borgniki) borgniki,'
       
-        '    (case when (sum(nach)+sum(pere))>0 then case when round(((su' +
-        'm(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pere)))>100 then 10' +
-        '0 else round(((sum(oplnotsubs)+sum(subs))*100)/(sum(nach)+sum(pe' +
-        're))) end'
+        '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))>0 then'
       
-        '        else case when (sum(oplnotsubs)+sum(subs))>0 then 100 el' +
-        'se null end'
-      '        end) AS procent'
+        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere)))>100 then 100'
+      
+        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
+        '(nach)+sum(pere))) end'
+      
+        '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
+        ')+sum(subs))>0 then 100'
+      
+        '          when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
+        'subs))<=0 then 0'
+      
+        '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
+        '(subs))<=0 then 0 end'
+      '     end) AS procent'
       'from'
       '(select'
       '    schet,'

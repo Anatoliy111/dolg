@@ -23,6 +23,7 @@ type
     DBNavigator2: TDBNavigator;
     cxGrid1DBTableView1NOTE: TcxGridDBColumn;
     cxGridDBTableView1NOTE: TcxGridDBColumn;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -37,5 +38,11 @@ implementation
 uses Unit1;
 
 {$R *.dfm}
+
+procedure TForm5.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ Form1.IBTransaction1.CommitRetaining;
+
+end;
 
 end.

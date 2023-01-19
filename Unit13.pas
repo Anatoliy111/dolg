@@ -259,6 +259,13 @@ type
     IBWIDNAIM: TIBStringField;
     IBWIDCH: TIntegerField;
     DSWID: TDataSource;
+    IBORDERALLNAME: TIBStringField;
+    cxGridDBTableView1NAME: TcxGridDBColumn;
+    IBORDERNAME: TIBStringField;
+    IBORDERMESNAME: TIBStringField;
+    IBREPNAME: TIBStringField;
+    cxGridDBTableView2NAME: TcxGridDBColumn;
+    cxGridDBTableView3NAME: TcxGridDBColumn;
     procedure cxButton5Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -294,6 +301,13 @@ var
   I,k: Integer;
   ss:string;
 begin
+
+if IBORDERALL.RecordCount=0 then
+begin
+  ShowMessage('Зформуйте спочатку звіт');
+  exit;
+end;
+
 
 Form2.Show;
 Form2.Label1.Caption:='Обрахування даних';
@@ -391,6 +405,12 @@ end;
 
 procedure TForm13.cxButton4Click(Sender: TObject);
 begin
+if IBORDER.RecordCount=0 then
+begin
+  ShowMessage('Зформуйте спочатку звіт');
+  exit;
+end;
+
 Form2.Show;
 Form2.Label1.Caption:='Обрахування даних';
 Application.ProcessMessages;
@@ -458,6 +478,12 @@ end;
 
 procedure TForm13.cxButton7Click(Sender: TObject);
 begin
+if IBORDERMES.RecordCount=0 then
+begin
+  ShowMessage('Зформуйте спочатку звіт');
+  exit;
+end;
+
 Form2.Show;
 Form2.Label1.Caption:='Обрахування даних';
 Application.ProcessMessages;

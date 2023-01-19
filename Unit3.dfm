@@ -12,6 +12,7 @@ object Form3: TForm3
   Font.Style = []
   OldCreateOrder = False
   OnClose = FormClose
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -81,13 +82,16 @@ object Form3: TForm3
     LookAndFeel.NativeStyle = False
     object cxGridDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = Form1.DSADRES
+      DataController.DataSource = Form1.DSADRESKR
       DataController.DetailKeyFieldNames = 'KL_KONTROL'
       DataController.MasterKeyFieldNames = 'KL'
       DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      OptionsData.Deleting = False
+      OptionsData.DeletingConfirmation = False
+      OptionsData.Editing = False
       OptionsView.CellEndEllipsis = True
       OptionsView.CellAutoHeight = True
       OptionsView.ColumnAutoWidth = True
@@ -98,16 +102,12 @@ object Form3: TForm3
       object cxGridDBTableView1UL: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
         DataBinding.FieldName = 'UL'
-        Width = 274
+        Width = 294
       end
       object cxGridDBTableView1DOM: TcxGridDBColumn
         Caption = #1041#1091#1076#1080#1085#1086#1082
         DataBinding.FieldName = 'DOM'
-        Width = 82
-      end
-      object cxGridDBTableView1KOL_KV: TcxGridDBColumn
-        Caption = #1050#1110#1083#1100'. '#1082#1074
-        DataBinding.FieldName = 'KOL_KV'
+        Width = 62
       end
     end
     object cxGridLevel1: TcxGridLevel

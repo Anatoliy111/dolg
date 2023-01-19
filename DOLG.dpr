@@ -30,7 +30,9 @@ uses
   Unit28 in 'Unit28.pas' {Form28},
   Unit29 in 'Unit29.pas' {Form29},
   sevenzip in 'sevenzip.pas',
-  Unit30 in 'Unit30.pas' {Form30};
+  Unit30 in 'Unit30.pas' {Form30},
+  Unit31 in 'Unit31.pas' {Form31},
+  Unit32 in 'Unit32.pas' {Form32};
 
 {$R *.res}
 
@@ -65,5 +67,7 @@ begin
   Application.CreateForm(TForm28, Form28);
   Application.CreateForm(TForm29, Form29);
   Application.CreateForm(TForm30, Form30);
+  Application.CreateForm(TForm31, Form31);
+  Application.CreateForm(TForm32, Form32);
   Application.Run;
 end.

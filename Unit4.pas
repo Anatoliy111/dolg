@@ -46,17 +46,15 @@ while (not Form1.IBSP_ADRES.eof) do
    begin
      if Form1.IBSP_ADRESCH.Value=1 then
      begin
-        Form1.IBADRES.Insert;
-        Form1.IBADRESUL.Value:=Form1.IBSP_ADRESUL.Value;
-        Form1.IBADRESDOM.Value:=Form1.IBSP_ADRESDOM.Value;
-        Form1.IBADRESKL_KONTROL.Value:=Form1.IBKONTROLKL.Value;
-        Form1.IBADRES.Post;
         Form1.IBSP_ADRES.Edit;
+        Form1.IBSP_ADRESKL_KONTROL.Value:=Form1.IBKONTROLKL.Value;
         Form1.IBSP_ADRESCH.Value:=0;
         Form1.IBSP_ADRES.Post;
      end;
      Form1.IBSP_ADRES.Next;
    end;
+   Form1.IBADRESKR.Close;
+   Form1.IBADRESKR.Open;
    Form4.Close;
 end;
 

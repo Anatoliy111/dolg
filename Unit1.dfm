@@ -234,6 +234,12 @@ object Form1: TForm1
         Caption = #1044#1072#1090#1072' '#1076#1086#1075#1086#1074'.'
         DataBinding.FieldName = 'D_DOG'
       end
+      object cxGrid1DBTableView1NAME: TcxGridDBColumn
+        Caption = #1056#1072#1081#1086#1085
+        DataBinding.FieldName = 'NAME'
+        Options.Editing = False
+        Width = 110
+      end
       object cxGrid1DBTableView1UL: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
         DataBinding.FieldName = 'UL'
@@ -728,12 +734,12 @@ object Form1: TForm1
     Left = 176
     Top = 416
   end
-  object DSADRES: TDataSource
-    DataSet = IBADRES
+  object DSADRESKR: TDataSource
+    DataSet = IBADRESKR
     Left = 96
     Top = 416
   end
-  object IBADRES: TIBDataSet
+  object IBADRESKR: TIBDataSet
     Database = IBDatabase1
     Transaction = IBTransaction1
     BufferChunks = 1000
@@ -744,16 +750,18 @@ object Form1: TForm1
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
       'insert into ADRES'
-      '  (KL, DOM, UL, KL_KONTROL, KOL_KV)'
+      '  (KL, DOM, UL, KL_KONTROL, KOL_KV, KL_UL, KL_RAION)'
       'values'
-      '  (:KL, :DOM, :UL, :KL_KONTROL, :KOL_KV)')
+      '  (:KL, :DOM, :UL, :KL_KONTROL, :KOL_KV, :KL_UL, :KL_RAION)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
       '  DOM,'
       '  UL,'
       '  KL_KONTROL,'
-      '  KOL_KV'
+      '  KOL_KV,'
+      '  KL_UL,'
+      '  KL_RAION'
       'from ADRES '
       'where'
       '  KL = :KL')
@@ -766,7 +774,9 @@ object Form1: TForm1
       '  DOM = :DOM,'
       '  UL = :UL,'
       '  KL_KONTROL = :KL_KONTROL,'
-      '  KOL_KV = :KOL_KV'
+      '  KOL_KV = :KOL_KV,'
+      '  KL_UL = :KL_UL,'
+      '  KL_RAION = :KL_RAION'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -774,36 +784,45 @@ object Form1: TForm1
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_ADRES_ID'
     DataSource = DSKONTROL
-    Left = 96
+    Left = 104
     Top = 360
-    object IBADRESKL: TIntegerField
+    object IBADRESKRKL: TIntegerField
       FieldName = 'KL'
       Origin = '"ADRES"."KL"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object IBADRESDOM: TIBStringField
+    object IBADRESKRDOM: TIBStringField
       FieldName = 'DOM'
       Origin = '"ADRES"."DOM"'
       Size = 10
     end
-    object IBADRESKL_KONTROL: TIntegerField
-      FieldName = 'KL_KONTROL'
-      Origin = '"ADRES"."KL_KONTROL"'
-    end
-    object IBADRESUL: TIBStringField
+    object IBADRESKRUL: TIBStringField
       FieldName = 'UL'
       Origin = '"ADRES"."UL"'
       Size = 70
     end
-    object IBADRESKOL_KV: TIntegerField
+    object IBADRESKRKL_KONTROL: TIntegerField
+      FieldName = 'KL_KONTROL'
+      Origin = '"ADRES"."KL_KONTROL"'
+    end
+    object IBADRESKRKOL_KV: TIntegerField
       FieldName = 'KOL_KV'
       Origin = '"ADRES"."KOL_KV"'
+    end
+    object IBADRESKRKL_UL: TIntegerField
+      FieldName = 'KL_UL'
+      Origin = '"ADRES"."KL_UL"'
+    end
+    object IBADRESKRKL_RAION: TSmallintField
+      FieldName = 'KL_RAION'
+      Origin = '"ADRES"."KL_RAION"'
     end
   end
   object DSNOTE: TDataSource
     DataSet = IBNOTE
-    Left = 248
-    Top = 416
+    Left = 280
+    Top = 424
   end
   object IBNOTE: TIBDataSet
     Database = IBDatabase1
@@ -849,8 +868,8 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_NOTE_ID'
-    Left = 248
-    Top = 360
+    Left = 280
+    Top = 376
     object IBNOTEWID: TIBStringField
       FieldName = 'WID'
       Origin = '"NOTE"."WID"'
@@ -886,8 +905,8 @@ object Form1: TForm1
   end
   object DSSPRADRES: TDataSource
     DataSet = IBSPRADRES
-    Left = 304
-    Top = 416
+    Left = 656
+    Top = 288
   end
   object IBSPRADRES: TIBDataSet
     Database = IBDatabase1
@@ -926,8 +945,8 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_SPRADRES_ID'
-    Left = 304
-    Top = 360
+    Left = 576
+    Top = 288
   end
   object DSREPD: TDataSource
     DataSet = IBREPD
@@ -968,6 +987,7 @@ object Form1: TForm1
       'vw_obkr.n_dog,'
       'vw_obkr.d_dog,'
       'vw_obkr.idcod,'
+      'spr_raion.name,'
       'vw_obkr.ulnaim ul,'
       'vw_obkr.nomdom dom,'
       'vw_obkr.nomkv kv,'
@@ -995,6 +1015,10 @@ object Form1: TForm1
       
         ' left outer join organ on (vw_obkr.org = organ.org) and (organ.u' +
         'pd = 1)'
+      
+        ' left join adres on (vw_obkr.ulnaim = adres.ul) and (vw_obkr.nom' +
+        'dom = adres.dom)'
+      ' left join spr_raion on (adres.kl_raion = spr_raion.kl)'
       ' where note.kl_users =:kluser'
       '')
     ModifySQL.Strings = (
@@ -1165,6 +1189,11 @@ object Form1: TForm1
       Origin = '"VW_OBKR"."PRIV"'
       Size = 1
     end
+    object IBREPDNAME: TIBStringField
+      FieldName = 'NAME'
+      Origin = '"SPR_RAION"."NAME"'
+      Size = 30
+    end
   end
   object IBQuery1: TIBQuery
     Database = IBDatabase1
@@ -1193,37 +1222,29 @@ object Form1: TForm1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
-      'delete from SPRADRES'
+      'delete from adres'
       'where'
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
-      'insert into SPRADRES'
-      '  (CH, DOM, KL, UL)'
+      'insert into adres'
+      '  (KL, UL, DOM, KL_KONTROL)'
       'values'
-      '  (:CH, :DOM, :KL, :UL)')
+      '  (:KL, :UL, :DOM, :KL_KONTROL)')
     RefreshSQL.Strings = (
-      'Select '
-      '  UL,'
-      '  DOM,'
-      '  CH,'
-      '  KL'
-      'from SPRADRES '
+      'Select *'
+      'from adres '
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select kkk.ulnaim ul, kkk.nomdom dom, 0 as CH'
-      
-        'FROM (select ulnaim,nomdom from kart group by ulnaim,nomdom orde' +
-        'r by ulnaim,nomdom) kkk LEFT JOIN ADRES ON kkk.ulnaim = ADRES.ul' +
-        ' and kkk.nomdom = ADRES.dom'
-      'WHERE ADRES.ul IS NULL and ADRES.dom IS NULL')
+      'select kl,ul,dom,kl_kontrol, 0 as CH from adres'
+      'WHERE (kl_kontrol is null or kl_kontrol=0) ')
     ModifySQL.Strings = (
-      'update SPRADRES'
+      'update adres'
       'set'
-      '  CH = :CH,'
-      '  DOM = :DOM,'
       '  KL = :KL,'
-      '  UL = :UL'
+      '  UL = :UL,'
+      '  DOM = :DOM,'
+      '  KL_KONTROL = :KL_KONTROL'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -1232,19 +1253,29 @@ object Form1: TForm1
     GeneratorField.Generator = 'GEN_SP_ADRES_ID'
     Left = 480
     Top = 360
-    object IBSP_ADRESDOM: TIBStringField
-      FieldName = 'DOM'
-      Origin = '"SP_ADRES"."DOM"'
-      Size = 5
-    end
-    object IBSP_ADRESCH: TSmallintField
-      FieldName = 'CH'
-      Origin = '"SP_ADRES"."CH"'
-    end
     object IBSP_ADRESUL: TIBStringField
       FieldName = 'UL'
-      Origin = '"SPRADRES"."UL"'
-      Size = 64
+      Origin = '"ADRES"."UL"'
+      Size = 70
+    end
+    object IBSP_ADRESDOM: TIBStringField
+      FieldName = 'DOM'
+      Origin = '"ADRES"."DOM"'
+      Size = 10
+    end
+    object IBSP_ADRESKL_KONTROL: TIntegerField
+      FieldName = 'KL_KONTROL'
+      Origin = '"ADRES"."KL_KONTROL"'
+    end
+    object IBSP_ADRESCH: TIntegerField
+      FieldName = 'CH'
+      ProviderFlags = []
+    end
+    object IBSP_ADRESKL: TIntegerField
+      FieldName = 'KL'
+      Origin = '"ADRES"."KL"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
     end
   end
   object IBNOTE1: TIBDataSet
@@ -1573,6 +1604,14 @@ object Form1: TForm1
         item
           Visible = True
           ItemName = 'dxBarButton95'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton135'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton136'
         end
         item
           Visible = True
@@ -2855,6 +2894,26 @@ object Form1: TForm1
       Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1087#1072#1088#1072#1084#1077#1090#1088#1110#1074' '#1074#1080#1087#1080#1089#1086#1082
       Visible = ivAlways
       OnClick = dxBarButton133Click
+    end
+    object dxBarButton134: TdxBarButton
+      Caption = 'New Button'
+      Category = 0
+      Hint = 'New Button'
+      Visible = ivAlways
+    end
+    object dxBarButton135: TdxBarButton
+      Caption = #1044#1086#1074#1110#1076#1085#1080#1082' '#1073#1091#1076#1080#1085#1082#1110#1074
+      Category = 0
+      Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1073#1091#1076#1080#1085#1082#1110#1074
+      Visible = ivAlways
+      OnClick = dxBarButton135Click
+    end
+    object dxBarButton136: TdxBarButton
+      Caption = #1044#1086#1074#1110#1076#1085#1080#1082' '#1088#1072#1081#1086#1085#1110#1074
+      Category = 0
+      Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1088#1072#1081#1086#1085#1110#1074
+      Visible = ivAlways
+      OnClick = dxBarButton136Click
     end
   end
   object IBPERIOD: TIBDataSet
@@ -4230,5 +4289,140 @@ object Form1: TForm1
     DataSet = IBVIBER_SEND
     Left = 784
     Top = 520
+  end
+  object IBADRES: TIBDataSet
+    Database = IBDatabase1
+    Transaction = IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from ADRES'
+      'where'
+      '  KL = :OLD_KL')
+    InsertSQL.Strings = (
+      'insert into ADRES'
+      '  (KL, DOM, UL, KL_KONTROL, KOL_KV, KL_UL, KL_RAION)'
+      'values'
+      '  (:KL, :DOM, :UL, :KL_KONTROL, :KOL_KV, :KL_UL, :KL_RAION)')
+    RefreshSQL.Strings = (
+      'Select '
+      '  KL,'
+      '  DOM,'
+      '  UL,'
+      '  KL_KONTROL,'
+      '  KOL_KV,'
+      '  KL_UL,'
+      '  KL_RAION'
+      'from ADRES '
+      'where'
+      '  KL = :KL')
+    SelectSQL.Strings = (
+      'select *  from ADRES order by ul,dom')
+    ModifySQL.Strings = (
+      'update ADRES'
+      'set'
+      '  KL = :KL,'
+      '  DOM = :DOM,'
+      '  UL = :UL,'
+      '  KL_KONTROL = :KL_KONTROL,'
+      '  KOL_KV = :KOL_KV,'
+      '  KL_UL = :KL_UL,'
+      '  KL_RAION = :KL_RAION'
+      'where'
+      '  KL = :OLD_KL')
+    ParamCheck = True
+    UniDirectional = False
+    GeneratorField.Field = 'KL'
+    GeneratorField.Generator = 'GEN_ADRES_ID'
+    Left = 256
+    Top = 272
+    object IBADRESKL: TIntegerField
+      FieldName = 'KL'
+      Origin = '"ADRES"."KL"'
+      Required = True
+    end
+    object IBADRESDOM: TIBStringField
+      FieldName = 'DOM'
+      Origin = '"ADRES"."DOM"'
+      Size = 10
+    end
+    object IBADRESKL_KONTROL: TIntegerField
+      FieldName = 'KL_KONTROL'
+      Origin = '"ADRES"."KL_KONTROL"'
+    end
+    object IBADRESUL: TIBStringField
+      FieldName = 'UL'
+      Origin = '"ADRES"."UL"'
+      Size = 70
+    end
+    object IBADRESKOL_KV: TIntegerField
+      FieldName = 'KOL_KV'
+      Origin = '"ADRES"."KOL_KV"'
+    end
+    object IBADRESKL_UL: TIntegerField
+      FieldName = 'KL_UL'
+      Origin = '"ADRES"."KL_UL"'
+    end
+    object IBADRESKL_RAION: TSmallintField
+      FieldName = 'KL_RAION'
+      Origin = '"ADRES"."KL_RAION"'
+    end
+  end
+  object IBRAION: TIBDataSet
+    Database = IBDatabase1
+    Transaction = IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from SPR_RAION'
+      'where'
+      '  KL = :OLD_KL')
+    InsertSQL.Strings = (
+      'insert into SPR_RAION'
+      '  (KL, NAME)'
+      'values'
+      '  (:KL, :NAME)')
+    RefreshSQL.Strings = (
+      'Select '
+      '  KL,'
+      '  NAME'
+      'from SPR_RAION '
+      'where'
+      '  KL = :KL')
+    SelectSQL.Strings = (
+      'select * from SPR_RAION')
+    ModifySQL.Strings = (
+      'update SPR_RAION'
+      'set'
+      '  KL = :KL,'
+      '  NAME = :NAME'
+      'where'
+      '  KL = :OLD_KL')
+    ParamCheck = True
+    UniDirectional = False
+    GeneratorField.Field = 'KL'
+    GeneratorField.Generator = 'GEN_SPR_RAION_ID'
+    Left = 312
+    Top = 272
+    object IBRAIONKL: TIntegerField
+      FieldName = 'KL'
+      Origin = '"SPR_RAION"."KL"'
+      Required = True
+    end
+    object IBRAIONNAME: TIBStringField
+      FieldName = 'NAME'
+      Origin = '"SPR_RAION"."NAME"'
+      Size = 30
+    end
+  end
+  object DSADRES: TDataSource
+    DataSet = IBADRES
+    Left = 256
+    Top = 328
+  end
+  object DSRAION: TDataSource
+    DataSet = IBRAION
+    Left = 312
+    Top = 328
   end
 end

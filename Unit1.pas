@@ -30,9 +30,8 @@ type
     IBUSERFIO: TIBStringField;
     IBUSERKL: TIntegerField;
     DSUSER: TDataSource;
-    DSADRES: TDataSource;
-    IBADRES: TIBDataSet;
-    IBADRESKL: TIntegerField;
+    DSADRESKR: TDataSource;
+    IBADRESKR: TIBDataSet;
     DSNOTE: TDataSource;
     IBNOTE: TIBDataSet;
     DSSPRADRES: TDataSource;
@@ -46,9 +45,6 @@ type
     IBNOTEKL: TIntegerField;
     DSSP_ADRES: TDataSource;
     IBSP_ADRES: TIBDataSet;
-    IBSP_ADRESDOM: TIBStringField;
-    IBSP_ADRESCH: TSmallintField;
-    IBADRESDOM: TIBStringField;
     IBNOTENOTE1: TIntegerField;
     IBNOTENOTE2: TIntegerField;
     IBNOTENOTE3: TIBStringField;
@@ -66,7 +62,6 @@ type
     IBKONTROL: TIBDataSet;
     IBKONTROLKL: TIntegerField;
     IBKONTROLFIO: TIBStringField;
-    IBADRESKL_KONTROL: TIntegerField;
     DSSERVICES: TDataSource;
     IBSERVICES: TIBDataSet;
     IBSERVICESKL: TIntegerField;
@@ -236,8 +231,6 @@ type
     DSKART: TDataSource;
     IBOBOR: TIBDataSet;
     DSOBOR: TDataSource;
-    IBADRESUL: TIBStringField;
-    IBSP_ADRESUL: TIBStringField;
     IBTMPOPL: TIBDataSet;
     DSTMPOPL: TDataSource;
     IBTransaction1: TIBTransaction;
@@ -277,7 +270,6 @@ type
     cxCheckBox1: TcxCheckBox;
     cxComboBox2: TcxComboBox;
     cxButton5: TcxButton;
-    IBADRESKOL_KV: TIntegerField;
     IBORGAN: TIBDataSet;
     DSORGAN: TDataSource;
     cxGrid1DBTableView1DOLG: TcxGridDBColumn;
@@ -526,6 +518,36 @@ type
     dxBarSubItem30: TdxBarSubItem;
     dxBarButton132: TdxBarButton;
     dxBarButton133: TdxBarButton;
+    IBSP_ADRESUL: TIBStringField;
+    IBSP_ADRESDOM: TIBStringField;
+    IBSP_ADRESKL_KONTROL: TIntegerField;
+    IBSP_ADRESCH: TIntegerField;
+    IBSP_ADRESKL: TIntegerField;
+    dxBarButton134: TdxBarButton;
+    dxBarButton135: TdxBarButton;
+    dxBarButton136: TdxBarButton;
+    IBADRES: TIBDataSet;
+    IBADRESKL: TIntegerField;
+    IBADRESDOM: TIBStringField;
+    IBADRESKL_KONTROL: TIntegerField;
+    IBADRESUL: TIBStringField;
+    IBADRESKOL_KV: TIntegerField;
+    IBADRESKL_UL: TIntegerField;
+    IBADRESKL_RAION: TSmallintField;
+    IBRAION: TIBDataSet;
+    IBRAIONKL: TIntegerField;
+    IBRAIONNAME: TIBStringField;
+    DSADRES: TDataSource;
+    DSRAION: TDataSource;
+    IBADRESKRKL: TIntegerField;
+    IBADRESKRDOM: TIBStringField;
+    IBADRESKRUL: TIBStringField;
+    IBADRESKRKL_KONTROL: TIntegerField;
+    IBADRESKRKOL_KV: TIntegerField;
+    IBADRESKRKL_UL: TIntegerField;
+    IBADRESKRKL_RAION: TSmallintField;
+    IBREPDNAME: TIBStringField;
+    cxGrid1DBTableView1NAME: TcxGridDBColumn;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -559,6 +581,8 @@ type
     procedure dxBarButton129Click(Sender: TObject);
     procedure dxBarButton132Click(Sender: TObject);
     procedure dxBarButton133Click(Sender: TObject);
+    procedure dxBarButton135Click(Sender: TObject);
+    procedure dxBarButton136Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -591,7 +615,7 @@ implementation
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
   Unit16, Unit19, Unit20, Unit21, Unit22, Unit23, Unit26, Unit27, Unit28,
-  Unit29, Unit30;
+  Unit29, Unit30, Unit31, Unit32;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -704,6 +728,25 @@ procedure TForm1.dxBarButton133Click(Sender: TObject);
 begin
 Form30.Caption:=dxBarButton133.Caption;
 Form30.Show;
+end;
+
+procedure TForm1.dxBarButton135Click(Sender: TObject);
+begin
+Form31.Caption:=dxBarButton135.Caption;
+IBADRES.Close;
+IBADRES.Open;
+IBRAION.Close;
+IBRAION.Open;
+Form31.show;
+end;
+
+procedure TForm1.dxBarButton136Click(Sender: TObject);
+begin
+Form32.Caption:=dxBarButton136.Caption;
+IBRAION.Close;
+IBRAION.Open;
+Form32.show;
+
 end;
 
 procedure TForm1.dxBarButton19Click(Sender: TObject);
@@ -1037,12 +1080,15 @@ begin
   StartSQL:=IBREPD.SelectSQL.Text;
   IBKONTROL.open;
   IBUSER.open;
-  IBADRES.open;
+  IBADRESKR.open;
   IBNOTE.open;
   IBNOTE1.open;
   IBNOTE2.open;
   IBKART.open;
   IBOBOR.open;
+
+  IBADRES.Open;
+  IBRAION.Open;
 
   IBSPRADRES.open;
   IBSP_ADRES.open;
@@ -1091,7 +1137,7 @@ end;
 
 procedure TForm1.IBKONTROLBeforeDelete(DataSet: TDataSet);
 begin
-Form1.IBQuery1.SQL.Text:='delete from adres where kl_kontrol = :kll';
+Form1.IBQuery1.SQL.Text:='update adres set kl_kontrol = null where kl_kontrol = :kll';
 Form1.IBQuery1.ParamByName('kll').Value:=IBKONTROLKL.Value;
 Form1.IBQuery1.ExecSQL;
 Form1.IBTransaction1.CommitRetaining;

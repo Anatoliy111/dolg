@@ -67,6 +67,8 @@ begin
  if Form1.IBSERVICES.State in [dsInsert,dsEdit] then Form1.IBSERVICES.Post;
  if Form1.IBWID.State in [dsInsert,dsEdit] then Form1.IBWID.Post;
  if Form1.IBUSER.State in [dsInsert,dsEdit] then Form1.IBUSER.Post;
+  Form1.IBTransaction1.CommitRetaining;
+
 end;
 
 procedure TForm6.FormShow(Sender: TObject);

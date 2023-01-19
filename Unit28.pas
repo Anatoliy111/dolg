@@ -89,6 +89,8 @@ uses Unit1;
 procedure TForm28.cxButton1Click(Sender: TObject);
 begin
 if IBBANK.State in [dsInsert,dsEdit] then IBBANK.Post;
+ Form1.IBTransaction1.CommitRetaining;
+
 end;
 
 procedure TForm28.FormClose(Sender: TObject; var Action: TCloseAction);
