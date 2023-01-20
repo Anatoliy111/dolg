@@ -266,6 +266,12 @@ type
     IBREPNAME: TIBStringField;
     cxGridDBTableView2NAME: TcxGridDBColumn;
     cxGridDBTableView3NAME: TcxGridDBColumn;
+    IBORDERPROCENT2: TFloatField;
+    IBORDERMESPROCENT2: TFloatField;
+    IBORDERALLPROCENT2: TFloatField;
+    cxGridDBTableView1PROCENT2: TcxGridDBColumn;
+    cxGridDBTableView2PROCENT2: TcxGridDBColumn;
+    cxGridDBTableView3PROCENT2: TcxGridDBColumn;
     procedure cxButton5Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);

@@ -3,7 +3,7 @@ object Form13: TForm13
   Top = 0
   Caption = 'Form13'
   ClientHeight = 642
-  ClientWidth = 914
+  ClientWidth = 963
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,26 +19,29 @@ object Form13: TForm13
   object cxPageControl1: TcxPageControl
     Left = 0
     Top = 0
-    Width = 914
+    Width = 963
     Height = 642
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
+    ExplicitWidth = 914
     ClientRectBottom = 638
     ClientRectLeft = 4
-    ClientRectRight = 910
+    ClientRectRight = 959
     ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
       Caption = #1047#1074#1110#1090' '#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1080#1081' ('#1079#1072#1075#1072#1083#1100#1085#1080#1081')'
       ImageIndex = 0
+      ExplicitWidth = 906
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 906
+        Width = 955
         Height = 145
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 906
         object cxLabel3: TcxLabel
           Left = 8
           Top = 11
@@ -169,13 +172,12 @@ object Form13: TForm13
       object cxGrid2: TcxGrid
         Left = 0
         Top = 145
-        Width = 906
+        Width = 955
         Height = 469
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
-        ExplicitLeft = 96
-        ExplicitTop = 150
+        ExplicitWidth = 906
         object cxGridDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDERALL
@@ -241,6 +243,10 @@ object Form13: TForm13
             item
               Kind = skSum
               Column = cxGridDBTableView1KOL_KV
+            end
+            item
+              Kind = skAverage
+              Column = cxGridDBTableView1PROCENT2
             end>
           DataController.Summary.SummaryGroups = <>
           OptionsData.Editing = False
@@ -328,9 +334,15 @@ object Form13: TForm13
             Caption = #1050#1110#1083#1100'. '#1073#1086#1088#1078#1085#1080#1082#1110#1074
             DataBinding.FieldName = 'BORGNIKI'
           end
+          object cxGridDBTableView1PROCENT2: TcxGridDBColumn
+            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080' '#1079' '#1073#1086#1088#1075#1086#1084
+            DataBinding.FieldName = 'PROCENT2'
+            Width = 141
+          end
           object cxGridDBTableView1PROCENT: TcxGridDBColumn
-            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080
+            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080' '#1073#1077#1079' '#1073#1086#1088#1075#1091
             DataBinding.FieldName = 'PROCENT'
+            Width = 142
           end
         end
         object cxGridLevel1: TcxGridLevel
@@ -341,13 +353,15 @@ object Form13: TForm13
     object cxTabSheet2: TcxTabSheet
       Caption = #1047#1074#1110#1090' '#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1080#1081' ('#1074' '#1088#1086#1079#1088#1110#1079#1110' '#1087#1086#1089#1083#1091#1075')'
       ImageIndex = 1
+      ExplicitWidth = 906
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 906
+        Width = 955
         Height = 89
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 906
         object cxLabel1: TcxLabel
           Left = 8
           Top = 11
@@ -446,11 +460,12 @@ object Form13: TForm13
       object cxGrid1: TcxGrid
         Left = 0
         Top = 89
-        Width = 906
+        Width = 955
         Height = 525
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
+        ExplicitWidth = 906
         object cxGridDBTableView2: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDER
@@ -504,6 +519,10 @@ object Form13: TForm13
             item
               Kind = skAverage
               Column = cxGridDBColumn16
+            end
+            item
+              Kind = skAverage
+              Column = cxGridDBTableView2PROCENT2
             end>
           DataController.Summary.SummaryGroups = <>
           OptionsData.Editing = False
@@ -601,10 +620,15 @@ object Form13: TForm13
             DataBinding.FieldName = 'BORGNIKI'
             Width = 90
           end
+          object cxGridDBTableView2PROCENT2: TcxGridDBColumn
+            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080' '#1079' '#1073#1086#1088#1075#1086#1084
+            DataBinding.FieldName = 'PROCENT2'
+            Width = 164
+          end
           object cxGridDBColumn16: TcxGridDBColumn
-            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080
+            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080' '#1073#1077#1079' '#1073#1086#1088#1075#1091
             DataBinding.FieldName = 'PROCENT'
-            Width = 90
+            Width = 170
           end
         end
         object cxGridLevel2: TcxGridLevel
@@ -615,13 +639,15 @@ object Form13: TForm13
     object cxTabSheet3: TcxTabSheet
       Caption = #1047#1074#1110#1090' '#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1080#1081' '#1055#1054' '#1052#1030#1057#1071#1063#1053#1054' ('#1074' '#1088#1086#1079#1088#1110#1079#1110' '#1087#1086#1089#1083#1091#1075')'
       ImageIndex = 2
+      ExplicitWidth = 906
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 906
+        Width = 955
         Height = 89
         Align = alTop
         TabOrder = 0
+        ExplicitWidth = 906
         object cxLabel9: TcxLabel
           Left = 8
           Top = 11
@@ -720,11 +746,12 @@ object Form13: TForm13
       object cxGrid3: TcxGrid
         Left = 0
         Top = 89
-        Width = 906
+        Width = 955
         Height = 525
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
+        ExplicitWidth = 906
         object cxGridDBTableView3: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDERMES
@@ -778,6 +805,10 @@ object Form13: TForm13
             item
               Kind = skAverage
               Column = cxGridDBColumn33
+            end
+            item
+              Kind = skAverage
+              Column = cxGridDBTableView3PROCENT2
             end>
           DataController.Summary.SummaryGroups = <>
           OptionsData.Editing = False
@@ -790,6 +821,7 @@ object Form13: TForm13
           object cxGridDBTableView3PERIOD: TcxGridDBColumn
             Caption = #1055#1077#1088#1110#1086#1076
             DataBinding.FieldName = 'PERIOD'
+            Width = 133
           end
           object cxGridDBColumn18: TcxGridDBColumn
             Caption = #1055#1086#1089#1083#1091#1075#1072
@@ -879,13 +911,15 @@ object Form13: TForm13
             DataBinding.FieldName = 'BORGNIKI'
             Width = 90
           end
-          object cxGridDBColumn33: TcxGridDBColumn
-            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080
-            DataBinding.FieldName = 'PROCENT'
-            Width = 90
+          object cxGridDBTableView3PROCENT2: TcxGridDBColumn
+            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080' '#1079' '#1073#1086#1088#1075#1086#1084
+            DataBinding.FieldName = 'PROCENT2'
+            Width = 150
           end
-          object cxGridDBTableView3FIO: TcxGridDBColumn
-            DataBinding.FieldName = 'FIO'
+          object cxGridDBColumn33: TcxGridDBColumn
+            Caption = #1042#1110#1076#1089#1086#1090#1086#1082' '#1089#1087#1083#1072#1090#1080' '#1073#1077#1079' '#1073#1086#1088#1075#1091
+            DataBinding.FieldName = 'PROCENT'
+            Width = 157
           end
         end
         object cxGridLevel3: TcxGridLevel
@@ -924,11 +958,11 @@ object Form13: TForm13
         '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
         'subs))>0 then'
       
-        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere)))>100 then 100'
+        '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere))*100,2)>100 then 100'
       
-        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere))) end'
+        '               else round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere))*100,2) end'
       
         '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
         ')+sum(subs))>0 then 100'
@@ -938,7 +972,26 @@ object Form13: TForm13
       
         '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
         '(subs))<=0 then 0 end'
-      '     end) AS procent'
+      '     end) AS procent,'
+      
+        '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
+        'subs)+sum(subs)-sum(prst))>0 then'
+      
+        '          case when round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
+        '(sum(nach)+sum(pere)+sum(bgst))*100,2)>100 then 100'
+      
+        '               else round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
+        '(sum(nach)+sum(pere)+sum(bgst))*100,2) end'
+      
+        '     else case when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(' +
+        'oplnotsubs)+sum(subs)-sum(prst))>0 then 100'
+      
+        '          when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
+        'subs)+sum(subs)-sum(prst))<=0 then 0'
+      
+        '          when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(oplno' +
+        'tsubs)+sum(subs)-sum(prst))<=0 then 0 end'
+      '     end) AS procent2'
       'from'
       '(select'
       '    aa.schet,'
@@ -1102,6 +1155,10 @@ object Form13: TForm13
       Origin = '"SPR_RAION"."NAME"'
       Size = 30
     end
+    object IBORDERALLPROCENT2: TFloatField
+      FieldName = 'PROCENT2'
+      ProviderFlags = []
+    end
   end
   object DSORDERALL: TDataSource
     DataSet = IBORDERALL
@@ -1139,11 +1196,11 @@ object Form13: TForm13
         '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
         'subs))>0 then'
       
-        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere)))>100 then 100'
+        '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere))*100,2)>100 then 100'
       
-        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere))) end'
+        '               else round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere))*100,2) end'
       
         '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
         ')+sum(subs))>0 then 100'
@@ -1153,7 +1210,26 @@ object Form13: TForm13
       
         '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
         '(subs))<=0 then 0 end'
-      '     end) AS procent'
+      '     end) AS procent,'
+      
+        '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
+        'subs)+sum(subs)-sum(prst))>0 then'
+      
+        '          case when round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
+        '(sum(nach)+sum(pere)+sum(bgst))*100,2)>100 then 100'
+      
+        '               else round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
+        '(sum(nach)+sum(pere)+sum(bgst))*100,2) end'
+      
+        '     else case when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(' +
+        'oplnotsubs)+sum(subs)-sum(prst))>0 then 100'
+      
+        '          when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
+        'subs)+sum(subs)-sum(prst))<=0 then 0'
+      
+        '          when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(oplno' +
+        'tsubs)+sum(subs)-sum(prst))<=0 then 0 end'
+      '     end) AS procent2'
       'from'
       '(select'
       '    schet,'
@@ -1329,6 +1405,10 @@ object Form13: TForm13
       Origin = '"SPR_RAION"."NAME"'
       Size = 30
     end
+    object IBORDERPROCENT2: TFloatField
+      FieldName = 'PROCENT2'
+      ProviderFlags = []
+    end
   end
   object DSORDER: TDataSource
     DataSet = IBORDER
@@ -1341,123 +1421,7 @@ object Form13: TForm13
     BufferChunks = 1000
     CachedUpdates = False
     SelectSQL.Strings = (
-      ' select qq.*,spr_raion.name'
-      ' from'
-      ' (select'
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio fio,'
-      '    adres.kol_kv,'
-      '    sum(kart.koli_p) koli_p,'
-      '    sum(kart.koli_pf) koli_pf,'
-      '    sum(dolg) dolg,'
-      '    sum(bgst) bgst,'
-      '    sum(prst) prst,'
-      '    sum(nach) nach,'
-      '    sum(pere) pere,'
-      '    sum(subs) subs,'
-      '    sum(oplnotsubs) oplnotsubs,'
-      '    sum(sal) sal,'
-      '    sum(bgend) as bgend,'
-      '    sum(prend) as prend,'
-      '    sum(borgniki) borgniki,'
-      
-        '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
-        'subs))>0 then'
-      
-        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere)))>100 then 100'
-      
-        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere))) end'
-      
-        '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
-        ')+sum(subs))>0 then 100'
-      
-        '          when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
-        'subs))<=0 then 0'
-      
-        '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
-        '(subs))<=0 then 0 end'
-      '     end) AS procent'
-      'from'
-      '(select'
-      '    aa.schet,'
-      '    sum(aa.dolg) dolg,'
-      '    sum(aa.bgst) bgst,'
-      '    sum(aa.prst) prst,'
-      '    sum(aa.nach) nach,'
-      '    sum(aa.pere) pere,'
-      '    sum(aa.subs) subs,'
-      '    sum(aa.oplnotsubs) oplnotsubs,'
-      '    sum(aa.sal) sal,'
-      '    sum( aa.bgend) as bgend,'
-      '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki'
-      'from'
-      '(select'
-      '    schet,'
-      '    sum( vw_obor.dolg) dolg,'
-      '    sum( vw_obor.bgst) bgst,'
-      '    sum( vw_obor.prst) prst,'
-      '    0.00 as nach,'
-      '    0.00 pere,'
-      '    0.00 as subs,'
-      '    0.00 as oplnotsubs,'
-      '    0.00 as sal,'
-      '    0.00 as bgend,'
-      '    0.00 as prend,'
-      '    0 AS borgniki'
-      'from vw_obor'
-      'where vw_obor.period=:dt1 @w'
-      'group by schet'
-      'union all'
-      'select'
-      '    schet,'
-      '    0.00 as dolg,'
-      '    0.00 as bgst,'
-      '    0.00 as prst,'
-      '    sum( vw_obor.nach) nach,'
-      '    sum( vw_obor.pere+vw_obor.wozw) pere,'
-      '    sum( vw_obor.subs) subs,'
-      '    sum( vw_obor.oplnotsubs) oplnotsubs,'
-      '    0.00 as sal,'
-      '    0.00 as bgend,'
-      '    0.00 as prend,'
-      '    0 AS borgniki'
-      'from vw_obor'
-      'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2 @w'
-      'group by schet'
-      'union all'
-      'select'
-      '    schet,'
-      '    0.00 as dolg,'
-      '    0.00 as bgst,'
-      '    0.00 as prst,'
-      '    0.00 as nach,'
-      '    0.00 as pere,'
-      '    0.00 as subs,'
-      '    0.00 as oplnotsubs,'
-      '    sum( vw_obor.sal) as sal,'
-      '    sum( vw_obor.bgend) as bgend,'
-      '    sum( vw_obor.prend) as prend,'
-      
-        '    case when sum( vw_obor.bgend) >:bg then 1 else 0 end AS borg' +
-        'niki'
-      'from vw_obor'
-      'where vw_obor.period=:dt2 @w'
-      'group by schet) aa'
-      'group by aa.schet) bb'
-      '   inner join kart on (bb.schet = kart.schet)'
-      
-        '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
-        '= adres.dom)'
-      '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
-      '   where kart.ulnaim is not null'
-      'group by ul, dom, fio, kol_kv'
-      'order by ul, dom) qq'
-      ' left join adres on (qq.ul = adres.ul) and (qq.dom = adres.dom)'
-      ' left join spr_raion on (adres.kl_raion = spr_raion.kl)')
+      '')
     ParamCheck = True
     UniDirectional = False
     Left = 304
@@ -1665,11 +1629,11 @@ object Form13: TForm13
         '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
         'subs))>0 then'
       
-        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere)))>100 then 100'
+        '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere))*100,2)>100 then 100'
       
-        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere))) end'
+        '               else round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere))*100,2) end'
       
         '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
         ')+sum(subs))>0 then 100'
@@ -1679,7 +1643,26 @@ object Form13: TForm13
       
         '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
         '(subs))<=0 then 0 end'
-      '     end) AS procent'
+      '     end) AS procent,'
+      
+        '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
+        'subs)+sum(subs)-sum(prst))>0 then'
+      
+        '          case when round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
+        '(sum(nach)+sum(pere)+sum(bgst))*100,2)>100 then 100'
+      
+        '               else round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
+        '(sum(nach)+sum(pere)+sum(bgst))*100,2) end'
+      
+        '     else case when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(' +
+        'oplnotsubs)+sum(subs)-sum(prst))>0 then 100'
+      
+        '          when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
+        'subs)+sum(subs)-sum(prst))<=0 then 0'
+      
+        '          when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(oplno' +
+        'tsubs)+sum(subs)-sum(prst))<=0 then 0 end'
+      '     end) AS procent2'
       'from'
       '(select'
       '    schet,'
@@ -1824,6 +1807,10 @@ object Form13: TForm13
       Origin = '"SPR_RAION"."NAME"'
       Size = 30
     end
+    object IBORDERMESPROCENT2: TFloatField
+      FieldName = 'PROCENT2'
+      ProviderFlags = []
+    end
   end
   object DSORDERMES: TDataSource
     DataSet = IBORDERMES
@@ -1835,97 +1822,6 @@ object Form13: TForm13
     Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
-    SelectSQL.Strings = (
-      ' select *'
-      ' from'
-      ' (select'
-      '    period,'
-      '    wid.naim posl,'
-      '    kart.ulnaim ul,'
-      '    kart.nomdom dom,'
-      '    kontrol.fio fio,'
-      '    adres.kol_kv,'
-      '    sum(kart.koli_p) koli_p,'
-      '    sum(kart.koli_pf) koli_pf,'
-      '    sum(dolg) dolg,'
-      '    sum(bgst) bgst,'
-      '    sum(prst) prst,'
-      '    sum(nach) nach,'
-      '    sum(pere) pere,'
-      '    sum(subs) subs,'
-      '    sum(oplnotsubs) oplnotsubs,'
-      '    sum(sal) sal,'
-      '    sum(bgend) as bgend,'
-      '    sum(prend) as prend,'
-      '    sum(borgniki) borgniki,'
-      
-        '    (case when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
-        'subs))>0 then'
-      
-        '          case when round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere)))>100 then 100'
-      
-        '               else round(((sum(oplnotsubs)+sum(subs))*100)/(sum' +
-        '(nach)+sum(pere))) end'
-      
-        '     else case when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs' +
-        ')+sum(subs))>0 then 100'
-      
-        '          when (sum(nach)+sum(pere))>0 and (sum(oplnotsubs)+sum(' +
-        'subs))<=0 then 0'
-      
-        '          when (sum(nach)+sum(pere))<=0 and (sum(oplnotsubs)+sum' +
-        '(subs))<=0 then 0 end'
-      '     end) AS procent'
-      'from'
-      '(select'
-      '    schet,'
-      '    wid,'
-      '    period, '
-      '    sum(aa.dolg) dolg,'
-      '    sum( aa.bgst) bgst,'
-      '    sum( aa.prst) prst,'
-      '    sum(aa.nach) nach,'
-      '    sum(aa.pere) pere,'
-      '    sum(aa.subs) subs,'
-      '    sum(aa.oplnotsubs) oplnotsubs,'
-      '    sum(aa.sal) sal,'
-      '    sum( aa.bgend) as bgend,'
-      '    sum( aa.prend) as prend,'
-      '    sum(aa.borgniki) borgniki'
-      'from'
-      '('
-      'select'
-      '    schet,'
-      '    wid,'
-      '    period, '
-      '    vw_obor.dolg dolg,'
-      '    vw_obor.bgst bgst,'
-      '    vw_obor.prst prst,'
-      '    vw_obor.nach nach,'
-      '    vw_obor.pere+vw_obor.wozw pere,'
-      '    vw_obor.subs subs,'
-      '    vw_obor.oplnotsubs oplnotsubs,'
-      '    vw_obor.sal as sal,'
-      '    vw_obor.bgend as bgend,'
-      '    vw_obor.prend as prend,'
-      '    case when vw_obor.bgend >:bg then 1 else 0 end AS borgniki'
-      'from vw_obor'
-      'where vw_obor.period>=:dt1 and vw_obor.period<=:dt2'
-      ') aa'
-      'group by period,wid,schet'
-      
-        'having (ABS(sum(aa.dolg))+ABS(sum(aa.nach))+ABS(sum(aa.pere))+AB' +
-        'S(sum(aa.subs))+ABS(sum(aa.oplnotsubs))+ABS(sum(aa.sal)))<>0) bb'
-      '   inner join kart on (bb.schet = kart.schet)'
-      
-        '   left join adres on (kart.ulnaim = adres.ul) and (kart.nomdom ' +
-        '= adres.dom)'
-      '   left join kontrol on (adres.kl_kontrol = kontrol.kl)'
-      '   left join wid on (bb.wid = wid.wid)'
-      '   where kart.ulnaim is not null'
-      'group by period, posl, ul, dom, fio, kol_kv'
-      'order by ul, dom, posl, period)')
     ParamCheck = True
     UniDirectional = False
     Left = 416
