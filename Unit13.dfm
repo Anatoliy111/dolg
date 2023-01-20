@@ -459,7 +459,6 @@ object Form13: TForm13
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
-        ExplicitWidth = 906
         object cxGridDBTableView2: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDER
@@ -743,7 +742,6 @@ object Form13: TForm13
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
-        ExplicitWidth = 906
         object cxGridDBTableView3: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDERMES
@@ -966,8 +964,8 @@ object Form13: TForm13
         '(subs))<=0 then 0 end'
       '     end) AS procent,'
       
-        '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
-        'subs)+sum(subs)-sum(prst))>0 then'
+        '    (case when (sum(nach)+sum(pere)+sum(dolg))>0 and (sum(oplnot' +
+        'subs)+sum(subs))>0 then'
       
         '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
         '+sum(pere)+sum(dolg))*100,2)>100 then 100'
@@ -1204,8 +1202,8 @@ object Form13: TForm13
         '(subs))<=0 then 0 end'
       '     end) AS procent,'
       
-        '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
-        'subs)+sum(subs)-sum(prst))>0 then'
+        '    (case when (sum(nach)+sum(pere)+sum(dolg))>0 and (sum(oplnot' +
+        'subs)+sum(subs))>0 then'
       
         '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
         '+sum(pere)+sum(dolg))*100,2)>100 then 100'
@@ -1493,6 +1491,10 @@ object Form13: TForm13
       FieldName = 'KOLI_PF'
       ProviderFlags = []
     end
+    object IBREPALLPROCENT2: TFloatField
+      FieldName = 'PROCENT2'
+      ProviderFlags = []
+    end
   end
   object IBREP: TIBDataSet
     Database = Form1.IBDatabase1
@@ -1583,10 +1585,9 @@ object Form13: TForm13
       FieldName = 'KOLI_PF'
       ProviderFlags = []
     end
-    object IBREPNAME: TIBStringField
-      FieldName = 'NAME'
-      Origin = '"SPR_RAION"."NAME"'
-      Size = 30
+    object IBREPPROCENT2: TFloatField
+      FieldName = 'PROCENT2'
+      ProviderFlags = []
     end
   end
   object IBORDERMES: TIBDataSet
@@ -1637,8 +1638,8 @@ object Form13: TForm13
         '(subs))<=0 then 0 end'
       '     end) AS procent,'
       
-        '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
-        'subs)+sum(subs)-sum(prst))>0 then'
+        '    (case when (sum(nach)+sum(pere)+sum(dolg))>0 and (sum(oplnot' +
+        'subs)+sum(subs))>0 then'
       
         '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
         '+sum(pere)+sum(dolg))*100,2)>100 then 100'
@@ -1902,6 +1903,15 @@ object Form13: TForm13
       FieldName = 'KOLI_PF'
       ProviderFlags = []
     end
+    object IBREPMESPROCENT2: TFloatField
+      FieldName = 'PROCENT2'
+      ProviderFlags = []
+    end
+    object IBREPMESNAME: TIBStringField
+      FieldName = 'NAME'
+      Origin = '"SPR_RAION"."NAME"'
+      Size = 30
+    end
   end
   object frxReport1: TfrxReport
     Version = '5.3.16'
@@ -1912,7 +1922,7 @@ object Form13: TForm13
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 43425.596407557900000000
-    ReportOptions.LastChange = 44943.446880173610000000
+    ReportOptions.LastChange = 44946.626623310180000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'function posl():string;  '
@@ -2022,7 +2032,7 @@ object Form13: TForm13
         Top = 177.637910000000000000
         Width = 1046.929810000000000000
         object Memo3: TfrxMemoView
-          Width = 109.606370000000000000
+          Width = 104.858079602888000000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2037,8 +2047,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo4: TfrxMemoView
-          Left = 196.535560000000000000
-          Width = 75.590551180000000000
+          Left = 188.021384115523400000
+          Width = 72.315870262454850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2053,8 +2063,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo5: TfrxMemoView
-          Left = 347.716760000000000000
-          Width = 75.590551180000000000
+          Left = 332.653218050541400000
+          Width = 72.315870262454850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2069,8 +2079,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo6: TfrxMemoView
-          Left = 423.307360000000000000
-          Width = 75.590551180000000000
+          Left = 404.969135018050400000
+          Width = 72.315870262454850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2085,8 +2095,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo7: TfrxMemoView
-          Left = 574.488560000000000000
-          Width = 75.590551180000000000
+          Left = 549.600968953068400000
+          Width = 72.315870262454850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2101,8 +2111,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo8: TfrxMemoView
-          Left = 650.079160000000000000
-          Width = 75.590551180000000000
+          Left = 621.916885920577400000
+          Width = 72.315870262454850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2117,8 +2127,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo15: TfrxMemoView
-          Left = 158.740260000000000000
-          Width = 37.795300000000000000
+          Left = 151.863425631768900000
+          Width = 36.157958483754500000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2133,8 +2143,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo17: TfrxMemoView
-          Left = 272.126160000000000000
-          Width = 75.590551180000000000
+          Left = 260.337301083032400000
+          Width = 72.315870262454850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2149,8 +2159,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo21: TfrxMemoView
-          Left = 498.897960000000000000
-          Width = 75.590551180000000000
+          Left = 477.285051985559400000
+          Width = 72.315870262454850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2165,8 +2175,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo9: TfrxMemoView
-          Left = 725.669760000000000000
-          Width = 75.590551180000000000
+          Left = 694.232802888086400000
+          Width = 72.315870262454850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2181,8 +2191,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo14: TfrxMemoView
-          Left = 876.850960000000000000
-          Width = 75.590600000000000000
+          Left = 838.864636823104400000
+          Width = 72.315916967508990000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2197,8 +2207,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo16: TfrxMemoView
-          Left = 801.260360000000000000
-          Width = 75.590600000000000000
+          Left = 766.548719855595400000
+          Width = 72.315916967508990000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2213,8 +2223,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo22: TfrxMemoView
-          Left = 1005.354980000000000000
-          Width = 41.574830000000000000
+          Left = 961.801695670000000000
+          Width = 43.553284329999990000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2224,13 +2234,13 @@ object Form13: TForm13
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8W = (
-            '% '#1089#1087#1083#1072#1090'.')
+            '% '#1079' '#1073#1086#1088#1075)
           ParentFont = False
           VAlign = vaCenter
         end
         object Memo23: TfrxMemoView
-          Left = 952.441560000000000000
-          Width = 52.913420000000000000
+          Left = 911.180553790613400000
+          Width = 50.621141877256300000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2245,8 +2255,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo44: TfrxMemoView
-          Left = 109.606370000000000000
-          Width = 49.133890000000000000
+          Left = 104.858079602888000000
+          Width = 47.005346028880850000
           Height = 41.574830000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2257,6 +2267,22 @@ object Form13: TForm13
           HAlign = haCenter
           Memo.UTF8W = (
             #1041#1091#1076'.')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo2: TfrxMemoView
+          Left = 1005.354980000000000000
+          Width = 43.553284329999990000
+          Height = 41.574830000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '% '#1073#1077#1079' '#1073#1086#1088#1075)
           ParentFont = False
           VAlign = vaCenter
         end
@@ -2272,8 +2298,8 @@ object Form13: TForm13
         RowCount = 0
         Stretched = True
         object frxDBDataset1KOL_KV: TfrxMemoView
-          Left = 158.740260000000000000
-          Width = 37.795300000000000000
+          Left = 151.863425631768900000
+          Width = 36.157958483754500000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2291,8 +2317,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1DOLG: TfrxMemoView
-          Left = 196.535560000000000000
-          Width = 75.590551180000000000
+          Left = 188.021384115523400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2312,8 +2338,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo20: TfrxMemoView
-          Left = 272.126160000000000000
-          Width = 75.590551180000000000
+          Left = 260.337301083032400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2333,8 +2359,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1PRST: TfrxMemoView
-          Left = 347.716760000000000000
-          Width = 75.590551180000000000
+          Left = 332.653218050541400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2354,8 +2380,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1NACH: TfrxMemoView
-          Left = 423.307360000000000000
-          Width = 75.590551180000000000
+          Left = 404.969135018050400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2375,8 +2401,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1PERE: TfrxMemoView
-          Left = 498.897960000000000000
-          Width = 75.590551180000000000
+          Left = 477.285051985559400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2396,8 +2422,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1SUBS: TfrxMemoView
-          Left = 574.488560000000000000
-          Width = 75.590551180000000000
+          Left = 549.600968953068400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2417,8 +2443,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1OPLNOTSUBS: TfrxMemoView
-          Left = 650.079160000000000000
-          Width = 75.590551180000000000
+          Left = 621.916885920577400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2438,8 +2464,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1SAL: TfrxMemoView
-          Left = 725.669760000000000000
-          Width = 75.590551180000000000
+          Left = 694.232802888086400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2459,8 +2485,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1BGEND: TfrxMemoView
-          Left = 801.260360000000000000
-          Width = 75.590551180000000000
+          Left = 766.548719855595400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2480,8 +2506,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1PREND: TfrxMemoView
-          Left = 876.850960000000000000
-          Width = 75.590551180000000000
+          Left = 838.864636823104400000
+          Width = 72.315870262454850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2501,8 +2527,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object frxDBDataset1BORGNIKI: TfrxMemoView
-          Left = 952.441560000000000000
-          Width = 52.913420000000000000
+          Left = 911.180553790613400000
+          Width = 50.621141877256300000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2520,8 +2546,8 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo43: TfrxMemoView
-          Left = 1005.354980000000000000
-          Width = 41.574830000000000000
+          Left = 961.801695670000000000
+          Width = 43.553284329999990000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2534,12 +2560,12 @@ object Form13: TForm13
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8W = (
-            '[frxDBDataset1."PROCENT"]')
+            '[frxDBDataset1."PROCENT2"]')
           ParentFont = False
           VAlign = vaCenter
         end
         object frxDBDataset1UL: TfrxMemoView
-          Width = 109.606370000000000000
+          Width = 104.858079602888000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataField = 'UL'
@@ -2556,8 +2582,8 @@ object Form13: TForm13
           ParentFont = False
         end
         object frxDBDataset1DOM: TfrxMemoView
-          Left = 109.606370000000000000
-          Width = 49.133890000000000000
+          Left = 104.858079602888000000
+          Width = 47.005346028880850000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataField = 'DOM'
@@ -2572,6 +2598,25 @@ object Form13: TForm13
           Memo.UTF8W = (
             '[frxDBDataset1."DOM"]')
           ParentFont = False
+        end
+        object Memo24: TfrxMemoView
+          Left = 1005.354980000000000000
+          Width = 43.553284329999990000
+          Height = 18.897650000000000000
+          StretchMode = smMaxHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxDBDataset1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[frxDBDataset1."PROCENT"]')
+          ParentFont = False
+          VAlign = vaCenter
         end
       end
       object PageFooter1: TfrxPageFooter
@@ -2602,7 +2647,7 @@ object Form13: TForm13
         object Memo10: TfrxMemoView
           Left = 3.779530000000000000
           Top = 22.677180000000080000
-          Width = 192.756030000000000000
+          Width = 185.073724456521700000
           Height = 18.897650000000000000
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
@@ -2616,9 +2661,9 @@ object Form13: TForm13
           ParentFont = False
         end
         object Memo11: TfrxMemoView
-          Left = 196.535560000000000000
+          Left = 188.853254456521700000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2638,9 +2683,9 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo12: TfrxMemoView
-          Left = 272.126160000000000000
+          Left = 261.431185615942000000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2660,9 +2705,9 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo18: TfrxMemoView
-          Left = 347.716760000000000000
+          Left = 334.009116775362200000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2682,9 +2727,9 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo35: TfrxMemoView
-          Left = 423.307360000000000000
+          Left = 406.587047934782500000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2704,9 +2749,9 @@ object Form13: TForm13
           VAlign = vaCenter
         end
         object Memo36: TfrxMemoView
-          Left = 498.897960000000000000
+          Left = 479.164979094202800000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2731,9 +2776,9 @@ object Form13: TForm13
             end>
         end
         object Memo37: TfrxMemoView
-          Left = 574.488560000000000000
+          Left = 551.742910253623000000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2758,9 +2803,9 @@ object Form13: TForm13
             end>
         end
         object Memo38: TfrxMemoView
-          Left = 650.079160000000000000
+          Left = 624.320841413043200000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2785,9 +2830,9 @@ object Form13: TForm13
             end>
         end
         object Memo39: TfrxMemoView
-          Left = 725.669760000000000000
+          Left = 696.898772572463600000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2812,9 +2857,9 @@ object Form13: TForm13
             end>
         end
         object Memo40: TfrxMemoView
-          Left = 801.260360000000000000
+          Left = 769.476703731883900000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2839,9 +2884,9 @@ object Form13: TForm13
             end>
         end
         object Memo41: TfrxMemoView
-          Left = 876.850960000000000000
+          Left = 842.054634891304100000
           Top = 22.677180000000020000
-          Width = 75.590551180000000000
+          Width = 72.577884285144910000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2866,9 +2911,9 @@ object Form13: TForm13
             end>
         end
         object Memo42: TfrxMemoView
-          Left = 952.441560000000000000
+          Left = 914.632566050724400000
           Top = 22.677180000000080000
-          Width = 52.913371180000000000
+          Width = 50.804504937318820000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2891,17 +2936,37 @@ object Form13: TForm13
             end>
         end
         object Line1: TfrxLineView
-          Left = 15.118120000000000000
+          Left = 14.666219673913040000
           Top = 15.118119999999980000
-          Width = 1001.575450000000000000
+          Width = 961.657587862318600000
           Color = clBlack
           Frame.Style = fsDash
           Frame.Typ = [ftTop]
         end
         object Memo13: TfrxMemoView
+          Left = 965.437117860000000000
+          Top = 22.677180000000020000
+          Width = 39.917862140000000000
+          Height = 18.897650000000000000
+          StretchMode = smMaxHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxDBDataset1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[round(AVG(<frxDBDataset1."PROCENT2">,MasterData1))]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo25: TfrxMemoView
           Left = 1005.354980000000000000
           Top = 22.677180000000020000
-          Width = 41.574830000000000000
+          Width = 43.697392140000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataSet = frxDBDataset1
@@ -2955,7 +3020,8 @@ object Form13: TForm13
       'UL=UL'
       'DOM=DOM'
       'KOLI_P=KOLI_P'
-      'KOLI_PF=KOLI_PF')
+      'KOLI_PF=KOLI_PF'
+      'PROCENT2=PROCENT2')
     DataSet = IBREPALL
     BCDToCurrency = False
     Left = 44
@@ -2983,7 +3049,8 @@ object Form13: TForm13
       'BORGNIKI=BORGNIKI'
       'PROCENT=PROCENT'
       'KOLI_P=KOLI_P'
-      'KOLI_PF=KOLI_PF')
+      'KOLI_PF=KOLI_PF'
+      'PROCENT2=PROCENT2')
     DataSet = IBREP
     BCDToCurrency = False
     Left = 116
@@ -3012,7 +3079,9 @@ object Form13: TForm13
       'BORGNIKI=BORGNIKI'
       'PROCENT=PROCENT'
       'KOLI_P=KOLI_P'
-      'KOLI_PF=KOLI_PF')
+      'KOLI_PF=KOLI_PF'
+      'PROCENT2=PROCENT2'
+      'NAME=NAME')
     DataSet = IBREPMES
     BCDToCurrency = False
     Left = 188

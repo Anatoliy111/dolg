@@ -263,7 +263,6 @@ type
     cxGridDBTableView1NAME: TcxGridDBColumn;
     IBORDERNAME: TIBStringField;
     IBORDERMESNAME: TIBStringField;
-    IBREPNAME: TIBStringField;
     cxGridDBTableView2NAME: TcxGridDBColumn;
     cxGridDBTableView3NAME: TcxGridDBColumn;
     IBORDERPROCENT2: TFloatField;
@@ -272,6 +271,10 @@ type
     cxGridDBTableView1PROCENT2: TcxGridDBColumn;
     cxGridDBTableView2PROCENT2: TcxGridDBColumn;
     cxGridDBTableView3PROCENT2: TcxGridDBColumn;
+    IBREPALLPROCENT2: TFloatField;
+    IBREPPROCENT2: TFloatField;
+    IBREPMESPROCENT2: TFloatField;
+    IBREPMESNAME: TIBStringField;
     procedure cxButton5Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -333,7 +336,7 @@ IBREPALL.ParamByName('bg').Value:=OrdAllbg;
 IBREPALL.Open;
 Form2.close;
 
-  frxReport1.LoadFromFile('report/orderbudall.fr3');
+ frxReport1.LoadFromFile('report/orderbudall.fr3');
 //  frxXLSExport1.FileName:='«в≥т за пер≥од '+Datename1+' '+Datename2;
 
 frxReport1.Variables['datemes1']:=''''+mon_slovoDt(OrdAlldt1)+'''';
