@@ -25,7 +25,6 @@ object Form13: TForm13
     TabOrder = 0
     Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
-    ExplicitWidth = 914
     ClientRectBottom = 638
     ClientRectLeft = 4
     ClientRectRight = 959
@@ -33,7 +32,6 @@ object Form13: TForm13
     object cxTabSheet1: TcxTabSheet
       Caption = #1047#1074#1110#1090' '#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1080#1081' ('#1079#1072#1075#1072#1083#1100#1085#1080#1081')'
       ImageIndex = 0
-      ExplicitWidth = 906
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -41,7 +39,6 @@ object Form13: TForm13
         Height = 145
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 906
         object cxLabel3: TcxLabel
           Left = 8
           Top = 11
@@ -177,7 +174,6 @@ object Form13: TForm13
         Align = alClient
         TabOrder = 1
         LookAndFeel.NativeStyle = False
-        ExplicitWidth = 906
         object cxGridDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = DSORDERALL
@@ -353,7 +349,6 @@ object Form13: TForm13
     object cxTabSheet2: TcxTabSheet
       Caption = #1047#1074#1110#1090' '#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1080#1081' ('#1074' '#1088#1086#1079#1088#1110#1079#1110' '#1087#1086#1089#1083#1091#1075')'
       ImageIndex = 1
-      ExplicitWidth = 906
       object Panel2: TPanel
         Left = 0
         Top = 0
@@ -361,7 +356,6 @@ object Form13: TForm13
         Height = 89
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 906
         object cxLabel1: TcxLabel
           Left = 8
           Top = 11
@@ -639,7 +633,6 @@ object Form13: TForm13
     object cxTabSheet3: TcxTabSheet
       Caption = #1047#1074#1110#1090' '#1087#1086#1073#1091#1076#1080#1085#1082#1086#1074#1080#1081' '#1055#1054' '#1052#1030#1057#1071#1063#1053#1054' ('#1074' '#1088#1086#1079#1088#1110#1079#1110' '#1087#1086#1089#1083#1091#1075')'
       ImageIndex = 2
-      ExplicitWidth = 906
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -647,7 +640,6 @@ object Form13: TForm13
         Height = 89
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 906
         object cxLabel9: TcxLabel
           Left = 8
           Top = 11
@@ -977,20 +969,20 @@ object Form13: TForm13
         '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
         'subs)+sum(subs)-sum(prst))>0 then'
       
-        '          case when round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
-        '(sum(nach)+sum(pere)+sum(bgst))*100,2)>100 then 100'
+        '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere)+sum(dolg))*100,2)>100 then 100'
       
-        '               else round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
-        '(sum(nach)+sum(pere)+sum(bgst))*100,2) end'
+        '               else round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere)+sum(dolg))*100,2) end'
       
-        '     else case when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(' +
-        'oplnotsubs)+sum(subs)-sum(prst))>0 then 100'
+        '     else case when (sum(nach)+sum(pere)+sum(dolg))<=0 and (sum(' +
+        'oplnotsubs)+sum(subs))>0 then 100'
       
-        '          when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
-        'subs)+sum(subs)-sum(prst))<=0 then 0'
+        '          when (sum(nach)+sum(pere)+sum(dolg))>0 and (sum(oplnot' +
+        'subs)+sum(subs))<=0 then 0'
       
-        '          when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(oplno' +
-        'tsubs)+sum(subs)-sum(prst))<=0 then 0 end'
+        '          when (sum(nach)+sum(pere)+sum(dolg))<=0 and (sum(oplno' +
+        'tsubs)+sum(subs))<=0 then 0 end'
       '     end) AS procent2'
       'from'
       '(select'
@@ -1215,20 +1207,20 @@ object Form13: TForm13
         '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
         'subs)+sum(subs)-sum(prst))>0 then'
       
-        '          case when round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
-        '(sum(nach)+sum(pere)+sum(bgst))*100,2)>100 then 100'
+        '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere)+sum(dolg))*100,2)>100 then 100'
       
-        '               else round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
-        '(sum(nach)+sum(pere)+sum(bgst))*100,2) end'
+        '               else round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere)+sum(dolg))*100,2) end'
       
-        '     else case when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(' +
-        'oplnotsubs)+sum(subs)-sum(prst))>0 then 100'
+        '     else case when (sum(nach)+sum(pere)+sum(dolg))<=0 and (sum(' +
+        'oplnotsubs)+sum(subs))>0 then 100'
       
-        '          when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
-        'subs)+sum(subs)-sum(prst))<=0 then 0'
+        '          when (sum(nach)+sum(pere)+sum(dolg))>0 and (sum(oplnot' +
+        'subs)+sum(subs))<=0 then 0'
       
-        '          when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(oplno' +
-        'tsubs)+sum(subs)-sum(prst))<=0 then 0 end'
+        '          when (sum(nach)+sum(pere)+sum(dolg))<=0 and (sum(oplno' +
+        'tsubs)+sum(subs))<=0 then 0 end'
       '     end) AS procent2'
       'from'
       '(select'
@@ -1648,20 +1640,20 @@ object Form13: TForm13
         '    (case when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
         'subs)+sum(subs)-sum(prst))>0 then'
       
-        '          case when round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
-        '(sum(nach)+sum(pere)+sum(bgst))*100,2)>100 then 100'
+        '          case when round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere)+sum(dolg))*100,2)>100 then 100'
       
-        '               else round((sum(oplnotsubs)+sum(subs)-sum(prst))/' +
-        '(sum(nach)+sum(pere)+sum(bgst))*100,2) end'
+        '               else round((sum(oplnotsubs)+sum(subs))/(sum(nach)' +
+        '+sum(pere)+sum(dolg))*100,2) end'
       
-        '     else case when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(' +
-        'oplnotsubs)+sum(subs)-sum(prst))>0 then 100'
+        '     else case when (sum(nach)+sum(pere)+sum(dolg))<=0 and (sum(' +
+        'oplnotsubs)+sum(subs))>0 then 100'
       
-        '          when (sum(nach)+sum(pere)+sum(bgst))>0 and (sum(oplnot' +
-        'subs)+sum(subs)-sum(prst))<=0 then 0'
+        '          when (sum(nach)+sum(pere)+sum(dolg))>0 and (sum(oplnot' +
+        'subs)+sum(subs))<=0 then 0'
       
-        '          when (sum(nach)+sum(pere)+sum(bgst))<=0 and (sum(oplno' +
-        'tsubs)+sum(subs)-sum(prst))<=0 then 0 end'
+        '          when (sum(nach)+sum(pere)+sum(dolg))<=0 and (sum(oplno' +
+        'tsubs)+sum(subs))<=0 then 0 end'
       '     end) AS procent2'
       'from'
       '(select'
