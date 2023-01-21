@@ -766,7 +766,15 @@ object Form1: TForm1
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select *  from ADRES where adres.KL_KONTROL=:kl')
+      'select'
+      'adres.*,'
+      
+        'iif(right(trim(adres.dom),1) BETWEEN '#39'0'#39' AND '#39'9'#39', cast(adres.dom' +
+        ' as int), cast(LEFT(trim(adres.dom),CHAR_LENGTH(trim(adres.dom))' +
+        '-1) as int)) dom2'
+      'from ADRES '
+      'where adres.KL_KONTROL=:kl'
+      'order by ul,dom2,dom')
     ModifySQL.Strings = (
       'update ADRES'
       'set'
@@ -1236,8 +1244,15 @@ object Form1: TForm1
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select kl,ul,dom,kl_kontrol, 0 as CH from adres'
-      'WHERE (kl_kontrol is null or kl_kontrol=0) ')
+      'select'
+      'kl,ul,dom,kl_kontrol, 0 as CH,'
+      
+        'iif(right(trim(adres.dom),1) BETWEEN '#39'0'#39' AND '#39'9'#39', cast(adres.dom' +
+        ' as int), cast(LEFT(trim(adres.dom),CHAR_LENGTH(trim(adres.dom))' +
+        '-1) as int)) dom2'
+      'from ADRES'
+      'WHERE (kl_kontrol is null or kl_kontrol=0) '
+      'order by ul,dom2,dom')
     ModifySQL.Strings = (
       'update adres'
       'set'
@@ -4317,7 +4332,13 @@ object Form1: TForm1
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select *  from ADRES order by ul,dom')
+      'select'
+      'adres.*,'
+      
+        'iif(right(trim(adres.dom),1) BETWEEN '#39'0'#39' AND '#39'9'#39', cast(adres.dom' +
+        ' as int), cast(LEFT(trim(adres.dom),CHAR_LENGTH(trim(adres.dom))' +
+        '-1) as int)) dom2'
+      'from ADRES order by ul,dom2,dom')
     ModifySQL.Strings = (
       'update ADRES'
       'set'

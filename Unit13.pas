@@ -329,9 +329,11 @@ end
 else
  IBREPALL.SelectSQL.Text:=IBORDERALL.SelectSQL.Text;
 
+  IBREPALL.SelectSQL.Text:=IBREPALL.SelectSQL.Text+' order by ul,dom';
+
 
 IBREPALL.ParamByName('dt1').Value:=OrdAlldt1;
-IBREPALL.ParamByName('dt2').Value:=OrdAlldt1;
+IBREPALL.ParamByName('dt2').Value:=OrdAlldt2;
 IBREPALL.ParamByName('bg').Value:=OrdAllbg;
 IBREPALL.Open;
 Form2.close;
@@ -431,6 +433,7 @@ end
 else
  IBREP.SelectSQL.Text:=SQLORDER;
 
+
 //if RadioButton1.Checked then
 //begin
 //   IBREP.SelectSQL.Text:=IBREP.SelectSQL.Text+' order by fio,posl,ul,dom';
@@ -438,13 +441,13 @@ else
 //end;
 if RadioButton2.Checked then
 begin
-   IBREP.SelectSQL.Text:=IBREP.SelectSQL.Text+' order by posl,fio,ul,dom';
+   IBREP.SelectSQL.Text:=IBREP.SelectSQL.Text+' order by posl,ul,dom';
    frxReport1.LoadFromFile('report/orderposladres.fr3');
 end;
 if RadioButton6.Checked then
 begin
-   IBREP.SelectSQL.Text:=IBREP.SelectSQL.Text+' order by fio,ul,dom,posl';
-   frxReport1.LoadFromFile('report/orderfioadresposl.fr3');
+   IBREP.SelectSQL.Text:=IBREP.SelectSQL.Text+' order by ul,dom,posl';
+   frxReport1.LoadFromFile('report/orderadresposl.fr3');
 end;
 
 
@@ -511,12 +514,12 @@ else
 //end;
 if RadioButton4.Checked then
 begin
-   IBREPMES.SelectSQL.Text:=IBREPMES.SelectSQL.Text+' order by posl,fio,ul,dom';
+   IBREPMES.SelectSQL.Text:=IBREPMES.SelectSQL.Text+' order by posl,ul,dom';
    frxReport1.LoadFromFile('report/orderposladresmes.fr3');
 end;
 if RadioButton5.Checked then
 begin
-   IBREPMES.SelectSQL.Text:=IBREPMES.SelectSQL.Text+' order by fio,ul,dom,posl';
+   IBREPMES.SelectSQL.Text:=IBREPMES.SelectSQL.Text+' order by ul,dom,posl';
    frxReport1.LoadFromFile('report/orderadresposlmes.fr3');
 end;
 
