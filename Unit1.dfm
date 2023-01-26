@@ -612,7 +612,7 @@ object Form1: TForm1
     end
     object cxButton10: TcxButton
       Left = 608
-      Top = 94
+      Top = 46
       Width = 185
       Height = 25
       Caption = #1053#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103' '#1074' '#1088#1077#1108#1089#1090#1088' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
@@ -621,7 +621,7 @@ object Form1: TForm1
     end
     object cxButton6: TcxButton
       Left = 608
-      Top = 125
+      Top = 77
       Width = 185
       Height = 25
       Caption = #1054#1087#1083#1072#1090#1072' '#1079' '#1088#1077#1108#1089#1090#1088#1091' '#1084#1086#1085#1077#1090#1080#1079#1072#1094#1110#1111
@@ -629,13 +629,12 @@ object Form1: TForm1
       OnClick = cxButton6Click
     end
     object cxButton8: TcxButton
-      Left = 799
-      Top = 125
-      Width = 153
+      Left = 608
+      Top = 108
+      Width = 185
       Height = 25
       Caption = #1047#1072#1074#1072#1085#1090#1072#1078#1077#1085#1085#1103' '#1086#1087#1083#1072#1090#1080
       TabOrder = 6
-      Visible = False
       OnClick = cxButton8Click
     end
   end
@@ -647,7 +646,7 @@ object Form1: TForm1
     Width = 121
   end
   object cxButton7: TcxButton
-    Left = 608
+    Left = 799
     Top = 91
     Width = 183
     Height = 25

@@ -213,7 +213,9 @@ object Form30: TForm30
       'where'
       '  WID = :WID')
     SelectSQL.Strings = (
-      'select *  from WID where abonpl isnot null and vnesk is not null')
+      
+        'select *  from WID where abonpl is not null and vnesk is not nul' +
+        'l')
     ModifySQL.Strings = (
       'update WID'
       'set'
