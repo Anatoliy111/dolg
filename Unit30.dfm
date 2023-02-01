@@ -44,7 +44,7 @@ object Form30: TForm30
   object cxGrid2: TcxGrid
     Left = 265
     Top = 73
-    Width = 128
+    Width = 248
     Height = 407
     Align = alLeft
     TabOrder = 1
@@ -123,21 +123,24 @@ object Form30: TForm30
     end
   end
   object Panel4: TPanel
-    Left = 393
+    Left = 513
     Top = 73
     Width = 32
     Height = 407
     Align = alLeft
     TabOrder = 4
+    ExplicitLeft = 393
   end
   object cxGrid4: TcxGrid
-    Left = 425
+    Left = 545
     Top = 73
-    Width = 537
+    Width = 417
     Height = 407
     Align = alClient
     TabOrder = 5
     LookAndFeel.NativeStyle = False
+    ExplicitLeft = 425
+    ExplicitWidth = 537
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSSPR_VIPISKA
@@ -213,9 +216,7 @@ object Form30: TForm30
       'where'
       '  WID = :WID')
     SelectSQL.Strings = (
-      
-        'select *  from WID where abonpl is not null and vnesk is not nul' +
-        'l')
+      'select *  from WID where fl='#39'1'#39)
     ModifySQL.Strings = (
       'update WID'
       'set'

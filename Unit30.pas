@@ -111,10 +111,10 @@ end;
 
 procedure TForm30.IBSPR_VIPISKAAfterInsert(DataSet: TDataSet);
 begin
+  if IBSPR_VIDPOISKVIDPOISK.Value='posl' then
+    IBSPR_VIPISKAWID.Value:=IBWIDWID.Value;
 
-  IBSPR_VIPISKAWID.Value:=IBWIDWID.Value;
-  IBSPR_VIPISKAVIDPOISK.Value:=IBSPR_VIDPOISKVIDPOISK.Value;
-
+     IBSPR_VIPISKAVIDPOISK.Value:=IBSPR_VIDPOISKVIDPOISK.Value;
 end;
 
 procedure TForm30.IBWIDAfterScroll(DataSet: TDataSet);
@@ -126,11 +126,21 @@ procedure TForm30.UpdateVipiska();
 begin
 IBSPR_VIPISKA.Close;
 
+if IBSPR_VIDPOISKVIDPOISK.Value='posl' then
+begin
   cxGrid2.Visible:=true;
   cxLabel2.Visible:=true;
   IBSPR_VIPISKA.SelectSQL.Text:='select * from SPR_VIPISKA where wid=:wid and vidpoisk=:vidpoisk';
   IBSPR_VIPISKA.ParamByName('wid').AsString:=IBWIDWID.Value;
   IBSPR_VIPISKA.ParamByName('vidpoisk').AsString:=IBSPR_VIDPOISKVIDPOISK.Value;
+end
+else
+begin
+  cxGrid2.Visible:=false;
+  cxLabel2.Visible:=false;
+  IBSPR_VIPISKA.SelectSQL.Text:='select * from SPR_VIPISKA where vidpoisk=:vidpoisk';
+  IBSPR_VIPISKA.ParamByName('vidpoisk').AsString:=IBSPR_VIDPOISKVIDPOISK.Value;
+end;
 
 IBSPR_VIPISKA.Open;
 end;

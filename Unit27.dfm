@@ -11,6 +11,7 @@ object Form27: TForm27
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -276,7 +277,9 @@ object Form27: TForm27
     CachedUpdates = False
     ParamCheck = True
     SQL.Strings = (
-      'select *   from OBOR where period=:dt')
+      
+        'select obor.* from OBOR,WID where obor.wid=wid.wid and obor.peri' +
+        'od=:dt')
     Left = 335
     Top = 306
     ParamData = <

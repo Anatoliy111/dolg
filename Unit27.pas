@@ -3,7 +3,7 @@ unit Unit27;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.Menus, Vcl.StdCtrls,
   cxButtons, cxLabel, Data.DB, IBX.IBCustomDataSet, IBX.IBQuery, Data.Win.ADODB,
@@ -149,13 +149,14 @@ type
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
 
     function TrimAll(s:string):string;
     function SearchSchet(str:string):string;
     function SearchAllPosl(str:string;regallposl:string):string;
-    function SearchPosl(str:string):Arr;
+    procedure SearchPosl(str:string);
     { Private declarations }
   public
     { Public declarations }
@@ -166,7 +167,7 @@ var
    st1,poslug,tip,path:string;
      MsExcel:Variant;
      period: TDateTime;
-
+     strList:TStringList;
 
 
 
@@ -174,7 +175,7 @@ implementation
 
 {$R *.dfm}
 
-uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP;
+uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, SysUtils;
 
 function TForm27.TrimAll(s:string):string;
 begin
@@ -258,13 +259,14 @@ end;
 
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
-    i,ns,kolst,k:integer;
-    sss,fio,str,sch,regallposl,strprizn:string;
+    i,ns,kolst,k,position:integer;
+    sss,fio,str,sch,regallposl,strprizn,sp,sql:string;
     RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
-    Findposl:Arr;
-
+    sumExcel:currency;
+    summa:double;
+    ssum:Double;
 
 begin
    if Length(path)=0 then
@@ -360,63 +362,86 @@ begin
           strprizn:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_PRIZN.Value];
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
-          if Length(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value])=0 then Next;
-          if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2])<>0 then Next;
-          sch:=SearchSchet(strprizn);
+          if Length(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
+          if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
+          sch:=SearchSchet(strprizn);  //пошук Особ. рахунка
           if sch='' then
           begin
             MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Ос.рахунок не знайдено';
-            Next;
+            Continue;
           end;
-          if SearchAllPosl(strprizn,regallposl)='' then
+          if SearchAllPosl(strprizn,regallposl)='' then //пошук будь-якої послуги
           begin
-            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги не знайдено';
-            Next;
+            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги в призначені не знайдено';
+            Continue;
           end;
-          Findposl:=SearchPosl(strprizn);
-          if Length(Findposl)=0 then
+         SearchPosl(strprizn); //пошук послуги
+          if StrList.Count=0 then
           begin
-            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги не знайдено';
-            Next;
+            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги в призначені не знайдено';
+            Continue;
           end;
-          if Findposl[0]='many posl' then
+          if StrList[0]='many posl' then
           begin
             MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Знайдено декілька різних послуг';
-            Next;
+            Continue;
           end;
-          if Findposl[0]='not found posl' then
+          if StrList[0]='not found posl' then
           begin
-            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуг не знайдено';
-            Next;
+            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги в призначені не знайдено';
+            Continue;
           end;
-          for k:=0 to Length(Findposl) do
+          f1:=false;
+          for k:=0 to StrList.Count-1 do
           begin
               IBQueryObor.first;
-              if not IBQueryObor.Locate('wid',Findposl[0],[]) then
+              if not IBQueryObor.Locate('wid',StrList[k],[]) then
               begin
                 IBQueryWidAll.First;
-                IBQueryWidAll.Locate('wid',Findposl[0],[]);
+                IBQueryWidAll.Locate('wid',StrList[k],[]);
                 MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги '+IBQueryWidAllNAIM.Value+' в абонента '+sch+' не знайдено';
-                Next;
+                f1:=true;
               end;
 
           end;
-          for k:=0 to Length(Findposl) do
+          if f1 then Continue;
+         // summa:=0.00;
+          if trim(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_EDRPOU.Value])<>IBQueryBankSTR_EDRPOU.Value then
           begin
-              IBQueryObor.first;
-              if not IBQueryObor.Locate('wid',Findposl[0],[]) then
-              begin
-                IBQueryWidAll.First;
-                IBQueryWidAll.Locate('wid',Findposl[0],[]);
-                MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги '+IBQueryWidAllNAIM.Value+' в абонента '+sch+' не знайдено';
-                Next;
-              end;
-
+             str:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_SUM.Value];
+             ssum:=StrToFloat(StringReplace(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_SUM.Value],'.',',',[]));
+          end
+          else
+          begin
+            if RightStr(strprizn,1)=';' then Delete(strprizn, Length(strprizn)-1, 1);
+            position := LastDelimiter(';', strprizn);
+            sp:=LeftStr(strprizn,position);
+            //summa:=StrToFloat(LeftStr(strprizn,position));
+            ssum:=StrToFloat(StringReplace(LeftStr(strprizn,position),'.',',',[]));
           end;
 
+          if ssum=0 then
+          begin
+             MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Cума оплати в абонента '+sch+' рівна 0';
+             Continue;
+          end;
+
+          IBQueryObor.Close;
+          sql:='select obor.* from OBOR,WID where obor.wid=wid.wid and obor.period=:dt and obor.schet=:sch and (';
+          for k:=0 to StrList.Count-1 do
+          begin
+              sql:=sql+'wid='''+StrList[k]+''' or ';
+          end;
+          Delete(sql, Length(sql)-3, 4);
+          IBQueryObor.SQL.Text:=sql+') order by wid.npp';
+          IBQueryObor.Open;
 
 
+          IBQueryObor.first;
+          while not IBQueryObor.Eof do
+          begin
 
+          end;
 
         end;
 
@@ -434,6 +459,11 @@ begin
       ShowMessage('Завантаження закінчено');
       Form27.Enabled:=true;
 
+end;
+
+procedure TForm27.FormCreate(Sender: TObject);
+begin
+strList := TStringList.Create;
 end;
 
 procedure TForm27.FormShow(Sender: TObject);
@@ -477,15 +507,19 @@ begin
           else Result:='';
 end;
 
-function TForm27.SearchPosl(str:string):Arr;
+procedure TForm27.SearchPosl(str:string);
 var RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
     sch,regposl,wid:string;
-    a:integer;
-    posl:Arr;
+   // a:integer;
+   // posl:Arr;
+
+
 begin
-          a:=0;
+         strList.Clear;
+
+       //   a:=0;
           wid:='';
           IBQueryVipiska.first;
           while not IBQueryVipiska.Eof do
@@ -495,21 +529,24 @@ begin
               Match:=RegularExpression.Match(str,'('+IBQueryVipiskaPOISK.AsString+'{1})',[roIgnoreCase]);
               if Match.Success then
               begin
-                   posl[a]:=Match.Value;
-                   a:=a+1;
+                   //posl[a]:=IBQueryVipiskaWID.AsString;
+                   strList.Add(IBQueryVipiskaWID.AsString);
+                  // arrstr[a]:=IBQueryVipiskaWID.AsString;
+                  // a:=a+1;
               end;
             end;
 
           IBQueryVipiska.Next;
           end;
-          if Length(posl)>1 then
+
+          if strList.count>1 then
           begin
-            Result[0]:='many posl';
+            strList[0]:='many posl';
             exit;
           end;
-          if Length(posl)=0 then
+          if strList.count=0 then
           begin
-            Result[0]:='not found posl';
+            strList[0]:='not found posl';
             exit;
           end;
           Match:=RegularExpression.Match(str,'(та абон{1})',[roIgnoreCase]);
@@ -517,12 +554,11 @@ begin
               begin
                  IBQueryWid.Close;
                  IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
-                 IBQueryWid.ParamByName('wid').AsString:=posl[a-1];
+                 IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
                  if IBQueryWid.RecordCount<>0 then
                  begin
-                    posl[a]:=IBQueryWidWID.Value;
-                    Result:=posl;
+                    strList.Add(IBQueryWidWID.Value);
                     exit;
                  end;
               end;
@@ -531,12 +567,11 @@ begin
               begin
                  IBQueryWid.Close;
                  IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
-                 IBQueryWid.ParamByName('wid').AsString:=posl[a-1];
+                 IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
                  if IBQueryWid.RecordCount<>0 then
                  begin
-                    posl[a]:=IBQueryWidWID.Value;
-                    Result:=posl;
+                    strList.Add(IBQueryWidWID.Value);
                     exit;
                  end;
               end;
@@ -545,11 +580,11 @@ begin
               begin
                  IBQueryWid.Close;
                  IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
-                 IBQueryWid.ParamByName('wid').AsString:=posl[a-1];
+                 IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
                  if IBQueryWid.RecordCount<>0 then
                  begin
-                    Result[0]:=IBQueryWidWID.Value;
+                    strList[0]:=IBQueryWidWID.Value;
                     exit;
                  end;
               end;
@@ -558,11 +593,11 @@ begin
               begin
                  IBQueryWid.Close;
                  IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
-                 IBQueryWid.ParamByName('wid').AsString:=posl[a-1];
+                 IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
                  if IBQueryWid.RecordCount<>0 then
                  begin
-                    Result[0]:=IBQueryWidWID.Value;
+                    strList[0]:=IBQueryWidWID.Value;
                     exit;
                  end;
               end;
