@@ -2662,7 +2662,8 @@ begin
   if FReadOnly or (csDesigning in ComponentState) or (not Active) then
     Result := false
   else
-    Result := FTranslationMode > tmNoneAvailable;
+    Result := true;
+   // Result := FTranslationMode > tmNoneAvailable;
 end;
 
 {$ifdef SUPPORT_DEFCHANGED}

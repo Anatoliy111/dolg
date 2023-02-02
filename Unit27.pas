@@ -8,7 +8,7 @@ uses
   cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.Menus, Vcl.StdCtrls,
   cxButtons, cxLabel, Data.DB, IBX.IBCustomDataSet, IBX.IBQuery, Data.Win.ADODB,
   cxTextEdit, Vcl.ComCtrls, dxCore, cxDateUtils, cxMaskEdit, cxDropDownEdit,
-  cxCalendar,System.RegularExpressions;
+  cxCalendar,System.RegularExpressions,dbf,dbf_common;
 
 type
     Arr = array[0..10] of string;
@@ -260,20 +260,47 @@ end;
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
     i,ns,kolst,k,position:integer;
-    sss,fio,str,sch,regallposl,strprizn,sp,sql:string;
+    sss,fio,str,sch,regallposl,strprizn,sp,sql,dtstr:string;
     RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
     sumExcel:currency;
     summa:double;
-    ssum:Double;
+    ssum,ssum1,allsum,riznsum:Double;
+    table:TDbf;
+    dt:TDate;
 
 begin
+
+
+
    if Length(path)=0 then
    begin
      ShowMessage('Виберіть файл');
      exit;
    end;
+
+   try
+    table:=TDbf.Create(self);
+   // table.TableLevel := 25;
+    table.TableName:=Form1.PathKvart+'dbf\opl.dbf';
+    // table.ReadOnly:=false;
+  //  table.Active:=true;
+    table.Open;
+    table.CanModify;
+    table.OpenIndexFile('opl.cdx');
+
+//    table.Exclusive := True;
+       except
+       on E : Exception do
+       begin
+        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+        exit;
+       end;
+   end;
+
+
+
 
 
     MsExcel := CreateOleObject('Excel.Application');
@@ -358,6 +385,10 @@ begin
         Form2.cxProgressBar1.Position:=5;
         for I := IBQueryBankSTR_ST.Value to kolst do
         begin
+
+          Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+          Application.ProcessMessages;
+
           sch:='';
           strprizn:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_PRIZN.Value];
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
@@ -376,7 +407,7 @@ begin
             Continue;
           end;
          SearchPosl(strprizn); //пошук послуги
-          if StrList.Count=0 then
+          if (StrList.Count=0) or (StrList[0]='not found posl') or (trim(StrList[0])='') then
           begin
             MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги в призначені не знайдено';
             Continue;
@@ -384,11 +415,6 @@ begin
           if StrList[0]='many posl' then
           begin
             MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Знайдено декілька різних послуг';
-            Continue;
-          end;
-          if StrList[0]='not found posl' then
-          begin
-            MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Послуги в призначені не знайдено';
             Continue;
           end;
           f1:=false;
@@ -413,39 +439,135 @@ begin
           end
           else
           begin
-            if RightStr(strprizn,1)=';' then Delete(strprizn, Length(strprizn)-1, 1);
+            if RightStr(strprizn,1)=';' then Delete(strprizn, Length(strprizn), 1);
             position := LastDelimiter(';', strprizn);
-            sp:=LeftStr(strprizn,position);
+            sp:=copy(strprizn,position+1,Length(strprizn));
             //summa:=StrToFloat(LeftStr(strprizn,position));
-            ssum:=StrToFloat(StringReplace(LeftStr(strprizn,position),'.',',',[]));
+            ssum:=StrToFloat(StringReplace(copy(strprizn,position+1,Length(strprizn)),'.',',',[]));
           end;
 
-          if ssum=0 then
+          if ssum<=0 then
           begin
              MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Cума оплати в абонента '+sch+' рівна 0';
              Continue;
           end;
+          dtstr:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DT.Value];
+//          dtstr:=formatdatetime('ddmmyyyy', strtodate(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DT.Value]));
+          dt:=strtodate(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DT.Value]);
+          table.First;
+          f1:=false;
+          while not table.Eof do
+          begin
+            if not table.Locate('schet;dt;opl',VarArrayOf([sch,dt,ssum]),[loPartialKey]) then
+               break
+            else
+            begin
+//               if table.FieldByName('opl').Value=ssum then
+//               begin
+               MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_END.Value+2]:='Платіж по рахунку '+sch+' за '+dtstr+' число, в сумі '+CurrToStr(ssum)+' вже існує';
+               f1:=true;
+               break;
+//               end;
+            end;
+          table.next;
+          end;
+//          if f1 then Continue;
 
           IBQueryObor.Close;
           sql:='select obor.* from OBOR,WID where obor.wid=wid.wid and obor.period=:dt and obor.schet=:sch and (';
           for k:=0 to StrList.Count-1 do
           begin
-              sql:=sql+'wid='''+StrList[k]+''' or ';
+              sql:=sql+'obor.wid='''+StrList[k]+''' or ';
           end;
           Delete(sql, Length(sql)-3, 4);
           IBQueryObor.SQL.Text:=sql+') order by wid.npp';
+          IBQueryObor.ParamByName('sch').Value:=sch;
+          IBQueryObor.ParamByName('dt').Value:=IBPERIODPERIOD.Value;
           IBQueryObor.Open;
 
+          IBQueryObor.FetchAll;
+//          while not IBQueryObor.Eof do
+//          begin
+//            ssum1:=0;
+//          IBQueryObor.Next;
+//          end;
 
-          IBQueryObor.first;
-          while not IBQueryObor.Eof do
+
+          ssum1:=0;
+          allsum:=ssum;
+          if IBQueryObor.RecordCount=1 then
           begin
+            table.Insert;
+            table.Edit;
+            table.FieldByName('schet').Value:=sch;
+            table.FieldByName('dt').Value:=dt;
+            table.FieldByName('opl').Value:=allsum;
+            table.FieldByName('opl_'+IBQueryOborWID.Value).Value:=ssum;
+            table.FieldByName('doc').Value:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value];
+            table.Post;
+            ssum:=0;
+          end
+          else
+          begin
+          table.Append;
+          table.FieldByName('schet').Value:=sch;
+          table.FieldByName('dt').Value:=dt;
+          table.FieldByName('opl').Value:=allsum;
+          table.FieldByName('doc').Value:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value];
+          IBQueryObor.first;
+            while not IBQueryObor.Eof do
+            begin
+              if (IBQueryObor.RecNo=1) then
+              begin
+                if (IBQueryOborSAL.Value>=ssum) then
+                begin
+                  ssum1:=ssum;
+                  ssum:=0;
+                  break;
+                end
+                else
+                begin
+                  if IBQueryOborSAL.Value>0 then
+                  begin
+                     ssum1:=IBQueryOborSAL.Value;
+                     ssum:=ssum-IBQueryOborSAL.Value;
+                  end;
+                end;
+              end
+              else
+              begin
+                 if (IBQueryOborSAL.Value>0) and (ssum>0) then
+                 begin
+                    riznsum:=ssum-IBQueryOborSAL.Value;
+                    if riznsum>0 then
+                    begin
+                      table.FieldByName('opl_'+IBQueryOborWID.Value).Value:=IBQueryOborSAL.Value;
+                      ssum:=ssum-IBQueryOborSAL.Value;
+                    end
+                    else
+                    begin
+                      table.FieldByName('opl_'+IBQueryOborWID.Value).Value:=ssum;
+                      ssum:=0;
+                    end;
 
+                 end;
+              end;
+            IBQueryObor.Next;
+            end;
+            if ssum>0 then
+              ssum1:=ssum1+ssum;
+            if ssum1>0 then
+            begin
+              IBQueryObor.first;
+              table.FieldByName('opl_'+IBQueryOborWID.Value).Value:=ssum1;
+            end;
+
+          table.Post;
           end;
-
         end;
 
-
+       table.Close;
+       table.Free;
 
 
 
@@ -486,6 +608,7 @@ begin
             IBQueryObor.ParamByName('sch').Value:=Match.Value;
             IBQueryObor.ParamByName('dt').Value:=IBPERIODPERIOD.Value;
             IBQueryObor.Open;
+            IBQueryObor.FetchAll;
             if IBQueryObor.RecordCount<>0 then
                Result:=Match.Value
             else Result:='';
@@ -553,12 +676,13 @@ begin
               if Match.Success then
               begin
                  IBQueryWid.Close;
-                 IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
+                 IBQueryWid.SQL.Text:='select * from wid where wid=:wid';
                  IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
+                 IBQueryWid.FetchAll;
                  if IBQueryWid.RecordCount<>0 then
                  begin
-                    strList.Add(IBQueryWidWID.Value);
+                    strList.Add(IBQueryWidABONPL.Value);
                     exit;
                  end;
               end;
@@ -566,12 +690,13 @@ begin
               if Match.Success then
               begin
                  IBQueryWid.Close;
-                 IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
+                 IBQueryWid.SQL.Text:='select * from wid where wid=:wid';
                  IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
+                 IBQueryWid.FetchAll;
                  if IBQueryWid.RecordCount<>0 then
                  begin
-                    strList.Add(IBQueryWidWID.Value);
+                    strList.Add(IBQueryWidVNESK.Value);
                     exit;
                  end;
               end;
@@ -579,12 +704,13 @@ begin
               if Match.Success then
               begin
                  IBQueryWid.Close;
-                 IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
+                 IBQueryWid.SQL.Text:='select * from wid where wid=:wid';
                  IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
+                 IBQueryWid.FetchAll;
                  if IBQueryWid.RecordCount<>0 then
                  begin
-                    strList[0]:=IBQueryWidWID.Value;
+                    strList[0]:=IBQueryWidABONPL.Value;
                     exit;
                  end;
               end;
@@ -592,12 +718,13 @@ begin
               if Match.Success then
               begin
                  IBQueryWid.Close;
-                 IBQueryWid.SQL.Text:='select * from wid where abonpl=:wid';
+                 IBQueryWid.SQL.Text:='select * from wid where wid=:wid';
                  IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
+                 IBQueryWid.FetchAll;
                  if IBQueryWid.RecordCount<>0 then
                  begin
-                    strList[0]:=IBQueryWidWID.Value;
+                    strList[0]:=IBQueryWidVNESK.Value;
                     exit;
                  end;
               end;
