@@ -93,48 +93,6 @@ object Form27: TForm27
     Top = 90
     Caption = #1087#1086
   end
-  object ADOCommand1: TADOCommand
-    CommandText = 'delete from subsree where len(schet) is null'#13#10
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=d:\WORK\KOMUN\kvpl\' +
-      'subs\;Mode=ReadWrite;Extended Properties=dBase IV;Persist Securi' +
-      'ty Info=False'
-    Parameters = <>
-    Left = 136
-    Top = 8
-  end
-  object DSADOQueryOBOR: TDataSource
-    DataSet = ADOQueryOBOR
-    Enabled = False
-    Left = 96
-    Top = 56
-  end
-  object ADOQueryOBOR: TADOQuery
-    CursorType = ctStatic
-    ParamCheck = False
-    Parameters = <>
-    Prepared = True
-    Left = 80
-    Top = 8
-  end
-  object DSADOQueryTAB: TDataSource
-    DataSet = ADOQueryTAB
-    Enabled = False
-    Left = 16
-    Top = 56
-  end
-  object ADOQueryTAB: TADOQuery
-    ConnectionString = 
-      'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=d:\WORK\KOMUN\kvpl\' +
-      'subs\;Mode=ReadWrite;Extended Properties=dBase IV;Persist Securi' +
-      'ty Info=False'
-    CursorType = ctStatic
-    Parameters = <>
-    SQL.Strings = (
-      'select schet, len(schet) from subsree')
-    Left = 24
-    Top = 8
-  end
   object DSQueryBank: TDataSource
     DataSet = IBQueryBank
     Left = 423
@@ -736,5 +694,11 @@ object Form27: TForm27
     DataSet = IBQueryWidAll
     Left = 183
     Top = 362
+  end
+  object Timer1: TTimer
+    Enabled = False
+    OnTimer = Timer1Timer
+    Left = 8
+    Top = 56
   end
 end
