@@ -27,12 +27,6 @@ type
     cxLabel4: TcxLabel;
     ADOQueryOBOR: TADOQuery;
     DSADOQueryOBOR: TDataSource;
-    ADOQueryOBORwid: TStringField;
-    ADOQueryOBORwnaim: TStringField;
-    ADOQueryOBORschet: TStringField;
-    ADOQueryOBORsal: TBCDField;
-    ADOQueryOBORch: TIntegerField;
-    ADOQueryOBORsumpl: TBCDField;
     cxGridDBTableView1wnaim: TcxGridDBColumn;
     cxGridDBTableView1sal: TcxGridDBColumn;
     cxGridDBTableView1ch: TcxGridDBColumn;
@@ -42,6 +36,13 @@ type
     cxDateEdit1: TcxDateEdit;
     cxButton3: TcxButton;
     cxButton4: TcxButton;
+    cxGridDBTableView1wid: TcxGridDBColumn;
+    cxGridDBTableView1schet: TcxGridDBColumn;
+    DataSource1: TDataSource;
+    ADOConnection1: TADOConnection;
+    cxButton5: TcxButton;
+    ADODataSet1: TADODataSet;
+    ADOStoredProc1: TADOStoredProc;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -49,7 +50,8 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxButton3Click(Sender: TObject);
     procedure cxTextEdit1PropertiesEditValueChanged(Sender: TObject);
-    procedure cxTextEdit1Enter(Sender: TObject);
+    procedure cxTextEdit1KeyPress(Sender: TObject; var Key: Char);
+    procedure cxButton5Click(Sender: TObject);
   private
 
     { Private declarations }
@@ -91,6 +93,12 @@ begin
   Close;
 end;
 
+procedure TForm33.cxButton5Click(Sender: TObject);
+begin
+ADOConnection1.Connected:=true;
+//ADODataSet1.
+end;
+
 procedure TForm33.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 
@@ -126,9 +134,11 @@ closeform:=0;
 Form2.Visible:=false;
 end;
 
-procedure TForm33.cxTextEdit1Enter(Sender: TObject);
+procedure TForm33.cxTextEdit1KeyPress(Sender: TObject; var Key: Char);
 begin
-// cxCalcEdit1.SetFocus;
+   if 13 = ord(key) then
+      cxCalcEdit1.SetFocus;
+
 end;
 
 procedure TForm33.cxTextEdit1PropertiesEditValueChanged(Sender: TObject);
@@ -140,17 +150,18 @@ begin
           if sch='' then
           begin
              ShowMessage('Особовий рахунок не знайдено!!!');
+             Form33.ADOQueryOBOR.Close;
              cxTextEdit1.SetFocus;
-          end
-          else
-          begin
-            sql:='select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 00000.00 as sumpl from wids,obor where wids.wid=obor.wid and obor.schet=:sch order by wids.npp';
-            Form33.ADOQueryOBOR.Close;
-            Form33.ADOQueryOBOR.SQL.Clear;
-            Form33.ADOQueryOBOR.SQL.Append(sql);
-            Form33.ADOQueryOBOR.Parameters.ParamByName('sch').Value:=trim(sch);
-            Form33.ADOQueryOBOR.Open;
           end;
+//          else
+//          begin
+//            sql:='select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 00000.00 as sumpl from wids,obor where wids.wid=obor.wid and obor.schet=:sch order by wids.npp';
+//            Form33.ADOQueryOBOR.Close;
+//            Form33.ADOQueryOBOR.SQL.Clear;
+//            Form33.ADOQueryOBOR.SQL.Append(sql);
+//            Form33.ADOQueryOBOR.Parameters.ParamByName('sch').Value:=trim(sch);
+//            Form33.ADOQueryOBOR.Open;
+//          end;
       end;
 
 end;

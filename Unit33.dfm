@@ -2,8 +2,8 @@ object Form33: TForm33
   Left = 0
   Top = 0
   Caption = #1054#1073#1088#1086#1073#1082#1072' '#1087#1083#1072#1090#1110#1078#1082#1080
-  ClientHeight = 525
-  ClientWidth = 594
+  ClientHeight = 534
+  ClientWidth = 598
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -30,7 +30,7 @@ object Form33: TForm33
     Top = 492
     Width = 161
     Height = 25
-    Caption = #1054#1073#1088#1086#1073#1080#1090#1080
+    Caption = #1054#1073#1088#1086#1073#1080#1090#1080'\'#1044#1086#1076#1072#1090#1080' '#1087#1083#1072#1090#1110#1078
     TabOrder = 3
     OnClick = cxButton2Click
   end
@@ -68,7 +68,7 @@ object Form33: TForm33
     Properties.ReadOnly = True
     Properties.OnEditValueChanged = cxTextEdit1PropertiesEditValueChanged
     TabOrder = 0
-    OnEnter = cxTextEdit1Enter
+    OnKeyPress = cxTextEdit1KeyPress
     Width = 121
   end
   object cxLabel2: TcxLabel
@@ -85,7 +85,7 @@ object Form33: TForm33
     LookAndFeel.NativeStyle = False
     object cxGridDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = DSADOQueryOBOR
+      DataController.DataSource = DataSource1
       DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <
@@ -94,7 +94,7 @@ object Form33: TForm33
           Column = cxGridDBTableView1sumpl
         end
         item
-          Kind = skCount
+          Kind = skSum
           Column = cxGridDBTableView1ch
         end>
       DataController.Summary.SummaryGroups = <>
@@ -108,6 +108,14 @@ object Form33: TForm33
       OptionsView.GroupByBox = False
       OptionsView.Indicator = True
       Preview.AutoHeight = False
+      object cxGridDBTableView1wid: TcxGridDBColumn
+        DataBinding.FieldName = 'wid'
+        Width = 60
+      end
+      object cxGridDBTableView1schet: TcxGridDBColumn
+        DataBinding.FieldName = 'schet'
+        Width = 93
+      end
       object cxGridDBTableView1ch: TcxGridDBColumn
         Caption = #1042#1080#1073#1088#1072#1090#1080
         DataBinding.FieldName = 'ch'
@@ -115,24 +123,24 @@ object Form33: TForm33
         Properties.NullStyle = nssUnchecked
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
-        Width = 66
+        Width = 47
       end
       object cxGridDBTableView1wnaim: TcxGridDBColumn
         Caption = #1055#1086#1089#1083#1091#1075#1072
         DataBinding.FieldName = 'wnaim'
         Options.Editing = False
-        Width = 114
+        Width = 68
       end
       object cxGridDBTableView1sal: TcxGridDBColumn
         Caption = #1041#1086#1088#1075
         DataBinding.FieldName = 'sal'
         Options.Editing = False
-        Width = 85
+        Width = 50
       end
       object cxGridDBTableView1sumpl: TcxGridDBColumn
         Caption = #1057#1091#1084#1072' '#1086#1087#1083#1072#1090#1080
         DataBinding.FieldName = 'sumpl'
-        Width = 131
+        Width = 78
       end
     end
     object cxGridLevel1: TcxGridLevel
@@ -185,46 +193,66 @@ object Form33: TForm33
     TabOrder = 14
     OnClick = cxButton4Click
   end
+  object cxButton5: TcxButton
+    Left = 295
+    Top = 8
+    Width = 161
+    Height = 25
+    Caption = 'ADO'
+    TabOrder = 15
+    OnClick = cxButton5Click
+  end
   object ADOQueryOBOR: TADOQuery
-    ConnectionString = 
-      'Provider=VFPOLEDB.1;Data Source=D:\WORK\KOMUN\kvpl\dbf;Password=' +
-      '"";Collating Sequence=RUSSIAN'
-    CursorType = ctStatic
+    CursorType = ctDynamic
+    Filter = 'schet='#39'0123133'#1072#39
+    LockType = ltPessimistic
     Parameters = <>
     Prepared = True
+    SQL.Strings = (
+      
+        'select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 0000' +
+        '0.00 as sumpl from wids,obor where wids.wid=obor.wid order by wi' +
+        'ds.npp')
     Left = 480
     Top = 408
-    object ADOQueryOBORwid: TStringField
-      FieldName = 'wid'
-      FixedChar = True
-      Size = 2
-    end
-    object ADOQueryOBORwnaim: TStringField
-      FieldName = 'wnaim'
-      FixedChar = True
-    end
-    object ADOQueryOBORschet: TStringField
-      FieldName = 'schet'
-      FixedChar = True
-      Size = 10
-    end
-    object ADOQueryOBORsal: TBCDField
-      FieldName = 'sal'
-      Precision = 9
-      Size = 2
-    end
-    object ADOQueryOBORch: TIntegerField
-      FieldName = 'ch'
-    end
-    object ADOQueryOBORsumpl: TBCDField
-      FieldName = 'sumpl'
-      Precision = 3
-      Size = 2
-    end
   end
   object DSADOQueryOBOR: TDataSource
     DataSet = ADOQueryOBOR
+    Enabled = False
     Left = 552
     Top = 408
+  end
+  object DataSource1: TDataSource
+    DataSet = ADODataSet1
+    Left = 552
+    Top = 320
+  end
+  object ADOConnection1: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=MSDASQL.1;Persist Security Info=False;Data Source=dBASE' +
+      ' Files;Mode=ReadWrite;Initial Catalog=d:\WORK\KOMUN\kvpl\dbf\'
+    IsolationLevel = ilBrowse
+    LoginPrompt = False
+    Mode = cmReadWrite
+    Left = 464
+    Top = 272
+  end
+  object ADODataSet1: TADODataSet
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    LockType = ltPessimistic
+    CommandText = 'select obor.schet from OBOR,WIDS where OBOR.wid=WIDS.wid'
+    IndexFieldNames = 'schet'
+    ParamCheck = False
+    Parameters = <>
+    Left = 464
+    Top = 336
+  end
+  object ADOStoredProc1: TADOStoredProc
+    Connection = ADOConnection1
+    Parameters = <>
+    Left = 528
+    Top = 272
   end
 end
