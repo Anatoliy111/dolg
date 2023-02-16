@@ -85,7 +85,7 @@ object Form33: TForm33
     LookAndFeel.NativeStyle = False
     object cxGridDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
-      DataController.DataSource = DataSource1
+      DataController.DataSource = DSADOQueryOBOR
       DataController.Options = [dcoAnsiSort, dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoGroupsAlwaysExpanded, dcoImmediatePost, dcoInsertOnNewItemRowFocusing]
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <
@@ -203,11 +203,16 @@ object Form33: TForm33
     OnClick = cxButton5Click
   end
   object ADOQueryOBOR: TADOQuery
-    CursorType = ctDynamic
+    Active = True
+    ConnectionString = 
+      'Provider=VFPOLEDB.1;Data Source=d:\WORK\KOMUN\kvpl\dbf\;Mode=Rea' +
+      'dWrite;Extended Properties=dBase V;Password="";Collating Sequenc' +
+      'e=MACHINE;CODEPAGE=866;ANSI=False'
+    CursorType = ctStatic
     Filter = 'schet='#39'0123133'#1072#39
-    LockType = ltPessimistic
+    LockType = ltBatchOptimistic
+    ParamCheck = False
     Parameters = <>
-    Prepared = True
     SQL.Strings = (
       
         'select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 0000' +
@@ -218,7 +223,6 @@ object Form33: TForm33
   end
   object DSADOQueryOBOR: TDataSource
     DataSet = ADOQueryOBOR
-    Enabled = False
     Left = 552
     Top = 408
   end
@@ -242,7 +246,9 @@ object Form33: TForm33
     Connection = ADOConnection1
     CursorType = ctStatic
     LockType = ltPessimistic
-    CommandText = 'select obor.schet from OBOR,WIDS where OBOR.wid=WIDS.wid'
+    CommandText = 
+      'select obor.schet from OBOR,WIDS where OBOR.wid=WIDS.wid into ta' +
+      'ble c:\ttt.dbf'
     IndexFieldNames = 'schet'
     ParamCheck = False
     Parameters = <>
