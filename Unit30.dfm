@@ -129,7 +129,6 @@ object Form30: TForm30
     Height = 407
     Align = alLeft
     TabOrder = 4
-    ExplicitLeft = 393
   end
   object cxGrid4: TcxGrid
     Left = 545
@@ -139,8 +138,6 @@ object Form30: TForm30
     Align = alClient
     TabOrder = 5
     LookAndFeel.NativeStyle = False
-    ExplicitLeft = 425
-    ExplicitWidth = 537
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSSPR_VIPISKA
@@ -394,6 +391,7 @@ object Form30: TForm30
     Database = Form1.IBDatabase1
     Transaction = Form1.IBTransaction1
     AfterInsert = IBSPR_VIPISKAAfterInsert
+    AfterPost = IBSPR_VIPISKAAfterPost
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (

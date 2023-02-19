@@ -91,11 +91,17 @@ object Form33: TForm33
       DataController.Summary.FooterSummaryItems = <
         item
           Kind = skSum
-          Column = cxGridDBTableView1sumpl
         end
         item
           Kind = skSum
           Column = cxGridDBTableView1ch
+        end
+        item
+          Kind = skSum
+        end
+        item
+          Kind = skSum
+          Column = cxGridDBTableView1sumpl
         end>
       DataController.Summary.SummaryGroups = <>
       OptionsData.Deleting = False
@@ -108,13 +114,8 @@ object Form33: TForm33
       OptionsView.GroupByBox = False
       OptionsView.Indicator = True
       Preview.AutoHeight = False
-      object cxGridDBTableView1wid: TcxGridDBColumn
-        DataBinding.FieldName = 'wid'
-        Width = 60
-      end
       object cxGridDBTableView1schet: TcxGridDBColumn
         DataBinding.FieldName = 'schet'
-        Width = 93
       end
       object cxGridDBTableView1ch: TcxGridDBColumn
         Caption = #1042#1080#1073#1088#1072#1090#1080
@@ -125,11 +126,9 @@ object Form33: TForm33
         Properties.ValueUnchecked = 0
         Width = 47
       end
-      object cxGridDBTableView1wnaim: TcxGridDBColumn
+      object cxGridDBTableView1naim: TcxGridDBColumn
         Caption = #1055#1086#1089#1083#1091#1075#1072
-        DataBinding.FieldName = 'wnaim'
-        Options.Editing = False
-        Width = 68
+        DataBinding.FieldName = 'naim'
       end
       object cxGridDBTableView1sal: TcxGridDBColumn
         Caption = #1041#1086#1088#1075
@@ -140,7 +139,6 @@ object Form33: TForm33
       object cxGridDBTableView1sumpl: TcxGridDBColumn
         Caption = #1057#1091#1084#1072' '#1086#1087#1083#1072#1090#1080
         DataBinding.FieldName = 'sumpl'
-        Width = 78
       end
     end
     object cxGridLevel1: TcxGridLevel
@@ -193,72 +191,51 @@ object Form33: TForm33
     TabOrder = 14
     OnClick = cxButton4Click
   end
-  object cxButton5: TcxButton
-    Left = 295
-    Top = 8
-    Width = 161
-    Height = 25
-    Caption = 'ADO'
-    TabOrder = 15
-    OnClick = cxButton5Click
-  end
   object ADOQueryOBOR: TADOQuery
     Active = True
     ConnectionString = 
-      'Provider=VFPOLEDB.1;Data Source=d:\WORK\KOMUN\kvpl\dbf\;Mode=Rea' +
-      'dWrite;Extended Properties=dBase V;Password="";Collating Sequenc' +
-      'e=MACHINE;CODEPAGE=866;ANSI=False'
+      'Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Dat' +
+      'a Source=dBASE Files;Mode=ReadWrite;Initial Catalog=C:\TEMP'
     CursorType = ctStatic
-    Filter = 'schet='#39'0123133'#1072#39
     LockType = ltBatchOptimistic
     ParamCheck = False
     Parameters = <>
     SQL.Strings = (
       
-        'select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 0000' +
-        '0.00 as sumpl from wids,obor where wids.wid=obor.wid order by wi' +
-        'ds.npp')
-    Left = 480
+        'select wids.wid, wids.naim, obor.schet, obor.sal, 0 as ch, su_do' +
+        'lg as sumpl from wids,obor where wids.wid=obor.wid and obor.sche' +
+        't='#39'0123133'#1072#39' order by wids.npp')
+    Left = 472
     Top = 408
+    object ADOQueryOBORwid: TWideStringField
+      FieldName = 'wid'
+      ReadOnly = True
+      Size = 2
+    end
+    object ADOQueryOBORnaim: TWideStringField
+      FieldName = 'naim'
+      ReadOnly = True
+      Size = 15
+    end
+    object ADOQueryOBORschet: TWideStringField
+      FieldName = 'schet'
+      ReadOnly = True
+      Size = 10
+    end
+    object ADOQueryOBORsal: TFloatField
+      FieldName = 'sal'
+      ReadOnly = True
+    end
+    object ADOQueryOBORch: TIntegerField
+      FieldName = 'ch'
+    end
+    object ADOQueryOBORsumpl: TFloatField
+      FieldName = 'sumpl'
+    end
   end
   object DSADOQueryOBOR: TDataSource
     DataSet = ADOQueryOBOR
     Left = 552
     Top = 408
-  end
-  object DataSource1: TDataSource
-    DataSet = ADODataSet1
-    Left = 552
-    Top = 320
-  end
-  object ADOConnection1: TADOConnection
-    Connected = True
-    ConnectionString = 
-      'Provider=MSDASQL.1;Persist Security Info=False;Data Source=dBASE' +
-      ' Files;Mode=ReadWrite;Initial Catalog=d:\WORK\KOMUN\kvpl\dbf\'
-    IsolationLevel = ilBrowse
-    LoginPrompt = False
-    Mode = cmReadWrite
-    Left = 464
-    Top = 272
-  end
-  object ADODataSet1: TADODataSet
-    Connection = ADOConnection1
-    CursorType = ctStatic
-    LockType = ltPessimistic
-    CommandText = 
-      'select obor.schet from OBOR,WIDS where OBOR.wid=WIDS.wid into ta' +
-      'ble c:\ttt.dbf'
-    IndexFieldNames = 'schet'
-    ParamCheck = False
-    Parameters = <>
-    Left = 464
-    Top = 336
-  end
-  object ADOStoredProc1: TADOStoredProc
-    Connection = ADOConnection1
-    Parameters = <>
-    Left = 528
-    Top = 272
   end
 end

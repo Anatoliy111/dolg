@@ -3412,7 +3412,6 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
-    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (

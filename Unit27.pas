@@ -147,6 +147,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure cxButton3Click(Sender: TObject);
 
   private
 
@@ -165,6 +166,7 @@ type
   MsExcel:Variant;
   Row:integer;
   newpl:boolean;
+  regallposl:string;
   procedure addopl;
   procedure endlistexel;
   function SearchSchet(schet:string):string;
@@ -175,10 +177,10 @@ type
 var
   Form27: TForm27;
 
-     st1,poslug,tip,path,regallposl:string;
+     st1,poslug,tip,path:string;
      period: TDateTime;
      strList:TStringList;
-     table:TDbf;
+     table,tobor,twid:TDbf;
      dt:TDate;
      kolst:integer;
      fl,err:boolean;
@@ -294,7 +296,7 @@ end;
 
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
-    stroka,strmes:string;
+    stroka,strmes,filepath:string;
     dt1,dt2:integer;
     f : TextFile;
 begin
@@ -333,7 +335,27 @@ begin
              exit;
          end;
 
+    if DirectoryExists('c:\temp') then
+    begin
+      CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar('c:\temp\obor.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar('c:\temp\wids.dbf'), false);
+      filepath:='c:\temp\';
+    end
+    else
+    if DirectoryExists(Form1.PathTMP) then
+    begin
+      CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(Form1.PathTMP+'\obor.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar(Form1.PathTMP+'\wids.dbf'), false);
+      filepath:=Form1.PathTMP+'\';
+    end;
+    Form33.ADOQueryOBOR.Close;
+//    Form33.ADOQueryOBOR.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source='+filepath+';Mode=Read;Jet OLEDB:System database="";Jet OLEDB:Registry Path="";Jet OLEDB:Database Password="";Jet OLEDB:Engine Type=16;Jet OLEDB:Database Locking Mode=0;Jet OLEDB:Global Partial Bulk Ops=2;';
+//    Form33.ADOQueryOBOR.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Password="";Data Source=c:\temp\;Mode=ReadWrite;Jet OLEDB:Engine Type=16';
+   // Form33.ADOQueryOBOR.ConnectionString:='Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Data Source=dBASE Files;Mode=ReadWrite;Initial Catalog='+filepath;
+    Form33.ADOQueryOBOR.ConnectionString:='Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Data Source=dBASE Files;Mode=ReadWrite;Initial Catalog='+filepath;
 
+    DeleteFile(filepath+'obor.mdx');
+    DeleteFile(filepath+'wids.mdx');
 
 
    try
@@ -345,6 +367,24 @@ begin
     table.Open;
     table.CanModify;
     table.OpenIndexFile('opl.cdx');
+
+    tobor:=TDbf.Create(self);
+    tobor.TableName:=filepath+'obor.dbf';
+    tobor.Open;
+
+    tobor.AddIndex('obor', 'schet', [ixCaseInsensitive]);
+
+    twid:=TDbf.Create(self);
+    twid.TableName:=filepath+'wids.dbf';
+    twid.Open;
+
+    twid.AddIndex('wids', 'wid', [ixCaseInsensitive]);
+
+    tobor.Free;
+    twid.Free;
+
+
+
 
 //    table.Exclusive := True;
        except
@@ -536,6 +576,12 @@ end;
 
 
 
+procedure TForm27.cxButton3Click(Sender: TObject);
+begin
+Form33.Show;
+Form33.ADOQueryOBOR.Open;
+end;
+
 procedure TForm27.FormCreate(Sender: TObject);
 begin
 strList := TStringList.Create;
@@ -609,7 +655,7 @@ begin
           end;
           if SearchAllPosl(strprizn,regallposl)='' then //пошук будь-якої послуги
           begin
-            errmess:=errmess+'Послуги в призначені не знайдено!';
+            errmess:=errmess+'Послуг в призначені не знайдено!!!';
             err:=true;
           end
           else
@@ -759,7 +805,7 @@ begin
 
                  if (k=0) then
                  begin
-                  if (Form33.ADOQueryOBORsal.Value>=ssum) then
+                  if (Form33.ADOQueryOBORsal.AsFloat>=ssum) then
                   begin
                     ssum1:=ssum;
                     ssum:=0;
@@ -767,10 +813,10 @@ begin
                   end
                   else
                   begin
-                    if Form33.ADOQueryOBORsal.Value>0 then
+                    if Form33.ADOQueryOBORsal.AsFloat>0 then
                     begin
-                       ssum1:=Form33.ADOQueryOBORsal.Value;
-                       ssum:=ssum-Form33.ADOQueryOBORsal.Value;
+                       ssum1:=Form33.ADOQueryOBORsal.AsFloat;
+                       ssum:=ssum-Form33.ADOQueryOBORsal.AsFloat;
                     end;
                   end;
                  end
@@ -781,12 +827,12 @@ begin
                       riznsum:=ssum-Form33.ADOQueryOBORsal.Value;
                       if riznsum>0 then
                       begin
-                        Form33.ADOQueryOBORsumpl.Value:=Form33.ADOQueryOBORsal.Value;
-                        ssum:=ssum-Form33.ADOQueryOBORsal.Value;
+                        Form33.ADOQueryOBORsumpl.AsFloat:=Form33.ADOQueryOBORsal.AsFloat;
+                        ssum:=ssum-Form33.ADOQueryOBORsal.AsFloat;
                       end
                       else
                       begin
-                        Form33.ADOQueryOBORsumpl.Value:=ssum;
+                        Form33.ADOQueryOBORsumpl.AsFloat:=ssum;
                         ssum:=0;
                       end;
 
@@ -808,7 +854,7 @@ begin
                   Form33.ADOQueryOBOR.Edit;
                   Form33.ADOQueryOBORschet.Value;
                   Form33.ADOQueryOBORwid.Value;
-                  Form33.ADOQueryOBORsumpl.Value:=ssum1;
+                  Form33.ADOQueryOBORsumpl.AsFloat:=ssum1;
                   Form33.ADOQueryOBOR.Post;
                 end;
 
@@ -853,27 +899,38 @@ procedure TForm27.addopl;
 var schet,strobr:string;
 begin
 
-      if Form33.cxTextEdit1.Text='' then
-      begin
-         ShowMessage('Введіть особовий рахунок!!!');
-         Form33.cxTextEdit1.Focused;
-         fl:=false;
-         Form33.Show;
-         exit;
-      end
-      else
-      begin
-          schet:=SearchSchet(trim(Form33.cxTextEdit1.Text));
-          if schet='' then
+          if Form33.ADOQueryOBOR.RecordCount=0 then
           begin
-            Form33.cxLabel1.Caption:='Особовий рахунок не знайдено!!!';
-            Form33.Show;
-            fl:=false;
-            exit;
+              Form33.cxLabel1.Caption:='Особовий рахунок не знайдено!!!';
+              Form33.Show;
+              fl:=false;
+              exit;
           end;
-      end;
 
-          if (Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[0]<>Form33.cxCalcEdit1.Value) then
+//      if Form33.cxTextEdit1.Text='' then
+//      begin
+//         ShowMessage('Введіть особовий рахунок!!!');
+//         Form33.cxTextEdit1.Focused;
+//         fl:=false;
+//         Form33.Show;
+//         exit;
+//      end
+//      else
+//      begin
+//          if Form33.ADOQueryOBOR.RecordCount=0 then
+//          begin
+//            schet:=SearchSchet(trim(Form33.cxTextEdit1.Text));
+//            if schet='' then
+//            begin
+//              Form33.cxLabel1.Caption:='Особовий рахунок не знайдено!!!';
+//              Form33.Show;
+//              fl:=false;
+//              exit;
+//            end;
+//          end;
+//      end;
+
+          if (Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]<>Form33.cxCalcEdit1.Value) then
           begin
             Form33.cxLabel1.Caption:='Cума оплати відрізняється від суми платежу виписки!!!';
             Form33.Show;
@@ -881,7 +938,7 @@ begin
             exit;
           end;
 
-          if (Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[0])=0 then
+          if (Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3])=0 then
           begin
             Form33.cxLabel1.Caption:='Cума оплати не може бути 0!!!';
             Form33.Show;
@@ -910,7 +967,7 @@ begin
           table.FieldByName('schet').Value:=Form33.cxTextEdit1.Text;
           table.FieldByName('dt').Value:=Form33.cxDateEdit1.Date;
           table.FieldByName('pach').Value:=DayOf(Form33.cxDateEdit1.Date);
-          table.FieldByName('opl').Value:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[0];
+          table.FieldByName('opl').Value:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
           table.FieldByName('doc').Value:=MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_DOK.Value];
           strobr:='rah='+Form33.cxTextEdit1.Text+';';
           Form33.ADOQueryOBOR.first;
@@ -918,7 +975,7 @@ begin
             begin
               if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
               begin
-                table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).Value:=Form33.ADOQueryOBORsumpl.Value;
+                table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat:=Form33.ADOQueryOBORsumpl.AsFloat;
                 strobr:=strobr+Form33.ADOQueryOBORwid.AsString+'='+Form33.ADOQueryOBORsumpl.AsString+';';
               end;
             Form33.ADOQueryOBOR.Next;
@@ -952,11 +1009,11 @@ begin
               if LowerCase(s)='m' then schet:=LeftStr(schet,Length(schet)-1)+'м';
             end;
 
-            sql:='select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 00000.00 as sumpl from wids,obor where wids.wid=obor.wid and obor.schet=:sch order by wids.npp';
+            sql:='select wids.wid, wids.naim, obor.schet, obor.sal, 0 as ch, su_dolg as sumpl from wids,obor where wids.wid=obor.wid and obor.schet='''+trim(schet)+''' order by wids.npp';
             Form33.ADOQueryOBOR.Close;
             Form33.ADOQueryOBOR.SQL.Clear;
             Form33.ADOQueryOBOR.SQL.Append(sql);
-            Form33.ADOQueryOBOR.Parameters.ParamByName('sch').Value:=trim(schet);
+//            Form33.ADOQueryOBOR.Parameters.ParamByName('sch').Value:=trim(schet);
             Form33.ADOQueryOBOR.Open;
 //            Form33.ADOQueryOBOR.FetchAll;
             if Form33.ADOQueryOBOR.RecordCount<>0 then

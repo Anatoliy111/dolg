@@ -698,7 +698,6 @@ object Form27: TForm27
   object Timer1: TTimer
     Enabled = False
     OnTimer = Timer1Timer
-    Left = 8
     Top = 56
   end
 end

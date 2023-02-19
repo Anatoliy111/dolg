@@ -27,22 +27,22 @@ type
     cxLabel4: TcxLabel;
     ADOQueryOBOR: TADOQuery;
     DSADOQueryOBOR: TDataSource;
-    cxGridDBTableView1wnaim: TcxGridDBColumn;
     cxGridDBTableView1sal: TcxGridDBColumn;
     cxGridDBTableView1ch: TcxGridDBColumn;
-    cxGridDBTableView1sumpl: TcxGridDBColumn;
     cxCalcEdit1: TcxCalcEdit;
     cxLabel5: TcxLabel;
     cxDateEdit1: TcxDateEdit;
     cxButton3: TcxButton;
     cxButton4: TcxButton;
-    cxGridDBTableView1wid: TcxGridDBColumn;
+    ADOQueryOBORwid: TWideStringField;
+    ADOQueryOBORschet: TWideStringField;
+    ADOQueryOBORsal: TFloatField;
+    ADOQueryOBORch: TIntegerField;
+    ADOQueryOBORnaim: TWideStringField;
+    cxGridDBTableView1naim: TcxGridDBColumn;
     cxGridDBTableView1schet: TcxGridDBColumn;
-    DataSource1: TDataSource;
-    ADOConnection1: TADOConnection;
-    cxButton5: TcxButton;
-    ADODataSet1: TADODataSet;
-    ADOStoredProc1: TADOStoredProc;
+    ADOQueryOBORsumpl: TFloatField;
+    cxGridDBTableView1sumpl: TcxGridDBColumn;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -51,7 +51,6 @@ type
     procedure cxButton3Click(Sender: TObject);
     procedure cxTextEdit1PropertiesEditValueChanged(Sender: TObject);
     procedure cxTextEdit1KeyPress(Sender: TObject; var Key: Char);
-    procedure cxButton5Click(Sender: TObject);
   private
 
     { Private declarations }
@@ -91,12 +90,6 @@ end;
 procedure TForm33.cxButton4Click(Sender: TObject);
 begin
   Close;
-end;
-
-procedure TForm33.cxButton5Click(Sender: TObject);
-begin
-ADOConnection1.Connected:=true;
-//ADODataSet1.
 end;
 
 procedure TForm33.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -151,7 +144,8 @@ begin
           begin
              ShowMessage('Особовий рахунок не знайдено!!!');
              Form33.ADOQueryOBOR.Close;
-             cxTextEdit1.SetFocus;
+             if Form33.Showing then
+               cxTextEdit1.SetFocus;
           end;
 //          else
 //          begin

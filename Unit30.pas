@@ -69,6 +69,7 @@ type
     procedure IBSPR_VIDPOISKAfterScroll(DataSet: TDataSet);
     procedure IBSPR_BANKAfterScroll(DataSet: TDataSet);
     procedure IBWIDAfterScroll(DataSet: TDataSet);
+    procedure IBSPR_VIPISKAAfterPost(DataSet: TDataSet);
   private
     { Private declarations }
     procedure UpdateVipiska;
@@ -78,23 +79,46 @@ type
 
 var
   Form30: TForm30;
+  var upd:boolean;
 
 implementation
 
 {$R *.dfm}
 
-uses Unit1;
+uses Unit1, Unit27;
 
 procedure TForm30.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
- if IBSPR_VIPISKA.State in [dsInsert,dsEdit] then IBSPR_VIPISKA.Post;
+ if IBSPR_VIPISKA.State in [dsInsert,dsEdit] then
+  IBSPR_VIPISKA.Post;
+
  Form1.IBTransaction1.CommitRetaining;
+
+ if upd then
+ begin
+    Form27.IBQueryVipiska.close;
+    Form27.IBQueryVipiska.SQL.Text:='select *  from SPR_VIPISKA where vidpoisk=:vid';
+    Form27.IBQueryVipiska.ParamByName('vid').AsString:='posl';
+    Form27.IBQueryVipiska.open;
+    Form27.regallposl:='(';
+    while not Form27.IBQueryVipiska.Eof do
+    begin
+      Form27.regallposl:=Form27.regallposl+Form27.IBQueryVipiskaPOISK.AsString+'{1}|';
+
+    Form27.IBQueryVipiska.Next;
+    end;
+    Form27.regallposl:=Copy(Form27.regallposl,1,Length(Form27.regallposl)-1);
+    Form27.regallposl:=Form27.regallposl+')';
+ end;
+
+
 end;
 
 procedure TForm30.FormShow(Sender: TObject);
 begin
 IBWID.Open;
 IBSPR_VIDPOISK.Open;
+upd:=false;
 UpdateVipiska();
 
 end;
@@ -115,6 +139,11 @@ begin
     IBSPR_VIPISKAWID.Value:=IBWIDWID.Value;
 
      IBSPR_VIPISKAVIDPOISK.Value:=IBSPR_VIDPOISKVIDPOISK.Value;
+end;
+
+procedure TForm30.IBSPR_VIPISKAAfterPost(DataSet: TDataSet);
+begin
+upd:=true;
 end;
 
 procedure TForm30.IBWIDAfterScroll(DataSet: TDataSet);
