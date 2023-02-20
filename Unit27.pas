@@ -156,7 +156,7 @@ type
 
     function SearchAllPosl(str:string;regallposl:string):string;
     procedure SearchPosl(str:string);
-
+    function StrAnsiToOem(const S: AnsiString): AnsiString;
 
 
 
@@ -616,6 +616,12 @@ begin
    while fl do
    begin
             row:=row+1;
+            if row=kolst+1 then
+            begin
+              fl:=false;
+              endlistexel;
+              exit;
+            end;
 //          if newpl then
 //          begin
             Form33.cxTextEdit1.Clear;
@@ -641,7 +647,7 @@ begin
           if Length(MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
           if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
           //пошук Особ. рахунка
-          Match:=RegularExpression.Match(strprizn,'\b[0-9]{7}[а-я]{1}|[0-9]{7}[a-z]{1}|[0-9]{7}\b',[roIgnoreCase]);
+          Match:=RegularExpression.Match(strprizn,'\b[0-9]{7}[а-я]{1}\b|\b[0-9]{7}[a-z]{1}\b|\b[0-9]{7}\b',[roIgnoreCase]);
           if Match.Success then
              Form33.cxTextEdit1.Text:=trim(Match.value)
           else Form33.cxTextEdit1.Text:='';
@@ -881,7 +887,7 @@ begin
 
           end;
 
-          if row=kolst then fl:=false;
+
    end;
 
 end;
@@ -898,7 +904,7 @@ begin
 end;
 
 procedure TForm27.addopl;
-var s,schet,strobr:string;
+var s,s2,s3,s4,s5,sss,schet,strobr:string;
     RegularExpression : TRegEx;
     Match : TMatch;
     DosEncoding: TEncoding;
@@ -978,13 +984,8 @@ begin
           Match := RegularExpression.Match(Form33.cxTextEdit1.Text);
           if Match.Success then
             begin
-               x:=TEncoding.Unicode.GetBytes(Form33.cxTextEdit1.Text);
-               DosData := TEncoding.Convert(TEncoding.GetEncoding(866),TEncoding.GetEncoding(1251),x);
-               s:=TEncoding.Unicode.GetString(DosData);
-//               table.FieldByName('schet').Value:=s;
-
-               s:=win2dos(RightStr(Form33.cxTextEdit1.Text,1));
-               table.FieldByName('schet').Value:=LeftStr(Form33.cxTextEdit1.Text,Length(Form33.cxTextEdit1.Text)-1)+s;
+               s2:=StrAnsiToOem(RightStr(Form33.cxTextEdit1.Text,1));
+               table.FieldByName('schet').Value:=LeftStr(Form33.cxTextEdit1.Text,Length(Form33.cxTextEdit1.Text)-1)+s2;
             end
             else
                table.FieldByName('schet').Value:=Form33.cxTextEdit1.Text;
@@ -1036,6 +1037,13 @@ begin
             Form33.closeform:=1;
             Form33.close;
           end;
+end;
+
+
+function TForm27.StrAnsiToOem(const S: AnsiString): AnsiString;
+begin
+  SetLength(Result, Length(S));
+  AnsiToOemBuff(@S[1], @Result[1], Length(S));
 end;
 
 function TForm27.SearchSchet(schet:string):string;
