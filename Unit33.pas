@@ -43,6 +43,8 @@ type
     cxGridDBTableView1schet: TcxGridDBColumn;
     ADOQueryOBORsumpl: TFloatField;
     cxGridDBTableView1sumpl: TcxGridDBColumn;
+    cxLabel6: TcxLabel;
+    Memo2: TMemo;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);

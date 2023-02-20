@@ -142,6 +142,7 @@ type
     IBQueryWidAllUPD: TIntegerField;
     IBQueryWidAllVNESK: TIBStringField;
     Timer1: TTimer;
+    IBQueryBankCOL_KONTR: TIntegerField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -867,6 +868,7 @@ begin
             Form33.Memo1.Text:=strprizn;
             Form33.cxCalcEdit1.Value:=allsum;
             Form33.cxDateEdit1.Date:=dt;
+            Form33.Memo2.Text:=MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_KONTR.Value];
 
           if err then
           begin
@@ -896,7 +898,13 @@ begin
 end;
 
 procedure TForm27.addopl;
-var schet,strobr:string;
+var s,schet,strobr:string;
+    RegularExpression : TRegEx;
+    Match : TMatch;
+    DosEncoding: TEncoding;
+    WindowsEncoding: TEncoding;
+    DosData: TBytes;
+    x:TArray<Byte>;
 begin
 
           if Form33.ADOQueryOBOR.RecordCount=0 then
@@ -963,8 +971,47 @@ begin
           end;
 
           strobr:='';
+
+          schet:=Form33.cxTextEdit1.Text;
           table.Append;
-          table.FieldByName('schet').Value:=Form33.cxTextEdit1.Text;
+          RegularExpression := TRegEx.Create('[à-ÿ]');
+          Match := RegularExpression.Match(Form33.cxTextEdit1.Text);
+          if Match.Success then
+            begin
+               x:=TEncoding.Unicode.GetBytes(Form33.cxTextEdit1.Text);
+               DosData := TEncoding.Convert(TEncoding.GetEncoding(866),TEncoding.GetEncoding(1251),x);
+               s:=TEncoding.Unicode.GetString(DosData);
+//               table.FieldByName('schet').Value:=s;
+
+               s:=win2dos(RightStr(Form33.cxTextEdit1.Text,1));
+               table.FieldByName('schet').Value:=LeftStr(Form33.cxTextEdit1.Text,Length(Form33.cxTextEdit1.Text)-1)+s;
+            end
+            else
+               table.FieldByName('schet').Value:=Form33.cxTextEdit1.Text;
+
+//          Match1:=RegularExpression1.Match(schet,'\b[a-ÿ]{1}\b',[]);
+//          s:=Match1.value;
+//
+//            if Match1.Success then
+//               s:=RightStr(Form33.cxTextEdit1.Text,1);
+//
+//              s:=RightStr(Form33.cxTextEdit1.Text,1);
+//            Match1:=RegularExpression1.Match(schet,'\b[a-ÿ]\b',[roIgnoreCase]);
+//            s:=Match1.value;
+
+
+//            if IsCharAlpha(s[1]) then
+//            begin
+//               x:=TEncoding.Unicode.GetBytes(Form33.cxTextEdit1.Text);
+//               DosData := TEncoding.Convert(TEncoding.GetEncoding(1251),TEncoding.GetEncoding(866),x);
+//               s:=TEncoding.Unicode.GetString(DosData);
+//               table.FieldByName('schet').Value:=s;
+//            end
+//            else
+//               table.FieldByName('schet').Value:=Form33.cxTextEdit1.Text;
+
+
+
           table.FieldByName('dt').Value:=Form33.cxDateEdit1.Date;
           table.FieldByName('pach').Value:=DayOf(Form33.cxDateEdit1.Date);
           table.FieldByName('opl').Value:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];

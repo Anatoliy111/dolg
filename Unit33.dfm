@@ -44,7 +44,7 @@ object Form33: TForm33
   end
   object Memo1: TMemo
     Left = 31
-    Top = 69
+    Top = 60
     Width = 546
     Height = 70
     Lines.Strings = (
@@ -54,7 +54,7 @@ object Form33: TForm33
   end
   object cxLabel3: TcxLabel
     Left = 31
-    Top = 46
+    Top = 37
     Caption = #1055#1088#1080#1079#1085#1072#1095#1077#1085#1085#1103' '#1087#1083#1072#1090#1077#1078#1091
   end
   object cxLabel1: TcxLabel
@@ -64,7 +64,7 @@ object Form33: TForm33
   end
   object cxTextEdit1: TcxTextEdit
     Left = 135
-    Top = 152
+    Top = 146
     Properties.ReadOnly = True
     Properties.OnEditValueChanged = cxTextEdit1PropertiesEditValueChanged
     TabOrder = 0
@@ -73,7 +73,7 @@ object Form33: TForm33
   end
   object cxLabel2: TcxLabel
     Left = 31
-    Top = 153
+    Top = 147
     Caption = #1054#1089#1086#1073#1086#1074#1080#1081' '#1088#1072#1093#1091#1085#1086#1082
   end
   object cxGrid2: TcxGrid
@@ -159,20 +159,20 @@ object Form33: TForm33
     Width = 121
   end
   object cxLabel5: TcxLabel
-    Left = 271
-    Top = 153
+    Left = 288
+    Top = 185
     Caption = #1044#1072#1090#1072' '#1087#1083#1072#1090#1077#1078#1091
   end
   object cxDateEdit1: TcxDateEdit
-    Left = 354
-    Top = 152
+    Left = 371
+    Top = 181
     Properties.ReadOnly = True
     TabOrder = 12
     Width = 121
   end
   object cxButton3: TcxButton
     Left = 458
-    Top = 208
+    Top = 288
     Width = 119
     Height = 49
     Caption = #1044#1086#1076#1072#1090#1080' '#1087#1088#1080#1079#1085#1072#1082' '#1087#1086#1089#1083#1091#1075#1080
@@ -191,8 +191,22 @@ object Form33: TForm33
     TabOrder = 14
     OnClick = cxButton4Click
   end
+  object cxLabel6: TcxLabel
+    Left = 263
+    Top = 147
+    Caption = #1053#1072#1079#1074#1072' '#1082#1086#1085#1090#1088#1072#1075#1077#1085#1090#1072
+  end
+  object Memo2: TMemo
+    Left = 371
+    Top = 136
+    Width = 206
+    Height = 39
+    Lines.Strings = (
+      '')
+    ReadOnly = True
+    TabOrder = 16
+  end
   object ADOQueryOBOR: TADOQuery
-    Active = True
     ConnectionString = 
       'Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Dat' +
       'a Source=dBASE Files;Mode=ReadWrite;Initial Catalog=C:\TEMP'

@@ -881,6 +881,7 @@ end;
 procedure TForm1.cxButton8Click(Sender: TObject);
 begin
 Form27.show;
+Form27.Caption:=cxButton8.Caption;
 end;
 
 procedure TForm1.cxGrid1DBTableView1Column1PropertiesButtonClick(

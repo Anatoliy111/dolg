@@ -182,6 +182,10 @@ object Form27: TForm27
       FieldName = 'STR_DT_VIP'
       Origin = '"SPR_BANK"."STR_DT_VIP"'
     end
+    object IBQueryBankCOL_KONTR: TIntegerField
+      FieldName = 'COL_KONTR'
+      Origin = '"SPR_BANK"."COL_KONTR"'
+    end
   end
   object OpenDialog1: TOpenDialog
     Left = 516

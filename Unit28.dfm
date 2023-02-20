@@ -266,6 +266,19 @@ object Form28: TForm28
     TabOrder = 32
     Width = 36
   end
+  object cxLabel16: TcxLabel
+    Left = 435
+    Top = 266
+    Caption = #8470' '#1082#1086#1083#1086#1085#1082#1080' '#1082#1086#1085#1090#1088#1072#1075#1077#1085#1090#1072
+  end
+  object cxDBTextEdit16: TcxDBTextEdit
+    Left = 586
+    Top = 265
+    DataBinding.DataField = 'COL_KONTR'
+    DataBinding.DataSource = DSBANK
+    TabOrder = 34
+    Width = 36
+  end
   object IBBANK: TIBDataSet
     Database = Form1.IBDatabase1
     Transaction = Form1.IBTransaction1
@@ -281,16 +294,16 @@ object Form28: TForm28
         '  (KL, NAIM, RAH, STR_ST, COL_POISK_ENDDATA, STR_PRIZN_ENDDATA, ' +
         'COL_PRIZN, '
       
-        '   COL_SUM, COL_DT, COL_DOK, COL_END, STR_POISK_RAH, COL_POISK_R' +
-        'AH, COL_EDRPOU, '
-      '   STR_EDRPOU, COL_DT_VIP, STR_DT_VIP)'
+        '   COL_SUM, COL_DT, COL_DOK, COL_END, COL_KONTR, STR_POISK_RAH, ' +
+        'COL_POISK_RAH, '
+      '   COL_EDRPOU, STR_EDRPOU, COL_DT_VIP, STR_DT_VIP)'
       'values'
       
         '  (:KL, :NAIM, :RAH, :STR_ST, :COL_POISK_ENDDATA, :STR_PRIZN_END' +
         'DATA, :COL_PRIZN, '
       
-        '   :COL_SUM, :COL_DT, :COL_DOK, :COL_END, :STR_POISK_RAH, :COL_P' +
-        'OISK_RAH, '
+        '   :COL_SUM, :COL_DT, :COL_DOK, :COL_END, :COL_KONTR, :STR_POISK' +
+        '_RAH, :COL_POISK_RAH, '
       '   :COL_EDRPOU, :STR_EDRPOU, :COL_DT_VIP, :STR_DT_VIP)')
     RefreshSQL.Strings = (
       'Select '
@@ -305,6 +318,7 @@ object Form28: TForm28
       '  COL_DT,'
       '  COL_DOK,'
       '  COL_END,'
+      '  COL_KONTR,'
       '  STR_POISK_RAH,'
       '  COL_POISK_RAH,'
       '  COL_EDRPOU,'
@@ -330,6 +344,7 @@ object Form28: TForm28
       '  COL_DT = :COL_DT,'
       '  COL_DOK = :COL_DOK,'
       '  COL_END = :COL_END,'
+      '  COL_KONTR = :COL_KONTR,'
       '  STR_POISK_RAH = :STR_POISK_RAH,'
       '  COL_POISK_RAH = :COL_POISK_RAH,'
       '  COL_EDRPOU = :COL_EDRPOU,'
@@ -417,6 +432,10 @@ object Form28: TForm28
     object IBBANKSTR_DT_VIP: TIntegerField
       FieldName = 'STR_DT_VIP'
       Origin = '"SPR_BANK"."STR_DT_VIP"'
+    end
+    object IBBANKCOL_KONTR: TIntegerField
+      FieldName = 'COL_KONTR'
+      Origin = '"SPR_BANK"."COL_KONTR"'
     end
   end
   object DSBANK: TDataSource
