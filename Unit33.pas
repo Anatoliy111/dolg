@@ -144,10 +144,13 @@ begin
           sch:=Form27.SearchSchet(trim(Form33.cxTextEdit1.Text));
           if sch='' then
           begin
-             ShowMessage('Особовий рахунок не знайдено!!!');
+
              Form33.ADOQueryOBOR.Close;
              if Form33.Showing then
+             begin
+               ShowMessage('Особовий рахунок не знайдено!!!');
                cxTextEdit1.SetFocus;
+             end;
           end;
 //          else
 //          begin
