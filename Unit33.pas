@@ -139,7 +139,7 @@ end;
 procedure TForm33.cxTextEdit1KeyPress(Sender: TObject; var Key: Char);
 begin
    if 13 = ord(key) then
-      cxCalcEdit1.SetFocus;
+      cxCalcEdit2.SetFocus;
 
 end;
 
