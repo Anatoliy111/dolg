@@ -669,7 +669,11 @@ begin
           if Length(MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
           if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
           //пошук Особ. рахунка
+<<<<<<< HEAD
           Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
+=======
+          Match:=RegularExpression.Match(strprizn,'\b[0-9]{7}[а-я]{1}\b|\b[0-9]{7}[a-z]{1}\b|\b[0-9]{7}\b',[roIgnoreCase]);
+>>>>>>> 8cb2a5a132e18571fb5773bd4161a026ade741e3
           if Match.Success then
              Form33.cxTextEdit1.Text:=trim(Match.value)
           else Form33.cxTextEdit1.Text:='';
