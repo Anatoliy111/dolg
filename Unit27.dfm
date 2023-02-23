@@ -11,6 +11,7 @@ object Form27: TForm27
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -60,9 +61,9 @@ object Form27: TForm27
   end
   object MemoLog: TMemo
     Left = 0
-    Top = 188
+    Top = 239
     Width = 577
-    Height = 241
+    Height = 190
     Align = alBottom
     ReadOnly = True
     ScrollBars = ssBoth
@@ -92,6 +93,18 @@ object Form27: TForm27
     Left = 264
     Top = 90
     Caption = #1087#1086
+  end
+  object cxLabel5: TcxLabel
+    Left = 14
+    Top = 188
+    AutoSize = False
+    Caption = 
+      #1059#1074#1072#1075#1072'!!! '#1044#1083#1103' '#1082#1086#1088#1088#1077#1082#1090#1085#1086#1075#1086' '#1088#1086#1079#1087#1086#1076#1110#1083#1077#1085#1085#1103' '#1089#1091#1084#1084#1080' '#1087#1083#1072#1090#1077#1078#1091' '#1084#1110#1078' '#1087#1086#1089#1083#1091#1075#1072#1084 +
+      #1080', '#1087#1077#1088#1077#1076' '#1079#1072#1074#1072#1085#1090#1072#1078#1077#1085#1085#1103#1084', '#1073#1072#1078#1072#1085#1086' '#1074#1080#1082#1086#1085#1072#1090#1080' '#1088#1086#1079#1088#1072#1093#1091#1085#1086#1082' '#1086#1073#1086#1088#1086#1090#1082#1080' '#1074' '#1087#1088 +
+      #1086#1088#1072#1084#1110' '#1082#1074#1072#1088#1090#1087#1083#1072#1090#1072'.'
+    Properties.WordWrap = True
+    Height = 45
+    Width = 554
   end
   object DSQueryBank: TDataSource
     DataSet = IBQueryBank

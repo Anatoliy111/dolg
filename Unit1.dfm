@@ -513,25 +513,17 @@ object Form1: TForm1
         Height = 25
         Caption = #1044#1088#1091#1082
         TabOrder = 7
-        OnClick = cxButton5Click
       end
       object cxTextEdit3: TcxTextEdit
-        Left = 392
+        Left = 328
         Top = 121
+        Properties.OnChange = cxTextEdit3PropertiesChange
         TabOrder = 8
-        Width = 121
-      end
-      object cxButton9: TcxButton
-        Left = 519
-        Top = 117
-        Width = 71
-        Height = 25
-        Caption = #1055#1088#1080#1084#1110#1085#1080#1090#1080
-        TabOrder = 9
-        OnClick = cxButton5Click
+        OnKeyDown = cxTextEdit3KeyDown
+        Width = 233
       end
       object cxLabel5: TcxLabel
-        Left = 412
+        Left = 404
         Top = 105
         Caption = #1060#1110#1083#1100#1090#1088' '#1087#1086' '#1055#1030#1041
       end
@@ -539,13 +531,6 @@ object Form1: TForm1
         Left = 204
         Top = 105
         Caption = #1060#1110#1083#1100#1090#1088' '#1087#1086' '#1088#1072#1093#1091#1085#1082#1091
-      end
-      object cxTextEdit4: TcxTextEdit
-        Left = 189
-        Top = 121
-        Properties.OnChange = cxTextEdit4PropertiesChange
-        TabOrder = 12
-        Width = 121
       end
       object cxLookupComboBox1: TcxLookupComboBox
         Left = 3
@@ -556,7 +541,7 @@ object Form1: TForm1
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = DSPERIOD
-        TabOrder = 13
+        TabOrder = 11
         Width = 169
       end
       object cxLabel3: TcxLabel
@@ -570,23 +555,22 @@ object Form1: TForm1
         Width = 74
         Height = 25
         Caption = #1042' '#1045#1082#1089#1077#1083#1100
-        TabOrder = 15
+        TabOrder = 13
         OnClick = cxButton3Click
-      end
-      object cxButton1: TcxButton
-        Left = 316
-        Top = 117
-        Width = 71
-        Height = 25
-        Caption = #1055#1088#1080#1084#1110#1085#1080#1090#1080
-        TabOrder = 16
-        OnClick = cxButton5Click
       end
       object cxCalcEdit2: TcxCalcEdit
         Left = 266
         Top = 86
         EditValue = 0.000000000000000000
-        TabOrder = 17
+        TabOrder = 14
+        Width = 121
+      end
+      object cxTextEdit1: TcxTextEdit
+        Left = 189
+        Top = 121
+        Properties.OnChange = cxTextEdit1PropertiesChange
+        TabOrder = 15
+        OnKeyDown = cxTextEdit1KeyDown
         Width = 121
       end
     end

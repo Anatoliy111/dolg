@@ -10,7 +10,8 @@ uses
   cxDataStorage, cxNavigator, Data.DB, cxDBData, IBX.IBCustomDataSet,
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, Data.Win.ADODB, cxCheckBox, cxMaskEdit,
-  cxDropDownEdit, cxCalc, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar;
+  cxDropDownEdit, cxCalc, Vcl.ComCtrls, dxCore, cxDateUtils, cxCalendar,
+  cxDBLabel;
 type
   TForm33 = class(TForm)
     cxButton1: TcxButton;
@@ -45,6 +46,12 @@ type
     cxGridDBTableView1sumpl: TcxGridDBColumn;
     cxLabel6: TcxLabel;
     Memo2: TMemo;
+    CheckBox2: TCheckBox;
+    ADOQueryOBORfio: TStringField;
+    cxLabel7: TcxLabel;
+    cxDBLabel1: TcxDBLabel;
+    cxLabel8: TcxLabel;
+    cxCalcEdit2: TcxCalcEdit;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);

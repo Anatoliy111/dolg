@@ -17,7 +17,7 @@ uses
   Data.DBXPool, Data.SqlExpr, Soap.InvokeRegistry, Soap.WSDLIntf,
   Soap.SOAPPasInv, Soap.SOAPHTTPPasInv, Soap.SOAPHTTPDisp, Soap.WebBrokerSOAP,
   Soap.SOAPDomConv, Soap.OPToSOAPDomConv, Datasnap.DBClient, Soap.SOAPConn,
-  cxLocalization;
+  cxLocalization,cxGridDBDataDefinitions;
 
 type
   TForm1 = class(TForm)
@@ -275,10 +275,8 @@ type
     cxGrid1DBTableView1DOLG: TcxGridDBColumn;
     cxGrid1DBTableView1ORGNAME: TcxGridDBColumn;
     cxTextEdit3: TcxTextEdit;
-    cxButton9: TcxButton;
     cxLabel5: TcxLabel;
     cxLabel6: TcxLabel;
-    cxTextEdit4: TcxTextEdit;
     IBOBORKL: TIntegerField;
     IBOBORPERIOD: TDateField;
     IBOBORSCHET: TIBStringField;
@@ -392,7 +390,6 @@ type
     IBREPDMOVW: TFloatField;
     IBREPDPERE: TFloatField;
     IBREPDENDDOLG: TFloatField;
-    cxButton1: TcxButton;
     cxCalcEdit1: TcxCalcEdit;
     cxCalcEdit2: TcxCalcEdit;
     Label16: TLabel;
@@ -548,6 +545,7 @@ type
     IBADRESKRKL_RAION: TSmallintField;
     IBREPDNAME: TIBStringField;
     cxGrid1DBTableView1NAME: TcxGridDBColumn;
+    cxTextEdit1: TcxTextEdit;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -564,7 +562,6 @@ type
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
-    procedure cxButton5Click(Sender: TObject);
     procedure cxTextEdit4PropertiesChange(Sender: TObject);
     procedure dxBarButton95Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
@@ -583,9 +580,16 @@ type
     procedure dxBarButton133Click(Sender: TObject);
     procedure dxBarButton135Click(Sender: TObject);
     procedure dxBarButton136Click(Sender: TObject);
+    procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cxTextEdit1PropertiesChange(Sender: TObject);
+    procedure cxTextEdit3KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cxTextEdit3PropertiesChange(Sender: TObject);
   private
     { Private declarations }
-
+    procedure AddFilter(column:TcxGridDBColumn;text:string);
+    procedure DelFilter(col:TcxGridDBColumn;s:string);
 
 
   public
@@ -843,29 +847,6 @@ Form16.show;
 
 end;
 
-procedure TForm1.cxButton5Click(Sender: TObject);
-begin
-if (cxTextEdit3.Text='') and (cxTextEdit4.Text='') then
-   IBREPD.Filtered:=false
-else
-begin
-  if IBREPD.Filtered then
-  begin
-  IBREPD.Filtered:=false;
-  IBREPD.Filtered:=true;
-  end
-  else
-  IBREPD.Filtered:=true;
-
-end;
-
-
-
-
-
-end;
-
-
 procedure TForm1.cxButton6Click(Sender: TObject);
 begin
 Form19.Caption:=cxButton6.Caption;
@@ -893,6 +874,28 @@ begin
      Form12.Find();
 //     Form12.Show;
   end;
+end;
+
+procedure TForm1.cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  DelFilter(cxGrid1DBTableView1SCHET,cxTextEdit1.Text);
+end;
+
+procedure TForm1.cxTextEdit1PropertiesChange(Sender: TObject);
+begin
+AddFilter(cxGrid1DBTableView1SCHET,cxTextEdit1.Text);
+end;
+
+procedure TForm1.cxTextEdit3KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  DelFilter(cxGrid1DBTableView1FIO,cxTextEdit3.Text);
+end;
+
+procedure TForm1.cxTextEdit3PropertiesChange(Sender: TObject);
+begin
+AddFilter(cxGrid1DBTableView1FIO,cxTextEdit3.Text);
 end;
 
 procedure TForm1.cxTextEdit4PropertiesChange(Sender: TObject);
@@ -1150,14 +1153,14 @@ procedure TForm1.IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);
 begin
 //   P:=cxComboBox1.EditValue;
 
-if (cxTextEdit3.Text<>'') and (cxTextEdit4.Text<>'')then
-   Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0) and (Pos(cxTextEdit4.Text, DataSet.FieldByName('schet').AsString) > 0)
+if (cxTextEdit3.Text<>'') and (cxTextEdit1.Text<>'')then
+   Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0) and (Pos(cxTextEdit1.Text, DataSet.FieldByName('schet').AsString) > 0)
 else
 begin
    if (cxTextEdit3.Text<>'') then
       Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0);
-   if (cxTextEdit4.Text<>'') then
-      Accept:=(Pos(cxTextEdit4.Text, DataSet.FieldByName('schet').AsString) > 0);
+   if (cxTextEdit1.Text<>'') then
+      Accept:=(Pos(cxTextEdit1.Text, DataSet.FieldByName('schet').AsString) > 0);
 //   if (cxTextEdit1.Text<>'') then
 //      Accept:=Accept and (DataSet.FieldByName('dolg').AsFloat,StringCodePage(cxComboBox1.EditValue),str2float(cxTextEdit1.Text));
 end;
@@ -1186,6 +1189,81 @@ Form1.IBQuery1.ExecSQL;
 Form1.IBTransaction1.CommitRetaining;
 Form1.IBQuery1.close;
 end;
+
+
+procedure TForm1.DelFilter(col:TcxGridDBColumn;s:string);
+var I:integer;
+begin
+
+with cxGrid1DBTableView1.DataController do
+  begin
+    try
+      Filter.BeginUpdate;
+//      cxGrid1DBTableView1.DataController.Filter.Root.AddItem(cxGrid1DBTableView1FAM, foLike, '%'+cxTextEdit1.Text+'%', cxTextEdit1.Text);
+      for I := Filter.Root.Count - 1 downto 0 do
+        if (not Filter.Root.Items[I].IsItemList) then
+        begin
+//          if (col=cxGrid1DBTableView1PR_DOM) or (col=cxGrid1DBTableView1PR_KV)then
+//          begin
+//          if ((Filter.Root.Items[I] as TcxGridDBDataFilterCriteriaItem).Value = s) and
+//             ((Filter.Root.Items[I] as TcxGridDBDataFilterCriteriaItem).ItemLink = col) then
+//              Filter.Root.Items[I].free;
+//          end
+//          else
+//            if (col=cxGrid1DBTableView1MN_DATA)then
+//            begin
+//            if ((Filter.Root.Items[I] as TcxGridDBDataFilterCriteriaItem).ItemLink = col) then
+//                Filter.Root.Items[I].free;
+//            end
+//            else
+               if ((Filter.Root.Items[I] as TcxGridDBDataFilterCriteriaItem).Value = '%'+s+'%') and
+                  ((Filter.Root.Items[I] as TcxGridDBDataFilterCriteriaItem).ItemLink = col) then
+                  Filter.Root.Items[I].free
+
+        end;
+    finally
+      Filter.EndUpdate;
+    end;
+  end;
+  cxGrid1DBTableView1.DataController.Filter.Active := true;
+
+
+
+end;
+
+procedure TForm1.AddFilter(column:TcxGridDBColumn;text:string);
+var    I:integer;
+begin
+
+  cxGrid1DBTableView1.DataController.Filter.Active := true;
+
+  if (Text<>'') then
+  begin
+      cxGrid1DBTableView1.DataController.Filter.BeginUpdate;
+      try
+//          if (column=cxGrid1DBTableView1PR_DOM) or (column=cxGrid1DBTableView1PR_KV)then
+//             cxGrid1DBTableView1.DataController.Filter.Root.AddItem(column, foEqual, Text, Text)
+//          else
+//          if (column=cxGrid1DBTableView1MN_DATA) then
+//          begin
+//             if cxComboBox1.Text='=' then cxGrid1DBTableView1.DataController.Filter.Root.AddItem(column, foEqual, Text, Text);
+//             if cxComboBox1.Text='<>' then cxGrid1DBTableView1.DataController.Filter.Root.AddItem(column, foNotEqual, Text, Text);
+//             if cxComboBox1.Text='>=' then cxGrid1DBTableView1.DataController.Filter.Root.AddItem(column, foGreaterEqual, Text, Text);
+//             if cxComboBox1.Text='<=' then cxGrid1DBTableView1.DataController.Filter.Root.AddItem(column, foLessEqual, Text, Text);
+//          end
+//             else
+                cxGrid1DBTableView1.DataController.Filter.Root.AddItem(column, foLike, '%'+Text+'%', Text);
+      finally
+      cxGrid1DBTableView1.DataController.Filter.EndUpdate;
+      end;
+//      cxGrid1DBTableView1.DataController.Filter.Active := true;
+//
+
+  end;
+
+end;
+
+
 
 end.
 

@@ -65,7 +65,7 @@ begin
      Form1.Enabled:=true;
      Form11.Hide;
 //     Form1.REPORT;
-   //Form2.Timer1.Enabled:=true;
+   Form2.Timer1.Enabled:=true;
      end
      else
    ShowMessage('Неправильний пароль!');

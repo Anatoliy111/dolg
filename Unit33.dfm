@@ -54,17 +54,21 @@ object Form33: TForm33
   end
   object cxLabel3: TcxLabel
     Left = 31
-    Top = 37
+    Top = 44
     Caption = #1055#1088#1080#1079#1085#1072#1095#1077#1085#1085#1103' '#1087#1083#1072#1090#1077#1078#1091
   end
   object cxLabel1: TcxLabel
     Left = 31
-    Top = 14
+    Top = 8
+    AutoSize = False
     Caption = #1055#1086#1084#1080#1083#1082#1072
+    Properties.WordWrap = True
+    Height = 33
+    Width = 546
   end
   object cxTextEdit1: TcxTextEdit
     Left = 135
-    Top = 146
+    Top = 154
     Properties.ReadOnly = True
     Properties.OnEditValueChanged = cxTextEdit1PropertiesEditValueChanged
     TabOrder = 0
@@ -73,14 +77,14 @@ object Form33: TForm33
   end
   object cxLabel2: TcxLabel
     Left = 31
-    Top = 147
+    Top = 155
     Caption = #1054#1089#1086#1073#1086#1074#1080#1081' '#1088#1072#1093#1091#1085#1086#1082
   end
   object cxGrid2: TcxGrid
     Left = 31
-    Top = 208
+    Top = 240
     Width = 410
-    Height = 252
+    Height = 220
     TabOrder = 9
     LookAndFeel.NativeStyle = False
     object cxGridDBTableView1: TcxGridDBTableView
@@ -147,12 +151,12 @@ object Form33: TForm33
   end
   object cxLabel4: TcxLabel
     Left = 31
-    Top = 185
+    Top = 214
     Caption = #1057#1091#1084#1072' '#1087#1083#1072#1090#1077#1078#1091
   end
   object cxCalcEdit1: TcxCalcEdit
     Left = 135
-    Top = 181
+    Top = 213
     EditValue = 0.000000000000000000
     Properties.ReadOnly = True
     TabOrder = 1
@@ -193,7 +197,7 @@ object Form33: TForm33
   end
   object cxLabel6: TcxLabel
     Left = 263
-    Top = 147
+    Top = 155
     Caption = #1053#1072#1079#1074#1072' '#1082#1086#1085#1090#1088#1072#1075#1077#1085#1090#1072
   end
   object Memo2: TMemo
@@ -206,6 +210,40 @@ object Form33: TForm33
     ReadOnly = True
     TabOrder = 16
   end
+  object CheckBox2: TCheckBox
+    Left = 31
+    Top = 474
+    Width = 161
+    Height = 17
+    Caption = #1055#1088#1080#1084#1091#1089#1086#1074#1086' '#1076#1086#1076#1072#1090#1080' '#1087#1083#1072#1090#1110#1078
+    TabOrder = 17
+  end
+  object cxLabel7: TcxLabel
+    Left = 108
+    Top = 136
+    Caption = #1055#1030#1041
+  end
+  object cxDBLabel1: TcxDBLabel
+    Left = 136
+    Top = 136
+    DataBinding.DataField = 'fio'
+    DataBinding.DataSource = DSADOQueryOBOR
+    Height = 21
+    Width = 229
+  end
+  object cxLabel8: TcxLabel
+    Left = 32
+    Top = 182
+    Caption = #1057#1091#1084#1072' '#1074#1080#1087#1080#1089#1082#1080
+  end
+  object cxCalcEdit2: TcxCalcEdit
+    Left = 136
+    Top = 181
+    EditValue = 0.000000000000000000
+    Properties.ReadOnly = True
+    TabOrder = 21
+    Width = 121
+  end
   object ADOQueryOBOR: TADOQuery
     ConnectionString = 
       'Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Dat' +
@@ -216,9 +254,9 @@ object Form33: TForm33
     Parameters = <>
     SQL.Strings = (
       
-        'select wids.wid, wids.naim, obor.schet, obor.sal, 0 as ch, su_do' +
-        'lg as sumpl from wids,obor where wids.wid=obor.wid and obor.sche' +
-        't='#39'0123133'#1072#39' order by wids.npp')
+        'select wids.wid, wids.naim, obor.fio, obor.schet, obor.sal, 0 as' +
+        ' ch, su_dolg as sumpl from wids,obor where wids.wid=obor.wid and' +
+        ' obor.schet='#39'0123133'#1072#39' order by wids.npp')
     Left = 472
     Top = 408
     object ADOQueryOBORwid: TWideStringField
@@ -245,6 +283,10 @@ object Form33: TForm33
     end
     object ADOQueryOBORsumpl: TFloatField
       FieldName = 'sumpl'
+    end
+    object ADOQueryOBORfio: TStringField
+      FieldName = 'fio'
+      Size = 25
     end
   end
   object DSADOQueryOBOR: TDataSource

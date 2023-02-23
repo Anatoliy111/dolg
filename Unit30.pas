@@ -19,20 +19,14 @@ type
     cxGridDBTableView1: TcxGridDBTableView;
     cxGridLevel1: TcxGridLevel;
     Panel2: TPanel;
-    cxGrid3: TcxGrid;
-    cxGridDBTableView2: TcxGridDBTableView;
-    cxGridLevel2: TcxGridLevel;
     Panel4: TPanel;
     cxGrid4: TcxGrid;
     cxGridDBTableView3: TcxGridDBTableView;
     cxGridLevel3: TcxGridLevel;
     cxLabel2: TcxLabel;
-    cxLabel3: TcxLabel;
     cxLabel4: TcxLabel;
     IBWID: TIBDataSet;
     DSWID: TDataSource;
-    IBSPR_VIDPOISK: TIBDataSet;
-    DSSPR_VIDPOISK: TDataSource;
     IBSPR_VIPISKA: TIBDataSet;
     DSSPR_VIPISKA: TDataSource;
     IBWIDWID: TIBStringField;
@@ -52,15 +46,11 @@ type
     IBWIDFL_SUBS: TFloatField;
     IBWIDVAL: TFloatField;
     IBWIDUPD: TIntegerField;
-    IBSPR_VIDPOISKKL: TIntegerField;
-    IBSPR_VIDPOISKNAME_VID: TIBStringField;
-    IBSPR_VIDPOISKVIDPOISK: TIBStringField;
     IBSPR_VIPISKAKL: TIntegerField;
     IBSPR_VIPISKAKL_BANK: TIntegerField;
     IBSPR_VIPISKAWID: TIBStringField;
     IBSPR_VIPISKAPOISK: TIBStringField;
     cxGridDBTableView1NAIM: TcxGridDBColumn;
-    cxGridDBTableView2NAME_VID: TcxGridDBColumn;
     cxGridDBTableView3POISK: TcxGridDBColumn;
     IBSPR_VIPISKAVIDPOISK: TIBStringField;
     procedure FormShow(Sender: TObject);
@@ -117,7 +107,6 @@ end;
 procedure TForm30.FormShow(Sender: TObject);
 begin
 IBWID.Open;
-IBSPR_VIDPOISK.Open;
 upd:=false;
 UpdateVipiska();
 
@@ -135,10 +124,8 @@ end;
 
 procedure TForm30.IBSPR_VIPISKAAfterInsert(DataSet: TDataSet);
 begin
-  if IBSPR_VIDPOISKVIDPOISK.Value='posl' then
     IBSPR_VIPISKAWID.Value:=IBWIDWID.Value;
-
-     IBSPR_VIPISKAVIDPOISK.Value:=IBSPR_VIDPOISKVIDPOISK.Value;
+    IBSPR_VIPISKAVIDPOISK.Value:='posl';
 end;
 
 procedure TForm30.IBSPR_VIPISKAAfterPost(DataSet: TDataSet);
@@ -154,23 +141,11 @@ end;
 procedure TForm30.UpdateVipiska();
 begin
 IBSPR_VIPISKA.Close;
-
-if IBSPR_VIDPOISKVIDPOISK.Value='posl' then
-begin
   cxGrid2.Visible:=true;
   cxLabel2.Visible:=true;
   IBSPR_VIPISKA.SelectSQL.Text:='select * from SPR_VIPISKA where wid=:wid and vidpoisk=:vidpoisk';
   IBSPR_VIPISKA.ParamByName('wid').AsString:=IBWIDWID.Value;
-  IBSPR_VIPISKA.ParamByName('vidpoisk').AsString:=IBSPR_VIDPOISKVIDPOISK.Value;
-end
-else
-begin
-  cxGrid2.Visible:=false;
-  cxLabel2.Visible:=false;
-  IBSPR_VIPISKA.SelectSQL.Text:='select * from SPR_VIPISKA where vidpoisk=:vidpoisk';
-  IBSPR_VIPISKA.ParamByName('vidpoisk').AsString:=IBSPR_VIDPOISKVIDPOISK.Value;
-end;
-
+  IBSPR_VIPISKA.ParamByName('vidpoisk').AsString:='posl';
 IBSPR_VIPISKA.Open;
 end;
 
