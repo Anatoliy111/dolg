@@ -22,7 +22,6 @@ object Form30: TForm30
     Height = 73
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 962
     object DBNavigator1: TDBNavigator
       Left = 402
       Top = 24
@@ -45,8 +44,6 @@ object Form30: TForm30
     Align = alLeft
     TabOrder = 1
     LookAndFeel.NativeStyle = False
-    ExplicitLeft = 265
-    ExplicitHeight = 407
     object cxGridDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSWID
@@ -82,8 +79,6 @@ object Form30: TForm30
     Height = 433
     Align = alLeft
     TabOrder = 2
-    ExplicitLeft = 233
-    ExplicitHeight = 407
   end
   object Panel4: TPanel
     Left = 280
@@ -92,8 +87,6 @@ object Form30: TForm30
     Height = 433
     Align = alLeft
     TabOrder = 3
-    ExplicitLeft = 513
-    ExplicitHeight = 407
   end
   object cxGrid4: TcxGrid
     Left = 312
@@ -103,9 +96,6 @@ object Form30: TForm30
     Align = alClient
     TabOrder = 4
     LookAndFeel.NativeStyle = False
-    ExplicitLeft = 545
-    ExplicitWidth = 417
-    ExplicitHeight = 407
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSSPR_VIPISKA

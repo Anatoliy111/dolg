@@ -445,7 +445,8 @@ begin
     regallposl:='(';
     while not IBQueryVipiska.Eof do
     begin
-      regallposl:=regallposl+IBQueryVipiskaPOISK.AsString+'{1}|';
+      if IBQueryVipiskaPOISK.AsString<>'' then
+         regallposl:=regallposl+IBQueryVipiskaPOISK.AsString+'{1}|';
 
     IBQueryVipiska.Next;
     end;
@@ -918,16 +919,16 @@ begin
             Form33.cxDateEdit1.Date:=dt;
             Form33.Memo2.Text:=MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_KONTR.Value];
 
-          if err then
-          begin
+//          if err then
+//          begin
             Form33.Show;
             fl:=false;
-          end
-          else
-          begin
-            addopl;
-
-          end;
+//          end
+//          else
+//          begin
+//            addopl;
+//
+//          end;
 
 
    end;
@@ -1220,14 +1221,17 @@ begin
           begin
 //            if IBQueryVipiskaWID.AsString<>wid then
 //            begin
-              Match:=RegularExpression.Match(LowerCase(str),'('+LowerCase(IBQueryVipiskaPOISK.AsString)+'{1})',[roIgnoreCase]);
-              if Match.Success then
+              if IBQueryVipiskaPOISK.AsString<>'' then
               begin
-                   //posl[a]:=IBQueryVipiskaWID.AsString;
-                   if not strList.Find(IBQueryVipiskaWID.AsString,Index) then
-                       strList.Add(IBQueryVipiskaWID.AsString);
-                  // arrstr[a]:=IBQueryVipiskaWID.AsString;
-                  // a:=a+1;
+              Match:=RegularExpression.Match(LowerCase(str),'('+LowerCase(IBQueryVipiskaPOISK.AsString)+'{1})',[roIgnoreCase]);
+                if Match.Success then
+                begin
+                     //posl[a]:=IBQueryVipiskaWID.AsString;
+                     if not strList.Find(IBQueryVipiskaWID.AsString,Index) then
+                         strList.Add(IBQueryVipiskaWID.AsString);
+                    // arrstr[a]:=IBQueryVipiskaWID.AsString;
+                    // a:=a+1;
+                end;
               end;
 //            end;
 
