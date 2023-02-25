@@ -254,9 +254,9 @@ object Form33: TForm33
     Parameters = <>
     SQL.Strings = (
       
-        'select wids.wid, wids.naim, obor.fio, obor.schet, obor.sal, 0 as' +
-        ' ch, su_dolg as sumpl from wids,obor where wids.wid=obor.wid and' +
-        ' obor.schet='#39'0123133'#1072#39' order by wids.npp')
+        'select wids.wid, wids.naim, wids.abonpl, obor.fio, obor.schet, o' +
+        'bor.sal, 0 as ch, su_dolg as sumpl from wids,obor where wids.wid' +
+        '=obor.wid and obor.schet='#39'0123133'#1072#39' order by wids.npp')
     Left = 472
     Top = 408
     object ADOQueryOBORwid: TWideStringField
@@ -287,6 +287,10 @@ object Form33: TForm33
     object ADOQueryOBORfio: TStringField
       FieldName = 'fio'
       Size = 25
+    end
+    object ADOQueryOBORabonpl: TStringField
+      FieldName = 'abonpl'
+      Size = 2
     end
   end
   object DSADOQueryOBOR: TDataSource

@@ -194,7 +194,7 @@ implementation
 
 {$R *.dfm}
 
-uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, SysUtils, Unit33, DateUtils;
+uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, SysUtils, Unit33, DateUtils, math;
 
 
 function TForm27.TrimAll(s:string):string;
@@ -234,6 +234,13 @@ var i,ns,nstr:integer;
     RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
+    MyFile: TFileStream;
+  Excel: Variant;
+  Workbooks: Variant;
+  Workbook: Variant;
+  FileInfo: TSHFileInfo;
+
+
 begin
 
   if Row<>0 then
@@ -261,6 +268,99 @@ begin
    cxTextEdit1.Text:=st1;
    cxTextEdit4.Text:='';
 
+//  if SHGetFileInfo(PChar(OpenDialog1.FileName), 0, FileInfo, SizeOf(FileInfo), SHGFI_SHAREABLE or SHGFI_OPENICON or SHGFI_ICON) <> 0 then
+//  if SHGetFileInfo(PChar(OpenDialog1.FileName), 0, FileInfo, SizeOf(FileInfo), SHGFI_ATTRIBUTES) <> 0 then
+//  begin
+////    Result := FileInfo.szTypeName = 'Network File';
+//    ShowMessage(FileInfo.szTypeName);
+//    ShowMessage('Можливо файл відкрито на іншому комп"ютері. Закрийте файл '+st1+' та спробуйте знову!!!');
+//    cxTextEdit1.Text:='';
+//    path:='';
+//    exit;
+//  end;
+
+      try
+        MyFile := TFileStream.Create(OpenDialog1.FileName, fmOpenRead or fmShareExclusive or fmShareDenyWrite);
+        try
+          // Файл открыт для чтения и его можно использовать здесь
+        finally
+          MyFile.Free;
+        end;
+      except
+        // Обработка ошибок при открытии файла
+            try
+              Excel := GetActiveOleObject('Excel.Application');
+              Workbooks := Excel.Workbooks;
+              if Workbooks.Count=0 then
+                 Excel.close
+              else
+              for i := 1 to Workbooks.Count do
+              begin
+                Workbook := Workbooks.Item[i];
+                if SameText(ExtractFileName(Workbook.FullName), st1) then
+                begin
+//                  if application.MessageBox('Файл вже відкрито в Excel. Закрийти файл примусово?','Підтвердження',MB_YESNO)=IDYES then
+//                  begin
+                    Workbook.Close(True);
+                    //Excel.Free;
+                    Break;
+//                  end
+//                  else
+//                  begin
+//                    cxTextEdit1.Text:='';
+//                    path:='';
+//                    exit;
+//                  end;
+                end;
+              end;
+            except
+              ShowMessage('Можливо файл вже відкрито в іншій програмі або на іншому комп"ютері. Закрийте файл '+st1+' та спробуйте знову!!!');
+              cxTextEdit1.Text:='';
+              path:='';
+             // Excel.Free;
+              exit;
+            end;
+
+
+
+//        ShowMessage('Файл вже відкрито в іншій програмі. Закрийте файл '+st1+' та спробуйте знову!!!');
+//        cxTextEdit1.Text:='';
+//        path:='';
+//        exit;
+      end;
+
+
+
+
+
+
+
+
+//  try
+//    MyFile := TFileStream.Create(OpenDialog1.FileName, fmOpenRead or fmShareExclusive);
+//    try
+//      // Файл открыт для чтения и его можно использовать здесь
+//    finally
+//      MyFile.Free;
+//    end;
+//  except
+//    // Обработка ошибок при открытии файла
+//    ShowMessage('Файл вже відкрито в іншій програмі. Закрийте файл '+st1+' та спробуйте знову!!!');
+//    cxTextEdit1.Text:='';
+//    path:='';
+//    exit;
+//  end;
+
+//  try
+//    F := TFileStream.Create(Origin, fmOpenReadWrite or fmShareExclusive);
+//    try
+//      Result := true;
+//    finally
+//      F.Free;
+//    end;
+//  except
+//    Result := false;
+//  end;
 
 
 
@@ -612,11 +712,11 @@ IBQueryBank.Open;
 end;
 
 procedure TForm27.startlistexel;
-var errmess,strprizn,sch,sql,str,sp,dtstr:string;
+var errmess,strprizn,sch,sql,str,sp,dtstr,posl2:string;
     RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
-    ssum,ssum1,allsum,riznsum:Double;
+    ssum,ssum1,allsum,riznsum,sumposl:Double;
     k,position:integer;
 //    i,ns,k,position:integer;
 //    sss,fio,str,sch,regallposl,strprizn,sp,sql,dtstr,errmess:string;
@@ -640,6 +740,7 @@ begin
               endlistexel;
               exit;
             end;
+
 //          if newpl then
 //          begin
             Form33.cxTextEdit1.Clear;
@@ -669,6 +770,11 @@ begin
           Application.ProcessMessages;
           if Length(MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
           if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
+          if trim(MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then
+          begin
+            MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
+            Continue;
+          end;
           //пошук Особ. рахунка
           Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
           if Match.Success then
@@ -841,10 +947,37 @@ begin
 //            end;
 //          end
 //          else
+         posl2:='';
+         sumposl:=0;
+         if (StrList.Count=1) and (Form33.ADOQueryOBOR.Active) then
+         begin
+            Form33.ADOQueryOBOR.First;
+            if Form33.ADOQueryOBOR.Locate('wid',StrList[0],[]) and (trim(Form33.ADOQueryOBORabonpl.Value)<>'') then
+            begin
+               sumposl:=Form33.ADOQueryOBORsal.Value;
+               posl2:=Form33.ADOQueryOBORabonpl.Value;
+               Form33.ADOQueryOBOR.First;
+               if Form33.ADOQueryOBOR.Locate('wid',posl2,[]) and (Form33.ADOQueryOBORsal.Value>0) then
+               begin
+                 sumposl:=sumposl+Form33.ADOQueryOBORsal.Value;
+                 if ((allsum-sumposl<=2) and (allsum-sumposl>=-2)) or (sumposl-allsum>=2) then
+                    strList.Add(posl2);
+               end;
+
+            end;
+         end;
+
+
+
+
+
+
+
           if Form33.ADOQueryOBOR.Active then
           begin
             for k:=0 to StrList.Count-1 do
             begin
+              Form33.ADOQueryOBOR.First;
               if Form33.ADOQueryOBOR.Locate('wid',StrList[k],[]) then
               begin
                  Form33.ADOQueryOBOR.Edit;
@@ -879,7 +1012,7 @@ begin
                       end
                       else
                       begin
-                        Form33.ADOQueryOBORsumpl.AsFloat:=ssum;
+                        Form33.ADOQueryOBORsumpl.AsFloat:=SimpleRoundTo(ssum,-2);
                         ssum:=0;
                       end;
 
@@ -891,8 +1024,10 @@ begin
 
 
             end;
+
             if ssum>0 then
                ssum1:=ssum1+ssum;
+
             if (ssum1>0) and (StrList.count>0) then
             begin
                 Form33.ADOQueryOBOR.first;
@@ -1164,7 +1299,7 @@ begin
               if LowerCase(s)='m' then schet:=LeftStr(schet,Length(schet)-1)+'м';
             end;
 
-            sql:='select wids.wid, wids.naim, obor.fio, obor.schet, obor.sal, 0 as ch, su_dolg as sumpl from wids,obor where wids.wid=obor.wid and obor.schet='''+trim(schet)+''' order by wids.npp';
+            sql:='select wids.wid, wids.naim, wids.abonpl, obor.fio, obor.schet, obor.sal, 0 as ch, su_dolg as sumpl from wids,obor where wids.wid=obor.wid and obor.schet='''+trim(schet)+''' order by wids.npp';
             Form33.ADOQueryOBOR.Close;
             Form33.ADOQueryOBOR.SQL.Clear;
             Form33.ADOQueryOBOR.SQL.Append(sql);

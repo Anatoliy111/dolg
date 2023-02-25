@@ -52,6 +52,7 @@ type
     cxDBLabel1: TcxDBLabel;
     cxLabel8: TcxLabel;
     cxCalcEdit2: TcxCalcEdit;
+    ADOQueryOBORabonpl: TStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
