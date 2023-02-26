@@ -128,7 +128,7 @@ begin
      if CheckBox1.Checked then
      begin
         Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+2]:='Оброблено';
-        Form27.ExcelWorkbook.save;
+//        Form27.ExcelWorkbook.save;
      end;
      Form27.Timer1.Enabled:=True;
 end;
@@ -165,12 +165,12 @@ begin
              begin
                ShowMessage('Особовий рахунок не знайдено!!!');
                cxTextEdit1.SetFocus;
+             end
+             else
+             begin
+              cxLabel1.Caption:='Ос.рахунок не знайдено!';
+              cxTextEdit1.Properties.ReadOnly:=false;
              end;
-//             else
-//             begin
-//              cxLabel1.Caption:='Ос.рахунок не знайдено!';
-//              cxTextEdit1.Properties.ReadOnly:=false;
-//             end;
           end
           else
           begin

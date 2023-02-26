@@ -185,7 +185,7 @@ type
 var
   Form27: TForm27;
 
-     st1,poslug,tip,path:string;
+     st1,poslug,tip,path,filepath:string;
      period: TDateTime;
      strList:TStringList;
      table,tobor,twid:TDbf;
@@ -513,9 +513,12 @@ end;
 
 
 procedure TForm27.endlistexel;
+var cmd:WideString;
 begin
 
-
+       form2.show;
+       Form2.Label1.Caption:='Збереження даних. Зачекайте!!!';
+       Application.ProcessMessages;
 
        row:=0;
 
@@ -526,9 +529,20 @@ begin
           ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+3].Select;
           ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
 
+          table.Close;
+          table.Free;
+
+         Sleep(1000);
+         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
+         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+
+         Sleep(5000);
+
         ExcelWorkbook.save;
         ExcelWorkbook.Close;
         MsExcel := null;
+
+
 
 //        MsExcel.Application.Quit;
 //        MsExcel := null;
@@ -557,6 +571,8 @@ begin
 
   if Row<>0 then
      exit;
+
+
 
 
        cxDateEdit1.Text:='';
@@ -685,7 +701,7 @@ end;
 
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
-    stroka,strmes,filepath:string;
+    stroka,strmes,tempDir:string;
     dt1,dt2,i:integer;
     f : TextFile;
     MyFile: TFileStream;
@@ -707,6 +723,21 @@ begin
      ShowMessage('Виберіть файл');
      exit;
    end;
+
+//   tempDir:='c:\temp\';
+//
+//   if not DirectoryExists(tempDir) then
+//   begin
+//     try
+//       mkdir(tempDir);
+//     except
+//              ShowMessage('Не можливо створити папку '+tempDir+' !!!');
+//              cxTextEdit1.Text:='';
+//              path:='';
+//             // Excel.Free;
+//              exit;
+//     end;
+//   end;
 
 
       try
@@ -754,6 +785,7 @@ begin
                  Excel.Quit;
 
                  WinExec(PANsiChar('taskkill /F /IM EXCEL.EXE'), SW_HIDE);
+                 Sleep(1000);
 
               end;
 
@@ -797,6 +829,7 @@ begin
     begin
       CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar('c:\temp\obor.dbf'), false);
       CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar('c:\temp\wids.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar('c:\temp\opltmp.dbf'), false);
       filepath:='c:\temp\';
     end
     else
@@ -804,6 +837,7 @@ begin
     begin
       CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(Form1.PathTMP+'\obor.dbf'), false);
       CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar(Form1.PathTMP+'\wids.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(Form1.PathTMP+'\opltmp.dbf'), false);
       filepath:=Form1.PathTMP+'\';
     end;
     Form33.ADOQueryOBOR.Close;
@@ -814,17 +848,20 @@ begin
 
     DeleteFile(filepath+'obor.mdx');
     DeleteFile(filepath+'wids.mdx');
-
+    DeleteFile(filepath+'opltmp.mdx');
 
    try
     table:=TDbf.Create(self);
    // table.TableLevel := 25;
-    table.TableName:=Form1.PathKvart+'dbf\opl.dbf';
+    table.TableName:=filepath+'opltmp.dbf';
     // table.ReadOnly:=false;
   //  table.Active:=true;
     table.Open;
+    table.TryExclusive;
     table.CanModify;
-    table.OpenIndexFile('opl.cdx');
+    table.EmptyTable;
+    table.PackTable;
+//    table.OpenIndexFile('opl.cdx');
 
     tobor:=TDbf.Create(self);
     tobor.TableName:=filepath+'obor.dbf';
@@ -840,7 +877,7 @@ begin
 
     tobor.Free;
     twid.Free;
-    table.Free;
+   // table.Free;
 
 
 
@@ -1189,23 +1226,6 @@ begin
           Form33.ADOQueryOBOR.next;
           end;
 
-          try
-          table:=TDbf.Create(self);
-          table.TableName:=Form1.PathKvart+'dbf\opl.dbf';
-          table.Open;
-          table.CanModify;
-         // table.OpenIndexFile('opl.cdx');
-               except
-               on E : Exception do
-               begin
-                messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
-                table.Close;
-                table.Free;
-                endlistexel;
-                exit;
-               end;
-          end;
-
           error:=0;
           if not Form33.CheckBox2.Checked then
           begin
@@ -1227,16 +1247,15 @@ begin
             end;
           end;
 
+
+
            //   strobr:='rah='+trim(Form33.cxTextEdit1.Text)+';';
               strobr:='';
               Form33.ADOQueryOBOR.first;
                 while not Form33.ADOQueryOBOR.Eof do
                 begin
                   if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
-                  begin
-                    table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat:=Form33.ADOQueryOBORsumpl.AsFloat;
                     strobr:=strobr+Form33.ADOQueryOBORwid.AsString+'='+Form33.ADOQueryOBORsumpl.AsString+';';
-                  end;
                 Form33.ADOQueryOBOR.Next;
                 end;
 
@@ -1261,6 +1280,22 @@ begin
           schet:=trim(Form33.cxTextEdit1.Text);
 
 
+//          try
+//          table:=TDbf.Create(self);
+//          table.TableName:=Form1.PathKvart+'dbf\opl.dbf';
+//          table.Open;
+//          table.CanModify;
+//        //  table.OpenIndexFile(Form1.PathKvart+'dbf\opl.cdx');
+//               except
+//               on E : Exception do
+//               begin
+//                messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+//                table.Close;
+//                table.Free;
+//                endlistexel;
+//                exit;
+//               end;
+//          end;
 
 
           table.Append;
@@ -1274,17 +1309,27 @@ begin
             else
                table.FieldByName('schet').Value:=trim(Form33.cxTextEdit1.Text);
 
+               Form33.ADOQueryOBOR.First;
+                while not Form33.ADOQueryOBOR.Eof do
+                begin
+                  if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
+                    table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat:=Form33.ADOQueryOBORsumpl.AsFloat;
+                Form33.ADOQueryOBOR.Next;
+                end;
+
           table.FieldByName('dt').Value:=Form33.cxDateEdit1.Date;
           table.FieldByName('pach').Value:=DayOf(Form33.cxDateEdit1.Date);
           table.FieldByName('opl').Value:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
           table.FieldByName('doc').Value:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DOK.Value];
           table.post;
-          table.Close;
-          table.Free;
+        //  table.UpdateIndexDefs;
+//          table.RepageIndexFile(Form1.PathKvart+'dbf\opl.cdx');
+//          table.Close;
+//          table.Free;
 
           ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
 
-          ExcelWorkbook.save;
+//          ExcelWorkbook.save;
           if Form33.Showing then
           begin
             Form33.closeform:=1;

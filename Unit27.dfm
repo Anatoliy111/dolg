@@ -52,7 +52,7 @@ object Form27: TForm27
   end
   object cxButton1: TcxButton
     Left = 335
-    Top = 31
+    Top = 30
     Width = 161
     Height = 25
     Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1092#1072#1081#1083
