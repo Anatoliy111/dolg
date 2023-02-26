@@ -165,17 +165,20 @@ begin
              begin
                ShowMessage('Особовий рахунок не знайдено!!!');
                cxTextEdit1.SetFocus;
-             end
-             else
-             begin
-              cxLabel1.Caption:='Ос.рахунок не знайдено!';
-              cxTextEdit1.Properties.ReadOnly:=false;
              end;
+//             else
+//             begin
+//              cxLabel1.Caption:='Ос.рахунок не знайдено!';
+//              cxTextEdit1.Properties.ReadOnly:=false;
+//             end;
           end
           else
           begin
-             Form27.SearchAllPosl;
-             Form27.SearchSum;
+             if (Form33.Showing) and (Form27.err) then
+             begin
+               Form27.SearchAllPosl;
+               Form27.SearchSum;
+             end;
           end;
 
       end

@@ -220,16 +220,7 @@ var RegularExpression : TRegEx;
 begin
 
 
-          Match:=RegularExpression.Match(LowerCase(strprizn),LowerCase(regallposl),[roIgnoreCase]);
-          if not Match.Success then
-          begin
 
-            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуг в призначені не знайдено!!!';
-            err:=true;
-           // strList[0]:='';
-          end
-          else
-          begin
             SearchPosl(strprizn); //пошук послуги
             if StrList.Count=0 then
               err:=true
@@ -321,7 +312,7 @@ begin
 
                 end;
             end;
-          end;
+
 
 end;
 
@@ -532,7 +523,6 @@ begin
           table.Close;
           table.Free;
 
-         Sleep(1000);
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
          ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
 
@@ -1076,16 +1066,30 @@ begin
           else Form33.cxTextEdit1.Text:=' ';
 
 
-//          if Form33.cxTextEdit1.Text='' then
-//          begin
-//            Form33.cxLabel1.Caption:='Ос.рахунок не знайдено!';
-//            Form33.cxTextEdit1.Properties.ReadOnly:=false;
-//            //Form33.cxTextEdit1.SetFocus;
-//            err:=true;
-//          end;
 
-//         SearchAllPosl;
-//         SearchSum;
+
+
+          if Form33.cxTextEdit1.Text='' then
+          begin
+            Form33.cxLabel1.Caption:='Ос.рахунок не знайдено!';
+            Form33.cxTextEdit1.Properties.ReadOnly:=false;
+            //Form33.cxTextEdit1.SetFocus;
+            err:=true;
+          end;
+
+          Match:=RegularExpression.Match(LowerCase(strprizn),LowerCase(regallposl),[roIgnoreCase]);
+          if not Match.Success then
+          begin
+
+            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуг в призначені не знайдено!!!';
+            err:=true;
+           // strList[0]:='';
+          end
+          else
+            SearchAllPosl;
+
+         SearchSum;
+
          // summa:=0.00;
          dtstr:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DT.Value];
 //          dtstr:=formatdatetime('ddmmyyyy', strtodate(ExcelWorkbook.WorkSheets[1].Cells[I,IBQueryBankCOL_DT.Value]));
