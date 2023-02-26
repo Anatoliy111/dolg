@@ -109,11 +109,17 @@ begin
 
 if closeform=0 then
 begin
+  Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+1]:='';
+  Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+3]:='';
+
    Form27.endlistexel;
 end;
 
 if closeform=1 then
 begin
+  Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+1]:='';
+  Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+3]:='';
+
   Form27.Timer1.Enabled:=True;
 end;
 
@@ -121,8 +127,8 @@ if closeform=2 then
 begin
      if CheckBox1.Checked then
      begin
-        Form27.MsExcel.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+2]:='Оброблено';
-        Form27.MsExcel.ActiveWorkbook.save;
+        Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+2]:='Оброблено';
+        Form27.ExcelWorkbook.save;
      end;
      Form27.Timer1.Enabled:=True;
 end;
@@ -147,28 +153,37 @@ end;
 procedure TForm33.cxTextEdit1PropertiesEditValueChanged(Sender: TObject);
 var sql,sch:string;
 begin
-      if Form33.cxTextEdit1.Text<>'' then
+      if trim(Form33.cxTextEdit1.Text)<>'' then
       begin
           sch:=Form27.SearchSchet(trim(Form33.cxTextEdit1.Text));
           if sch='' then
           begin
 
              Form33.ADOQueryOBOR.Close;
+             Form27.err:=true;
              if Form33.Showing then
              begin
                ShowMessage('Особовий рахунок не знайдено!!!');
                cxTextEdit1.SetFocus;
              end;
+//             else
+//             begin
+//              cxLabel1.Caption:='Ос.рахунок не знайдено!';
+//              cxTextEdit1.Properties.ReadOnly:=false;
+//             end;
+          end
+          else
+          begin
+             Form27.SearchAllPosl;
+             Form27.SearchSum;
           end;
-//          else
-//          begin
-//            sql:='select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 00000.00 as sumpl from wids,obor where wids.wid=obor.wid and obor.schet=:sch order by wids.npp';
-//            Form33.ADOQueryOBOR.Close;
-//            Form33.ADOQueryOBOR.SQL.Clear;
-//            Form33.ADOQueryOBOR.SQL.Append(sql);
-//            Form33.ADOQueryOBOR.Parameters.ParamByName('sch').Value:=trim(sch);
-//            Form33.ADOQueryOBOR.Open;
-//          end;
+
+      end
+      else
+      begin
+              cxLabel1.Caption:='Ос.рахунок не знайдено!';
+              cxTextEdit1.Properties.ReadOnly:=false;
+              Form27.err:=true;
       end;
 
 end;

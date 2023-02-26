@@ -93,7 +93,8 @@ begin
     Form27.regallposl:='(';
     while not Form27.IBQueryVipiska.Eof do
     begin
-      Form27.regallposl:=Form27.regallposl+Form27.IBQueryVipiskaPOISK.AsString+'{1}|';
+      if Form27.IBQueryVipiskaPOISK.AsString<>'' then
+         Form27.regallposl:=Form27.regallposl+Form27.IBQueryVipiskaPOISK.AsString+'{1}|';
 
     Form27.IBQueryVipiska.Next;
     end;

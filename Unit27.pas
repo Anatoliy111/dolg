@@ -3,7 +3,7 @@ unit Unit27;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Messages, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.Menus, Vcl.StdCtrls,
   cxButtons, cxLabel, Data.DB, IBX.IBCustomDataSet, IBX.IBQuery, Data.Win.ADODB,
@@ -144,6 +144,7 @@ type
     Timer1: TTimer;
     IBQueryBankCOL_KONTR: TIntegerField;
     cxLabel5: TcxLabel;
+    CheckBox2: TCheckBox;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -156,7 +157,7 @@ type
 
     function TrimAll(s:string):string;
 
-    function SearchAllPosl(str:string;regallposl:string):string;
+
     procedure SearchPosl(str:string);
     function StrAnsiToOem(const S: AnsiString): AnsiString;
 
@@ -167,13 +168,17 @@ type
     { Private declarations }
   public
   MsExcel:Variant;
+  ExcelWorkbook: Variant;
   Row:integer;
-  newpl:boolean;
-  regallposl:string;
+  newpl,err:boolean;
+  regallposl,strprizn:string;
   procedure addopl;
   procedure endlistexel;
   function SearchSchet(schet:string):string;
+  procedure SearchAllPosl;
   procedure startlistexel;
+
+  procedure SearchSum;
     { Public declarations }
   end;
 
@@ -186,7 +191,7 @@ var
      table,tobor,twid:TDbf;
      dt:TDate;
      kolst:integer;
-     fl,err:boolean;
+     fl:boolean;
 
 
 
@@ -194,7 +199,7 @@ implementation
 
 {$R *.dfm}
 
-uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, SysUtils, Unit33, DateUtils, math;
+uses Winapi.Windows, comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, SysUtils, Unit33, DateUtils, math;
 
 
 function TForm27.TrimAll(s:string):string;
@@ -205,19 +210,328 @@ begin
 end;
 
 
+procedure TForm27.SearchAllPosl;
+var RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
+    sch:string;
+    k:integer;
+    notfindposl:boolean;
+begin
+
+
+          Match:=RegularExpression.Match(LowerCase(strprizn),LowerCase(regallposl),[roIgnoreCase]);
+          if not Match.Success then
+          begin
+
+            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуг в призначені не знайдено!!!';
+            err:=true;
+           // strList[0]:='';
+          end
+          else
+          begin
+            SearchPosl(strprizn); //пошук послуги
+            if StrList.Count=0 then
+              err:=true
+            else
+            begin
+                for k:=0 to StrList.Count-1 do
+                begin
+                    if (Form33.ADOQueryOBOR.Active) and (Form33.ADOQueryOBOR.RecordCount<>0) then
+                    begin
+                      Form33.ADOQueryOBOR.first;
+                      if not Form33.ADOQueryOBOR.Locate('wid',StrList[k],[]) then
+                      begin
+                        notfindposl:=true;
+
+                        if StrList[k]='sn' then
+                        begin
+                           Form33.ADOQueryOBOR.first;
+                           if not Form33.ADOQueryOBOR.Locate('wid','sm',[]) then
+                           begin
+                            IBQueryWidAll.First;
+                            IBQueryWidAll.Locate('wid','sn',[]);
+                            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуги '+IBQueryWidAllNAIM.Value;
+                            IBQueryWidAll.First;
+                            IBQueryWidAll.Locate('wid','sm',[]);
+                            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+' або '+IBQueryWidAllNAIM.Value+' в абонента '+trim(Form33.cxTextEdit1.Text)+' не знайдено!';
+                            err:=true;
+                           end
+                           else
+                           begin
+                             StrList[k]:='sm';
+                             notfindposl:=false;
+                           end;
+                        end
+                        else
+                        if StrList[k]='sm' then
+                        begin
+                           Form33.ADOQueryOBOR.first;
+                           if not Form33.ADOQueryOBOR.Locate('wid','sn',[]) then
+                           begin
+                            IBQueryWidAll.First;
+                            IBQueryWidAll.Locate('wid','sn',[]);
+                            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуги '+IBQueryWidAllNAIM.Value;
+                            IBQueryWidAll.First;
+                            IBQueryWidAll.Locate('wid','sm',[]);
+                            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+' або '+IBQueryWidAllNAIM.Value+' в абонента '+trim(Form33.cxTextEdit1.Text)+' не знайдено!';
+                            err:=true;
+                           end
+                           else
+                           begin
+                             StrList[k]:='sn';
+                             notfindposl:=false;
+                           end;
+                        end;
+
+                        if StrList[k]='ot' then
+                        begin
+                           Form33.ADOQueryOBOR.first;
+                           if not Form33.ADOQueryOBOR.Locate('wid','om',[]) then
+                           begin
+                            IBQueryWidAll.First;
+                            IBQueryWidAll.Locate('wid','ot',[]);
+                            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуги '+IBQueryWidAllNAIM.Value;
+                            IBQueryWidAll.First;
+                            IBQueryWidAll.Locate('wid','om',[]);
+                            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+' або '+IBQueryWidAllNAIM.Value+' в абонента '+trim(Form33.cxTextEdit1.Text)+' не знайдено!';
+                            err:=true;
+                           end
+                           else
+                           begin
+                             StrList[k]:='om';
+                             notfindposl:=false;
+                           end;
+                        end;
+
+                        if notfindposl then
+                        begin
+                          IBQueryWidAll.First;
+                          IBQueryWidAll.Locate('wid',StrList[k],[]);
+                          Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуги '+IBQueryWidAllNAIM.Value+' в абонента '+trim(Form33.cxTextEdit1.Text)+' не знайдено!';
+                          err:=true;
+                        end;
+                      end;
+                    end
+                    else
+                    begin
+                          Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'По особовому рахунку '+trim(Form33.cxTextEdit1.Text)+' не має послуг. Можлива помилка в ос.рахунку';
+                          err:=true;
+                    end;
+
+                end;
+            end;
+          end;
+
+end;
+
+
+procedure TForm27.SearchSum;
+var str,posl2:string;
+    RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
+    ssum,ssum1,allsum,riznsum,allsumposl,sumposl1,sumposl2,vipsum,priznsum:Double;
+    k:integer;
+    exitsum:boolean;
+begin
+
+             priznsum:=0;
+             vipsum:=0;
+             str:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value];
+             if str<>'' then
+                vipsum:=StrToFloat(StringReplace(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value],'.',',',[]))
+             else
+               vipsum:=0;
+             Form33.cxCalcEdit2.Value:=vipsum;
+
+          if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])<>IBQueryBankSTR_EDRPOU.Value then
+          begin
+             ssum:=vipsum;
+          end
+          else
+          begin
+            RegularExpression := TRegEx.Create('[;]\d+(?:[\.,]\d+)?[\w||\W]?$');
+            str:=StringReplace(strprizn,' ','',[rfReplaceAll, rfIgnoreCase]);
+            Match := RegularExpression.Match(str);
+            if Match.Success then
+            begin
+              str:=StringReplace(Match.Value,';','',[rfReplaceAll, rfIgnoreCase]);
+              str:=StringReplace(str,'.',',',[rfReplaceAll, rfIgnoreCase]);
+              priznsum:=StrToFloat(str);
+              ssum:=priznsum;
+              if priznsum<=vipsum then
+              begin
+                Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'При готівкових платежах сума в призначенні повинна бути більша ніж у сума виписки! Можливо сума в призначенні не корректна!!!';
+                Form33.cxCalcEdit1.Properties.ReadOnly:=false;
+                err:=true;
+              end;
+            end
+            else
+            begin
+              Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'При готівкових платежах сума повинна бути в призначенні!!!';
+              priznsum:=0;
+              ssum:=priznsum;
+              Form33.cxCalcEdit1.Properties.ReadOnly:=false;
+              err:=true;
+            end;
+
+
+
+          end;
+
+          if ssum<=0 then
+          begin
+             Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Cума оплати в абонента '+trim(Form33.cxTextEdit1.Text)+' меньша або рівна 0!';
+             Form33.cxCalcEdit1.Properties.ReadOnly:=false;
+             err:=true;
+          end;
+
+
+
+          ssum1:=0;
+          allsum:=ssum;
+         Form33.cxCalcEdit1.Value:=ssum;
+
+         posl2:='';
+         allsumposl:=0;
+         exitsum:=false;
+         if (Form33.ADOQueryOBOR.Active) and (StrList.Count<>0) then
+         begin
+            Form33.ADOQueryOBOR.First;
+            if Form33.ADOQueryOBOR.Locate('wid',StrList[0],[]) and (trim(Form33.ADOQueryOBORabonpl.Value)<>'') then
+            begin
+               //allsumposl:=Form33.ADOQueryOBORsal.Value;
+               sumposl1:=Form33.ADOQueryOBORsal.Value;
+               posl2:=Form33.ADOQueryOBORabonpl.Value;
+               Form33.ADOQueryOBOR.First;
+               if Form33.ADOQueryOBOR.Locate('wid',posl2,[]) and (Form33.ADOQueryOBORsal.Value>0) then
+               begin
+                 sumposl2:=Form33.ADOQueryOBORsal.Value;
+                 allsumposl:=sumposl1+Form33.ADOQueryOBORsal.Value;
+                 if sumposl1<>allsum then
+                 begin
+                   if sumposl2=allsum then
+                   begin
+                       strList.Clear;
+                       strList.Add(posl2);
+                   end
+                   else if (allsum-sumposl1>=2) and (StrList.Count=1) then
+                        strList.Add(posl2);
+                 end;
+               end;
+
+            end;
+         end;
+
+//                               else if (sumposl1<=0) and (sumposl2>=allsum) then
+//                     begin
+//                       strList.Clear;
+//                       strList.Add(posl2);
+//                     end
+
+         //                 if ((allsum-sumposl<=2) and (allsum-sumposl>=-2)) or (sumposl-allsum>=2) then
+
+
+
+          if (Form33.ADOQueryOBOR.Active) and (StrList.Count<>0) then
+          begin
+            for k:=0 to StrList.Count-1 do
+            begin
+              Form33.ADOQueryOBOR.First;
+              if Form33.ADOQueryOBOR.Locate('wid',StrList[k],[]) then
+              begin
+                 Form33.ADOQueryOBOR.Edit;
+                 Form33.ADOQueryOBORch.Value:=1;
+
+                 if (k=0) then
+                 begin
+                  if (Form33.ADOQueryOBORsal.AsFloat>=ssum) then
+                  begin
+                    ssum1:=ssum;
+                    ssum:=0;
+                    break;
+                  end
+                  else
+                  begin
+                    if Form33.ADOQueryOBORsal.AsFloat>0 then
+                    begin
+                       ssum1:=Form33.ADOQueryOBORsal.AsFloat;
+                       ssum:=ssum-Form33.ADOQueryOBORsal.AsFloat;
+                    end;
+                  end;
+                 end
+                 else
+                 begin
+                   if (Form33.ADOQueryOBORsal.Value>0) and (ssum>0) then
+                   begin
+                      riznsum:=ssum-Form33.ADOQueryOBORsal.Value;
+                      if riznsum>0 then
+                      begin
+                        Form33.ADOQueryOBORsumpl.AsFloat:=Form33.ADOQueryOBORsal.AsFloat;
+                        ssum:=ssum-Form33.ADOQueryOBORsal.AsFloat;
+                      end
+                      else
+                      begin
+                        Form33.ADOQueryOBORsumpl.AsFloat:=SimpleRoundTo(ssum,-2);
+                        ssum:=0;
+                      end;
+
+                   end;
+                 end;
+                 Form33.ADOQueryOBOR.Post;
+
+              end;
+
+
+            end;
+
+            if ssum>0 then
+               ssum1:=ssum1+ssum;
+
+            if (StrList.count>0) then
+            begin
+                Form33.ADOQueryOBOR.first;
+                if Form33.ADOQueryOBOR.Locate('wid',StrList[0],[]) then
+                begin
+                  Form33.ADOQueryOBOR.Edit;
+                  if (ssum1>0) then
+                      Form33.ADOQueryOBORsumpl.AsFloat:=ssum1
+                  else
+                      Form33.ADOQueryOBORch.Value:=0;
+
+                  Form33.ADOQueryOBOR.Post;
+                end;
+
+
+            end;
+
+
+          end;
+
+end;
+
+
 procedure TForm27.endlistexel;
 begin
 
-       table.Close;
-       table.Free;
+
+
        row:=0;
 
+          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+2].Select;
+          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
+          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+1].Select;
+          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
+          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+3].Select;
+          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
 
-
-        MsExcel.ActiveWorkbook.save;
-        MsExcel.ActiveWorkbook.Close;
-        MsExcel.Application.Quit;
+        ExcelWorkbook.save;
+        ExcelWorkbook.Close;
         MsExcel := null;
+
+//        MsExcel.Application.Quit;
+//        MsExcel := null;
         Application.ProcessMessages;
 
       form2.Close;
@@ -239,8 +553,6 @@ var i,ns,nstr:integer;
   Workbooks: Variant;
   Workbook: Variant;
   FileInfo: TSHFileInfo;
-
-
 begin
 
   if Row<>0 then
@@ -268,17 +580,6 @@ begin
    cxTextEdit1.Text:=st1;
    cxTextEdit4.Text:='';
 
-//  if SHGetFileInfo(PChar(OpenDialog1.FileName), 0, FileInfo, SizeOf(FileInfo), SHGFI_SHAREABLE or SHGFI_OPENICON or SHGFI_ICON) <> 0 then
-//  if SHGetFileInfo(PChar(OpenDialog1.FileName), 0, FileInfo, SizeOf(FileInfo), SHGFI_ATTRIBUTES) <> 0 then
-//  begin
-////    Result := FileInfo.szTypeName = 'Network File';
-//    ShowMessage(FileInfo.szTypeName);
-//    ShowMessage('Можливо файл відкрито на іншому комп"ютері. Закрийте файл '+st1+' та спробуйте знову!!!');
-//    cxTextEdit1.Text:='';
-//    path:='';
-//    exit;
-//  end;
-
       try
         MyFile := TFileStream.Create(OpenDialog1.FileName, fmOpenRead or fmShareExclusive or fmShareDenyWrite);
         try
@@ -287,12 +588,14 @@ begin
           MyFile.Free;
         end;
       except
+           MyFile.Free;
         // Обработка ошибок при открытии файла
             try
               Excel := GetActiveOleObject('Excel.Application');
+              Excel.DisplayAlerts:=false;
               Workbooks := Excel.Workbooks;
               if Workbooks.Count=0 then
-                 Excel.close
+                 Excel.Application.Quit
               else
               for i := 1 to Workbooks.Count do
               begin
@@ -301,6 +604,8 @@ begin
                 begin
 //                  if application.MessageBox('Файл вже відкрито в Excel. Закрийти файл примусово?','Підтвердження',MB_YESNO)=IDYES then
 //                  begin
+                 //   Excel.DisplayAlerts:=false;
+
                     Workbook.Close(True);
                     //Excel.Free;
                     Break;
@@ -313,6 +618,16 @@ begin
 //                  end;
                 end;
               end;
+              Workbooks := Excel.Workbooks;
+              if Workbooks.Count=0 then
+              begin
+                 Excel.Application.Quit;
+                 Excel.Quit;
+
+                 WinExec(PANsiChar('taskkill /F /IM EXCEL.EXE'), SW_HIDE);
+
+              end;
+
             except
               ShowMessage('Можливо файл вже відкрито в іншій програмі або на іншому комп"ютері. Закрийте файл '+st1+' та спробуйте знову!!!');
               cxTextEdit1.Text:='';
@@ -320,13 +635,6 @@ begin
              // Excel.Free;
               exit;
             end;
-
-
-
-//        ShowMessage('Файл вже відкрито в іншій програмі. Закрийте файл '+st1+' та спробуйте знову!!!');
-//        cxTextEdit1.Text:='';
-//        path:='';
-//        exit;
       end;
 
 
@@ -334,45 +642,17 @@ begin
 
 
 
-
-
-//  try
-//    MyFile := TFileStream.Create(OpenDialog1.FileName, fmOpenRead or fmShareExclusive);
-//    try
-//      // Файл открыт для чтения и его можно использовать здесь
-//    finally
-//      MyFile.Free;
-//    end;
-//  except
-//    // Обработка ошибок при открытии файла
-//    ShowMessage('Файл вже відкрито в іншій програмі. Закрийте файл '+st1+' та спробуйте знову!!!');
-//    cxTextEdit1.Text:='';
-//    path:='';
-//    exit;
-//  end;
-
-//  try
-//    F := TFileStream.Create(Origin, fmOpenReadWrite or fmShareExclusive);
-//    try
-//      Result := true;
-//    finally
-//      F.Free;
-//    end;
-//  except
-//    Result := false;
-//  end;
-
-
-
     MsExcel := CreateOleObject('Excel.Application');
-    //    MsExcel.Workbooks.Add;
-    MsExcel.Workbooks.Open[OpenDialog1.FileName];
+    //    ExcelWorkbook.Workbooks.Add;
+   // ExcelWorkbook.Workbooks.Open[OpenDialog1.FileName];
+    ExcelWorkbook := MsExcel.Workbooks.Open[OpenDialog1.FileName];
+
     IBQueryBank.First;
     while not IBQueryBank.Eof do
     begin
-       if  Pos(IBQueryBankRAH.Text,trim(MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
+       if  Pos(IBQueryBankRAH.Text,trim(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
        begin
-           MC:=RegularExpression.Matches(MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_DT_VIP.Value,IBQueryBankCOL_DT_VIP.Value],'[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}',[roMultiLine]);//получаем коллекцию совпадений
+           MC:=RegularExpression.Matches(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_DT_VIP.Value,IBQueryBankCOL_DT_VIP.Value],'[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}',[roMultiLine]);//получаем коллекцию совпадений
            for  i:=0 to MC.Count-1 do
              begin
               if i=0 then cxDateEdit1.Date:=StrToDate(MC.Item[i].Value);
@@ -394,21 +674,30 @@ begin
 
 
 
-          MsExcel.ActiveWorkbook.Close;
+          ExcelWorkbook.Close;
           MsExcel.Application.Quit;
           MsExcel := null;
 
 
-    //MsExcel := null;
+    //ExcelWorkbook := null;
   end;
 end;
 
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
     stroka,strmes,filepath:string;
-    dt1,dt2:integer;
+    dt1,dt2,i:integer;
     f : TextFile;
+    MyFile: TFileStream;
+  Excel: Variant;
+  Workbooks: Variant;
+  Workbook: Variant;
+  FileInfo: TSHFileInfo;
 begin
+
+
+
+
   if row<>0 then
      exit;
 
@@ -418,6 +707,65 @@ begin
      ShowMessage('Виберіть файл');
      exit;
    end;
+
+
+      try
+        MyFile := TFileStream.Create(path, fmOpenRead or fmShareExclusive or fmShareDenyWrite);
+        try
+          // Файл открыт для чтения и его можно использовать здесь
+        finally
+          MyFile.Free;
+        end;
+      except
+           MyFile.Free;
+        // Обработка ошибок при открытии файла
+            try
+              Excel := GetActiveOleObject('Excel.Application');
+              Excel.DisplayAlerts:=false;
+              Workbooks := Excel.Workbooks;
+              if Workbooks.Count=0 then
+                 Excel.Application.Quit
+              else
+              for i := 1 to Workbooks.Count do
+              begin
+                Workbook := Workbooks.Item[i];
+                if SameText(ExtractFileName(Workbook.FullName), st1) then
+                begin
+//                  if application.MessageBox('Файл вже відкрито в Excel. Закрийти файл примусово?','Підтвердження',MB_YESNO)=IDYES then
+//                  begin
+                 //   Excel.DisplayAlerts:=false;
+
+                    Workbook.Close(True);
+                    //Excel.Free;
+                    Break;
+//                  end
+//                  else
+//                  begin
+//                    cxTextEdit1.Text:='';
+//                    path:='';
+//                    exit;
+//                  end;
+                end;
+              end;
+              Workbooks := Excel.Workbooks;
+              if Workbooks.Count=0 then
+              begin
+                 Excel.Application.Quit;
+                 Excel.Quit;
+
+                 WinExec(PANsiChar('taskkill /F /IM EXCEL.EXE'), SW_HIDE);
+
+              end;
+
+            except
+              ShowMessage('Можливо файл вже відкрито в іншій програмі або на іншому комп"ютері. Закрийте файл '+st1+' та спробуйте знову!!!');
+              cxTextEdit1.Text:='';
+              path:='';
+             // Excel.Free;
+              exit;
+            end;
+      end;
+
 
        AssignFile(f, Form1.PathKvart+'\cur_date.mem');
        FileMode := fmOpenRead;
@@ -492,7 +840,7 @@ begin
 
     tobor.Free;
     twid.Free;
-
+    table.Free;
 
 
 
@@ -510,8 +858,8 @@ begin
 
 
     MsExcel := CreateOleObject('Excel.Application');
-    //    MsExcel.Workbooks.Add;
-    MsExcel.Workbooks.Open[path];
+    //    ExcelWorkbook.Workbooks.Add;
+    ExcelWorkbook:= MsExcel.Workbooks.Open[path];
 
    Form2.Label1.Caption:='Обрахування даних';
         Form2.cxProgressBar1.Properties.Min:=0;
@@ -521,7 +869,7 @@ begin
    IBPERIOD.Open;
    IBQueryWidAll.Open;
 
-//        MsExcel.Visible := True;
+//        ExcelWorkbook.Visible := True;
 
   // Form27.Enabled:=false;
    Form2.Show;
@@ -530,7 +878,7 @@ begin
     IBQueryBank.First;
     while not IBQueryBank.Eof do
     begin
-       if  Pos(IBQueryBankRAH.Text,trim(MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
+       if  Pos(IBQueryBankRAH.Text,trim(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
        begin
          Break;
        end;
@@ -554,18 +902,18 @@ begin
     regallposl:=regallposl+')';
 
 
-       MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+1]:='Параметри обробки';
-       MsExcel.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+2]:='Результат обробки';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+1]:='Параметри обробки';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+2]:='Результат обробки';
 
         kolst:=IBQueryBankSTR_ST.Value;
         if Length(IBQueryBankSTR_PRIZN_ENDDATA.Value)<>0 then
           while f1 do
           begin
-          if pos(IBQueryBankSTR_PRIZN_ENDDATA.Value,MsExcel.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])<>0 then
+          if pos(IBQueryBankSTR_PRIZN_ENDDATA.Value,ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])<>0 then
              f1:=False
           else
             begin
-            //MsExcel.WorkSheets[1].Cells[kolst,9]:='';
+            //ExcelWorkbook.WorkSheets[1].Cells[kolst,9]:='';
             kolst:=kolst+1;
             end;
 
@@ -573,11 +921,11 @@ begin
          else
           while f1 do
           begin
-          if Length(MsExcel.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0 then
+          if Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0 then
              f1:=False
           else
             begin
-            //MsExcel.WorkSheets[1].Cells[kolst,9]:='';
+            //ExcelWorkbook.WorkSheets[1].Cells[kolst,9]:='';
             kolst:=kolst+1;
             end;
 
@@ -597,88 +945,6 @@ begin
         row:=IBQueryBankSTR_ST.Value-1;
         newpl:=true;
         startlistexel;
-
-//        for I := IBQueryBankSTR_ST.Value to kolst do
-//        begin
-
-
-
-
-
-//          ssum1:=0;
-//          allsum:=ssum;
-//          if IBQueryObor.RecordCount=1 then
-//          begin
-//            table.Insert;
-//            table.Edit;
-//            table.FieldByName('schet').Value:=sch;
-//            table.FieldByName('dt').Value:=dt;
-//            table.FieldByName('opl').Value:=allsum;
-//            table.FieldByName('opl_'+IBQueryOborWID.Value).Value:=ssum;
-//            table.FieldByName('doc').Value:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value];
-//            table.Post;
-//            ssum:=0;
-//          end
-//          else
-//          begin
-//          table.Append;
-//          table.FieldByName('schet').Value:=sch;
-//          table.FieldByName('dt').Value:=dt;
-//          table.FieldByName('opl').Value:=allsum;
-//          table.FieldByName('doc').Value:=MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DOK.Value];
-//          IBQueryObor.first;
-//            while not IBQueryObor.Eof do
-//            begin
-//              if (IBQueryObor.RecNo=1) then
-//              begin
-//                if (IBQueryOborSAL.Value>=ssum) then
-//                begin
-//                  ssum1:=ssum;
-//                  ssum:=0;
-//                  break;
-//                end
-//                else
-//                begin
-//                  if IBQueryOborSAL.Value>0 then
-//                  begin
-//                     ssum1:=IBQueryOborSAL.Value;
-//                     ssum:=ssum-IBQueryOborSAL.Value;
-//                  end;
-//                end;
-//              end
-//              else
-//              begin
-//                 if (IBQueryOborSAL.Value>0) and (ssum>0) then
-//                 begin
-//                    riznsum:=ssum-IBQueryOborSAL.Value;
-//                    if riznsum>0 then
-//                    begin
-//                      table.FieldByName('opl_'+IBQueryOborWID.Value).Value:=IBQueryOborSAL.Value;
-//                      ssum:=ssum-IBQueryOborSAL.Value;
-//                    end
-//                    else
-//                    begin
-//                      table.FieldByName('opl_'+IBQueryOborWID.Value).Value:=ssum;
-//                      ssum:=0;
-//                    end;
-//
-//                 end;
-//              end;
-//            IBQueryObor.Next;
-//            end;
-//            if ssum>0 then
-//              ssum1:=ssum1+ssum;
-//            if ssum1>0 then
-//            begin
-//              IBQueryObor.first;
-//              table.FieldByName('opl_'+IBQueryOborWID.Value).Value:=ssum1;
-//            end;
-//
-//          table.Post;
-//          end;
-
-
-
 
 end;
 
@@ -712,20 +978,11 @@ IBQueryBank.Open;
 end;
 
 procedure TForm27.startlistexel;
-var errmess,strprizn,sch,sql,str,sp,dtstr,posl2:string;
+var sch,sql,str,sp,dtstr,posl2:string;
     RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
-    ssum,ssum1,allsum,riznsum,sumposl:Double;
     k,position:integer;
-//    i,ns,k,position:integer;
-//    sss,fio,str,sch,regallposl,strprizn,sp,sql,dtstr,errmess:string;
-//    RegularExpression : TRegEx;
-//    Match : TMatch;
-//    MC: TMatchCollection;
-//    sumExcel:currency;
-//    summa:double;
-//    ssum,ssum1,allsum,riznsum:Double;
 begin
    fl:=true;
    Timer1.Enabled:=False;
@@ -758,312 +1015,78 @@ begin
 //          end;
           StrList.Clear;
           err:=false;
-          errmess:='';
+          Form33.cxLabel1.Caption:='';
 
           Form2.cxProgressBar1.Position:=row;
           Application.ProcessMessages;
 
           sch:='';
-          strprizn:=MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_PRIZN.Value];
+          strprizn:=ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_PRIZN.Value];
 
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
-          if Length(MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
-          if Pos('Оброблено',MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
-          if trim(MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then
+          if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
+          if Pos('Оброблено',ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
+          if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then
           begin
-            MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
+            ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
             Continue;
           end;
           //пошук Особ. рахунка
           Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
           if Match.Success then
              Form33.cxTextEdit1.Text:=trim(Match.value)
-          else Form33.cxTextEdit1.Text:='';
+          else Form33.cxTextEdit1.Text:=' ';
 
 
-          if Form33.cxTextEdit1.Text='' then
-          begin
-            errmess:='Ос.рахунок не знайдено!';
-            Form33.cxTextEdit1.Properties.ReadOnly:=false;
-            //Form33.cxTextEdit1.SetFocus;
-            err:=true;
-          end;
-          if SearchAllPosl(strprizn,regallposl)='' then //пошук будь-якої послуги
-          begin
-            errmess:=errmess+'Послуг в призначені не знайдено!!!';
-            err:=true;
-           // strList[0]:='';
-          end
-          else
-          begin
-            SearchPosl(strprizn); //пошук послуги
-            if (StrList.Count=0) or (StrList[0]='not found posl') or (trim(StrList[0])='') then
+//          if Form33.cxTextEdit1.Text='' then
+//          begin
+//            Form33.cxLabel1.Caption:='Ос.рахунок не знайдено!';
+//            Form33.cxTextEdit1.Properties.ReadOnly:=false;
+//            //Form33.cxTextEdit1.SetFocus;
+//            err:=true;
+//          end;
+
+//         SearchAllPosl;
+//         SearchSum;
+         // summa:=0.00;
+         dtstr:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DT.Value];
+//          dtstr:=formatdatetime('ddmmyyyy', strtodate(ExcelWorkbook.WorkSheets[1].Cells[I,IBQueryBankCOL_DT.Value]));
+          dt:=strtodate(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DT.Value]);
+
+
+
+
+
+
+
+          //  Form33.cxLabel1.Caption:=errmess;
+//            Form33.cxTextEdit1.Text:=sch;
+            Form33.Memo1.Text:=strprizn;
+
+            Form33.cxDateEdit1.Date:=dt;
+            Form33.Memo2.Text:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_KONTR.Value];
+
+            if CheckBox2.Checked then
             begin
-              errmess:=errmess+'Послуги в призначені не знайдено!';
-              err:=true;
-            end;
-            if StrList[0]='many posl' then
-            begin
-              errmess:=errmess+'Знайдено декілька різних послуг!';
-              err:=true;
-            end;
-          end;
-
-
-//          sql:='select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 00000.00 as sumpl from wids,obor where wids.wid=obor.wid and obor.schet=:sch order by wids.npp';
-//          Form33.ADOQueryOBOR.Close;
-//          Form33.ADOQueryOBOR.SQL.Append(sql);
-//          Form33.ADOQueryOBOR.Parameters.ParamByName('sch').Value:=trim(sch);
-//          Form33.ADOQueryOBOR.Open;
-
-          for k:=0 to StrList.Count-1 do
-          begin
-              if (Form33.ADOQueryOBOR.Active) and (Form33.ADOQueryOBOR.RecordCount<>0) then
+              if err then
               begin
-                Form33.ADOQueryOBOR.first;
-                if not Form33.ADOQueryOBOR.Locate('wid',StrList[k],[]) then
-                begin
-                  if StrList[k]='sn' then
-                  begin
-                     Form33.ADOQueryOBOR.first;
-                     if not Form33.ADOQueryOBOR.Locate('wid','sm',[]) then
-                     begin
-                      IBQueryWidAll.First;
-                      IBQueryWidAll.Locate('wid','sn',[]);
-                      errmess:=errmess+'Послуги '+IBQueryWidAllNAIM.Value;
-                      IBQueryWidAll.First;
-                      IBQueryWidAll.Locate('wid','sm',[]);
-                      errmess:=errmess+' або '+IBQueryWidAllNAIM.Value+' в абонента '+Form33.cxTextEdit1.Text+' не знайдено!';
-                      err:=true;
-                     end
-                     else
-                     StrList[k]:='sm';
-                  end
-                  else
-                  begin
-                    IBQueryWidAll.First;
-                    IBQueryWidAll.Locate('wid',StrList[k],[]);
-                    errmess:=errmess+'Послуги '+IBQueryWidAllNAIM.Value+' в абонента '+Form33.cxTextEdit1.Text+' не знайдено!';
-                    err:=true;
-                  end;
-                end;
+                Form33.Show;
+                fl:=false;
               end
               else
               begin
-                    errmess:=errmess+'По особовому рахунку '+Form33.cxTextEdit1.Text+' не має послуг. Можлива помилка в ос.рахунку';
-                    err:=true;
+                addopl;
               end;
-
-          end;
-         // summa:=0.00;
-             str:=MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value];
-             if str<>'' then
-                Form33.cxCalcEdit2.Value:=StrToFloat(StringReplace(MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value],'.',',',[]))
-             else Form33.cxCalcEdit2.Value:=0;
-
-
-          if trim(MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])<>IBQueryBankSTR_EDRPOU.Value then
-          begin
-             str:=MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value];
-             if str<>'' then
-                ssum:=StrToFloat(StringReplace(MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value],'.',',',[]))
-             else ssum:=0;
-          end
-          else
-          begin
-            RegularExpression := TRegEx.Create('[;]\d+(?:[\.,]\d+)?[\w||\W]?$');
-            str:=StringReplace(strprizn,' ','',[rfReplaceAll, rfIgnoreCase]);
-            Match := RegularExpression.Match(str);
-            if Match.Success then
-            begin
-              str:=StringReplace(Match.Value,';','',[rfReplaceAll, rfIgnoreCase]);
-              str:=StringReplace(str,'.',',',[rfReplaceAll, rfIgnoreCase]);
-              ssum:=StrToFloat(str);
             end
             else
             begin
-              errmess:=errmess+'При готівкових платежах сума повинна бути в призначенні!!!';
-              ssum:=0;
-              Form33.cxCalcEdit1.Properties.ReadOnly:=false;
+                Form33.Show;
+                fl:=false;
             end;
 
 
 
-//            if RightStr(strprizn,1)=';' then Delete(strprizn, Length(strprizn), 1);
-//            position := LastDelimiter(';', strprizn);
-//            sp:=copy(strprizn,position+1,Length(strprizn));
-//
-//            if sp<>'' then
-//              ssum:=StrToFloat(StringReplace(copy(strprizn,position+1,Length(strprizn)),'.',',',[]))
-//            else
-//               ssum:=0;
-
-            //summa:=StrToFloat(LeftStr(strprizn,position));
-          end;
-
-          if ssum<=0 then
-          begin
-             errmess:=errmess+'Cума оплати в абонента '+Form33.cxTextEdit1.Text+' меньша або рівна 0!';
-             err:=true;
-          end;
-          dtstr:=MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_DT.Value];
-//          dtstr:=formatdatetime('ddmmyyyy', strtodate(MsExcel.WorkSheets[1].Cells[I,IBQueryBankCOL_DT.Value]));
-          dt:=strtodate(MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_DT.Value]);
-
-//          if f1 then Continue;
-
-
-//          sql:='select wids.wid, wids.wnaim, obor.schet, obor.sal, 0 as ch, 0.00 as sumpl from wids,obor where wids.wid=obor.wid and obor.schet=:sch order by wids.npp';
-
-//          sql:='select obor.* from OBOR,WID where obor.wid=wid.wid and obor.period=:dt and obor.schet=:sch and (';
-//          for k:=0 to StrList.Count-1 do
-//          begin
-//              sql:=sql+'obor.wid='''+StrList[k]+''' or ';
-//          end;
-//          Delete(sql, Length(sql)-3, 4);
-//          IBQueryObor.SQL.Text:=sql+') order by wid.npp';
-
-
-//          Form33.ADOQueryOBOR.FetchAll;
-//          while not IBQueryObor.Eof do
-//          begin
-//            ssum1:=0;
-//          IBQueryObor.Next;
-//          end;
-
-          ssum1:=0;
-          allsum:=ssum;
-
-//          if StrList.Count=1 then
-//          begin
-//            Form33.ADOQueryOBOR.First;
-//            if Form33.ADOQueryOBOR.Locate('wid',StrList[0],[]) then
-//            begin
-//               Form33.ADOQueryOBOR.Edit;
-//               Form33.ADOQueryOBORch.Value:=1;
-//               Form33.ADOQueryOBORsumpl.Value:=ssum;
-//               Form33.ADOQueryOBOR.Post;
-//            end;
-//          end
-//          else
-         posl2:='';
-         sumposl:=0;
-         if (StrList.Count=1) and (Form33.ADOQueryOBOR.Active) then
-         begin
-            Form33.ADOQueryOBOR.First;
-            if Form33.ADOQueryOBOR.Locate('wid',StrList[0],[]) and (trim(Form33.ADOQueryOBORabonpl.Value)<>'') then
-            begin
-               sumposl:=Form33.ADOQueryOBORsal.Value;
-               posl2:=Form33.ADOQueryOBORabonpl.Value;
-               Form33.ADOQueryOBOR.First;
-               if Form33.ADOQueryOBOR.Locate('wid',posl2,[]) and (Form33.ADOQueryOBORsal.Value>0) then
-               begin
-                 sumposl:=sumposl+Form33.ADOQueryOBORsal.Value;
-                 if ((allsum-sumposl<=2) and (allsum-sumposl>=-2)) or (sumposl-allsum>=2) then
-                    strList.Add(posl2);
-               end;
-
-            end;
-         end;
-
-
-
-
-
-
-
-          if Form33.ADOQueryOBOR.Active then
-          begin
-            for k:=0 to StrList.Count-1 do
-            begin
-              Form33.ADOQueryOBOR.First;
-              if Form33.ADOQueryOBOR.Locate('wid',StrList[k],[]) then
-              begin
-                 Form33.ADOQueryOBOR.Edit;
-                 Form33.ADOQueryOBORch.Value:=1;
-
-                 if (k=0) then
-                 begin
-                  if (Form33.ADOQueryOBORsal.AsFloat>=ssum) then
-                  begin
-                    ssum1:=ssum;
-                    ssum:=0;
-                    break;
-                  end
-                  else
-                  begin
-                    if Form33.ADOQueryOBORsal.AsFloat>0 then
-                    begin
-                       ssum1:=Form33.ADOQueryOBORsal.AsFloat;
-                       ssum:=ssum-Form33.ADOQueryOBORsal.AsFloat;
-                    end;
-                  end;
-                 end
-                 else
-                 begin
-                   if (Form33.ADOQueryOBORsal.Value>0) and (ssum>0) then
-                   begin
-                      riznsum:=ssum-Form33.ADOQueryOBORsal.Value;
-                      if riznsum>0 then
-                      begin
-                        Form33.ADOQueryOBORsumpl.AsFloat:=Form33.ADOQueryOBORsal.AsFloat;
-                        ssum:=ssum-Form33.ADOQueryOBORsal.AsFloat;
-                      end
-                      else
-                      begin
-                        Form33.ADOQueryOBORsumpl.AsFloat:=SimpleRoundTo(ssum,-2);
-                        ssum:=0;
-                      end;
-
-                   end;
-                 end;
-                 Form33.ADOQueryOBOR.Post;
-
-              end;
-
-
-            end;
-
-            if ssum>0 then
-               ssum1:=ssum1+ssum;
-
-            if (ssum1>0) and (StrList.count>0) then
-            begin
-                Form33.ADOQueryOBOR.first;
-                if Form33.ADOQueryOBOR.Locate('wid',StrList[0],[]) then
-                begin
-                  Form33.ADOQueryOBOR.Edit;
-                  Form33.ADOQueryOBORschet.Value;
-                  Form33.ADOQueryOBORwid.Value;
-                  Form33.ADOQueryOBORsumpl.AsFloat:=ssum1;
-                  Form33.ADOQueryOBOR.Post;
-                end;
-
-
-            end;
-          end;
-
-
-
-
-            Form33.cxLabel1.Caption:=errmess;
-//            Form33.cxTextEdit1.Text:=sch;
-            Form33.Memo1.Text:=strprizn;
-            Form33.cxCalcEdit1.Value:=allsum;
-            Form33.cxDateEdit1.Date:=dt;
-            Form33.Memo2.Text:=MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_KONTR.Value];
-
-//          if err then
-//          begin
-            Form33.Show;
-            fl:=false;
-//          end
-//          else
-//          begin
-//            addopl;
-//
-//          end;
 
 
    end;
@@ -1094,7 +1117,7 @@ var s,s2,s3,s4,s5,sss,schet,strobr:string;
     sum11,sum22:Double;
 
 begin
-          error:=0;
+
           Form33.cxLabel1.Caption:='';
           if Form33.ADOQueryOBOR.RecordCount=0 then
           begin
@@ -1106,28 +1129,6 @@ begin
 
 
 
-//      if Form33.cxTextEdit1.Text='' then
-//      begin
-//         ShowMessage('Введіть особовий рахунок!!!');
-//         Form33.cxTextEdit1.Focused;
-//         fl:=false;
-//         Form33.Show;
-//         exit;
-//      end
-//      else
-//      begin
-//          if Form33.ADOQueryOBOR.RecordCount=0 then
-//          begin
-//            schet:=SearchSchet(trim(Form33.cxTextEdit1.Text));
-//            if schet='' then
-//            begin
-//              Form33.cxLabel1.Caption:='Особовий рахунок не знайдено!!!';
-//              Form33.Show;
-//              fl:=false;
-//              exit;
-//            end;
-//          end;
-//      end;
           if Trim(FloatToStr(Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]))<> Trim(FloatToStr(Form33.cxCalcEdit1.Value)) then
           begin
             Form33.cxLabel1.Caption:='Cума оплати відрізняється від суми платежу виписки!!!';
@@ -1137,14 +1138,6 @@ begin
           end;
 
 
-//        if (Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]<>Form33.cxCalcEdit1.Value) then
-//        begin
-//          Form33.cxLabel1.Caption:='Cума оплати відрізняється від суми платежу виписки!!!';
-//          Form33.Show;
-//          fl:=false;
-//          exit;
-//        end;
-
           if (Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3])=0 then
           begin
             Form33.cxLabel1.Caption:='Cума оплати не може бути 0!!!';
@@ -1152,6 +1145,20 @@ begin
             fl:=false;
             exit;
           end;
+
+
+          if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])=IBQueryBankSTR_EDRPOU.Value then
+          begin
+             if Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]<=Form33.cxCalcEdit2.Value then
+             begin
+                Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'При готівкових платежах сума оплати повинна бути більша ніж у сума виписки!!!';
+                Form33.Show;
+                fl:=false;
+                exit;
+             end;
+
+          end;
+
 
           if (Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[1])=0 then
           begin
@@ -1182,9 +1189,27 @@ begin
           Form33.ADOQueryOBOR.next;
           end;
 
+          try
+          table:=TDbf.Create(self);
+          table.TableName:=Form1.PathKvart+'dbf\opl.dbf';
+          table.Open;
+          table.CanModify;
+         // table.OpenIndexFile('opl.cdx');
+               except
+               on E : Exception do
+               begin
+                messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+                table.Close;
+                table.Free;
+                endlistexel;
+                exit;
+               end;
+          end;
+
+          error:=0;
           if not Form33.CheckBox2.Checked then
           begin
-            if table.Locate('schet;dt;opl',VarArrayOf([Form33.cxTextEdit1.Text,DateToStr(Form33.cxDateEdit1.Date),Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]]),[loPartialKey]) then
+            if table.Locate('schet;dt;opl',VarArrayOf([trim(Form33.cxTextEdit1.Text),DateToStr(Form33.cxDateEdit1.Date),Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]]),[loPartialKey]) then
             begin
               Form33.ADOQueryOBOR.First;
               while not Form33.ADOQueryOBOR.Eof do
@@ -1193,7 +1218,7 @@ begin
                 begin
                   if table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat=Form33.ADOQueryOBORsumpl.AsFloat then
                   begin
-                     Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Платіж по рахунку '+Form33.cxTextEdit1.Text+' за '+DateToStr(Form33.cxDateEdit1.Date)+' число, по послузі '+Form33.ADOQueryOBORnaim.Value+' в сумі '+CurrToStr(Form33.ADOQueryOBORsumpl.Value)+' вже існує!';
+                     Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Платіж по рахунку '+trim(Form33.cxTextEdit1.Text)+' за '+DateToStr(Form33.cxDateEdit1.Date)+' число, по послузі '+Form33.ADOQueryOBORnaim.Value+' в сумі '+CurrToStr(Form33.ADOQueryOBORsumpl.Value)+' вже існує!';
                      error:=error+1;
                   end;
                 end;
@@ -1202,8 +1227,28 @@ begin
             end;
           end;
 
+           //   strobr:='rah='+trim(Form33.cxTextEdit1.Text)+';';
+              strobr:='';
+              Form33.ADOQueryOBOR.first;
+                while not Form33.ADOQueryOBOR.Eof do
+                begin
+                  if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
+                  begin
+                    table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat:=Form33.ADOQueryOBORsumpl.AsFloat;
+                    strobr:=strobr+Form33.ADOQueryOBORwid.AsString+'='+Form33.ADOQueryOBORsumpl.AsString+';';
+                  end;
+                Form33.ADOQueryOBOR.Next;
+                end;
+
+              if strobr<>'' then
+              begin
+                ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:='rah='+trim(Form33.cxTextEdit1.Text)+';'+strobr;
+                ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+3]:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
+              end;
+
           if error>0 then
           begin
+
              Form33.Show;
              Form33.CheckBox2.Visible:=true;
              fl:=false;
@@ -1213,60 +1258,33 @@ begin
 
           strobr:='';
 
-          schet:=Form33.cxTextEdit1.Text;
+          schet:=trim(Form33.cxTextEdit1.Text);
+
+
+
+
           table.Append;
           RegularExpression := TRegEx.Create('[а-я]');
-          Match := RegularExpression.Match(Form33.cxTextEdit1.Text);
+          Match := RegularExpression.Match(trim(Form33.cxTextEdit1.Text));
           if Match.Success then
             begin
-               s2:=StrAnsiToOem(RightStr(Form33.cxTextEdit1.Text,1));
-               table.FieldByName('schet').Value:=LeftStr(Form33.cxTextEdit1.Text,Length(Form33.cxTextEdit1.Text)-1)+s2;
+               s2:=StrAnsiToOem(RightStr(trim(Form33.cxTextEdit1.Text),1));
+               table.FieldByName('schet').Value:=LeftStr(trim(Form33.cxTextEdit1.Text),Length(trim(Form33.cxTextEdit1.Text))-1)+s2;
             end
             else
-               table.FieldByName('schet').Value:=Form33.cxTextEdit1.Text;
-
-//          Match1:=RegularExpression1.Match(schet,'\b[a-я]{1}\b',[]);
-//          s:=Match1.value;
-//
-//            if Match1.Success then
-//               s:=RightStr(Form33.cxTextEdit1.Text,1);
-//
-//              s:=RightStr(Form33.cxTextEdit1.Text,1);
-//            Match1:=RegularExpression1.Match(schet,'\b[a-я]\b',[roIgnoreCase]);
-//            s:=Match1.value;
-
-
-//            if IsCharAlpha(s[1]) then
-//            begin
-//               x:=TEncoding.Unicode.GetBytes(Form33.cxTextEdit1.Text);
-//               DosData := TEncoding.Convert(TEncoding.GetEncoding(1251),TEncoding.GetEncoding(866),x);
-//               s:=TEncoding.Unicode.GetString(DosData);
-//               table.FieldByName('schet').Value:=s;
-//            end
-//            else
-//               table.FieldByName('schet').Value:=Form33.cxTextEdit1.Text;
-
-
+               table.FieldByName('schet').Value:=trim(Form33.cxTextEdit1.Text);
 
           table.FieldByName('dt').Value:=Form33.cxDateEdit1.Date;
           table.FieldByName('pach').Value:=DayOf(Form33.cxDateEdit1.Date);
           table.FieldByName('opl').Value:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
-          table.FieldByName('doc').Value:=MsExcel.WorkSheets[1].Cells[row,IBQueryBankCOL_DOK.Value];
-          strobr:='rah='+Form33.cxTextEdit1.Text+';';
-          Form33.ADOQueryOBOR.first;
-            while not Form33.ADOQueryOBOR.Eof do
-            begin
-              if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
-              begin
-                table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat:=Form33.ADOQueryOBORsumpl.AsFloat;
-                strobr:=strobr+Form33.ADOQueryOBORwid.AsString+'='+Form33.ADOQueryOBORsumpl.AsString+';';
-              end;
-            Form33.ADOQueryOBOR.Next;
-            end;
+          table.FieldByName('doc').Value:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DOK.Value];
           table.post;
-          MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
-          MsExcel.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:=strobr;
-          MsExcel.ActiveWorkbook.save;
+          table.Close;
+          table.Free;
+
+          ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
+
+          ExcelWorkbook.save;
           if Form33.Showing then
           begin
             Form33.closeform:=1;
@@ -1322,30 +1340,12 @@ begin
 
 end;
 
-function TForm27.SearchAllPosl(str:string;regallposl:string):string;
-var RegularExpression : TRegEx;
-    Match : TMatch;
-    MC: TMatchCollection;
-    sch:string;
-begin
-          Match:=RegularExpression.Match(LowerCase(str),LowerCase(regallposl),[roIgnoreCase]);
-          if Match.Success then
-          begin
-               Result:=Match.Value;
-          end
-          else Result:='';
-end;
-
 procedure TForm27.SearchPosl(str:string);
 var RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
     sch,regposl,wid:string;
     Index,k: Integer;
-   // a:integer;
-   // posl:Arr;
-
-
 begin
 
 
@@ -1385,12 +1385,14 @@ begin
 
           if strList.count>1 then
           begin
-            strList[0]:='many posl';
+            StrList.Clear;
+            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Знайдено декілька різних послуг!';
             exit;
           end;
           if strList.count=0 then
           begin
-            strList[0]:='not found posl';
+            StrList.Clear;
+            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуги в призначені не знайдено!';
             exit;
           end;
           Match:=RegularExpression.Match(LowerCase(str),'(та абон{1})',[roIgnoreCase]);
@@ -1401,7 +1403,7 @@ begin
                  IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
                  IBQueryWid.FetchAll;
-                 if IBQueryWid.RecordCount<>0 then
+                 if (IBQueryWid.RecordCount<>0) and (trim(IBQueryWidABONPL.Value)<>'') then
                  begin
                     strList.Add(IBQueryWidABONPL.Value);
                     exit;
@@ -1415,7 +1417,7 @@ begin
                  IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
                  IBQueryWid.FetchAll;
-                 if IBQueryWid.RecordCount<>0 then
+                 if (IBQueryWid.RecordCount<>0) and (trim(IBQueryWidVNESK.Value)<>'') then
                  begin
                     strList.Add(IBQueryWidVNESK.Value);
                     exit;
@@ -1429,7 +1431,7 @@ begin
                  IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
                  IBQueryWid.FetchAll;
-                 if IBQueryWid.RecordCount<>0 then
+                 if (IBQueryWid.RecordCount<>0) and (trim(IBQueryWidABONPL.Value)<>'')then
                  begin
                     strList[0]:=IBQueryWidABONPL.Value;
                     exit;
@@ -1443,7 +1445,7 @@ begin
                  IBQueryWid.ParamByName('wid').AsString:=strList[strList.count-1];
                  IBQueryWid.open;
                  IBQueryWid.FetchAll;
-                 if IBQueryWid.RecordCount<>0 then
+                 if (IBQueryWid.RecordCount<>0) and (trim(IBQueryWidVNESK.Value)<>'') then
                  begin
                     strList[0]:=IBQueryWidVNESK.Value;
                     exit;

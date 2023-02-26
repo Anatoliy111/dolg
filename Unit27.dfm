@@ -25,25 +25,25 @@ object Form27: TForm27
     Width = 306
   end
   object cxLabel3: TcxLabel
-    Left = 31
-    Top = 116
+    Left = 32
+    Top = 92
     Caption = #1041#1072#1085#1082
   end
   object cxTextEdit4: TcxTextEdit
-    Left = 125
-    Top = 116
+    Left = 126
+    Top = 92
     Properties.ReadOnly = True
     TabOrder = 2
     Width = 282
   end
   object cxLabel1: TcxLabel
-    Left = 31
-    Top = 89
+    Left = 32
+    Top = 65
     Caption = #1044#1072#1090#1072
   end
   object cxButton2: TcxButton
-    Left = 14
-    Top = 149
+    Left = 15
+    Top = 125
     Width = 554
     Height = 25
     Caption = #1047#1072#1074#1072#1085#1090#1072#1078#1080#1090#1080
@@ -61,9 +61,9 @@ object Form27: TForm27
   end
   object MemoLog: TMemo
     Left = 0
-    Top = 239
+    Top = 223
     Width = 577
-    Height = 190
+    Height = 206
     Align = alBottom
     ReadOnly = True
     ScrollBars = ssBoth
@@ -71,40 +71,48 @@ object Form27: TForm27
     WordWrap = False
   end
   object cxDateEdit1: TcxDateEdit
-    Left = 137
-    Top = 89
+    Left = 138
+    Top = 65
     Properties.ReadOnly = True
     TabOrder = 7
     Width = 121
   end
   object cxDateEdit2: TcxDateEdit
-    Left = 286
-    Top = 89
+    Left = 287
+    Top = 65
     Properties.ReadOnly = True
     TabOrder = 8
     Width = 121
   end
   object cxLabel2: TcxLabel
-    Left = 125
-    Top = 90
+    Left = 126
+    Top = 66
     Caption = #1079
   end
   object cxLabel4: TcxLabel
-    Left = 264
-    Top = 90
+    Left = 265
+    Top = 66
     Caption = #1087#1086
   end
   object cxLabel5: TcxLabel
-    Left = 14
-    Top = 188
+    Left = 15
+    Top = 156
     AutoSize = False
     Caption = 
       #1059#1074#1072#1075#1072'!!! '#1044#1083#1103' '#1082#1086#1088#1088#1077#1082#1090#1085#1086#1075#1086' '#1088#1086#1079#1087#1086#1076#1110#1083#1077#1085#1085#1103' '#1089#1091#1084#1084#1080' '#1087#1083#1072#1090#1077#1078#1091' '#1084#1110#1078' '#1087#1086#1089#1083#1091#1075#1072#1084 +
       #1080', '#1087#1077#1088#1077#1076' '#1079#1072#1074#1072#1085#1090#1072#1078#1077#1085#1085#1103#1084', '#1073#1072#1078#1072#1085#1086' '#1074#1080#1082#1086#1085#1072#1090#1080' '#1088#1086#1079#1088#1072#1093#1091#1085#1086#1082' '#1086#1073#1086#1088#1086#1090#1082#1080' '#1074' '#1087#1088 +
       #1086#1088#1072#1084#1110' '#1082#1074#1072#1088#1090#1087#1083#1072#1090#1072'.'
     Properties.WordWrap = True
-    Height = 45
+    Height = 53
     Width = 554
+  end
+  object CheckBox2: TCheckBox
+    Left = 15
+    Top = 192
+    Width = 202
+    Height = 17
+    Caption = '  '#1040#1074#1090#1086#1084#1072#1090#1080#1095#1085#1086' '#1086#1073#1088#1086#1073#1080#1090#1080' '#1087#1083#1072#1090#1077#1078#1110
+    TabOrder = 12
   end
   object DSQueryBank: TDataSource
     DataSet = IBQueryBank
