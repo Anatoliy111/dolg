@@ -109,17 +109,11 @@ begin
 
 if closeform=0 then
 begin
-  Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+1]:='';
-  Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+3]:='';
-
    Form27.endlistexel;
 end;
 
 if closeform=1 then
 begin
-  Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+1]:='';
-  Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+3]:='';
-
   Form27.Timer1.Enabled:=True;
 end;
 

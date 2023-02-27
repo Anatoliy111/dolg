@@ -188,7 +188,7 @@ var
      st1,poslug,tip,path,filepath:string;
      period: TDateTime;
      strList:TStringList;
-     table,tobor,twid:TDbf;
+     table,tobor,twid,topl:TDbf;
      dt:TDate;
      kolst:integer;
      fl:boolean;
@@ -523,10 +523,31 @@ begin
           table.Close;
           table.Free;
 
+          tobor.Close;
+          tobor.Free;
+
+          topl.Close;
+          topl.Free;
+
+         Sleep(100);
+
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
          ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+      //   ShellExecuteEx(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+        // Sleep(5000);
 
-         Sleep(5000);
+
+//        FillChar(StartupInfo, SizeOf(StartupInfo), 0);
+//        StartupInfo.cb := SizeOf(StartupInfo);
+//        StartupInfo.dwFlags := STARTF_USESHOWWINDOW;
+//        StartupInfo.wShowWindow := SW_HIDE;
+//        Result := CreateProcess(nil, PChar('/C '+cmd), nil, nil, False, CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS, nil, nil, StartupInfo, ProcessInfo);
+//        if Result then
+//        begin
+//          WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
+//          CloseHandle(ProcessInfo.hProcess);
+//          CloseHandle(ProcessInfo.hThread);
+//        end;
 
         ExcelWorkbook.save;
         ExcelWorkbook.Close;
@@ -820,6 +841,7 @@ begin
       CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar('c:\temp\obor.dbf'), false);
       CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar('c:\temp\wids.dbf'), false);
       CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar('c:\temp\opltmp.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar('c:\temp\opl.dbf'), false);
       filepath:='c:\temp\';
     end
     else
@@ -828,6 +850,7 @@ begin
       CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(Form1.PathTMP+'\obor.dbf'), false);
       CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar(Form1.PathTMP+'\wids.dbf'), false);
       CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(Form1.PathTMP+'\opltmp.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(Form1.PathTMP+'\opl.dbf'), false);
       filepath:=Form1.PathTMP+'\';
     end;
     Form33.ADOQueryOBOR.Close;
@@ -853,6 +876,10 @@ begin
     table.PackTable;
 //    table.OpenIndexFile('opl.cdx');
 
+    topl:=TDbf.Create(self);
+    topl.TableName:=filepath+'opl.dbf';
+    topl.Open;
+
     tobor:=TDbf.Create(self);
     tobor.TableName:=filepath+'obor.dbf';
     tobor.Open;
@@ -865,7 +892,7 @@ begin
 
     twid.AddIndex('wids', 'wid', [ixCaseInsensitive]);
 
-    tobor.Free;
+    //tobor.Free;
     twid.Free;
    // table.Free;
 
@@ -1059,6 +1086,10 @@ begin
             ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
             Continue;
           end;
+
+          Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+1]:='';
+          Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+3]:='';
+
           //пошук Особ. рахунка
           Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
           if Match.Success then
@@ -1233,14 +1264,15 @@ begin
           error:=0;
           if not Form33.CheckBox2.Checked then
           begin
-            if table.Locate('schet;dt;opl',VarArrayOf([trim(Form33.cxTextEdit1.Text),DateToStr(Form33.cxDateEdit1.Date),Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]]),[loPartialKey]) then
+            topl.First;
+            if topl.Locate('schet;dt;opl',VarArrayOf([trim(Form33.cxTextEdit1.Text),DateToStr(Form33.cxDateEdit1.Date),Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]]),[loPartialKey]) then
             begin
               Form33.ADOQueryOBOR.First;
               while not Form33.ADOQueryOBOR.Eof do
               begin
                 if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
                 begin
-                  if table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat=Form33.ADOQueryOBORsumpl.AsFloat then
+                  if topl.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat=Form33.ADOQueryOBORsumpl.AsFloat then
                   begin
                      Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Платіж по рахунку '+trim(Form33.cxTextEdit1.Text)+' за '+DateToStr(Form33.cxDateEdit1.Date)+' число, по послузі '+Form33.ADOQueryOBORnaim.Value+' в сумі '+CurrToStr(Form33.ADOQueryOBORsumpl.Value)+' вже існує!';
                      error:=error+1;
@@ -1254,20 +1286,7 @@ begin
 
 
            //   strobr:='rah='+trim(Form33.cxTextEdit1.Text)+';';
-              strobr:='';
-              Form33.ADOQueryOBOR.first;
-                while not Form33.ADOQueryOBOR.Eof do
-                begin
-                  if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
-                    strobr:=strobr+Form33.ADOQueryOBORwid.AsString+'='+Form33.ADOQueryOBORsumpl.AsString+';';
-                Form33.ADOQueryOBOR.Next;
-                end;
 
-              if strobr<>'' then
-              begin
-                ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:='rah='+trim(Form33.cxTextEdit1.Text)+';'+strobr;
-                ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+3]:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
-              end;
 
           if error>0 then
           begin
@@ -1317,19 +1336,52 @@ begin
                 while not Form33.ADOQueryOBOR.Eof do
                 begin
                   if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
+                  begin
                     table.FieldByName('opl_'+Form33.ADOQueryOBORwid.AsString).AsFloat:=Form33.ADOQueryOBORsumpl.AsFloat;
+
+                   if tobor.Locate('schet;wid',VarArrayOf([Form33.ADOQueryOBORschet.Value,Form33.ADOQueryOBORwid.Value]),[loPartialKey]) then
+                   begin
+                    tobor.Edit;
+                    tobor.FieldByName('sal').AsFloat:=tobor.FieldByName('sal').AsFloat-Form33.ADOQueryOBORsumpl.AsFloat;
+                    tobor.post;
+                   end;
+                  end;
+
                 Form33.ADOQueryOBOR.Next;
                 end;
+
+
 
           table.FieldByName('dt').Value:=Form33.cxDateEdit1.Date;
           table.FieldByName('pach').Value:=DayOf(Form33.cxDateEdit1.Date);
           table.FieldByName('opl').Value:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
           table.FieldByName('doc').Value:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DOK.Value];
           table.post;
+
+
+//          if Form33.ADOQueryOBOR.Locate('schet;wid',VarArrayOf([trim(Form33.cxTextEdit1.Text),]),[]) then
+
+
         //  table.UpdateIndexDefs;
 //          table.RepageIndexFile(Form1.PathKvart+'dbf\opl.cdx');
 //          table.Close;
 //          table.Free;
+
+              strobr:='';
+              Form33.ADOQueryOBOR.first;
+                while not Form33.ADOQueryOBOR.Eof do
+                begin
+                  if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
+                    strobr:=strobr+Form33.ADOQueryOBORwid.AsString+'='+Form33.ADOQueryOBORsumpl.AsString+';';
+                Form33.ADOQueryOBOR.Next;
+                end;
+
+
+              if strobr<>'' then
+              begin
+                ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:='rah='+trim(Form33.cxTextEdit1.Text)+';'+strobr;
+                ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+3]:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
+              end;
 
           ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
 
