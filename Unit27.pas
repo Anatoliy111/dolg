@@ -307,6 +307,8 @@ begin
                     else
                     begin
                           Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'По особовому рахунку '+trim(Form33.cxTextEdit1.Text)+' не має послуг. Можлива помилка в ос.рахунку';
+                          Form33.cxTextEdit1.Properties.ReadOnly:=false;
+                         // Form33.cxTextEdit1.SetFocus;
                           err:=true;
                     end;
 
@@ -1449,7 +1451,7 @@ var RegularExpression : TRegEx;
     Index,k: Integer;
 begin
 
-
+          StrList.Clear;
        //   a:=0;
           wid:='';
           IBQueryVipiska.first;
