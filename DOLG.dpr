@@ -33,7 +33,9 @@ uses
   Unit30 in 'Unit30.pas' {Form30},
   Unit31 in 'Unit31.pas' {Form31},
   Unit32 in 'Unit32.pas' {Form32},
-  Unit33 in 'Unit33.pas' {Form33};
+  Unit33 in 'Unit33.pas' {Form33},
+  dprocess in 'dprocess\dprocess.pas',
+  dpipes in 'dprocess\dpipes.pas';
 
 {$R *.res}
 

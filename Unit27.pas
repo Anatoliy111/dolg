@@ -160,9 +160,10 @@ type
 
     procedure SearchPosl(str:string);
     function StrAnsiToOem(const S: AnsiString): AnsiString;
-
-
-
+    procedure RunProcessCmd(const ACommand:string);
+    procedure RunProcessHideCmd(const ACommand: string);
+//    procedure RunProcessCmd(const ACommand:string;procParam:TStringList);
+//
 
 
     { Private declarations }
@@ -199,7 +200,7 @@ implementation
 
 {$R *.dfm}
 
-uses Winapi.Windows, comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, SysUtils, Unit33, DateUtils, math;
+uses Winapi.Windows, comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, SysUtils, Unit33, DateUtils, math, dprocess;
 
 
 function TForm27.TrimAll(s:string):string;
@@ -307,6 +308,7 @@ begin
                     else
                     begin
                           Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'По особовому рахунку '+trim(Form33.cxTextEdit1.Text)+' не має послуг. Можлива помилка в ос.рахунку';
+                          Form33.cxTextEdit1.Properties.ReadOnly:=false;
                           err:=true;
                     end;
 
@@ -505,6 +507,8 @@ end;
 
 procedure TForm27.endlistexel;
 var cmd:WideString;
+    procParam: TStringList;
+    proc:string;
 begin
 
        form2.show;
@@ -531,8 +535,24 @@ begin
 
          Sleep(100);
 
+//         proc:=Form1.PathFox+'foxprox.exe';
+//
+//        procParam := TStringList.Create;
+//        procParam.Add('-t');
+//        procParam.Add(Form1.PathKvart+'imp_opl');
+//        procParam.Add(filepath);
+//        procParam.Add(Form1.PathKvart);
+
+
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
-         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+//         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+
+     //    WinExec(PANsiChar(cmd), SW_HIDE);
+
+         RunProcessCmd(cmd);
+
+//         procParam.Free;
+//         RunProcessHideCmd(cmd);
       //   ShellExecuteEx(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
         // Sleep(5000);
 
@@ -564,6 +584,83 @@ begin
       Form27.Enabled:=true;
 
 end;
+
+//procedure WaitProcessExit(const AProcess: TProcess);
+//begin
+//  while AProcess.Running do
+//  begin
+//    Application.ProcessMessages;
+//    Sleep(100);
+//  end;
+//end;
+
+procedure TForm27.RunProcessCmd(const ACommand:string);
+var
+  Process: TProcess;
+  i:integer;
+  cmd:string;
+begin
+
+//         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
+
+
+  Process := TProcess.Create(nil);
+  try
+//     Process.CommandLine := 'c:\FPD26\FOXPROX.EXE';
+//    Process.Options := [poUsePipes, poNoConsole];
+    Process.Executable := 'cmd.exe';
+    Process.Parameters.Add('/C');
+    Process.Parameters.Add(ACommand);
+//     for i := 0 to procParam.Count - 1 do
+//       Process.Parameters.Add(procParam[i]);
+
+//    Process.Executable := Form1.PathFox+'foxprox.exe';
+//    Process.Parameters.Add(Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart);
+//    Process.Parameters.Add(ACommand);
+
+    Process.Options := [poNoConsole, poWaitOnExit];
+    Process.Execute;
+    while Process.Running do
+    begin
+      Application.ProcessMessages;
+      Sleep(100);
+    end;
+//    WaitProcessExit(Process);
+  finally
+    Process.Free;
+  end;
+end;
+
+
+procedure TForm27.RunProcessHideCmd(const ACommand: string);
+var
+  StartupInfo: TStartupInfo;
+  ProcessInfo: TProcessInformation;
+  ret: DWORD;
+begin
+  ZeroMemory(@StartupInfo, SizeOf(TStartupInfo));
+  StartupInfo.cb := SizeOf(TStartupInfo);
+  StartupInfo.dwFlags := STARTF_USESHOWWINDOW;
+  StartupInfo.wShowWindow := SW_HIDE;
+
+  if CreateProcess(nil, PWideChar(ACommand), nil, nil, False,
+  CREATE_NO_WINDOW, nil, nil, StartupInfo, ProcessInfo) then
+  begin
+    // Процесс успешно запущен
+    WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
+    // Процесс завершился
+    GetExitCodeProcess(ProcessInfo.hProcess, ret);
+    CloseHandle(ProcessInfo.hProcess);
+    CloseHandle(ProcessInfo.hThread);
+  end
+  else
+  begin
+    // Обработка ошибки
+  end;
+end;
+
+
+
 
 
 procedure TForm27.cxButton1Click(Sender: TObject);
@@ -651,7 +748,8 @@ begin
                  Excel.Application.Quit;
                  Excel.Quit;
 
-                 WinExec(PANsiChar('taskkill /F /IM EXCEL.EXE'), SW_HIDE);
+//                 WinExec(PANsiChar('taskkill /F /IM EXCEL.EXE'), SW_HIDE);
+                 RunProcessHideCmd('cmd.exe /c taskkill /F /IM EXCEL.EXE');
 
               end;
 
@@ -1009,8 +1107,7 @@ end;
 
 procedure TForm27.cxButton3Click(Sender: TObject);
 begin
-Form33.Show;
-Form33.ADOQueryOBOR.Open;
+RunProcessCmd('ttt');
 end;
 
 procedure TForm27.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1452,6 +1549,7 @@ begin
 
        //   a:=0;
           wid:='';
+          StrList.Clear;
           IBQueryVipiska.first;
           while not IBQueryVipiska.Eof do
           begin
