@@ -309,6 +309,10 @@ begin
                     begin
                           Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'По особовому рахунку '+trim(Form33.cxTextEdit1.Text)+' не має послуг. Можлива помилка в ос.рахунку';
                           Form33.cxTextEdit1.Properties.ReadOnly:=false;
+<<<<<<< HEAD
+=======
+                         // Form33.cxTextEdit1.SetFocus;
+>>>>>>> 719996ad215a7856a59b5350e8d901ee37d4981b
                           err:=true;
                     end;
 
@@ -1546,7 +1550,7 @@ var RegularExpression : TRegEx;
     Index,k: Integer;
 begin
 
-
+          StrList.Clear;
        //   a:=0;
           wid:='';
           StrList.Clear;
