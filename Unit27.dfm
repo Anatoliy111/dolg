@@ -3,7 +3,7 @@ object Form27: TForm27
   Top = 0
   Caption = 'Form27'
   ClientHeight = 429
-  ClientWidth = 577
+  ClientWidth = 584
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -63,13 +63,14 @@ object Form27: TForm27
   object MemoLog: TMemo
     Left = 0
     Top = 223
-    Width = 577
+    Width = 584
     Height = 206
     Align = alBottom
     ReadOnly = True
     ScrollBars = ssBoth
     TabOrder = 6
     WordWrap = False
+    ExplicitWidth = 577
   end
   object cxDateEdit1: TcxDateEdit
     Left = 138

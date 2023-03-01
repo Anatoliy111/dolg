@@ -186,7 +186,7 @@ type
 var
   Form27: TForm27;
 
-     st1,poslug,tip,path,filepath:string;
+     st1,poslug,tip,path,filepath,pathtmp:string;
      period: TDateTime;
      strList:TStringList;
      table,tobor,twid,topl:TDbf;
@@ -309,10 +309,8 @@ begin
                     begin
                           Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'По особовому рахунку '+trim(Form33.cxTextEdit1.Text)+' не має послуг. Можлива помилка в ос.рахунку';
                           Form33.cxTextEdit1.Properties.ReadOnly:=false;
-<<<<<<< HEAD
-=======
+
                          // Form33.cxTextEdit1.SetFocus;
->>>>>>> 719996ad215a7856a59b5350e8d901ee37d4981b
                           err:=true;
                     end;
 
@@ -513,6 +511,12 @@ procedure TForm27.endlistexel;
 var cmd:WideString;
     procParam: TStringList;
     proc:string;
+    MyFile: TFileStream;
+  Excel: Variant;
+  Workbooks: Variant;
+  Workbook: Variant;
+  FileInfo: TSHFileInfo;
+  i:integer;
 begin
 
        form2.show;
@@ -548,12 +552,7 @@ begin
 //        procParam.Add(Form1.PathKvart);
 
 
-         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
-//         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
 
-     //    WinExec(PANsiChar(cmd), SW_HIDE);
-
-         RunProcessCmd(cmd);
 
 //         procParam.Free;
 //         RunProcessHideCmd(cmd);
@@ -573,11 +572,85 @@ begin
 //          CloseHandle(ProcessInfo.hThread);
 //        end;
 
+
+      try
+        MyFile := TFileStream.Create(path, fmOpenRead or fmShareExclusive or fmShareDenyWrite);
+        try
+          // Файл открыт для чтения и его можно использовать здесь
+        finally
+          MyFile.Free;
+        end;
+      except
+           MyFile.Free;
+        // Обработка ошибок при открытии файла
+            try
+              Excel := GetActiveOleObject('Excel.Application');
+              Excel.DisplayAlerts:=false;
+              Workbooks := Excel.Workbooks;
+              if Workbooks.Count=0 then
+                 Excel.Application.Quit
+              else
+              for i := 1 to Workbooks.Count do
+              begin
+                Workbook := Workbooks.Item[i];
+                if SameText(ExtractFileName(Workbook.FullName), st1) then
+                begin
+//                  if application.MessageBox('Файл вже відкрито в Excel. Закрийти файл примусово?','Підтвердження',MB_YESNO)=IDYES then
+//                  begin
+                 //   Excel.DisplayAlerts:=false;
+
+                    Workbook.Close(True);
+                    //Excel.Free;
+                    Break;
+//                  end
+//                  else
+//                  begin
+//                    cxTextEdit1.Text:='';
+//                    path:='';
+//                    exit;
+//                  end;
+                end;
+              end;
+              Workbooks := Excel.Workbooks;
+              if Workbooks.Count=0 then
+              begin
+                 Excel.Application.Quit;
+                 Excel.Quit;
+
+//                 WinExec(PANsiChar('taskkill /F /IM EXCEL.EXE'), SW_HIDE);
+                 RunProcessHideCmd('cmd.exe /c taskkill /F /IM EXCEL.EXE');
+
+              end;
+
+            except
+              ShowMessage('Можливо файл вже відкрито в іншій програмі або на іншому комп"ютері. Закрийте файл '+st1+' та спробуйте знову!!!');
+              ExcelWorkbook.SaveAs(path);
+              ExcelWorkbook.Close;
+              MsExcel := null;
+              path:='';
+              cxTextEdit1.Text:='';
+
+             // Excel.Free;
+              exit;
+            end;
+      end;
+
+
         ExcelWorkbook.save;
         ExcelWorkbook.Close;
         MsExcel := null;
 
+        CopyFile(PChar(pathtmp), PChar(path), false);
 
+        DeleteFile(pathtmp);
+
+
+         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
+//         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+
+     //    WinExec(PANsiChar(cmd), SW_HIDE);
+
+         RunProcessCmd(cmd);
 
 //        MsExcel.Application.Quit;
 //        MsExcel := null;
@@ -837,7 +910,7 @@ begin
      exit;
    end;
 
-//   tempDir:='c:\temp\';
+   tempDir:='c:\temp\';
 //
 //   if not DirectoryExists(tempDir) then
 //   begin
@@ -852,13 +925,25 @@ begin
 //     end;
 //   end;
 
+    if DirectoryExists('c:\temp') then
+      filepath:='c:\temp\'
+    else
+    if DirectoryExists(Form1.PathTMP) then
+      filepath:=Form1.PathTMP+'\';
+
+    pathtmp:=filepath+st1;
+
+    if FileExists(pathtmp) then
+    begin
+
 
       try
-        MyFile := TFileStream.Create(path, fmOpenRead or fmShareExclusive or fmShareDenyWrite);
+        MyFile := TFileStream.Create(pathtmp, fmOpenRead or fmShareExclusive or fmShareDenyWrite);
         try
           // Файл открыт для чтения и его можно использовать здесь
         finally
           MyFile.Free;
+          DeleteFile(pathtmp);
         end;
       except
            MyFile.Free;
@@ -902,6 +987,8 @@ begin
 
               end;
 
+            DeleteFile(pathtmp);
+
             except
               ShowMessage('Можливо файл вже відкрито в іншій програмі або на іншому комп"ютері. Закрийте файл '+st1+' та спробуйте знову!!!');
               cxTextEdit1.Text:='';
@@ -910,6 +997,10 @@ begin
               exit;
             end;
       end;
+
+    end;
+
+
 
 
        AssignFile(f, Form1.PathKvart+'\cur_date.mem');
@@ -938,23 +1029,15 @@ begin
              exit;
          end;
 
-    if DirectoryExists('c:\temp') then
-    begin
-      CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar('c:\temp\obor.dbf'), false);
-      CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar('c:\temp\wids.dbf'), false);
-      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar('c:\temp\opltmp.dbf'), false);
-      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar('c:\temp\opl.dbf'), false);
-      filepath:='c:\temp\';
-    end
-    else
-    if DirectoryExists(Form1.PathTMP) then
-    begin
-      CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(Form1.PathTMP+'\obor.dbf'), false);
-      CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar(Form1.PathTMP+'\wids.dbf'), false);
-      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(Form1.PathTMP+'\opltmp.dbf'), false);
-      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(Form1.PathTMP+'\opl.dbf'), false);
-      filepath:=Form1.PathTMP+'\';
-    end;
+
+      CopyFile(PChar(path), PChar(pathtmp), false);
+
+
+      CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(filepath+'\obor.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\wids.dbf'), PChar(filepath+'\wids.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(filepath+'\opltmp.dbf'), false);
+      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(filepath+'\opl.dbf'), false);
+
     Form33.ADOQueryOBOR.Close;
 //    Form33.ADOQueryOBOR.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source='+filepath+';Mode=Read;Jet OLEDB:System database="";Jet OLEDB:Registry Path="";Jet OLEDB:Database Password="";Jet OLEDB:Engine Type=16;Jet OLEDB:Database Locking Mode=0;Jet OLEDB:Global Partial Bulk Ops=2;';
 //    Form33.ADOQueryOBOR.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Password="";Data Source=c:\temp\;Mode=ReadWrite;Jet OLEDB:Engine Type=16';
@@ -1015,7 +1098,7 @@ begin
 
     MsExcel := CreateOleObject('Excel.Application');
     //    ExcelWorkbook.Workbooks.Add;
-    ExcelWorkbook:= MsExcel.Workbooks.Open[path];
+    ExcelWorkbook:= MsExcel.Workbooks.Open[pathtmp];
 
    Form2.Label1.Caption:='Обрахування даних';
         Form2.cxProgressBar1.Properties.Min:=0;
