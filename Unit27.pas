@@ -506,31 +506,65 @@ begin
 
 end;
 
+function GetColumnName(ColumnNumber: Integer): string;
+var
+  ColumnLetter: string;
+begin
+  ColumnLetter := '';
+  while ColumnNumber > 0 do
+  begin
+    Dec(ColumnNumber);
+    ColumnLetter := Chr(Ord('A') + ColumnNumber mod 26) + ColumnLetter;
+    ColumnNumber := ColumnNumber div 26;
+  end;
+  Result := ColumnLetter;
+end;
+
 
 procedure TForm27.endlistexel;
 var cmd:WideString;
     procParam: TStringList;
-    proc:string;
+    proc,ColumnName:string;
     MyFile: TFileStream;
   Excel: Variant;
   Workbooks: Variant;
   Workbook: Variant;
   FileInfo: TSHFileInfo;
   i:integer;
+  Range: OleVariant;
 begin
 
        form2.show;
        Form2.Label1.Caption:='Збереження даних. Зачекайте!!!';
        Application.ProcessMessages;
 
-       row:=0;
 
-          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+2].Select;
-          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
+
           ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+1].Select;
           ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
-          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+3].Select;
-          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
+
+//          ExcelWorkbook.WorkSheets[1].Cells[kolst+1,IBQueryBankCOL_END.Value+2]:='Всього';
+//
+////          ExcelWorkbook.WorkSheets[1].Rows['20:20'].Select;
+////          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoSum;
+//
+//          ColumnName := GetColumnName(IBQueryBankCOL_END.Value+3);
+//          ExcelWorkbook.WorkSheets[1].Cells[kolst+1,IBQueryBankCOL_END.Value+3].Formula :='=СУММ('+ColumnName+IntToStr(IBQueryBankSTR_ST.Value)+':'+ColumnName+IntToStr(kolst)+')';
+//
+//
+//
+//          ColumnName := GetColumnName(IBQueryBankCOL_END.Value+5);
+//          ExcelWorkbook.WorkSheets[1].Cells[kolst+1,IBQueryBankCOL_END.Value+5].Formula :='=СУММ('+ColumnName+IntToStr(IBQueryBankSTR_ST.Value)+':'+ColumnName+IntToStr(kolst)+')';
+//
+//
+//          ColumnName := GetColumnName(IBQueryBankCOL_END.Value+7);
+//          ExcelWorkbook.WorkSheets[1].Cells[kolst+1,IBQueryBankCOL_END.Value+7].Formula :='=СУММ('+ColumnName+IntToStr(IBQueryBankSTR_ST.Value)+':'+ColumnName+IntToStr(kolst)+')';
+//
+
+//          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+6].Select;
+//          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoSum;
+
+          row:=0;
 
           table.Close;
           table.Free;
@@ -661,6 +695,8 @@ begin
       Form27.Enabled:=true;
 
 end;
+
+
 
 //procedure WaitProcessExit(const AProcess: TProcess);
 //begin
@@ -1141,8 +1177,27 @@ begin
     regallposl:=regallposl+')';
 
 
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+1]:='Параметри обробки';
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+2]:='Результат обробки';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+1]:='Результат обробки';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+2]:='Ос.рахунок';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+3]:='Сума оплати з %';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+4]:='Послуга 1';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+5]:='Сума 1';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+6]:='Послуга 2';
+       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+7]:='Сума 2';
+
+
+//       Excel.columns[IBQueryBankCOL_END.Value+2].NumberFormat:='@';
+
+//       ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+2].Select;
+//       ExcelWorkbook.WorkSheets[1].UsedRange.Columns.NumberFormat := '@';
+
+
+       ExcelWorkbook.WorkSheets[1].columns[IBQueryBankCOL_END.Value+2].NumberFormat:='@';
+       ExcelWorkbook.WorkSheets[1].columns[IBQueryBankCOL_END.Value+3].NumberFormat:='0,00';
+       ExcelWorkbook.WorkSheets[1].columns[IBQueryBankCOL_END.Value+5].NumberFormat:='0,00';
+       ExcelWorkbook.WorkSheets[1].columns[IBQueryBankCOL_END.Value+7].NumberFormat:='0,00';
+
+
 
         kolst:=IBQueryBankSTR_ST.Value;
         if Length(IBQueryBankSTR_PRIZN_ENDDATA.Value)<>0 then
@@ -1264,15 +1319,20 @@ begin
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
           if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
-          if Pos('Оброблено',ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
+          if Pos('Оброблено',ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
           if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then
           begin
-            ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
+            ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:='Оброблено';
             Continue;
           end;
 
           Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+1]:='';
+          Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+2]:='';
           Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+3]:='';
+          Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+4]:='';
+          Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+5]:='';
+          Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+6]:='';
+          Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+7]:='';
 
           //пошук Особ. рахунка
           Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
@@ -1368,7 +1428,7 @@ var s,s2,s3,s4,s5,sss,schet,strobr:string;
     WindowsEncoding: TEncoding;
     DosData: TBytes;
     x:TArray<Byte>;
-    error:integer;
+    error,countsum:integer;
     sum1,sum2:Currency;
     sum11,sum22:Double;
 
@@ -1505,16 +1565,16 @@ begin
 //          end;
 
 
-          table.Append;
-          RegularExpression := TRegEx.Create('[а-я]');
-          Match := RegularExpression.Match(trim(Form33.cxTextEdit1.Text));
-          if Match.Success then
-            begin
-               s2:=StrAnsiToOem(RightStr(trim(Form33.cxTextEdit1.Text),1));
-               table.FieldByName('schet').Value:=LeftStr(trim(Form33.cxTextEdit1.Text),Length(trim(Form33.cxTextEdit1.Text))-1)+s2;
-            end
-            else
-               table.FieldByName('schet').Value:=trim(Form33.cxTextEdit1.Text);
+              table.Append;
+              RegularExpression := TRegEx.Create('[а-я]');
+              Match := RegularExpression.Match(trim(Form33.cxTextEdit1.Text));
+              if Match.Success then
+                begin
+                   s2:=StrAnsiToOem(RightStr(trim(Form33.cxTextEdit1.Text),1));
+                   table.FieldByName('schet').Value:=LeftStr(trim(Form33.cxTextEdit1.Text),Length(trim(Form33.cxTextEdit1.Text))-1)+s2;
+                end
+                else
+                   table.FieldByName('schet').Value:=trim(Form33.cxTextEdit1.Text);
 
                Form33.ADOQueryOBOR.First;
                 while not Form33.ADOQueryOBOR.Eof do
@@ -1551,23 +1611,26 @@ begin
 //          table.Close;
 //          table.Free;
 
-              strobr:='';
+            ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:=trim(Form33.cxTextEdit1.Text);
+            ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+3]:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
+
+
+            countsum:=3;
               Form33.ADOQueryOBOR.first;
                 while not Form33.ADOQueryOBOR.Eof do
                 begin
                   if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value<>0) then
-                    strobr:=strobr+Form33.ADOQueryOBORwid.AsString+'='+Form33.ADOQueryOBORsumpl.AsString+';';
+                  begin
+                    countsum:=countsum+1;
+                    ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+countsum]:=Form33.ADOQueryOBORnaim.AsString;
+                    countsum:=countsum+1;
+                    ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+countsum]:=Form33.ADOQueryOBORsumpl.AsFloat;
+                  end;
                 Form33.ADOQueryOBOR.Next;
                 end;
 
 
-              if strobr<>'' then
-              begin
-                ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:='rah='+trim(Form33.cxTextEdit1.Text)+';'+strobr;
-                ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+3]:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
-              end;
-
-          ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+2]:='Оброблено';
+          ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:='Оброблено';
 
 //          ExcelWorkbook.save;
           if Form33.Showing then

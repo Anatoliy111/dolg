@@ -121,7 +121,7 @@ if closeform=2 then
 begin
      if CheckBox1.Checked then
      begin
-        Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+2]:='Оброблено';
+        Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+1]:='Оброблено';
 //        Form27.ExcelWorkbook.save;
      end;
      Form27.Timer1.Enabled:=True;
