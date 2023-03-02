@@ -524,7 +524,7 @@ end;
 procedure TForm27.endlistexel;
 var cmd:WideString;
     procParam: TStringList;
-    proc,ColumnName:string;
+    proc,ColumnName,posl:string;
     MyFile: TFileStream;
   Excel: Variant;
   Workbooks: Variant;
@@ -532,11 +532,62 @@ var cmd:WideString;
   FileInfo: TSHFileInfo;
   i:integer;
   Range: OleVariant;
+  flrow:boolean;
+  rowa,ii,kk:integer;
+  sumvip,sumallproc:Double;
 begin
 
        form2.show;
        Form2.Label1.Caption:='Збереження даних. Зачекайте!!!';
        Application.ProcessMessages;
+
+        ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-3,IBQueryBankCOL_END.Value+10]:='Аналіз платежів по послугам';
+        ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+10]:='Послуга';
+        ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+11]:='Сума по випискі';
+        ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+12]:='Сума платежу з %';
+
+        for ii := IBQueryBankSTR_ST.Value to 20 do
+        begin
+           ExcelWorkbook.WorkSheets[1].Cells[ii,IBQueryBankCOL_END.Value+10]:='';
+           ExcelWorkbook.WorkSheets[1].Cells[ii,IBQueryBankCOL_END.Value+11]:='';
+           ExcelWorkbook.WorkSheets[1].Cells[ii,IBQueryBankCOL_END.Value+12]:='';
+        end;
+
+
+
+
+        rowa:=IBQueryBankSTR_ST.Value-1;
+        flrow:=true;
+           while flrow do
+           begin
+              rowa:=rowa+1;
+              if rowa=kolst+1 then
+              begin
+                flrow:=false;
+                Continue;
+              end;
+
+              posl:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+4];
+              sumallproc:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+3];
+              if (sumallproc<>0) then
+              begin
+                  for ii := 4 to 9 do
+                  begin
+                    if ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+ii]<>'' then
+                    begin
+                      while ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+10]<>'' do
+                      begin
+
+                      end;
+                    end;
+                    ii:=ii+1;
+                  end;
+
+              end;
+
+
+
+           end;
 
 
 
