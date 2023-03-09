@@ -146,10 +146,6 @@ object Form27: TForm27
       Origin = '"SPR_BANK"."RAH"'
       Size = 50
     end
-    object IBQueryBankSTR_ST: TIntegerField
-      FieldName = 'STR_ST'
-      Origin = '"SPR_BANK"."STR_ST"'
-    end
     object IBQueryBankCOL_POISK_ENDDATA: TIntegerField
       FieldName = 'COL_POISK_ENDDATA'
       Origin = '"SPR_BANK"."COL_POISK_ENDDATA"'
@@ -207,6 +203,11 @@ object Form27: TForm27
     object IBQueryBankCOL_KONTR: TIntegerField
       FieldName = 'COL_KONTR'
       Origin = '"SPR_BANK"."COL_KONTR"'
+    end
+    object IBQueryBankSTR_PRIZN_STARTDATA: TIBStringField
+      FieldName = 'STR_PRIZN_STARTDATA'
+      Origin = '"SPR_BANK"."STR_PRIZN_STARTDATA"'
+      Size = 10
     end
   end
   object OpenDialog1: TOpenDialog

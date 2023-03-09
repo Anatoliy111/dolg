@@ -30,7 +30,6 @@ type
     IBQueryBankKL: TIntegerField;
     IBQueryBankNAIM: TIBStringField;
     IBQueryBankRAH: TIBStringField;
-    IBQueryBankSTR_ST: TIntegerField;
     IBQueryBankCOL_POISK_ENDDATA: TIntegerField;
     IBQueryBankSTR_PRIZN_ENDDATA: TIBStringField;
     IBQueryBankCOL_PRIZN: TIntegerField;
@@ -145,6 +144,7 @@ type
     IBQueryBankCOL_KONTR: TIntegerField;
     cxLabel5: TcxLabel;
     CheckBox2: TCheckBox;
+    IBQueryBankSTR_PRIZN_STARTDATA: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -156,12 +156,14 @@ type
   private
 
     function TrimAll(s:string):string;
+    procedure addanaliz(nameposl:string;sumposl:Double;sumposlproc:Double);
 
 
     procedure SearchPosl(str:string);
     function StrAnsiToOem(const S: AnsiString): AnsiString;
     procedure RunProcessCmd(const ACommand:string);
     procedure RunProcessHideCmd(const ACommand: string);
+    procedure CloseData;
 //    procedure RunProcessCmd(const ACommand:string;procParam:TStringList);
 //
 
@@ -170,7 +172,7 @@ type
   public
   MsExcel:Variant;
   ExcelWorkbook: Variant;
-  Row:integer;
+  Row,startROW,endROW:integer;
   newpl,err:boolean;
   regallposl,strprizn:string;
   procedure addopl;
@@ -384,8 +386,8 @@ begin
 
 
 
-          ssum1:=0;
-          allsum:=ssum;
+         ssum1:=0;
+         allsum:=ssum;
          Form33.cxCalcEdit1.Value:=ssum;
 
          posl2:='';
@@ -520,101 +522,43 @@ begin
   Result := ColumnLetter;
 end;
 
+procedure TForm27.addanaliz(nameposl:string;sumposl:Double;sumposlproc:Double);
+var strposl:string;
+    fl:boolean;
+    rowanaliz:integer;
+    sum:Double;
+begin
+  //  strposl:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
+    rowanaliz:=startROW+1;
+    fl:=true;
+    while fl do
+    begin
+      strposl:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+10];
+      if Length(strposl)=0 then
+      begin
+         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+10]:=nameposl;
+      end;
+      strposl:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+10];
+      if strposl=nameposl then
+      begin
+         sum:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+11];
+         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+11]:=sum+sumposl;
+         sum:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+12];
+         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+12]:=sum+sumposlproc;
+         fl:=false;
+      end;
+      inc(rowanaliz);
+    end;
+end;
 
-procedure TForm27.endlistexel;
-var cmd:WideString;
-    procParam: TStringList;
-    proc,ColumnName,posl:string;
-    MyFile: TFileStream;
+procedure TForm27.CloseData;
+var     MyFile: TFileStream;
   Excel: Variant;
   Workbooks: Variant;
   Workbook: Variant;
   FileInfo: TSHFileInfo;
-  i:integer;
-  Range: OleVariant;
-  flrow:boolean;
-  rowa,ii,kk:integer;
-  sumvip,sumallproc:Double;
+    i:integer;
 begin
-
-       form2.show;
-       Form2.Label1.Caption:='Збереження даних. Зачекайте!!!';
-       Application.ProcessMessages;
-
-        ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-3,IBQueryBankCOL_END.Value+10]:='Аналіз платежів по послугам';
-        ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+10]:='Послуга';
-        ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+11]:='Сума по випискі';
-        ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+12]:='Сума платежу з %';
-
-        for ii := IBQueryBankSTR_ST.Value to 20 do
-        begin
-           ExcelWorkbook.WorkSheets[1].Cells[ii,IBQueryBankCOL_END.Value+10]:='';
-           ExcelWorkbook.WorkSheets[1].Cells[ii,IBQueryBankCOL_END.Value+11]:='';
-           ExcelWorkbook.WorkSheets[1].Cells[ii,IBQueryBankCOL_END.Value+12]:='';
-        end;
-
-
-
-
-        rowa:=IBQueryBankSTR_ST.Value-1;
-        flrow:=true;
-           while flrow do
-           begin
-              rowa:=rowa+1;
-              if rowa=kolst+1 then
-              begin
-                flrow:=false;
-                Continue;
-              end;
-
-              posl:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+4];
-              sumallproc:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+3];
-              if (sumallproc<>0) then
-              begin
-                  for ii := 4 to 9 do
-                  begin
-                    if ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+ii]<>'' then
-                    begin
-                      while ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+10]<>'' do
-                      begin
-
-                      end;
-                    end;
-                    ii:=ii+1;
-                  end;
-
-              end;
-
-
-
-           end;
-
-
-
-          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+1].Select;
-          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
-
-//          ExcelWorkbook.WorkSheets[1].Cells[kolst+1,IBQueryBankCOL_END.Value+2]:='Всього';
-//
-////          ExcelWorkbook.WorkSheets[1].Rows['20:20'].Select;
-////          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoSum;
-//
-//          ColumnName := GetColumnName(IBQueryBankCOL_END.Value+3);
-//          ExcelWorkbook.WorkSheets[1].Cells[kolst+1,IBQueryBankCOL_END.Value+3].Formula :='=СУММ('+ColumnName+IntToStr(IBQueryBankSTR_ST.Value)+':'+ColumnName+IntToStr(kolst)+')';
-//
-//
-//
-//          ColumnName := GetColumnName(IBQueryBankCOL_END.Value+5);
-//          ExcelWorkbook.WorkSheets[1].Cells[kolst+1,IBQueryBankCOL_END.Value+5].Formula :='=СУММ('+ColumnName+IntToStr(IBQueryBankSTR_ST.Value)+':'+ColumnName+IntToStr(kolst)+')';
-//
-//
-//          ColumnName := GetColumnName(IBQueryBankCOL_END.Value+7);
-//          ExcelWorkbook.WorkSheets[1].Cells[kolst+1,IBQueryBankCOL_END.Value+7].Formula :='=СУММ('+ColumnName+IntToStr(IBQueryBankSTR_ST.Value)+':'+ColumnName+IntToStr(kolst)+')';
-//
-
-//          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+6].Select;
-//          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoSum;
-
           row:=0;
 
           table.Close;
@@ -627,36 +571,6 @@ begin
           topl.Free;
 
          Sleep(100);
-
-//         proc:=Form1.PathFox+'foxprox.exe';
-//
-//        procParam := TStringList.Create;
-//        procParam.Add('-t');
-//        procParam.Add(Form1.PathKvart+'imp_opl');
-//        procParam.Add(filepath);
-//        procParam.Add(Form1.PathKvart);
-
-
-
-
-//         procParam.Free;
-//         RunProcessHideCmd(cmd);
-      //   ShellExecuteEx(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
-        // Sleep(5000);
-
-
-//        FillChar(StartupInfo, SizeOf(StartupInfo), 0);
-//        StartupInfo.cb := SizeOf(StartupInfo);
-//        StartupInfo.dwFlags := STARTF_USESHOWWINDOW;
-//        StartupInfo.wShowWindow := SW_HIDE;
-//        Result := CreateProcess(nil, PChar('/C '+cmd), nil, nil, False, CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS, nil, nil, StartupInfo, ProcessInfo);
-//        if Result then
-//        begin
-//          WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
-//          CloseHandle(ProcessInfo.hProcess);
-//          CloseHandle(ProcessInfo.hThread);
-//        end;
-
 
       try
         MyFile := TFileStream.Create(path, fmOpenRead or fmShareExclusive or fmShareDenyWrite);
@@ -680,20 +594,8 @@ begin
                 Workbook := Workbooks.Item[i];
                 if SameText(ExtractFileName(Workbook.FullName), st1) then
                 begin
-//                  if application.MessageBox('Файл вже відкрито в Excel. Закрийти файл примусово?','Підтвердження',MB_YESNO)=IDYES then
-//                  begin
-                 //   Excel.DisplayAlerts:=false;
-
                     Workbook.Close(True);
-                    //Excel.Free;
                     Break;
-//                  end
-//                  else
-//                  begin
-//                    cxTextEdit1.Text:='';
-//                    path:='';
-//                    exit;
-//                  end;
                 end;
               end;
               Workbooks := Excel.Workbooks;
@@ -729,6 +631,169 @@ begin
 
         DeleteFile(pathtmp);
 
+        form2.Close;
+
+        Application.ProcessMessages;
+
+
+end;
+
+
+procedure TForm27.endlistexel;
+var cmd:WideString;
+    procParam: TStringList;
+    proc,ColumnName,posl,nameposl1,nameposl,strs:string;
+
+
+  Range: OleVariant;
+  flrow,fl:boolean;
+  rowa,ii,kk,p1,s1:integer;
+  sums,sumallvip,sumallproc,sumposl1,sumposl,sumvip,procent,allprocent,sumsum,sumavip,sumaproc:Double;
+  Cell_1, Cell_2: OLEVariant;
+  MyRange: OLEVariant;
+begin
+
+        form2.show;
+        Form2.Label1.Caption:='Формування аналізу. Зачекайте!!!';
+        Application.ProcessMessages;
+
+        ExcelWorkbook.WorkSheets[1].Cells[startROW-2,IBQueryBankCOL_END.Value+10]:='Аналіз платежів по послугам';
+        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+10]:='Послуга';
+        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+11]:='Сума по випискі';
+        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+12]:='Сума платежу з %';
+
+        rowa:=startROW+1;
+
+        while length(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10])<>0 do
+        begin
+           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10]:='';
+           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+11]:='';
+           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12]:='';
+           inc(rowa);
+        end;
+
+        Form2.cxProgressBar1.Properties.Min:=0;
+        Form2.cxProgressBar1.Properties.Max:=endROW-1;
+        Form2.cxProgressBar1.Position:=0;
+
+        rowa:=startROW+1;
+        flrow:=true;
+           while flrow do
+           begin
+
+              Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+              Application.ProcessMessages;
+
+              if rowa=endROW+1 then
+              begin
+                flrow:=false;
+                Continue;
+              end;
+
+              strs:=iif(Length(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_SUM.Value])=0,'0',ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_SUM.Value]);
+              sumallvip:=StrToFloat(StringReplace(strs,'.',',',[]));
+              strs:=iif(Length(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+3])=0,'0',ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+3]);
+              sumallproc:=StrToFloat(strs);
+
+              if (sumallproc<>0) then
+              begin
+                nameposl1:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+4];
+                sumposl1:=StrToFloat(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+5]);
+                if sumallproc=sumposl1 then
+                   addanaliz(nameposl1,sumallvip,sumallproc)
+                else
+                begin
+                  p1:=4;
+                  s1:=5;
+                  sumsum:=0;
+                  allprocent:=0;
+                  fl:=true;
+                  while fl do
+                  begin
+                    nameposl:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+p1];
+                    strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+s1];
+                    if Length(strs)=0 then sumposl:=0
+                    else sumposl:=StrToFloat(strs);
+                    if Length(nameposl)<>0 then
+                    begin
+                      procent:=SimpleRoundTo((sumposl/sumallproc)*100,-2);
+                      allprocent:=allprocent+procent;
+                      sumvip:=SimpleRoundTo((sumallvip/100)*procent,-2);
+                      sumsum:=sumsum+sumvip;
+                      strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+p1+2];
+                      if Length(strs)=0 then
+//                      if (allprocent>=99) and (allprocent<=101) then
+                      begin
+                         if sumallvip-sumsum>=0 then
+                            sumvip:=sumvip+(sumallvip-sumsum)
+                         else
+                            sumvip:=sumvip-(sumsum-sumallvip);
+
+                         addanaliz(nameposl,sumvip,sumposl);
+                      end
+                      else addanaliz(nameposl,sumvip,sumposl);
+
+                    end
+                    else fl:=false;
+
+                    p1:=p1+2;
+                    s1:=s1+2;
+                  end;
+
+                end;
+
+              end;
+
+             inc(rowa);
+           end;
+        sumavip:=0;
+        sumaproc:=0;
+        rowa:=startROW+1;
+        strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
+        while strs<>'' do
+        begin
+          strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
+          sumavip:=sumavip+StrToFloat(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+11]);
+          sumaproc:=sumaproc+StrToFloat(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12]);
+          inc(rowa);
+          strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
+        end;
+
+        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10]:='Всього';
+        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+11]:=sumavip;
+        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12]:=sumaproc;
+
+       // ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+1].Select;
+
+        Cell_1:=ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+10];
+
+        Cell_2:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12];
+
+        MyRange:=ExcelWorkbook.WorkSheets[1].Range[Cell_1, Cell_2];
+
+
+        MyRange.Borders.LineStyle := xlContinuous;
+//        MyRange.Borders[xlEdgeTop].LineStyle := xlContinuous;
+//        MyRange.Borders[xlEdgeBottom].LineStyle := xlContinuous;
+//        MyRange.Borders[xlEdgeRight].LineStyle := xlContinuous;
+
+        Cell_1:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
+
+        Cell_2:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12];
+
+        MyRange:=ExcelWorkbook.WorkSheets[1].Range[Cell_1, Cell_2];
+
+        MyRange.Font.Bold := True;
+
+
+        Form2.Label1.Caption:='Збереження даних. Зачекайте!!!';
+        Application.ProcessMessages;
+
+          ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+1].Select;
+          ExcelWorkbook.WorkSheets[1].UsedRange.Columns.AutoFit;
+
+
+         CloseData;
 
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
 //         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
@@ -741,7 +806,7 @@ begin
 //        MsExcel := null;
         Application.ProcessMessages;
 
-      form2.Close;
+
       ShowMessage('Завантаження закінчено');
       Form27.Enabled:=true;
 
@@ -838,6 +903,7 @@ var i,ns,nstr:integer;
   Excel: Variant;
   Workbooks: Variant;
   Workbook: Variant;
+  fileXL: OLEVariant;
   FileInfo: TSHFileInfo;
 begin
 
@@ -890,20 +956,8 @@ begin
                 Workbook := Workbooks.Item[i];
                 if SameText(ExtractFileName(Workbook.FullName), st1) then
                 begin
-//                  if application.MessageBox('Файл вже відкрито в Excel. Закрийти файл примусово?','Підтвердження',MB_YESNO)=IDYES then
-//                  begin
-                 //   Excel.DisplayAlerts:=false;
-
                     Workbook.Close(True);
-                    //Excel.Free;
                     Break;
-//                  end
-//                  else
-//                  begin
-//                    cxTextEdit1.Text:='';
-//                    path:='';
-//                    exit;
-//                  end;
                 end;
               end;
               Workbooks := Excel.Workbooks;
@@ -927,14 +981,29 @@ begin
       end;
 
 
-
-
-
-
     MsExcel := CreateOleObject('Excel.Application');
+
+//    for fileXL in MsExcel.ActiveWorkbook.Worksheets do
+//    begin
+//        fileXL.AutoFilterMode:=False;
+//        fileXL.Names('_FilterDatabase').Delete;
+//        Next;
+//    End;
+
+    //ExcelWorkbook:= ComObjGet(path);
     //    ExcelWorkbook.Workbooks.Add;
    // ExcelWorkbook.Workbooks.Open[OpenDialog1.FileName];
+
+     // MsExcel.ActiveWorkbook.Names('_FilterDatabase').Delete();
+
+   // MsExcel.Workbooks.Names.Item('_FilterDatabase').Delete;
+//    MsExcel.ActiveWorkbook.Item('_FilterDatabase').Delete();
+
+//    Sheets("data").Names("_FilterDatabase").Delete
+//     .Names.Item("_FilterDatabase").Delete()
     ExcelWorkbook := MsExcel.Workbooks.Open[OpenDialog1.FileName];
+
+
 
     IBQueryBank.First;
     while not IBQueryBank.Eof do
@@ -975,7 +1044,7 @@ end;
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
     stroka,strmes,tempDir:string;
-    dt1,dt2,i:integer;
+    dt1,dt2,i,pusto:integer;
     f : TextFile;
     MyFile: TFileStream;
   Excel: Variant;
@@ -1228,20 +1297,105 @@ begin
     regallposl:=regallposl+')';
 
 
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+1]:='Результат обробки';
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+2]:='Ос.рахунок';
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+3]:='Сума оплати з %';
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+4]:='Послуга 1';
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+5]:='Сума 1';
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+6]:='Послуга 2';
-       ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_ST.Value-1,IBQueryBankCOL_END.Value+7]:='Сума 2';
+        kolst:=1;
+
+        //Пошук початку
+
+        f1:=true;
+        startROW:=0;
+
+           while f1 do
+            begin
+            if trim(ExcelWorkbook.WorkSheets[1].Cells[kolst,1])=IBQueryBankSTR_PRIZN_STARTDATA.Value then
+            begin
+               startROW:=kolst;
+               f1:=False
+            end
+            else kolst:=kolst+1;
+
+              if kolst=3000 then
+              begin
+               ShowMessage('Кількість записів занадто велика. Не знайдено початок даних!!!');
+               CloseData;
+               exit;
+              end;
+
+          end;
+
+        if startROW=0 then
+        begin
+          ShowMessage('Початок даних не знайдено');
+               CloseData;
+               exit;
+        end;
+
+        kolst:=startROW+1;
+        //кінця даних
+        f1:=true;
+        pusto:=0;
+
+        if Length(IBQueryBankSTR_PRIZN_ENDDATA.Value)<>0 then
+          while f1 do
+            begin
+
+            if pos(IBQueryBankSTR_PRIZN_ENDDATA.Value,ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])<>0 then
+               f1:=False
+            else
+              begin
+              //ExcelWorkbook.WorkSheets[1].Cells[kolst,9]:='';
+              kolst:=kolst+1;
+              end;
+
+              if kolst=3000 then
+              begin
+               ShowMessage('Кількість записів занадто велика. Не знайдено кінець даних!!!');
+               CloseData;
+               exit;
+              end;
+
+          end
+          else
+          while f1 do
+          begin
+
+            if (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0) and (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_DOK.Value])=0) then
+            begin
+              pusto:=pusto+1;
+              kolst:=kolst+1
+            end
+            else
+            begin
+              //ExcelWorkbook.WorkSheets[1].Cells[kolst,9]:='';
+              kolst:=kolst+1;
+              pusto:=0;
+            end;
+
+            if pusto=3 then
+               f1:=False;
+
+              if kolst=3000 then
+              begin
+               ShowMessage('Кількість записів занадто велика. Не знайдено кінець даних!!!');
+               CloseData;
+               exit;
+              end;
+
+          end;
 
 
-//       Excel.columns[IBQueryBankCOL_END.Value+2].NumberFormat:='@';
 
-//       ExcelWorkbook.WorkSheets[1].Columns[IBQueryBankCOL_END.Value+2].Select;
-//       ExcelWorkbook.WorkSheets[1].UsedRange.Columns.NumberFormat := '@';
+       MsExcel.DisplayAlerts := False;
 
+       endROW:=kolst-pusto;
+
+
+       ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+1]:='Результат обробки';
+       ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+2]:='Ос.рахунок';
+       ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+3]:='Сума оплати з %';
+       ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+4]:='Послуга 1';
+       ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+5]:='Сума 1';
+       ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+6]:='Послуга 2';
+       ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+7]:='Сума 2';
 
        ExcelWorkbook.WorkSheets[1].columns[IBQueryBankCOL_END.Value+2].NumberFormat:='@';
        ExcelWorkbook.WorkSheets[1].columns[IBQueryBankCOL_END.Value+3].NumberFormat:='0,00';
@@ -1249,46 +1403,17 @@ begin
        ExcelWorkbook.WorkSheets[1].columns[IBQueryBankCOL_END.Value+7].NumberFormat:='0,00';
 
 
-
-        kolst:=IBQueryBankSTR_ST.Value;
-        if Length(IBQueryBankSTR_PRIZN_ENDDATA.Value)<>0 then
-          while f1 do
-          begin
-          if pos(IBQueryBankSTR_PRIZN_ENDDATA.Value,ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])<>0 then
-             f1:=False
-          else
-            begin
-            //ExcelWorkbook.WorkSheets[1].Cells[kolst,9]:='';
-            kolst:=kolst+1;
-            end;
-
-          end
-         else
-          while f1 do
-          begin
-          if Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0 then
-             f1:=False
-          else
-            begin
-            //ExcelWorkbook.WorkSheets[1].Cells[kolst,9]:='';
-            kolst:=kolst+1;
-            end;
-
-          end;
-
-        MsExcel.DisplayAlerts := False;
-
-
-
-
       Application.ProcessMessages;
+
         MsExcel.Visible := False;
         Form2.cxProgressBar1.Properties.Min:=0;
-        Form2.cxProgressBar1.Properties.Max:=kolst-1;
-        Form2.cxProgressBar1.Position:=1;
+        Form2.cxProgressBar1.Properties.Max:=endROW-1;
+        Form2.cxProgressBar1.Position:=0;
 
-        row:=IBQueryBankSTR_ST.Value-1;
+        row:=startROW;
         newpl:=true;
+
+//        endlistexel;
         startlistexel;
 
 end;
@@ -1335,7 +1460,7 @@ begin
    begin
 
             row:=row+1;
-            if row=kolst+1 then
+            if row=endROW+1 then
             begin
               fl:=false;
               endlistexel;
@@ -1369,6 +1494,8 @@ begin
 
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
+
+
           if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
           if Pos('Оброблено',ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
           if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then

@@ -73,15 +73,15 @@ object Form28: TForm28
   object cxLabel2: TcxLabel
     Left = 272
     Top = 106
-    Caption = #8470' '#1088#1103#1076#1082#1072' '#1087#1086#1095#1072#1090#1082#1091' '#1087#1086#1096#1091#1082#1091' '#1076#1072#1085#1080#1093
+    Caption = #1055#1088#1080#1079#1085#1072#1082' '#1088#1103#1076#1082#1072' '#1087#1086#1095#1072#1090#1082#1091' '#1087#1086#1096#1091#1082#1091' '#1076#1072#1085#1080#1093
   end
   object cxDBTextEdit2: TcxDBTextEdit
-    Left = 455
+    Left = 478
     Top = 106
-    DataBinding.DataField = 'STR_ST'
+    DataBinding.DataField = 'STR_PRIZN_STARTDATA'
     DataBinding.DataSource = DSBANK
     TabOrder = 6
-    Width = 36
+    Width = 87
   end
   object cxLabel3: TcxLabel
     Left = 272
@@ -291,26 +291,30 @@ object Form28: TForm28
     InsertSQL.Strings = (
       'insert into SPR_BANK'
       
-        '  (KL, NAIM, RAH, STR_ST, COL_POISK_ENDDATA, STR_PRIZN_ENDDATA, ' +
-        'COL_PRIZN, '
+        '  (KL, NAIM, RAH, STR_PRIZN_STARTDATA, COL_POISK_ENDDATA, STR_PR' +
+        'IZN_ENDDATA, '
       
-        '   COL_SUM, COL_DT, COL_DOK, COL_END, COL_KONTR, STR_POISK_RAH, ' +
-        'COL_POISK_RAH, '
-      '   COL_EDRPOU, STR_EDRPOU, COL_DT_VIP, STR_DT_VIP)'
+        '   COL_PRIZN, COL_SUM, COL_DT, COL_DOK, COL_END, COL_KONTR, STR_' +
+        'POISK_RAH, '
+      
+        '   COL_POISK_RAH, COL_EDRPOU, STR_EDRPOU, COL_DT_VIP, STR_DT_VIP' +
+        ')'
       'values'
       
-        '  (:KL, :NAIM, :RAH, :STR_ST, :COL_POISK_ENDDATA, :STR_PRIZN_END' +
-        'DATA, :COL_PRIZN, '
+        '  (:KL, :NAIM, :RAH, :STR_PRIZN_STARTDATA, :COL_POISK_ENDDATA, :' +
+        'STR_PRIZN_ENDDATA, '
       
-        '   :COL_SUM, :COL_DT, :COL_DOK, :COL_END, :COL_KONTR, :STR_POISK' +
-        '_RAH, :COL_POISK_RAH, '
-      '   :COL_EDRPOU, :STR_EDRPOU, :COL_DT_VIP, :STR_DT_VIP)')
+        '   :COL_PRIZN, :COL_SUM, :COL_DT, :COL_DOK, :COL_END, :COL_KONTR' +
+        ', :STR_POISK_RAH, '
+      
+        '   :COL_POISK_RAH, :COL_EDRPOU, :STR_EDRPOU, :COL_DT_VIP, :STR_D' +
+        'T_VIP)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
       '  NAIM,'
       '  RAH,'
-      '  STR_ST,'
+      '  STR_PRIZN_STARTDATA,'
       '  COL_POISK_ENDDATA,'
       '  STR_PRIZN_ENDDATA,'
       '  COL_PRIZN,'
@@ -336,7 +340,7 @@ object Form28: TForm28
       '  KL = :KL,'
       '  NAIM = :NAIM,'
       '  RAH = :RAH,'
-      '  STR_ST = :STR_ST,'
+      '  STR_PRIZN_STARTDATA = :STR_PRIZN_STARTDATA,'
       '  COL_POISK_ENDDATA = :COL_POISK_ENDDATA,'
       '  STR_PRIZN_ENDDATA = :STR_PRIZN_ENDDATA,'
       '  COL_PRIZN = :COL_PRIZN,'
@@ -374,10 +378,6 @@ object Form28: TForm28
       FieldName = 'RAH'
       Origin = '"SPR_BANK"."RAH"'
       Size = 50
-    end
-    object IBBANKSTR_ST: TIntegerField
-      FieldName = 'STR_ST'
-      Origin = '"SPR_BANK"."STR_ST"'
     end
     object IBBANKCOL_POISK_ENDDATA: TIntegerField
       FieldName = 'COL_POISK_ENDDATA'
@@ -436,6 +436,11 @@ object Form28: TForm28
     object IBBANKCOL_KONTR: TIntegerField
       FieldName = 'COL_KONTR'
       Origin = '"SPR_BANK"."COL_KONTR"'
+    end
+    object IBBANKSTR_PRIZN_STARTDATA: TIBStringField
+      FieldName = 'STR_PRIZN_STARTDATA'
+      Origin = '"SPR_BANK"."STR_PRIZN_STARTDATA"'
+      Size = 10
     end
   end
   object DSBANK: TDataSource

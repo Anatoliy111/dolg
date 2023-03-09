@@ -46,7 +46,6 @@ type
     IBBANKKL: TIntegerField;
     IBBANKNAIM: TIBStringField;
     IBBANKRAH: TIBStringField;
-    IBBANKSTR_ST: TIntegerField;
     IBBANKCOL_POISK_ENDDATA: TIntegerField;
     IBBANKSTR_PRIZN_ENDDATA: TIBStringField;
     IBBANKCOL_PRIZN: TIntegerField;
@@ -71,6 +70,7 @@ type
     IBBANKCOL_KONTR: TIntegerField;
     cxLabel16: TcxLabel;
     cxDBTextEdit16: TcxDBTextEdit;
+    IBBANKSTR_PRIZN_STARTDATA: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

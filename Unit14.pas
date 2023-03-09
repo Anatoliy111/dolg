@@ -661,9 +661,9 @@ begin
                       strSUMFIELD:=strSUMFIELD+'sum(s'+IBWIDWID.Value+') s'+IBWIDWID.Value+',';
 
                       if cxCheckBox15.Checked then
-                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period>=:dtn1 and period<=:dtn2 then nach else null end as nach_'+IBWIDWID.Value+','
+                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period>=:dtn1 and period<=:dtn2 then fullnach else null end as nach_'+IBWIDWID.Value+','
                       else
-                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then nach else null end as nach_'+IBWIDWID.Value+',';
+                         strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' then fullnach else null end as nach_'+IBWIDWID.Value+',';
                       if cxCheckBox14.Checked then
                          strFIELD:=strFIELD+'case when wid='''+IBWIDWID.Value+''' and period>=:dto1 and period<=:dto2 then fullopl else null end as opl_'+IBWIDWID.Value+','
                       else
