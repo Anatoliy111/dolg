@@ -107,10 +107,16 @@ begin
 
 
 
-if closeform=0 then
+if (closeform=0) and (Form27.onlysearchposl=0) then
 begin
    Form27.endlistexel;
 end;
+
+if (closeform=0) and (Form27.onlysearchposl=1) then
+begin
+   Form27.CloseDataOnlySearchPosl;
+end;
+
 
 if closeform=1 then
 begin

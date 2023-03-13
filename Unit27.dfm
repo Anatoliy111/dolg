@@ -115,6 +115,16 @@ object Form27: TForm27
     Caption = '  '#1040#1074#1090#1086#1084#1072#1090#1080#1095#1085#1086' '#1086#1073#1088#1086#1073#1080#1090#1080' '#1087#1083#1072#1090#1077#1078#1110
     TabOrder = 12
   end
+  object cxButton3: TcxButton
+    Left = 352
+    Top = 188
+    Width = 193
+    Height = 25
+    Caption = #1055#1077#1088#1077#1074#1110#1088#1082#1072' '#1087#1086#1089#1083#1091#1075
+    TabOrder = 13
+    Visible = False
+    OnClick = cxButton3Click
+  end
   object DSQueryBank: TDataSource
     DataSet = IBQueryBank
     Left = 423

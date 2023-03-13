@@ -145,6 +145,7 @@ type
     cxLabel5: TcxLabel;
     CheckBox2: TCheckBox;
     IBQueryBankSTR_PRIZN_STARTDATA: TIBStringField;
+    cxButton3: TcxButton;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -163,7 +164,7 @@ type
     function StrAnsiToOem(const S: AnsiString): AnsiString;
     procedure RunProcessCmd(const ACommand:string);
     procedure RunProcessHideCmd(const ACommand: string);
-    procedure CloseData;
+
 //    procedure RunProcessCmd(const ACommand:string;procParam:TStringList);
 //
 
@@ -172,7 +173,7 @@ type
   public
   MsExcel:Variant;
   ExcelWorkbook: Variant;
-  Row,startROW,endROW:integer;
+  onlysearchposl,Row,startROW,endROW:integer;
   newpl,err:boolean;
   regallposl,strprizn:string;
   procedure addopl;
@@ -180,6 +181,9 @@ type
   function SearchSchet(schet:string):string;
   procedure SearchAllPosl;
   procedure startlistexel;
+  procedure startlistonlysearchposl;
+  procedure CloseData;
+  procedure CloseDataOnlySearchPosl;
 
   procedure SearchSum;
     { Public declarations }
@@ -639,6 +643,27 @@ begin
 end;
 
 
+procedure TForm27.CloseDataOnlySearchPosl;
+var     MyFile: TFileStream;
+  Excel: Variant;
+  Workbooks: Variant;
+  Workbook: Variant;
+  FileInfo: TSHFileInfo;
+    i:integer;
+begin
+          row:=0;
+
+        ExcelWorkbook.Close;
+        MsExcel := null;
+
+        form2.Close;
+
+        Application.ProcessMessages;
+
+
+end;
+
+
 procedure TForm27.endlistexel;
 var cmd:WideString;
     procParam: TStringList;
@@ -716,23 +741,27 @@ begin
                     else sumposl:=StrToFloat(strs);
                     if Length(nameposl)<>0 then
                     begin
-                      procent:=SimpleRoundTo((sumposl/sumallproc)*100,-2);
-                      allprocent:=allprocent+procent;
-                      sumvip:=SimpleRoundTo((sumallvip/100)*procent,-2);
-                      sumsum:=sumsum+sumvip;
-                      strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+p1+2];
-                      if Length(strs)=0 then
-//                      if (allprocent>=99) and (allprocent<=101) then
+                      if sumallvip=sumallproc then
+                         addanaliz(nameposl,sumposl,sumposl)
+                      else
                       begin
-                         if sumallvip-sumsum>=0 then
-                            sumvip:=sumvip+(sumallvip-sumsum)
-                         else
-                            sumvip:=sumvip-(sumsum-sumallvip);
+                        procent:=(sumposl/sumallproc)*100;
+                        allprocent:=allprocent+procent;
+                        sumvip:=SimpleRoundTo((sumallvip/100)*procent,-2);
+                        sumsum:=sumsum+sumvip;
+                        strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+p1+2];
+                        if Length(strs)=0 then
+  //                      if (allprocent>=99) and (allprocent<=101) then
+                        begin
+                           if sumallvip-sumsum>=0 then
+                              sumvip:=sumvip+(sumallvip-sumsum)
+                           else
+                              sumvip:=sumvip-(sumsum-sumallvip);
 
-                         addanaliz(nameposl,sumvip,sumposl);
-                      end
-                      else addanaliz(nameposl,sumvip,sumposl);
-
+                           addanaliz(nameposl,sumvip,sumposl);
+                        end
+                        else addanaliz(nameposl,sumvip,sumposl);
+                      end;
                     end
                     else fl:=false;
 
@@ -1053,6 +1082,7 @@ var f1:boolean;
   FileInfo: TSHFileInfo;
 begin
 
+onlysearchposl:=0;
 
 
 
@@ -1424,8 +1454,187 @@ end;
 
 
 procedure TForm27.cxButton3Click(Sender: TObject);
+var sch,sql,str,sp,dtstr,posl2:string;
+    RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
+    k,position:integer;
+   f1:boolean;
+    stroka,strmes,tempDir:string;
+    dt1,dt2,i,pusto:integer;
+    f : TextFile;
+    MyFile: TFileStream;
+  Excel: Variant;
+  Workbooks: Variant;
+  Workbook: Variant;
+  FileInfo: TSHFileInfo;
 begin
-RunProcessCmd('ttt');
+
+onlysearchposl:=1;
+
+  if row<>0 then
+     exit;
+
+   row:=0;
+   if Length(path)=0 then
+   begin
+     ShowMessage('Виберіть файл');
+     exit;
+   end;
+
+   tempDir:='c:\temp\';
+
+
+
+    MsExcel := CreateOleObject('Excel.Application');
+    //    ExcelWorkbook.Workbooks.Add;
+    ExcelWorkbook:= MsExcel.Workbooks.Open[path];
+
+   Form2.Label1.Caption:='Обрахування даних';
+        Form2.cxProgressBar1.Properties.Min:=0;
+        Form2.cxProgressBar1.Properties.Max:=0;
+        Form2.cxProgressBar1.Position:=0;
+   Application.ProcessMessages;
+   IBPERIOD.Open;
+   IBQueryWidAll.Open;
+
+//        ExcelWorkbook.Visible := True;
+
+  // Form27.Enabled:=false;
+   Form2.Show;
+
+   f1:=true;
+    IBQueryBank.First;
+    while not IBQueryBank.Eof do
+    begin
+       if  Pos(IBQueryBankRAH.Text,trim(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
+       begin
+         Break;
+       end;
+
+    IBQueryBank.Next;
+    end;
+
+    IBQueryVipiska.close;
+    IBQueryVipiska.SQL.Text:='select *  from SPR_VIPISKA where vidpoisk=:vid';
+    IBQueryVipiska.ParamByName('vid').AsString:='posl';
+    IBQueryVipiska.open;
+    regallposl:='(';
+    while not IBQueryVipiska.Eof do
+    begin
+      if IBQueryVipiskaPOISK.AsString<>'' then
+         regallposl:=regallposl+IBQueryVipiskaPOISK.AsString+'{1}|';
+
+    IBQueryVipiska.Next;
+    end;
+    regallposl:=Copy(regallposl,1,Length(regallposl)-1);
+    regallposl:=regallposl+')';
+
+
+        kolst:=1;
+
+        //Пошук початку
+
+        f1:=true;
+        startROW:=0;
+
+           while f1 do
+            begin
+            if trim(ExcelWorkbook.WorkSheets[1].Cells[kolst,1])=IBQueryBankSTR_PRIZN_STARTDATA.Value then
+            begin
+               startROW:=kolst;
+               f1:=False
+            end
+            else kolst:=kolst+1;
+
+              if kolst=3000 then
+              begin
+               ShowMessage('Кількість записів занадто велика. Не знайдено початок даних!!!');
+               CloseData;
+               exit;
+              end;
+
+          end;
+
+        if startROW=0 then
+        begin
+          ShowMessage('Початок даних не знайдено');
+               CloseData;
+               exit;
+        end;
+
+        kolst:=startROW+1;
+        //кінця даних
+        f1:=true;
+        pusto:=0;
+
+        if Length(IBQueryBankSTR_PRIZN_ENDDATA.Value)<>0 then
+          while f1 do
+            begin
+
+            if pos(IBQueryBankSTR_PRIZN_ENDDATA.Value,ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])<>0 then
+               f1:=False
+            else
+              begin
+              //ExcelWorkbook.WorkSheets[1].Cells[kolst,9]:='';
+              kolst:=kolst+1;
+              end;
+
+              if kolst=3000 then
+              begin
+               ShowMessage('Кількість записів занадто велика. Не знайдено кінець даних!!!');
+               CloseData;
+               exit;
+              end;
+
+          end
+          else
+          while f1 do
+          begin
+
+            if (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0) and (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_DOK.Value])=0) then
+            begin
+              pusto:=pusto+1;
+              kolst:=kolst+1
+            end
+            else
+            begin
+              //ExcelWorkbook.WorkSheets[1].Cells[kolst,9]:='';
+              kolst:=kolst+1;
+              pusto:=0;
+            end;
+
+            if pusto=3 then
+               f1:=False;
+
+              if kolst=3000 then
+              begin
+               ShowMessage('Кількість записів занадто велика. Не знайдено кінець даних!!!');
+               CloseData;
+               exit;
+              end;
+
+          end;
+
+
+
+       MsExcel.DisplayAlerts := False;
+
+       endROW:=kolst-pusto;
+
+      Application.ProcessMessages;
+
+        MsExcel.Visible := False;
+        Form2.cxProgressBar1.Properties.Min:=0;
+        Form2.cxProgressBar1.Properties.Max:=endROW-1;
+        Form2.cxProgressBar1.Position:=0;
+
+        row:=startROW;
+        newpl:=true;
+
+        startlistonlysearchposl;
+
+
 end;
 
 procedure TForm27.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1513,10 +1722,19 @@ begin
           Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+7]:='';
 
           //пошук Особ. рахунка
-          Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
+          Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{8}[а-яa-z]?',[]);
           if Match.Success then
              Form33.cxTextEdit1.Text:=trim(Match.value)
-          else Form33.cxTextEdit1.Text:=' ';
+          else
+          begin
+            Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
+            if Match.Success then
+               Form33.cxTextEdit1.Text:=trim(Match.value)
+            else
+               Form33.cxTextEdit1.Text:=' ';
+          end;
+
+
 
 
 
@@ -1588,6 +1806,104 @@ begin
 end;
 
 
+procedure TForm27.startlistonlysearchposl;
+var sch,sql,str,sp,dtstr,posl2:string;
+    RegularExpression : TRegEx;
+    Match : TMatch;
+    MC: TMatchCollection;
+    k,position:integer;
+begin
+   fl:=true;
+   Timer1.Enabled:=False;
+   Form2.Visible:=true;
+   while fl do
+   begin
+
+            row:=row+1;
+            if row=endROW+1 then
+            begin
+              fl:=false;
+              CloseDataOnlySearchPosl;
+              exit;
+            end;
+
+//          if newpl then
+//          begin
+            Form33.cxTextEdit1.Clear;
+            Form33.Memo1.Clear;
+            Form33.cxCalcEdit1.Clear;
+            Form33.cxCalcEdit2.Clear;
+            Form33.cxDateEdit1.Clear;
+            Form33.cxLabel1.Clear;
+            Form33.CheckBox1.Checked:=false;
+            Form33.CheckBox2.Checked:=false;
+            Form33.CheckBox2.Visible:=false;
+            Form33.cxCalcEdit1.Properties.ReadOnly:=true;
+
+            Form33.ADOQueryOBOR.Close;
+//          end;
+          StrList.Clear;
+          err:=false;
+          Form33.cxLabel1.Caption:='';
+
+          Form2.cxProgressBar1.Position:=row;
+          Application.ProcessMessages;
+
+          sch:='';
+          strprizn:=ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_PRIZN.Value];
+
+          Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+          Application.ProcessMessages;
+
+
+          if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
+         // if Pos('Оброблено',ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
+          if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then
+          begin
+           // ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:='Оброблено';
+            Continue;
+          end;
+
+          //пошук Особ. рахунка
+
+
+
+          Form33.Memo1.Text:=strprizn;
+
+
+          Match:=RegularExpression.Match(LowerCase(strprizn),LowerCase(regallposl),[roIgnoreCase]);
+          if not Match.Success then
+          begin
+
+            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуг в призначені не знайдено!!!';
+            err:=true;
+           // strList[0]:='';
+          end;
+
+
+
+
+            if CheckBox2.Checked then
+            begin
+              if err then
+              begin
+                Form33.Show;
+                fl:=false;
+              end;
+            end
+            else
+            begin
+                Form33.Show;
+                fl:=false;
+            end;
+
+
+
+
+
+   end;
+
+end;
 
 
 
@@ -1595,7 +1911,13 @@ procedure TForm27.Timer1Timer(Sender: TObject);
 begin
 //  Timer1.Enabled:=false;
 //  row:=row+1;
-  startlistexel;
+  if onlysearchposl=0 then
+     startlistexel;
+
+  if onlysearchposl=1 then
+     startlistonlysearchposl;
+
+
 end;
 
 procedure TForm27.addopl;
