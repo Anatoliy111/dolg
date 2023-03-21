@@ -31,7 +31,7 @@ object Form27: TForm27
     Caption = #1041#1072#1085#1082
   end
   object cxTextEdit4: TcxTextEdit
-    Left = 126
+    Left = 156
     Top = 92
     Properties.ReadOnly = True
     TabOrder = 2
@@ -40,7 +40,7 @@ object Form27: TForm27
   object cxLabel1: TcxLabel
     Left = 32
     Top = 65
-    Caption = #1044#1072#1090#1072
+    Caption = #1044#1072#1090#1072' '#1074#1080#1087#1080#1089#1082#1080'/'#1088#1077#1108#1089#1090#1088#1091
   end
   object cxButton2: TcxButton
     Left = 15
@@ -53,7 +53,7 @@ object Form27: TForm27
   end
   object cxButton1: TcxButton
     Left = 335
-    Top = 30
+    Top = 34
     Width = 161
     Height = 25
     Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1092#1072#1081#1083
@@ -72,28 +72,11 @@ object Form27: TForm27
     WordWrap = False
   end
   object cxDateEdit1: TcxDateEdit
-    Left = 138
+    Left = 156
     Top = 65
     Properties.ReadOnly = True
     TabOrder = 7
     Width = 121
-  end
-  object cxDateEdit2: TcxDateEdit
-    Left = 287
-    Top = 65
-    Properties.ReadOnly = True
-    TabOrder = 8
-    Width = 121
-  end
-  object cxLabel2: TcxLabel
-    Left = 126
-    Top = 66
-    Caption = #1079
-  end
-  object cxLabel4: TcxLabel
-    Left = 265
-    Top = 66
-    Caption = #1087#1086
   end
   object cxLabel5: TcxLabel
     Left = 15
@@ -113,7 +96,7 @@ object Form27: TForm27
     Width = 202
     Height = 17
     Caption = '  '#1040#1074#1090#1086#1084#1072#1090#1080#1095#1085#1086' '#1086#1073#1088#1086#1073#1080#1090#1080' '#1087#1083#1072#1090#1077#1078#1110
-    TabOrder = 12
+    TabOrder = 9
   end
   object cxButton3: TcxButton
     Left = 352
@@ -121,7 +104,7 @@ object Form27: TForm27
     Width = 193
     Height = 25
     Caption = #1055#1077#1088#1077#1074#1110#1088#1082#1072' '#1087#1086#1089#1083#1091#1075
-    TabOrder = 13
+    TabOrder = 10
     Visible = False
     OnClick = cxButton3Click
   end
@@ -185,6 +168,10 @@ object Form27: TForm27
       FieldName = 'COL_END'
       Origin = '"SPR_BANK"."COL_END"'
     end
+    object IBQueryBankCOL_KONTR: TIntegerField
+      FieldName = 'COL_KONTR'
+      Origin = '"SPR_BANK"."COL_KONTR"'
+    end
     object IBQueryBankSTR_POISK_RAH: TIntegerField
       FieldName = 'STR_POISK_RAH'
       Origin = '"SPR_BANK"."STR_POISK_RAH"'
@@ -210,14 +197,36 @@ object Form27: TForm27
       FieldName = 'STR_DT_VIP'
       Origin = '"SPR_BANK"."STR_DT_VIP"'
     end
-    object IBQueryBankCOL_KONTR: TIntegerField
-      FieldName = 'COL_KONTR'
-      Origin = '"SPR_BANK"."COL_KONTR"'
+    object IBQueryBankREGEXP_FILE: TIBStringField
+      FieldName = 'REGEXP_FILE'
+      Origin = '"SPR_BANK"."REGEXP_FILE"'
+      Required = True
+      Size = 100
+    end
+    object IBQueryBankCOL_CODPOSL: TIntegerField
+      FieldName = 'COL_CODPOSL'
+      Origin = '"SPR_BANK"."COL_CODPOSL"'
+    end
+    object IBQueryBankREGEXP_DATE: TIBStringField
+      FieldName = 'REGEXP_DATE'
+      Origin = '"SPR_BANK"."REGEXP_DATE"'
+      Required = True
+      Size = 100
+    end
+    object IBQueryBankFORMAT_DATE_SEPARATOR: TIBStringField
+      FieldName = 'FORMAT_DATE_SEPARATOR'
+      Origin = '"SPR_BANK"."FORMAT_DATE_SEPARATOR"'
+      Required = True
+      Size = 50
+    end
+    object IBQueryBankCOL_RAH: TIntegerField
+      FieldName = 'COL_RAH'
+      Origin = '"SPR_BANK"."COL_RAH"'
     end
     object IBQueryBankSTR_PRIZN_STARTDATA: TIBStringField
       FieldName = 'STR_PRIZN_STARTDATA'
       Origin = '"SPR_BANK"."STR_PRIZN_STARTDATA"'
-      Size = 10
+      Size = 50
     end
   end
   object OpenDialog1: TOpenDialog

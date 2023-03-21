@@ -4,7 +4,7 @@ interface
 
 uses Controls,SysUtils,dbgrids,Types,Forms,DB,
      Messages, Graphics,Classes,StdCtrls,
-     TypInfo,bde,dbtables,Tlhelp32,IOUtils;
+     TypInfo,bde,dbtables,Tlhelp32,IOUtils,StrUtils;
 
 
 const DELTA_YEAR=10;
@@ -97,10 +97,29 @@ function _GetCurrentDirectory: String;
 function _GetSystemDirectory: String;
 function _GetWindowsDirectory: String;
 function _GetTempDirectory: String;
+function GetCountTextInStr(pStr, pText: string): integer;
+
+
 
 implementation
 
 uses DateUtils,Windows,Dialogs,activex,comobj,variants,math,Registry;
+
+
+function GetCountTextInStr(pStr, pText: string): integer;
+var
+  aLen, i, res: integer;
+begin
+  aLen := Length(pText);
+  res := -1;
+  i := 1-aLen;
+  Repeat
+    i := PosEX(pText, pStr, i+aLen);
+    Inc(res);
+  Until i = 0;
+
+  Result := res;
+end;
 
 
 function GetComputerNetName: string;

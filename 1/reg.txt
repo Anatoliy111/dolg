@@ -1,5 +1,0 @@
-(за воду{1}|водопостач{1}).*(абон)
-https://habr.com/ru/post/349860/
-https://habr.com/ru/post/506994/
-https://webdelphi.ru/2010/09/delphi-xe-rabota-s-regulyarnymi-vyrazheniyami/
-https://regex101.com/r/usnZBg/1

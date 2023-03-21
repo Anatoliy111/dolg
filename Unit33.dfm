@@ -204,8 +204,10 @@ object Form33: TForm33
   end
   object cxLabel6: TcxLabel
     Left = 263
-    Top = 211
-    Caption = #1053#1072#1079#1074#1072' '#1082#1086#1085#1090#1088#1072#1075#1077#1085#1090#1072
+    Top = 201
+    Caption = #1053#1072#1079#1074#1072' '#1082#1086#1085#1090#1088#1072#1075#1077#1085#1090#1072' ('#1087#1083#1072#1090#1085#1080#1082#1072')'
+    Properties.WordWrap = True
+    Width = 105
   end
   object Memo2: TMemo
     Left = 371
@@ -226,17 +228,17 @@ object Form33: TForm33
     TabOrder = 17
   end
   object cxLabel7: TcxLabel
-    Left = 108
+    Left = 32
     Top = 192
     Caption = #1055#1030#1041
   end
   object cxDBLabel1: TcxDBLabel
-    Left = 136
+    Left = 59
     Top = 192
     DataBinding.DataField = 'fio'
     DataBinding.DataSource = DSADOQueryOBOR
     Height = 21
-    Width = 229
+    Width = 198
   end
   object cxLabel8: TcxLabel
     Left = 32

@@ -24,21 +24,6 @@ type
     cxButton1: TcxButton;
     MemoLog: TMemo;
     cxDateEdit1: TcxDateEdit;
-    cxDateEdit2: TcxDateEdit;
-    cxLabel2: TcxLabel;
-    cxLabel4: TcxLabel;
-    IBQueryBankKL: TIntegerField;
-    IBQueryBankNAIM: TIBStringField;
-    IBQueryBankRAH: TIBStringField;
-    IBQueryBankCOL_POISK_ENDDATA: TIntegerField;
-    IBQueryBankSTR_PRIZN_ENDDATA: TIBStringField;
-    IBQueryBankCOL_PRIZN: TIntegerField;
-    IBQueryBankCOL_SUM: TIntegerField;
-    IBQueryBankCOL_DT: TIntegerField;
-    IBQueryBankCOL_DOK: TIntegerField;
-    IBQueryBankCOL_END: TIntegerField;
-    IBQueryBankSTR_POISK_RAH: TIntegerField;
-    IBQueryBankCOL_POISK_RAH: TIntegerField;
     IBQueryVipiska: TIBQuery;
     DSQueryVipiska: TDataSource;
     IBQueryVipiskaKL: TIntegerField;
@@ -46,10 +31,6 @@ type
     IBQueryVipiskaWID: TIBStringField;
     IBQueryVipiskaVIDPOISK: TIBStringField;
     IBQueryVipiskaPOISK: TIBStringField;
-    IBQueryBankCOL_EDRPOU: TIntegerField;
-    IBQueryBankSTR_EDRPOU: TIBStringField;
-    IBQueryBankCOL_DT_VIP: TIntegerField;
-    IBQueryBankSTR_DT_VIP: TIntegerField;
     IBQueryObor: TIBQuery;
     DSQueryObor: TDataSource;
     IBPERIOD: TIBDataSet;
@@ -141,11 +122,32 @@ type
     IBQueryWidAllUPD: TIntegerField;
     IBQueryWidAllVNESK: TIBStringField;
     Timer1: TTimer;
-    IBQueryBankCOL_KONTR: TIntegerField;
     cxLabel5: TcxLabel;
     CheckBox2: TCheckBox;
-    IBQueryBankSTR_PRIZN_STARTDATA: TIBStringField;
     cxButton3: TcxButton;
+    IBQueryBankKL: TIntegerField;
+    IBQueryBankNAIM: TIBStringField;
+    IBQueryBankRAH: TIBStringField;
+    IBQueryBankCOL_POISK_ENDDATA: TIntegerField;
+    IBQueryBankSTR_PRIZN_ENDDATA: TIBStringField;
+    IBQueryBankCOL_PRIZN: TIntegerField;
+    IBQueryBankCOL_SUM: TIntegerField;
+    IBQueryBankCOL_DT: TIntegerField;
+    IBQueryBankCOL_DOK: TIntegerField;
+    IBQueryBankCOL_END: TIntegerField;
+    IBQueryBankCOL_KONTR: TIntegerField;
+    IBQueryBankSTR_POISK_RAH: TIntegerField;
+    IBQueryBankCOL_POISK_RAH: TIntegerField;
+    IBQueryBankCOL_EDRPOU: TIntegerField;
+    IBQueryBankSTR_EDRPOU: TIBStringField;
+    IBQueryBankCOL_DT_VIP: TIntegerField;
+    IBQueryBankSTR_DT_VIP: TIntegerField;
+    IBQueryBankREGEXP_FILE: TIBStringField;
+    IBQueryBankCOL_CODPOSL: TIntegerField;
+    IBQueryBankREGEXP_DATE: TIBStringField;
+    IBQueryBankFORMAT_DATE_SEPARATOR: TIBStringField;
+    IBQueryBankCOL_RAH: TIntegerField;
+    IBQueryBankSTR_PRIZN_STARTDATA: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -184,7 +186,6 @@ type
   procedure startlistonlysearchposl;
   procedure CloseData;
   procedure CloseDataOnlySearchPosl;
-
   procedure SearchSum;
     { Public declarations }
   end;
@@ -228,7 +229,7 @@ begin
 
 
 
-            SearchPosl(strprizn); //пошук послуги
+             //пошук послуги
             if StrList.Count=0 then
               err:=true
             else
@@ -336,7 +337,7 @@ var str,posl2:string;
     k:integer;
     exitsum:boolean;
 begin
-
+             ssum:=0;
              priznsum:=0;
              vipsum:=0;
              str:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value];
@@ -346,11 +347,7 @@ begin
                vipsum:=0;
              Form33.cxCalcEdit2.Value:=vipsum;
 
-          if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])<>IBQueryBankSTR_EDRPOU.Value then
-          begin
-             ssum:=vipsum;
-          end
-          else
+          if (not IBQueryBankCOL_EDRPOU.IsNull) and (IBQueryBankCOL_EDRPOU.Value<>0) and (trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])=IBQueryBankSTR_EDRPOU.Value) then
           begin
             RegularExpression := TRegEx.Create('[;]\d+(?:[\.,]\d+)?[\w||\W]?$');
             str:=StringReplace(strprizn,' ','',[rfReplaceAll, rfIgnoreCase]);
@@ -376,10 +373,10 @@ begin
               Form33.cxCalcEdit1.Properties.ReadOnly:=false;
               err:=true;
             end;
+          end
+          else
+             ssum:=vipsum;
 
-
-
-          end;
 
           if ssum<=0 then
           begin
@@ -682,7 +679,7 @@ begin
         Form2.Label1.Caption:='Формування аналізу. Зачекайте!!!';
         Application.ProcessMessages;
 
-        ExcelWorkbook.WorkSheets[1].Cells[startROW-2,IBQueryBankCOL_END.Value+10]:='Аналіз платежів по послугам';
+     //   ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+10]:='Аналіз платежів по послугам';
         ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+10]:='Послуга';
         ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+11]:='Сума по випискі';
         ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+12]:='Сума платежу з %';
@@ -794,7 +791,7 @@ begin
 
        // ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+1].Select;
 
-        Cell_1:=ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+10];
+        Cell_1:=ExcelWorkbook.WorkSheets[1].Cells[startROW+1,IBQueryBankCOL_END.Value+10];
 
         Cell_2:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12];
 
@@ -922,10 +919,11 @@ end;
 
 
 procedure TForm27.cxButton1Click(Sender: TObject);
-var i,ns,nstr:integer;
+var i,ns,nstr,iii,i1,i2:integer;
+    coli:integer;
     st:pchar;
-    sss,str:string;
-    RegularExpression : TRegEx;
+    sss,str,strDate,str1,str2,str3:string;
+    RegularExpression:TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
     MyFile: TFileStream;
@@ -934,7 +932,13 @@ var i,ns,nstr:integer;
   Workbook: Variant;
   fileXL: OLEVariant;
   FileInfo: TSHFileInfo;
+  vDateTime:TDate;
+  Format:TFormatSettings;
+
 begin
+
+
+
 
   if Row<>0 then
      exit;
@@ -943,7 +947,7 @@ begin
 
 
        cxDateEdit1.Text:='';
-       cxDateEdit2.Text:='';
+
        MemoLog.Text:='';
        cxTextEdit4.Text:='';
        cxTextEdit1.Text:='';
@@ -1034,19 +1038,90 @@ begin
 
 
 
+//    IBQueryBank.First;
+//    while not IBQueryBank.Eof do
+//    begin
+//       if  Pos(IBQueryBankRAH.Text,trim(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
+//       begin
+//           MC:=RegularExpression.Matches(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_DT_VIP.Value,IBQueryBankCOL_DT_VIP.Value],'[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}',[roMultiLine]);//получаем коллекцию совпадений
+//           for  i:=0 to MC.Count-1 do
+//             begin
+//              if i=0 then cxDateEdit1.Date:=StrToDate(MC.Item[i].Value);
+//              if i=1 then cxDateEdit2.Date:=StrToDate(MC.Item[i].Value);
+//             end;
+//          cxTextEdit4.Text:=IBQueryBankNAIM.Text;
+//       end;
+//     IBQueryBank.Next;
+//    end;
+
+
+
+
+
+
     IBQueryBank.First;
     while not IBQueryBank.Eof do
     begin
-       if  Pos(IBQueryBankRAH.Text,trim(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
-       begin
-           MC:=RegularExpression.Matches(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_DT_VIP.Value,IBQueryBankCOL_DT_VIP.Value],'[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}',[roMultiLine]);//получаем коллекцию совпадений
-           for  i:=0 to MC.Count-1 do
-             begin
-              if i=0 then cxDateEdit1.Date:=StrToDate(MC.Item[i].Value);
-              if i=1 then cxDateEdit2.Date:=StrToDate(MC.Item[i].Value);
-             end;
-          cxTextEdit4.Text:=IBQueryBankNAIM.Text;
-       end;
+            RegularExpression := TRegEx.Create(IBQueryBankREGEXP_FILE.Value);
+            Match := RegularExpression.Match(st1);
+            if Match.Success then
+            begin
+//               vDateTime := StrToDate(Match.value,'yy.mm.dd');
+               RegularExpression := TRegEx.Create(IBQueryBankREGEXP_DATE.Value);
+               Match := RegularExpression.Match(st1);
+               if Match.Success then
+               begin
+                 strDate:=Match.value;
+
+                 Format := TFormatSettings.Create();
+                 Format.ShortDateFormat:=IBQueryBankFORMAT_DATE_SEPARATOR.Value;
+
+                 RegularExpression := TRegEx.Create('[^\w\sА-Яа-я]');
+                 Match := RegularExpression.Match(IBQueryBankFORMAT_DATE_SEPARATOR.Value);
+                 if Match.Success then
+                 begin
+                    str:=Match.value;
+                    Format.DateSeparator:=Match.value[1];
+                   vDateTime := StrToDate(strDate,Format);
+                   cxDateEdit1.Date:=vDateTime;
+                 end
+                 else
+                 begin
+//                    str1:=Copy(strDate, 1, 2);
+//                    str2:=Copy(strDate, 3, 2);
+//                    str3:=Copy(strDate, 5, 4);
+
+//                    cxDateEdit1.Date := SysUtils.EncodeDate(
+//                      StrToInt(str3),
+//                      StrToInt(str2),
+//                      StrToInt(str1)
+//                    );
+
+                    cxDateEdit1.Date := EncodeDate(
+                      StrToInt(Copy(strDate, pos('y',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'y'))),
+                      StrToInt(Copy(strDate, pos('m',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'m'))),
+                      StrToInt(Copy(strDate, pos('d',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'d')))
+                    );
+                 end;
+
+
+
+
+                 cxTextEdit4.Text:=IBQueryBankNAIM.Text;
+                 Break;
+               end
+               else
+               begin
+                 ShowMessage('Не можу знайти дату з імені файлу');
+                 path:='';
+                 cxTextEdit1.Text:='';
+
+               end;
+
+
+
+            end;
+
      IBQueryBank.Next;
     end;
 
@@ -1070,6 +1145,11 @@ begin
   end;
 end;
 
+
+
+
+
+
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
     stroka,strmes,tempDir:string;
@@ -1080,6 +1160,8 @@ var f1:boolean;
   Workbooks: Variant;
   Workbook: Variant;
   FileInfo: TSHFileInfo;
+    RegularExpression:TRegEx;
+    Match : TMatch;
 begin
 
 onlysearchposl:=0;
@@ -1204,16 +1286,9 @@ onlysearchposl:=0;
 
        if not ((dt1=MonthOf(cxDateEdit1.Date)) or (dt2=MonthOf(cxDateEdit1.Date))) then
        begin
-           ShowMessage('(Дата з) з виписки не відповідає місяцю завантаження');
+           ShowMessage('Дата виписки не відповідає місяцю завантаження');
            exit;
        end;
-
-       if cxDateEdit2.Text<>'' then
-         if not ((dt1<>MonthOf(cxDateEdit2.Date)) or (dt2<>MonthOf(cxDateEdit2.Date))) then
-         begin
-             ShowMessage('(Дата по) з виписки не відповідає місяцю завантаження');
-             exit;
-         end;
 
 
       CopyFile(PChar(path), PChar(pathtmp), false);
@@ -1303,10 +1378,10 @@ onlysearchposl:=0;
     IBQueryBank.First;
     while not IBQueryBank.Eof do
     begin
-       if  Pos(IBQueryBankRAH.Text,trim(ExcelWorkbook.WorkSheets[1].Cells[IBQueryBankSTR_POISK_RAH.Value,IBQueryBankCOL_POISK_RAH.Value]))<>0 then
-       begin
-         Break;
-       end;
+            RegularExpression := TRegEx.Create(IBQueryBankREGEXP_FILE.Value);
+            Match := RegularExpression.Match(st1);
+            if Match.Success then
+               Break;
 
     IBQueryBank.Next;
     end;
@@ -1336,7 +1411,7 @@ onlysearchposl:=0;
 
            while f1 do
             begin
-            if trim(ExcelWorkbook.WorkSheets[1].Cells[kolst,1])=IBQueryBankSTR_PRIZN_STARTDATA.Value then
+            if trim(IBQueryBankSTR_PRIZN_STARTDATA.Value)=trim(ExcelWorkbook.WorkSheets[1].Cells[kolst,1]) then
             begin
                startROW:=kolst;
                f1:=False
@@ -1388,7 +1463,7 @@ onlysearchposl:=0;
           while f1 do
           begin
 
-            if (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0) and (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_DOK.Value])=0) then
+            if (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0) then
             begin
               pusto:=pusto+1;
               kolst:=kolst+1
@@ -1592,7 +1667,7 @@ onlysearchposl:=1;
           while f1 do
           begin
 
-            if (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0) and (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_DOK.Value])=0) then
+            if (Length(ExcelWorkbook.WorkSheets[1].Cells[kolst,IBQueryBankCOL_POISK_ENDDATA.Value])=0) then
             begin
               pusto:=pusto+1;
               kolst:=kolst+1
@@ -1704,8 +1779,9 @@ begin
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
 
+          if (not IBQueryBankCOL_DOK.IsNull) and (IBQueryBankCOL_DOK.Value<>0) then
+             if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
 
-          if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
           if Pos('Оброблено',ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
           if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then
           begin
@@ -1722,16 +1798,29 @@ begin
           Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+7]:='';
 
           //пошук Особ. рахунка
-          Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{8}[а-яa-z]?',[]);
-          if Match.Success then
-             Form33.cxTextEdit1.Text:=trim(Match.value)
-          else
+
+
+
+          if (not IBQueryBankCOL_RAH.IsNull) and (IBQueryBankCOL_RAH.Value<>0) then
           begin
-            Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
+             str:= Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,IBQueryBankCOL_RAH.Value];
+             if Length(str)<>0 then
+               Form33.cxTextEdit1.Text:=trim(str);
+          end;
+
+          if Form33.cxTextEdit1.Text='' then
+          begin
+            Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{8}[а-яa-z]?',[]);
             if Match.Success then
                Form33.cxTextEdit1.Text:=trim(Match.value)
             else
-               Form33.cxTextEdit1.Text:=' ';
+            begin
+              Match:=RegularExpression.Match(LowerCase(strprizn),'[0-9]{7}[а-яa-z]?',[]);
+              if Match.Success then
+                 Form33.cxTextEdit1.Text:=trim(Match.value)
+              else
+                 Form33.cxTextEdit1.Text:=' ';
+            end;
           end;
 
 
@@ -1740,7 +1829,7 @@ begin
 
 
 
-          if Form33.cxTextEdit1.Text='' then
+          if trim(Form33.cxTextEdit1.Text)='' then
           begin
             Form33.cxLabel1.Caption:='Ос.рахунок не знайдено!';
             Form33.cxTextEdit1.Properties.ReadOnly:=false;
@@ -1748,16 +1837,38 @@ begin
             err:=true;
           end;
 
-          Match:=RegularExpression.Match(LowerCase(strprizn),LowerCase(regallposl),[roIgnoreCase]);
-          if not Match.Success then
-          begin
 
-            Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуг в призначені не знайдено!!!';
-            err:=true;
-           // strList[0]:='';
+          //пошук послуг
+
+          strList.Clear;
+
+          if (not IBQueryBankCOL_CODPOSL.IsNull) and (IBQueryBankCOL_CODPOSL.Value<>0) then
+          begin
+            str:=trim(Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,IBQueryBankCOL_CODPOSL.Value]);
+            if Length(str)<>0 then
+            begin
+              strList.Add(str);
+              SearchAllPosl;
+            end;
           end
           else
-            SearchAllPosl;
+
+          if strList.Count=0 then
+          begin
+            Match:=RegularExpression.Match(LowerCase(strprizn),LowerCase(regallposl),[roIgnoreCase]);
+            if not Match.Success then
+            begin
+              Form33.cxLabel1.Caption:=Form33.cxLabel1.Caption+'Послуг в призначені не знайдено!!!';
+              err:=true;
+             // strList[0]:='';
+            end
+            else
+            begin
+              SearchPosl(strprizn);
+              SearchAllPosl;
+            end;
+          end;
+
 
          SearchSum;
 
@@ -1855,8 +1966,9 @@ begin
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
 
+          if (not IBQueryBankCOL_DOK.IsNull) and (IBQueryBankCOL_DOK.Value<>0) then
+            if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
 
-          if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
          // if Pos('Оброблено',ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
           if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then
           begin
@@ -1962,8 +2074,7 @@ begin
             exit;
           end;
 
-
-          if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])=IBQueryBankSTR_EDRPOU.Value then
+          if (not IBQueryBankCOL_EDRPOU.IsNull) and (IBQueryBankCOL_EDRPOU.Value<>0) and (trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])=IBQueryBankSTR_EDRPOU.Value) then
           begin
              if Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]<=Form33.cxCalcEdit2.Value then
              begin
@@ -1998,6 +2109,19 @@ begin
             if (Form33.ADOQueryOBORch.Value=1) and (Form33.ADOQueryOBORsumpl.Value=0) then
             begin
               Form33.cxLabel1.Caption:='Вибрана послуга '+Form33.ADOQueryOBORnaim.Value+' без суми!!!';
+              Form33.Show;
+              fl:=false;
+              exit;
+            end;
+          Form33.ADOQueryOBOR.next;
+          end;
+
+          Form33.ADOQueryOBOR.First;
+          while not Form33.ADOQueryOBOR.Eof do
+          begin
+            if (Form33.ADOQueryOBORch.Value=0) and (Form33.ADOQueryOBORsumpl.Value<>0) then
+            begin
+              Form33.cxLabel1.Caption:='Сума є, а послуга '+Form33.ADOQueryOBORnaim.Value+' не вибрана!!!';
               Form33.Show;
               fl:=false;
               exit;
@@ -2099,7 +2223,8 @@ begin
           table.FieldByName('dt').Value:=Form33.cxDateEdit1.Date;
           table.FieldByName('pach').Value:=DayOf(Form33.cxDateEdit1.Date);
           table.FieldByName('opl').Value:=Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3];
-          table.FieldByName('doc').Value:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DOK.Value];
+          if (not IBQueryBankCOL_DOK.IsNull) and (IBQueryBankCOL_DOK.Value<>0) then
+             table.FieldByName('doc').Value:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DOK.Value];
           table.post;
 
 
@@ -2196,7 +2321,7 @@ var RegularExpression : TRegEx;
     Index,k: Integer;
 begin
 
-          StrList.Clear;
+
        //   a:=0;
           wid:='';
           StrList.Clear;
