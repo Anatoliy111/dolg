@@ -170,12 +170,24 @@ type
     PopupMenu1: TPopupMenu;
     N11: TMenuItem;
     cxButton4: TcxButton;
+    Label16: TLabel;
+    cxDBMaskEdit1: TcxDBMaskEdit;
+    cxMaskEdit1: TcxMaskEdit;
+    IBABONINF: TIBDataSet;
+    DSABONINF: TDataSource;
+    IBABONINFID: TIntegerField;
+    IBABONINFSCHET: TIBStringField;
+    IBABONINFTEL: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure N11Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure cxDBMaskEdit1PropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   private
     { Private declarations }
   public
@@ -201,6 +213,17 @@ end;
 procedure TForm12.cxButton4Click(Sender: TObject);
 begin
 Form1.ExportGrid(cxGrid4,Label13.Caption+' '+cxTextEdit1.Text);
+end;
+
+procedure TForm12.cxDBMaskEdit1PropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+  var vv:integer;
+begin
+   if Length(DisplayValue) = 0 then
+      Error:=false;
+
+   if DisplayValue = '(___)___-____' then
+      Error:=false;
 end;
 
 procedure TForm12.cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
@@ -234,82 +257,22 @@ begin
      IBPER.Close;
      IBPER.Open;
 
+     IBABONINF.Close;
+     IBABONINF.Open;
+     if not IBABONINF.Locate('schet',IBKARTSCHET.Value,[loCaseInsensitive, loPartialKey]) then
+     begin
+       IBABONINF.Append;
+       IBABONINFSCHET.Value:=IBKARTSCHET.Value;
+       IBABONINF.Post;
+     end;
+
+
 
 
 
      IBKOBORMES.ParamByName('sch').Value:=IBKARTSCHET.Value;
      IBKOBORMES.ParamByName('dt').Value:=IBPERPERIOD.Value;
      IBKTMPOPL.ParamByName('sch').Value:=IBKARTSCHET.Value;
-
-//     sql:='select schet ';
-//                Form1.IBTMPWID.First;
-//                while not Form1.IBTMPWID.eof do
-//                begin
-//                       if Form1.IBTMPOPL.FindField('OPL_'+Form1.IBTMPWIDWID.Value)<> nil then
-//                       begin
-//                       Form1.IBTMPOPL.Insert;
-//                       Form1.IBTMPOPL.FieldByName('SCHET').Value := trim(Form1.ADOOPL.FieldByName('schet').Value);
-//                       Form1.IBTMPOPL.FieldByName('DT').Value := Form1.ADOOPL.FieldByName('DT').Value;
-//                       Form1.IBTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value := Form1.ADOOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).AsCurrency;
-//                       Form1.IBTMPOPL.FieldByName('SUMM').Value := Form1.ADOOPL.FieldByName('OPL').AsCurrency;
-//                       Form1.IBTMPOPL.Post;
-//                       end;
-//                Form1.IBTMPWID.Next;
-//                end;
-//     res:=IBKTMPOPL.FieldCount-cxGridDBTableView1.ColumnCount;
-//     if res>0 then
-//     begin
-//       for i := 1 to res do
-//       begin
-//         cxGridDBTableView1.CreateColumn;
-//       end;
-//     end;
-//     res:=IBKTMPOPL.FieldCount-cxGridDBTableView1.ColumnCount;
-//     if res=0 then
-//     begin
-//                Form1.IBTMPWID.First;
-//                while not Form1.IBTMPWID.eof do
-//                begin
-//                   fl_ins:=0;
-//                   for i := 0 to cxGridDBTableView1.ColumnCount-1 do
-//                   begin
-//                     if cxGridDBTableView1.Columns[i].DataBinding.FieldName=Form1.IBTMPWIDWID  then
-//                        fl_ins:=1;
-//                     if
-//
-//                     cxGridDBTableView1.Columns[i].DataBinding.FieldName:='opl_ub';
-//                   end;
-//
-//
-//
-////                       if Form1.IBTMPOPL.FindField('OPL_'+Form1.IBTMPWIDWID.Value)<> nil then
-////                       begin
-////                       Form1.IBTMPOPL.Insert;
-////                       Form1.IBTMPOPL.FieldByName('SCHET').Value := trim(Form1.ADOOPL.FieldByName('schet').Value);
-////                       Form1.IBTMPOPL.FieldByName('DT').Value := Form1.ADOOPL.FieldByName('DT').Value;
-////                       Form1.IBTMPOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).Value := Form1.ADOOPL.FieldByName('OPL_'+Form1.IBTMPWIDWID.Value).AsCurrency;
-////                       Form1.IBTMPOPL.FieldByName('SUMM').Value := Form1.ADOOPL.FieldByName('OPL').AsCurrency;
-////                       Form1.IBTMPOPL.Post;
-////                       end;
-//                Form1.IBTMPWID.Next;
-//                end;
-//
-//
-//     end;
-
-//     cxGridDBTableView1.Columns[3].DataBinding.FieldName:='opl_ub';
-//     cxGridDBTableView1.Columns[3].DataBinding.ValueType:='Currency';
-//     cxGridDBTableView1.Columns[3].Visible:=true;
-//cxGridDBTableView1.DataController.CreateAllItems;
-//     colum:=cxGridDBTableView1.CreateColumn;
-//     colum.DataBinding.FieldName:='DT';
-//     colum.DataBinding.ValueType:='DateTime';
-
-
-
-//     cxGridDBTableView1.Columns[2].DataBinding.FieldName:='OPL_sn';
-//     cxGridDBTableView1.Columns[2].DataBinding.ValueType:='Currency';
-//     cxGridDBTableView1.Columns[2].Visible:=true;
 
 
      IBKOBOR.ParamByName('sch').Value:=IBKARTSCHET.Value;
@@ -397,10 +360,21 @@ else
 
 end;
 
+procedure TForm12.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ if IBABONINF.State in [dsInsert,dsEdit] then IBABONINF.Post;
+Form1.IBTransaction1.CommitRetaining;
+end;
+
 procedure TForm12.FormCreate(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
 cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
+end;
+
+procedure TForm12.FormShow(Sender: TObject);
+begin
+cxDBTextEdit10.SetFocus;
 end;
 
 procedure TForm12.N11Click(Sender: TObject);
