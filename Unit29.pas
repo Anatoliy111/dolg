@@ -8,7 +8,10 @@ uses
   cxLookAndFeelPainters, Vcl.Menus, cxControls, cxContainer, cxEdit,
   Data.Win.ADODB, Data.DB, IBX.IBCustomDataSet, IBX.IBQuery, cxLabel,
   Vcl.StdCtrls, cxTextEdit, cxButtons, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox, dbf,dbf_common,DateUtils;
+  cxDBLookupEdit, cxDBLookupComboBox, dbf,dbf_common,DateUtils, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, cxDBData,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
+  cxClasses, cxGridCustomView, cxGrid;
 
 type
   TForm29 = class(TForm)
@@ -38,6 +41,9 @@ type
     IBQuery1DOLG: TFloatField;
     IBQuery1FULLOPL: TFloatField;
     IBQuery1SUMMA: TFloatField;
+    IBQuery1CODSCHET: TIBStringField;
+    IBQuery2: TIBQuery;
+    IBQuery2TARSUBS: TFloatField;
     procedure cxButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -56,7 +62,7 @@ var
      period: TDateTime;
           kolborg,kolschet,kolcod,koltarif,kolpidtverd:integer;
      Rows, Columns, zip: Integer;
-     DirExtrFile, FilePath, FileName,StartFileName,StartFilePath : String;
+     DirExtrFile, FilePath, FileName,StartFileName,StartFilePath,FileNameZip : String;
 
 implementation
 
@@ -103,7 +109,8 @@ begin
          begin
             zip:=1;
            // DirExtrFile:=LeftStr(OpenDialog1.FileName,Pos('.',OpenDialog1.FileName)-1);
-            DirExtrFile:=StartFilePath+LeftStr(StartFileName,23);
+            DirExtrFile:=StartFilePath+LeftStr(StartFileName,14)+'_'+MidStr(StartFileName,20,2)+MidStr(StartFileName,22,2);
+            FileNameZip:=LeftStr(StartFileName,14)+'_'+MidStr(StartFileName,20,2)+MidStr(StartFileName,22,2);
             if DirectoryExists(DirExtrFile) then  TDirectory.Delete(DirExtrFile, true);
             cxLookupComboBox1.EditValue:=StrToDate('01.'+MidStr(StartFileName,20,2)+'.'+MidStr(StartFileName,16,4));
          end;
@@ -305,7 +312,7 @@ xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
 var i,nn,kolst,kk,stsch,ii,kolsch:integer;
     sum,sumExcel,allsum,tar:currency;
-    cod,sss1,sch,str,nam,klasf,vid_rob,n_kres,gost,dekada,sss,ppsch:string;
+    cod,sss1,sch,str,nam,klasf,vid_rob,n_kres,gost,dekada,sss,ppsch,codschet:string;
     kolwith,rowh,rowh1:Variant;
     f1:boolean;
     pathDBF,Path:string;
@@ -317,6 +324,7 @@ var i,nn,kolst,kk,stsch,ii,kolsch:integer;
     oldsch,strsch : String;
     schchar:pchar;
     Arch: I7zOutArchive;
+
 
 
 begin
@@ -357,12 +365,14 @@ begin
     MsExcel := CreateOleObject('Excel.Application');
     //    MsExcel.Workbooks.Add;
     MsExcel.Workbooks.Open[DirExtrFile+'\query_36188893.csv'];
+    FileName:=DirExtrFile+'\query_36188893.csv';
    end
    else
    begin
          MsExcel := CreateOleObject('Excel.Application');
     //    MsExcel.Workbooks.Add;
          MsExcel.Workbooks.Open[OpenDialog1.FileName];
+         FileName:=OpenDialog1.FileName;
    end;
 
    Form29.Enabled:=false;
@@ -427,8 +437,8 @@ begin
 //          end;
 
 
-          if trim(MsExcel.WorkSheets[1].Cells[i,kolschet])='88117' then
-            sss1:='';
+//          if trim(MsExcel.WorkSheets[1].Cells[i,kolschet])='68010' then
+//            sss1:='';
 
 
 
@@ -445,35 +455,52 @@ begin
            sum:=0;
 
 
-
+           ssch:='';
            IBQuery1.First;
-           ssch := IBQuery1.Lookup('sch', sch, 'sch');
-           cod:=MsExcel.WorkSheets[1].Cells[i,kolcod];
-
-           if ssch <> null then
+          // ssch := IBQuery1.Lookup('sch', sch, 'sch');
+           if IBQuery1.Locate('sch',sch,[]) then
            begin
+              ssch := IBQuery1.FieldByName('sch').Value;
+              cod:=trim(MsExcel.WorkSheets[1].Cells[i,kolcod]);
+           end;
 
-             scod := IBQuery1.Lookup('sch;cod', VarArrayOf([sch, cod]), 'cod');
-             if scod <> null then
-                MsExcel.WorkSheets[1].Cells[i,kolpidtverd]:=1
+
+
+           if Length(ssch)<>0 then
+           begin
+             IBQuery1.First;
+             codschet := cod+ssch;
+             if IBQuery1.Locate('codschet',codschet,[]) then
+             begin
+                MsExcel.WorkSheets[1].Cells[i,kolpidtverd]:=1;
+                if IBQuery1.FieldByName('tarsubs').Value=0 then
+                begin
+                   IBQuery2.close;
+                   IBQuery2.ParamByName('sch').AsString:=ssch;
+                   IBQuery2.ParamByName('wid').AsString:=IBQuery1.FieldByName('wid').Value;
+                   IBQuery2.Open;
+                   if IBQuery2.RecordCount<>0 then
+                      sss1:=VarToStr(IBQuery2.FieldByName('tarsubs').Value);
+
+                end
+                else
+                sss1:=VarToStr(IBQuery1.FieldByName('tarsubs').Value);
+
+
+
+                MsExcel.WorkSheets[1].Cells[i,koltarif]:=sss1;
+
+
+
+
+                 sum:=IBQuery1.FieldByName('summa').Value;
+                 if sum<=0 then sum:=0
+                 else MsExcel.WorkSheets[1].Cells[i,kolborg]:=sum;
+
+             end
              else
                 MsExcel.WorkSheets[1].Cells[i,kolpidtverd]:=0;
 
-             star := IBQuery1.Lookup('sch;cod', VarArrayOf([sch, cod]), 'tarsubs');
-             if star <> null then
-                begin
-                tar:=star;
-                sss1:=VarToStr(star);
-                MsExcel.WorkSheets[1].Cells[i,koltarif]:=sss1;
-                end;
-
-             ssum := IBQuery1.Lookup('sch;cod', VarArrayOf([sch, cod]), 'summa');
-             if ssum <> null then
-             begin
-                 sum:=ssum;
-                 if sum<=0 then sum:=0
-                 else MsExcel.WorkSheets[1].Cells[i,kolborg]:=sum;
-             end;
            end
            else
            begin
@@ -518,28 +545,47 @@ begin
     //    if SaveDialog1.Execute then begin
           if zip=1 then
           begin
-            FileName:=DirExtrFile+'\'+LeftStr(StartFileName,23)+'.csv';
-            MsExcel.Application.Workbooks[1].SaveAs(FileName,-4143);
-            MsExcel.Application.Workbooks[1].save;
-            MsExcel.Application.Workbooks[1].Close;
-            MsExcel.Application.Quit;
-            MsExcel := null;
-            DeleteFile(DirExtrFile+'\query_36188893.csv');
+          MsExcel.DisplayAlerts := false;
+     //     FileName:=DirExtrFile+'\'+LeftStr(StartFileName,23)+'.csv';
+           // MsExcel.Application.Workbooks[1].SaveAs(FileName,23);
+//            MsExcel.Application.Workbooks[1].save;
+          MsExcel.ActiveWorkbook.save;
+          MsExcel.ActiveWorkbook.Close;
+          MsExcel.Application.Quit;
+          MsExcel := null;
+//            MsExcel.Application.Workbooks[1].save;
+//            MsExcel.Application.Workbooks[1].Close;
+//            MsExcel.Workbooks.Close;
+//        //    MsExcel.Application.close;
+//            MsExcel.Application.Quit;
+//            MsExcel.Application.Free;
+//
+//            MsExcel.Quit;
+//
+//            MsExcel := null;
+//               MsExcel.Free;
+           // DeleteFile(DirExtrFile+'\query_36188893.csv');
             DeleteFile(DirExtrFile+'\query_36188893.xml');
-            Arch := CreateOutArchive(CLSID_CFormat7z);
-            Arch.AddFile(FileName,LeftStr(StartFileName,23)+'.csv');
-            Arch.SaveToFile(StartFilePath+LeftStr(StartFileName,23)+'.zip');
+            DeleteFile(DirExtrFile+'.zip');
+            Sleep(1000);
+            cmd:=GetCurrentDir+'\winrar\winrar.exe a -afzip '+DirExtrFile+'.zip '+FileName;
+            ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_SHOW);
+            Sleep(1000);
+//            Arch := CreateOutArchive(CLSID_CFormat7z);
+//            Arch.AddFile(FileName,'query_36188893.csv');
+//            Arch.SaveToFile(DirExtrFile+'.zip');
             if DirectoryExists(DirExtrFile) then  TDirectory.Delete(DirExtrFile, true);
-            ShowMessage('Реєстр збережено в файл:'#10+StartFilePath+LeftStr(StartFileName,23)+'.zip');
-            MemoLog.Lines.Add('Реєстр збережено в файл:'#10+StartFilePath+LeftStr(StartFileName,23)+'.zip');
+            Application.ProcessMessages;
+            ShowMessage('Реєстр збережено в файл:'#10+DirExtrFile+'.zip');
+            MemoLog.Lines.Add('Реєстр збережено в файл:'#10+DirExtrFile+'.zip');
             Application.ProcessMessages;
           end
           else
           begin
             FileName:=OpenDialog1.FileName;
-            MsExcel.Application.Workbooks[1].SaveAs(FileName,-4143);
+            MsExcel.Application.Workbooks[1].SaveAs(FileName,23);
             MsExcel.Application.Workbooks[1].save;
-            MsExcel.Application.Workbooks[1].Close;
+           // MsExcel.Application.Workbooks[1].Close;
             MsExcel.Application.Quit;
             MsExcel := null;
             ShowMessage('Реєстр збережено в файл:'#10+OpenDialog1.FileName);

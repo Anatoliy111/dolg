@@ -188,8 +188,9 @@ object Form29: TForm29
     ParamCheck = True
     SQL.Strings = (
       
-        'select wid.cod, t2.wid, trim(t2.schet) as sch, oo.tarsubs,vo.dol' +
-        'g,t2.fullopl,vo.dolg-t2.fullopl as summa from'
+        'select trim(wid.cod) || trim(t2.schet) as codschet, wid.cod, t2.' +
+        'wid, trim(t2.schet) as sch, oo.tarsubs,vo.dolg,t2.fullopl,vo.dol' +
+        'g-t2.fullopl as summa from'
       
         '                        (select wid, schet, sum(fullopl) fullopl' +
         ' from vw_obor where period>=:d3 and period<=:d4'
@@ -207,22 +208,25 @@ object Form29: TForm29
     Top = 274
     ParamData = <
       item
-        DataType = ftUnknown
+        DataType = ftWideString
         Name = 'd3'
         ParamType = ptUnknown
+        Value = '01.01.2023'
       end
       item
-        DataType = ftUnknown
+        DataType = ftWideString
         Name = 'd4'
         ParamType = ptUnknown
+        Value = '01.04.2023'
       end
       item
-        DataType = ftUnknown
+        DataType = ftWideString
         Name = 'd0'
         ParamType = ptUnknown
+        Value = '01.01.2023'
       end
       item
-        DataType = ftUnknown
+        DataType = ftWideString
         Name = 'd4'
         ParamType = ptUnknown
       end>
@@ -256,6 +260,39 @@ object Form29: TForm29
     object IBQuery1SUMMA: TFloatField
       FieldName = 'SUMMA'
       ProviderFlags = []
+    end
+    object IBQuery1CODSCHET: TIBStringField
+      FieldName = 'CODSCHET'
+      ProviderFlags = []
+      Size = 15
+    end
+  end
+  object IBQuery2: TIBQuery
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    ParamCheck = True
+    SQL.Strings = (
+      
+        'select first 1 tarsubs from obor where tarsubs<>0 and schet=:sch' +
+        ' and wid=:wid order by period desc')
+    Left = 415
+    Top = 330
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'sch'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'wid'
+        ParamType = ptUnknown
+      end>
+    object IBQuery2TARSUBS: TFloatField
+      FieldName = 'TARSUBS'
+      Origin = '"OBOR"."TARSUBS"'
     end
   end
 end
