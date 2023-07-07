@@ -10,7 +10,8 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxClasses, cxGridCustomView, cxGrid, cxDropDownEdit, cxCalc, cxTextEdit,
   cxMaskEdit, cxLabel, Vcl.StdCtrls, cxButtons, cxGroupBox, Vcl.ExtCtrls,
-  IBX.IBCustomDataSet,cxCurrencyEdit, IBX.IBQuery, cxDBEdit, cxDBLabel;
+  IBX.IBCustomDataSet,cxCurrencyEdit, IBX.IBQuery, cxDBEdit, cxDBLabel,
+  Vcl.DBCtrls, cxCheckGroup, cxDBCheckGroup;
 
 type
   TForm17 = class(TForm)
@@ -106,6 +107,19 @@ type
     cxDBLabel4: TcxDBLabel;
     cxDBLabel5: TcxDBLabel;
     cxGridDBTableView2MESSAGEID: TcxGridDBColumn;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    DBMemo1: TDBMemo;
+    IBSMSORDEREDSVID_SMS: TIntegerField;
+    IBSMSORDEREDSTEXT_SMS: TIBStringField;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    RadioButton1: TRadioButton;
+    RadioButton2: TRadioButton;
+    cxLabel3: TcxLabel;
+    cxLabel8: TcxLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -133,6 +147,10 @@ type
     procedure cxGridDBTableView2CustomDrawCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
       var ADone: Boolean);
+    procedure DBMemo1Change(Sender: TObject);
+    procedure cxDBCheckBox1PropertiesChange(Sender: TObject);
+    procedure RadioButton1Click(Sender: TObject);
+    procedure RadioButton2Click(Sender: TObject);
 
   private
 
@@ -183,9 +201,8 @@ var
 begin
 Form18.id_orders:=id_orders;
 Form18.Caption:='Додати абонентів '+Form17.Caption;
+Form18.cxCheckBox1.Checked:=false;
 Form18.Show;
-
-
 end;
 
 
@@ -292,6 +309,7 @@ begin
 //  ws.Auth('tsmsb','tsmsb1234');
   try
     ws.Auth(Form1.IBSERVICESSMSLOGIN.Value,Form1.IBSERVICESSMSPW.Value);
+//    ws.Auth('dddsmsddd','Register~99');
     with ws do
     begin
        Form16.balanslabel(ws.GetCreditBalance);
@@ -316,7 +334,7 @@ begin
        IBSMSLIST.First;
         while not IBSMSLIST.Eof do
        begin
-       send:=ws.SendSMS('Msg',IBSMSLISTTEL.AsString,IBSMSLISTTEXT.AsString,'');
+       send:=ws.SendSMS(Form1.IBSERVICESSMSALPHA.Value,IBSMSLISTTEL.AsString,IBSMSLISTTEXT.AsString,'');
        IBSMSLIST.Edit;
        IBSMSLISTMESSAGEID.Value:=send[1];
        IBSMSLISTSTATUS.Value:=send[0];
@@ -391,13 +409,24 @@ begin
          if IBSMSLIST.RecordCount=0 then
             exit;
 
-
-
+                       Form2.Label1.Caption:='Додати відмічені';
+                Form2.cxProgressBar1.Properties.Min:=0;
+                Form2.cxProgressBar1.Properties.Max:=0;
+                Form2.cxProgressBar1.Position:=0;
+                Application.ProcessMessages;
+                form2.SHOW;
+       DSSMSLIST.Enabled:=false;
        IBSMSLIST.First;
+       Form2.cxProgressBar1.Properties.Max:=IBSMSLIST.RecordCount-1;
        while not IBSMSLIST.Eof do
        begin
+                       Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+                Application.ProcessMessages;
+
                    IBSMSLIST.Edit;
-                   smstext:=IBSMSLISTTEXTNOTTR.Value;
+                   if IBSMSORDEREDSVID_SMS.Value=0 then smstext:=DBMemo1.Text
+                   else smstext:=IBSMSLISTTEXTNOTTR.Value;
+
                    if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
                    begin
                      if Length(smstext)>70 then
@@ -420,8 +449,8 @@ begin
 
        IBSMSLIST.Next;
        end;
-
-
+       form2.close;
+       DSSMSLIST.Enabled:=true;
 
 end;
 
@@ -434,7 +463,13 @@ end;
 
 procedure TForm17.cxButton9Click(Sender: TObject);
 begin
-Form16.cxButton1.Click;
+Form16.balans;
+end;
+
+procedure TForm17.cxDBCheckBox1PropertiesChange(Sender: TObject);
+begin
+DBMemo1Change(Sender);
+
 end;
 
 procedure TForm17.cxGrid1DBTableView1CustomDrawCell(
@@ -484,6 +519,22 @@ cxButton4.Enabled:=false;
 cxButton6.Enabled:=false;
   cxDBCheckBox1.Enabled:=true;
 
+  if IBSMSORDEREDSVID_SMS.Value=0 then DBMemo1.Enabled:=true
+  else DBMemo1.Enabled:=false;
+
+  if IBSMSORDEREDSVID_SMS.Value=0 then
+  begin
+     DBMemo1.Enabled:=true;
+     RadioButton1.Checked:=true;
+     RadioButton2.Checked:=false;
+  end
+  else
+  begin
+     DBMemo1.Enabled:=false;
+     RadioButton1.Checked:=false;
+     RadioButton2.Checked:=true;
+  end;
+
 
 if id_orders<>0 then
 begin
@@ -525,6 +576,8 @@ begin
 
   Caption:='Пачка №'+int2str(id_orders);
 
+
+
 end
 else
 exit;
@@ -546,11 +599,31 @@ begin
 //Accept:=(Pos(cxTextEdit4.Text, DataSet.FieldByName('tel').AsString) > 0);
 Accept:=Length(DataSet.FieldByName('tel').AsString) > 0;
 //Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0) and (Pos(cxTextEdit4.Text, DataSet.FieldByName('schet').AsString) > 0)
-
-
-
 end;
 
+
+procedure TForm17.RadioButton1Click(Sender: TObject);
+begin
+  if RadioButton1.Checked then
+  begin
+     IBSMSORDEREDS.Edit;
+     IBSMSORDEREDSVID_SMS.Value:=0;
+     IBSMSORDEREDS.Post;
+     DBMemo1.Enabled:=true;
+  end;
+end;
+
+procedure TForm17.RadioButton2Click(Sender: TObject);
+begin
+  if RadioButton2.Checked then
+  begin
+     IBSMSORDEREDS.Edit;
+     IBSMSORDEREDSVID_SMS.Value:=1;
+     IBSMSORDEREDS.Post;
+     DBMemo1.Enabled:=false;
+  end;
+
+end;
 
 procedure TForm17.cxGrid1DBTableView1TELPropertiesValidate(Sender: TObject;
   var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
@@ -628,11 +701,38 @@ begin
        if (str2float(AText)=0) then
        begin
          cxButton5.Enabled:=false;
-         cxButton6.Enabled:=false;
+//         cxButton6.Enabled:=false;
          cxLabel18.Style.TextColor:=clRed;
          cxLabel5.Style.TextColor:=clRed;
 
        end;
+
+end;
+
+procedure TForm17.DBMemo1Change(Sender: TObject);
+var smstext:string;
+begin
+
+Label4.Caption:=IntToStr(Length(DBMemo1.Text));
+
+                   smstext:=DBMemo1.Text;
+
+                   if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
+                   begin
+                     if Length(smstext)>70 then
+                     begin
+                        smstext:=Translit2Lat(smstext);
+                         Label5.Caption:=IntToStr(iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1));
+                     end
+                     else
+                         Label5.Caption:=IntToStr(1);
+                   end
+                   else
+                   begin
+
+
+                      Label5.Caption:=IntToStr(iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/70))+1));
+                   end;
 
 end;
 

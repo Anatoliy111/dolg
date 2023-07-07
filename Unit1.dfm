@@ -586,12 +586,11 @@ object Form1: TForm1
     end
     object cxButton4: TcxButton
       Left = 799
-      Top = 94
-      Width = 121
+      Top = 108
+      Width = 154
       Height = 25
       Caption = #1042#1110#1076#1087#1088#1072#1074#1082#1072' SMS'
       TabOrder = 3
-      Visible = False
       OnClick = cxButton4Click
     end
     object cxButton10: TcxButton
@@ -631,14 +630,15 @@ object Form1: TForm1
   end
   object cxButton7: TcxButton
     Left = 799
-    Top = 91
-    Width = 183
+    Top = 105
+    Width = 154
     Height = 25
     Caption = 'Viber '#1087#1086#1074#1110#1076#1086#1084#1083#1077#1085#1085#1103
     TabOrder = 7
     OnClick = cxButton7Click
   end
   object IBDatabase1: TIBDatabase
+    Connected = True
     DatabaseName = 'D:\WORK\KOMUN\DOLG\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'
@@ -718,7 +718,7 @@ object Form1: TForm1
   end
   object DSADRESKR: TDataSource
     DataSet = IBADRESKR
-    Left = 96
+    Left = 104
     Top = 416
   end
   object IBADRESKR: TIBDataSet
@@ -1460,9 +1460,13 @@ object Form1: TForm1
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
       'insert into SERVICES'
-      '  (KL, DATA, UPDATES, SMSLOGIN, SMSPW, SMSTRANSLIT)'
+      
+        '  (KL, DATA, UPDATES, SMSLOGIN, SMSPW, SMSTRANSLIT, SMSALPHA, SM' +
+        'SCENA)'
       'values'
-      '  (:KL, :DATA, :UPDATES, :SMSLOGIN, :SMSPW, :SMSTRANSLIT)')
+      
+        '  (:KL, :DATA, :UPDATES, :SMSLOGIN, :SMSPW, :SMSTRANSLIT, :SMSAL' +
+        'PHA, :SMSCENA)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
@@ -1470,7 +1474,9 @@ object Form1: TForm1
       '  UPDATES,'
       '  SMSLOGIN,'
       '  SMSPW,'
-      '  SMSTRANSLIT'
+      '  SMSTRANSLIT,'
+      '  SMSALPHA,'
+      '  SMSCENA'
       'from SERVICES '
       'where'
       '  KL = :KL')
@@ -1484,7 +1490,9 @@ object Form1: TForm1
       '  UPDATES = :UPDATES,'
       '  SMSLOGIN = :SMSLOGIN,'
       '  SMSPW = :SMSPW,'
-      '  SMSTRANSLIT = :SMSTRANSLIT'
+      '  SMSTRANSLIT = :SMSTRANSLIT,'
+      '  SMSALPHA = :SMSALPHA,'
+      '  SMSCENA = :SMSCENA'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -1496,6 +1504,7 @@ object Form1: TForm1
     object IBSERVICESKL: TIntegerField
       FieldName = 'KL'
       Origin = '"SERVICES"."KL"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object IBSERVICESDATA: TDateField
@@ -1509,16 +1518,24 @@ object Form1: TForm1
     object IBSERVICESSMSLOGIN: TIBStringField
       FieldName = 'SMSLOGIN'
       Origin = '"SERVICES"."SMSLOGIN"'
-      Size = 10
     end
     object IBSERVICESSMSPW: TIBStringField
       FieldName = 'SMSPW'
       Origin = '"SERVICES"."SMSPW"'
-      Size = 10
+      Size = 60
     end
     object IBSERVICESSMSTRANSLIT: TSmallintField
       FieldName = 'SMSTRANSLIT'
       Origin = '"SERVICES"."SMSTRANSLIT"'
+    end
+    object IBSERVICESSMSALPHA: TIBStringField
+      FieldName = 'SMSALPHA'
+      Origin = '"SERVICES"."SMSALPHA"'
+      Size = 11
+    end
+    object IBSERVICESSMSCENA: TFloatField
+      FieldName = 'SMSCENA'
+      Origin = '"SERVICES"."SMSCENA"'
     end
   end
   object dxBarManager1: TdxBarManager
@@ -3395,6 +3412,7 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
+    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (
@@ -3873,14 +3891,17 @@ object Form1: TForm1
       
         '  (ID, DATA, SEND, CONTROL, PERIOD, DOLG, KOL_SENDSMS, KOL_SEND,' +
         ' KOL_ERR, '
-      '   KOL_DOST, KOL_DOSTSMS, ID_USER, POSL, TRANSLIT)'
+      
+        '   KOL_DOST, KOL_DOSTSMS, ID_USER, POSL, TRANSLIT, VID_SMS, TEXT' +
+        '_SMS)'
       'values'
       
         '  (:ID, :DATA, :SEND, :CONTROL, :PERIOD, :DOLG, :KOL_SENDSMS, :K' +
         'OL_SEND, '
       
         '   :KOL_ERR, :KOL_DOST, :KOL_DOSTSMS, :ID_USER, :POSL, :TRANSLIT' +
-        ')')
+        ', :VID_SMS, '
+      '   :TEXT_SMS)')
     RefreshSQL.Strings = (
       'Select *'
       'from smsordereds '
@@ -3906,7 +3927,9 @@ object Form1: TForm1
       '  KOL_DOSTSMS = :KOL_DOSTSMS,'
       '  ID_USER = :ID_USER,'
       '  POSL = :POSL,'
-      '  TRANSLIT = :TRANSLIT'
+      '  TRANSLIT = :TRANSLIT,'
+      '  VID_SMS = :VID_SMS,'
+      '  TEXT_SMS = :TEXT_SMS'
       'where'
       '  ID = :OLD_ID')
     ParamCheck = True
@@ -3977,9 +4000,18 @@ object Form1: TForm1
       FieldName = 'KOL_DOSTSMS'
       Origin = '"SMSORDEREDS"."KOL_DOSTSMS"'
     end
+    object IBSMSORDEREDSVID_SMS: TIntegerField
+      FieldName = 'VID_SMS'
+      Origin = '"SMSORDEREDS"."VID_SMS"'
+    end
+    object IBSMSORDEREDSTEXT_SMS: TIBStringField
+      FieldName = 'TEXT_SMS'
+      Origin = '"SMSORDEREDS"."TEXT_SMS"'
+      Size = 1000
+    end
   end
   object DSSMSORDEREDS: TDataSource
-    DataSet = IBVIBER_SEND
+    DataSet = IBSMSORDEREDS
     Left = 472
     Top = 312
   end

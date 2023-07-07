@@ -1,0 +1,1 @@
+d:\WORK\KOMUN\dolg\winrar\winrar.exe a -ep -afzip d:\Downloads\query_36188893_0513.zip d:\Downloads\query_36188893_0513\query_36188893.csv

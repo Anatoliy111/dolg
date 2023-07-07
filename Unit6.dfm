@@ -22,6 +22,7 @@ object Form6: TForm6
     Height = 161
     Align = alTop
     TabOrder = 0
+    ExplicitTop = -6
     object DBNavigator1: TDBNavigator
       Left = 10
       Top = 122
@@ -64,6 +65,32 @@ object Form6: TForm6
       Left = 200
       Top = 9
       Caption = #1055#1072#1088#1086#1083#1100' SMS'
+    end
+    object cxLabel3: TcxLabel
+      Left = 56
+      Top = 65
+      Caption = #1040#1083#1100#1092#1072' '#1110#1084#39#1103
+    end
+    object cxDBTextEdit3: TcxDBTextEdit
+      Left = 32
+      Top = 88
+      DataBinding.DataField = 'SMSALPHA'
+      DataBinding.DataSource = Form1.DSSERVICES
+      TabOrder = 7
+      Width = 121
+    end
+    object cxLabel4: TcxLabel
+      Left = 200
+      Top = 65
+      Caption = #1062#1110#1085#1072' '#1089#1084#1089' '
+    end
+    object cxDBTextEdit4: TcxDBTextEdit
+      Left = 176
+      Top = 88
+      DataBinding.DataField = 'SMSCENA'
+      DataBinding.DataSource = Form1.DSSERVICES
+      TabOrder = 9
+      Width = 121
     end
   end
   object cxGrid1: TcxGrid

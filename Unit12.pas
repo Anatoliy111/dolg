@@ -172,12 +172,12 @@ type
     cxButton4: TcxButton;
     Label16: TLabel;
     cxDBMaskEdit1: TcxDBMaskEdit;
-    cxMaskEdit1: TcxMaskEdit;
     IBABONINF: TIBDataSet;
     DSABONINF: TDataSource;
     IBABONINFID: TIntegerField;
     IBABONINFSCHET: TIBStringField;
     IBABONINFTEL: TIBStringField;
+    N1: TMenuItem;
     procedure cxButton1Click(Sender: TObject);
     procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -188,6 +188,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure cxDBMaskEdit1PropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure N1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -382,6 +383,18 @@ begin
 Form25.sch:=cxTextEdit1.Text;
 Form25.Caption:=Form12.N11.Caption+' '+cxTextEdit1.Text;
 Form25.cxLabel1.Caption:=Form12.N11.Caption+' '+cxTextEdit1.Text;
+Form25.cxLookupComboBox2.Visible:=false;
+Form25.vid:=1;
+Form25.Show;
+end;
+
+procedure TForm12.N1Click(Sender: TObject);
+begin
+Form25.sch:=cxTextEdit1.Text;
+Form25.Caption:=Form12.N11.Caption+' '+cxTextEdit1.Text;
+Form25.cxLabel1.Caption:=Form12.N1.Caption+' '+cxTextEdit1.Text;
+Form25.cxLookupComboBox2.Visible:=true;
+Form25.vid:=2;
 Form25.Show;
 end;
 

@@ -53,6 +53,7 @@ object Form11: TForm11
     Left = 56
     Top = 112
     TabOrder = 2
+    OnKeyPress = cxMaskEdit1KeyPress
     Width = 193
   end
   object cxLookupComboBox1: TcxLookupComboBox

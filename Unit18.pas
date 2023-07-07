@@ -37,8 +37,6 @@ type
     cxCalcEdit2: TcxCalcEdit;
     cxButton7: TcxButton;
     cxLabel12: TcxLabel;
-    cxButton3: TcxButton;
-    cxLabel14: TcxLabel;
     cxLabel2: TcxLabel;
     cxCheckBox1: TcxCheckBox;
     IBWID: TIBDataSet;
@@ -49,6 +47,7 @@ type
     DSWID: TDataSource;
     IBREP: TIBDataSet;
     DSREP: TDataSource;
+    cxButton4: TcxButton;
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
@@ -60,6 +59,8 @@ type
     procedure cxButton7Click(Sender: TObject);
     procedure cxCheckBox3PropertiesChange(Sender: TObject);
     procedure cxCheckBox1PropertiesChange(Sender: TObject);
+    procedure cxButton4Click(Sender: TObject);
+    procedure cxButton1Click(Sender: TObject);
   private
       function genSQL():string;
     { Private declarations }
@@ -68,6 +69,8 @@ type
     { Public declarations }
         procedure OnTELPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+        procedure OnCHPropertiesChange(Sender: TObject);
+        procedure OnCHPropertiesChange1(Sender: TObject);
 
   end;
 
@@ -84,7 +87,7 @@ function TForm18.genSQL():string;
 var SQL,strSAL,strFIELD,strMAXFIELD,strSUM,strWhere,whereposl:string;
 begin
 
-      SQL:='select 0 as ch,period,kontrol,schet,fio,ulnaim,nomdom,nomkv,tel,';
+      SQL:='select 0 as ch,period,schet,fio,ulnaim,nomdom,nomkv,tel,';
 //      SQL:=SQL+'cast('''+''+''' as varchar(300)) SMS,';
 
       strSAL:='';
@@ -97,11 +100,22 @@ begin
                 begin
                       if IBWIDCH.Value=1 then
                       begin
-                      posl:=posl+IBWIDWID.Value+',';
-                      strSUM:=strSUM+'COALESCE(max('+IBWIDWID.Value+'),0)+';
-                      strMAXFIELD:=strMAXFIELD+'COALESCE(max('+IBWIDWID.Value+'),0) '+IBWIDWID.Value+',';
-                      strFIELD:=strFIELD+'case wid when '''+IBWIDWID.Value+''' then dolg else null end as '+IBWIDWID.Value+',';
-                      whereposl:=whereposl+IBWIDWID.Value+cxComboBox2.EditValue+'0 or ';
+                      if IBWIDWID.Value='as' then
+                        begin
+                          posl:=posl+'ass,';
+                          strSUM:=strSUM+'COALESCE(max(ass),0)+';
+                          strMAXFIELD:=strMAXFIELD+'COALESCE(max(ass),0) ass,';
+                          strFIELD:=strFIELD+'case wid when '''+IBWIDWID.Value+''' then dolg else null end as ass,';
+                          whereposl:=whereposl+'ass'+cxComboBox2.EditValue+'0 or ';
+                        end
+                      else
+                        begin
+                          posl:=posl+IBWIDWID.Value+',';
+                          strSUM:=strSUM+'COALESCE(max('+IBWIDWID.Value+'),0)+';
+                          strMAXFIELD:=strMAXFIELD+'COALESCE(max('+IBWIDWID.Value+'),0) '+IBWIDWID.Value+',';
+                          strFIELD:=strFIELD+'case wid when '''+IBWIDWID.Value+''' then dolg else null end as '+IBWIDWID.Value+',';
+                          whereposl:=whereposl+IBWIDWID.Value+cxComboBox2.EditValue+'0 or ';
+                        end;
                       end;
 
                 IBWID.Next;
@@ -114,12 +128,12 @@ begin
                 Delete(whereposl, Length(whereposl)-3, 3);
                 strWhere:='where '+strWhere+'('+whereposl+')';
                 strSAL:=strSUM+' as SAL,';
-                SQL:=SQL+strSAL+strMAXFIELD+' from(select vw_obkr.period,vw_obkr.kontrol,vw_obkr.schet,vw_obkr.fio,vw_obkr.ulnaim,vw_obkr.nomdom,vw_obkr.nomkv,aboninf.tel,'+strFIELD;
+                SQL:=SQL+strSAL+strMAXFIELD+' from(select vw_obkr.period,vw_obkr.schet,vw_obkr.fio,vw_obkr.ulnaim,vw_obkr.nomdom,vw_obkr.nomkv,aboninf.tel,'+strFIELD;
                 SQL:=SQL+' from vw_obkr join aboninf on (aboninf.schet=vw_obkr.schet) where vw_obkr.period=:dt)';
 //                if cxCheckBox1.Checked then
 //                   SQL:=SQL+strWhere;
                 SQL:=SQL+strWhere;
-                SQL:=SQL+' group by ch,period,schet,fio,ulnaim,nomdom,nomkv,kontrol,tel';
+                SQL:=SQL+' group by ch,period,schet,fio,ulnaim,nomdom,nomkv,tel';
 //                if cxCheckBox2.Checked then
                    SQL:=SQL+' having '+strSUM+' '+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase]);
 //                else
@@ -154,6 +168,77 @@ begin
       end;
 end;
 
+procedure TForm18.OnCHPropertiesChange(Sender: TObject);
+begin
+  IBREP.FieldByName('tel').Value;
+  IBREP.FieldByName('ch').Value;
+//
+
+//cxGrid1DBTableView1CH.EditValue;
+
+//sender.edit
+//
+//  if (IBREP.FieldByName('ch').Value=1) and (IBREP.FieldByName('tel').Value=null) then
+//  begin
+//    cxGrid1DBTableView1.DataController.Cancel;
+//    ShowMessage('Для позначення запису повинен бути телефон!!!');
+//
+//  end;
+//  else if (DisplayValue=1) and pos('_',VarToStr(IBREP.FieldByName('tel').Value))>0 then
+//  begin
+//
+//    ErrorText:='Для позначення запису повинен бути телефон 10 символів!!!';
+//    Error:=true;
+//
+//  end;
+end;
+
+procedure TForm18.OnCHPropertiesChange1(Sender: TObject);
+begin
+  IBREP.FieldByName('tel').Value;
+  IBREP.FieldByName('ch').Value;
+//
+
+//sender.ToString;
+//sender.UnitName;
+
+
+cxGrid1DBTableView1.DataController.GetItemByFieldName('CH').EditValue;
+//cxGrid1DBTableView1.
+
+//cxGrid1DBTableView1CH.EditValue;
+
+//sender.edit
+//
+//  if (IBREP.FieldByName('ch').Value=1) and (IBREP.FieldByName('tel').Value=null) then
+//  begin
+//    cxGrid1DBTableView1.DataController.Cancel;
+//    ShowMessage('Для позначення запису повинен бути телефон!!!');
+////
+//  end;
+
+  if (IBREP.FieldByName('tel').Value=null) then
+  begin
+    cxGrid1DBTableView1.DataController.Cancel;
+    ShowMessage('Для позначення запису повинен бути телефон!!!');
+//
+  end;
+//  else if (DisplayValue=1) and pos('_',VarToStr(IBREP.FieldByName('tel').Value))>0 then
+//  begin
+//
+//    ErrorText:='Для позначення запису повинен бути телефон 10 символів!!!';
+//    Error:=true;
+//
+//  end;
+end;
+
+procedure TForm18.cxButton1Click(Sender: TObject);
+begin
+if not IBREP.LocateNext('SCHET',cxTextEdit4.text,[loCaseInsensitive, loPartialKey]) then
+   ShowMessage('Пошук завершено!!!');
+
+end;
+
 procedure TForm18.cxButton2Click(Sender: TObject);
 var
     colum:TcxGridColumn;
@@ -179,7 +264,7 @@ begin
                 end;
 
 
-                IBREP.Close;
+                           IBREP.Close;
                 IBREP.SelectSQL.Text:=genSQL();
                 IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
                 cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
@@ -190,13 +275,7 @@ begin
                 if IBREP.RecordCount=0 then
                    exit;
 
-                cxButton7.Enabled:=true;
-
-
-
-
-
-  cxButton3.Enabled:=false;
+//  cxButton3.Enabled:=false;
 
 
 
@@ -208,7 +287,7 @@ begin
 
       cxGrid1DBTableView1.ClearItems;
 
-            acolumn:=cxGrid1DBTableView1.CreateColumn;
+      acolumn:=cxGrid1DBTableView1.CreateColumn;
       cxGridDBTableView1.BeginUpdate;
       acolumn.DataBinding.FieldName:='ch';
       acolumn.DataBinding.valuetype:='integer';
@@ -220,20 +299,24 @@ begin
       TcxCheckBoxProperties(acolumn.Properties).DisplayUnchecked:='0';
 
       acolumn.Options.Editing:=true;
+      acolumn.Properties.OnEditValueChanged:=OnCHPropertiesChange;
+      acolumn.Properties.OnChange:=OnCHPropertiesChange1;
+      AColumn.Summary.GroupFooterKind := skSum;
+
       cxGridDBTableView1.EndUpdate;
 
 
-      acolumn:=cxGrid1DBTableView1.CreateColumn;
-      cxGridDBTableView1.BeginUpdate;
-      acolumn.DataBinding.FieldName:='kontrol';
-      acolumn.DataBinding.valuetype:='string';
-      acolumn.Width:=80;
-      acolumn.Options.Editing:=false;
-      cxGridDBTableView1.EndUpdate;
+//      acolumn:=cxGrid1DBTableView1.CreateColumn;
+//      cxGridDBTableView1.BeginUpdate;
+//      acolumn.DataBinding.FieldName:='kontrol';
+//      acolumn.DataBinding.valuetype:='string';
+//      acolumn.Width:=80;
+//      acolumn.Options.Editing:=false;
+//      cxGridDBTableView1.EndUpdate;
 
       //AColumn.Summary.GroupFooterKind := skSum;
 
-      acolumn.Caption:='Контролер';
+//      acolumn.Caption:='Контролер';
 
       acolumn:=cxGrid1DBTableView1.CreateColumn;
       cxGridDBTableView1.BeginUpdate;
@@ -241,6 +324,7 @@ begin
       acolumn.DataBinding.valuetype:='string';
       acolumn.Options.Editing:=false;
       cxGridDBTableView1.EndUpdate;
+      AColumn.Summary.FooterKind := skCount;
 
       //AColumn.Summary.GroupFooterKind := skSum;
 
@@ -338,7 +422,12 @@ begin
 
                               acolumn:=cxGrid1DBTableView1.CreateColumn;
                               cxGrid1DBTableView1.BeginUpdate;
-                              acolumn.DataBinding.FieldName:=IBWIDWID.Value;
+
+                              if IBWIDWID.Value='as' then
+                                 acolumn.DataBinding.FieldName:='ass'
+                              else
+                                 acolumn.DataBinding.FieldName:=IBWIDWID.Value;
+
                               acolumn.DataBinding.valuetype:='Currency';
                               acolumn.Width:=70;
                               acolumn.Options.Editing:=false;
@@ -368,11 +457,13 @@ begin
 //     acolumn.Caption:='СМС';
 
 
+                cxButton7.Enabled:=true;
+
 
                 form2.close;
 
-       cxButton3.Enabled:=true;
-       cxButton7.Enabled:=false;
+    //   cxButton3.Enabled:=true;
+     //  cxButton7.Enabled:=false;
 //  ShowMessage('Звіт зформовано за '+mon_slovoDt(Form1.IBPERIODPERIOD.Value));
 
 end;
@@ -395,6 +486,14 @@ begin
     cxButton7.Enabled:=true;
 end;
 
+procedure TForm18.cxButton4Click(Sender: TObject);
+var date:string;
+begin
+
+DateTimeToString(date,'dd mm yyyy',now);
+Form1.ExportGrid(cxGrid1,'Відбір боржників');
+end;
+
 procedure TForm18.cxButton7Click(Sender: TObject);
 var r:integer;
     sqlfil,sql,smstext,poslnam1,poslsum1,strposl:string;
@@ -409,10 +508,10 @@ begin
           sqlfil:=sqlfil+' group';
 
 
-          IBREP.Close;
-          IBREP.SelectSQL.Text:=StringReplace(IBREP.SelectSQL.Text,'group',sqlfil,[rfReplaceAll, rfIgnoreCase]);
-          IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
-          IBREP.Open;
+//          IBREP.Close;
+//          IBREP.SelectSQL.Text:=StringReplace(IBREP.SelectSQL.Text,'group',sqlfil,[rfReplaceAll, rfIgnoreCase]);
+//          IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
+//          IBREP.Open;
 
 
 
@@ -451,12 +550,30 @@ begin
 //                IBSMSLIST.ParamByName('idord').Value:=id_orders;
 //                IBSMSLIST.Open;
 
+                Form2.Label1.Caption:='Додати відмічені';
+                Form2.cxProgressBar1.Properties.Min:=0;
+                Form2.cxProgressBar1.Properties.Max:=0;
+                Form2.cxProgressBar1.Position:=0;
+                Application.ProcessMessages;
+                form2.SHOW;
+
+                DSREP.Enabled:=false;
+                DSWID.Enabled:=false;
+                Form17.DSSMSLIST.Enabled:=false;
 
                   IBREP.First;
+                  Form2.cxProgressBar1.Properties.Max:=IBREP.RecordCount-1;;
 //                while (not IBREP.Eof) and (IBREP.FieldByName('ch').Value=1) do
                 while (not IBREP.Eof) do
+                begin
+                Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+                Application.ProcessMessages;
+                if IBREP.FieldByName('ch').AsInteger=0 then
+                begin
+                  IBREP.Next;
+                  Continue;
+                end;
 
-                 begin
                  kol_pos:=0;
                  IBWID.First;
                  while not IBWID.eof do
@@ -471,8 +588,11 @@ begin
                       IBWID.Next;
                       end;
 
-                 if kol_pos=0 then
-                    IBREP.Next;
+//                 if kol_pos=0 then
+//                 begin
+//                    IBREP.Next;
+//                    Continue;
+//                 end;
                  if kol_pos=1 then
                     smstext:=Form1.textsms1
                  else
@@ -513,7 +633,7 @@ begin
                         while not IBWID.eof do
                         begin
                            if (IBREP.FindField(IBWIDWID.Value)<>nil) and (IBREP.FindField(IBWIDWID.Value).Value<>0) then
-                              strposl:=strposl+IBWIDSNAIM.Value+':'+FloatToStr(IBREP.FindField(IBWIDWID.Value).Value)+' ';
+                              strposl:=strposl+trim(IBWIDSNAIM.Value)+':'+FloatToStr(IBREP.FindField(IBWIDWID.Value).Value)+' ';
                         IBWID.Next;
                         end;
                       smstext:=StringReplace(smstext,'[poslnamsum]',strposl,[rfReplaceAll, rfIgnoreCase]);
@@ -566,20 +686,39 @@ begin
         end;
 
         Form18.close;
-
+        form2.Close;
+        DSREP.Enabled:=true;
+        DSWID.Enabled:=true;
+        Form17.DSSMSLIST.Enabled:=true;
 end;
 
 procedure TForm18.cxCheckBox1PropertiesChange(Sender: TObject);
 begin
+                Form2.Label1.Caption:='Відмітка записів';
+                Form2.cxProgressBar1.Properties.Min:=0;
+                Form2.cxProgressBar1.Properties.Max:=0;
+                Form2.cxProgressBar1.Position:=0;
+                Application.ProcessMessages;
+                form2.SHOW;
+                DSREP.Enabled:=false;
+
      if cxCheckBox1.Checked then
      begin
                 IBREP.First;
+                Form2.cxProgressBar1.Properties.Max:=IBREP.RecordCount-1;
                 while not IBREP.eof do
                 begin
-                  IBREP.Edit;
-                  IBREP.FieldByName('ch').Value:=1;
-                  IBREP.Post;
-
+                Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+                Application.ProcessMessages;
+                  if (not IBREP.FieldByName('tel').IsNull) then
+                  begin
+                    if Length(Trim(IBREP.FieldByName('tel').Value))<>0 then
+                    begin
+                    IBREP.Edit;
+                    IBREP.FieldByName('ch').Value:=1;
+                    IBREP.Post;
+                    end;
+                  end;
                 IBREP.Next;
                 end;
                 IBREP.First;
@@ -587,8 +726,11 @@ begin
      else
      begin
                 IBREP.First;
+                Form2.cxProgressBar1.Properties.Max:=IBREP.RecordCount-1;
                 while not IBREP.eof do
                 begin
+                Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+                Application.ProcessMessages;
                   IBREP.Edit;
                   IBREP.FieldByName('ch').Value:=0;
                   IBREP.Post;
@@ -598,6 +740,8 @@ begin
                 IBREP.First;
 
      end;
+     DSREP.Enabled:=true;
+     form2.Close;
 end;
 
 procedure TForm18.cxCheckBox3PropertiesChange(Sender: TObject);
@@ -645,7 +789,7 @@ begin
 //or (IBREP.FieldByName('tel').AsString[1]<>'0')
 //if length(AViewInfo.GridRecord.DisplayTexts[cxGrid1DBTableView1.GetColumnByFieldName('tel').index])<10  then
 //ACanvas.Canvas.Brush.Color := $B9B9FF;
-IBREP.FieldByName('tel').AsString;
+//IBREP.FieldByName('tel').AsString;
 //if str2int(AViewInfo.GridRecord.DisplayTexts[cxGrid1DBTableView1.GetColumnByFieldName('tel').index])=0  then
 //ACanvas.Canvas.Brush.Color := $F9B9FF;
 //if length(AViewInfo.GridRecord.DisplayTexts[cxGrid1DBTableView1.GetColumnByFieldName('tel').index])<10  then
@@ -701,17 +845,22 @@ begin
 //      Form1.IBTransaction1.CommitRetaining;
     end;
 end;
+if cxGrid1DBTableView1.Items[AItem.ID].DataBinding.FilterFieldName='CH' then
+begin
+  //ShowMessage(VarToStr(sender.DataController.Values[sender.DataController.EditingRecordIndex, AItem.Index]));
+end;
+
 end;
 
 procedure TForm18.FormShow(Sender: TObject);
 begin
 IBWID.Open;
 IBREP.FetchAll;
-if IBREP.RecordCount=0 then
-begin
-  cxButton3.Enabled:=false;
-  cxButton7.Enabled:=false;
-end;
+//if IBREP.RecordCount=0 then
+//begin
+//  cxButton3.Enabled:=false;
+//  cxButton7.Enabled:=false;
+//end;
 end;
 
 end.

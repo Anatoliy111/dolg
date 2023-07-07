@@ -20,7 +20,7 @@ object Form25: TForm25
     Caption = #1042#1080#1073#1077#1088#1110#1090#1100' '#1087#1077#1088#1110#1086#1076
   end
   object cxLookupComboBox1: TcxLookupComboBox
-    Left = 139
+    Left = 163
     Top = 78
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
@@ -40,7 +40,7 @@ object Form25: TForm25
     AnchorX = 205
   end
   object cxButton1: TcxButton
-    Left = 112
+    Left = 129
     Top = 128
     Width = 75
     Height = 25
@@ -49,13 +49,25 @@ object Form25: TForm25
     OnClick = cxButton1Click
   end
   object cxButton2: TcxButton
-    Left = 230
+    Left = 210
     Top = 128
     Width = 75
     Height = 25
     Caption = #1042#1110#1076#1084#1110#1085#1072
     TabOrder = 4
     OnClick = cxButton2Click
+  end
+  object cxLookupComboBox2: TcxLookupComboBox
+    Left = 28
+    Top = 78
+    Properties.KeyFieldNames = 'PERIOD'
+    Properties.ListColumns = <
+      item
+        FieldName = 'PERIOD'
+      end>
+    Properties.ListSource = Form1.DSPERIOD
+    TabOrder = 5
+    Width = 129
   end
   object frxReport1: TfrxReport
     Version = '5.3.16'
@@ -67,7 +79,7 @@ object Form25: TForm25
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 43425.596407557900000000
-    ReportOptions.LastChange = 44468.554882326390000000
+    ReportOptions.LastChange = 45099.688815254630000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'function dt2str(dt:TDateTime):string;'
@@ -172,10 +184,9 @@ object Form25: TForm25
       '  '
       '  if (<frxDBDataset2."ORD">=2) then'
       
-        '    Memo4.Text:='#39#1042#1082#1072#1079#1072#1085#1072' '#1074#1080#1097#1077' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1090#1100' '#1089#1082#1083#1072#1076#1072#1108#1090#1100#1089#1103' '#1110#1079': '#1079#1072#1073 +
-        #1086#1088#1075#1086#1074#1072#1085#1110#1089#1090#1100' '#1079#1072' '#1087#1077#1088#1110#1086#1076'  '#1079' '#39'+DateToPropis(<datemes2>)+'#39' '#1087#1086' '#39'+DateT' +
-        'oPropis(<datemes1>)+'#39' '#1074' '#1089#1091#1084#1110' '#39'+Format('#39'%2.2f'#39',[Get(<frxDBDataset' +
-        '2."ORD">)])+'#39' '#1075#1088#1085'., '#1074' '#1090#1086#1084#1091' '#1095#1080#1089#1083#1110':'#39';    '
+        '    Memo4.Text:='#39#1047#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1090#1100' '#1079#1072' '#1087#1077#1088#1110#1086#1076'  '#1079' '#39'+DateToPropis(<dat' +
+        'emes2>)+'#39' '#1087#1086' '#39'+DateToPropis(<datemes1>)+'#39' '#1074' '#1089#1091#1084#1110' '#39'+Format('#39'%2.2f' +
+        #39',[Get(<frxDBDataset2."ORD">)])+'#39' '#1075#1088#1085'., '#1074' '#1090#1086#1084#1091' '#1095#1080#1089#1083#1110':'#39';    '
       ''
       '  if (<frxDBDataset2."ORD">=3) then'
       
@@ -212,7 +223,7 @@ object Form25: TForm25
         DataSetName = 'frxDBDataset1'
       end
       item
-        DataSet = frxDBDataset2
+        DataSet = frxDBDataset3
         DataSetName = 'frxDBDataset2'
       end>
     Variables = <
@@ -359,7 +370,7 @@ object Form25: TForm25
         Top = 366.614410000000000000
         Width = 718.110700000000000000
         AllowSplit = True
-        DataSet = frxDBDataset2
+        DataSet = frxDBDataset3
         DataSetName = 'frxDBDataset2'
         RowCount = 0
         Stretched = True
@@ -367,7 +378,6 @@ object Form25: TForm25
           Left = 113.385900000000000000
           Width = 264.567100000000000000
           Height = 18.897650000000000000
-          DataField = 'POSLUG'
           DataSet = frxDBDataset2
           DataSetName = 'frxDBDataset2'
           Font.Charset = DEFAULT_CHARSET
@@ -550,7 +560,7 @@ object Form25: TForm25
       'UPD=UPD')
     DataSet = IBQuery1
     BCDToCurrency = False
-    Left = 300
+    Left = 236
     Top = 7
   end
   object frxDBDataset2: TfrxDBDataset
@@ -564,7 +574,7 @@ object Form25: TForm25
       'DOLG=DOLG')
     DataSet = IBQuery2
     BCDToCurrency = False
-    Left = 372
+    Left = 300
     Top = 7
   end
   object IBQuery1: TIBQuery
@@ -576,8 +586,8 @@ object Form25: TForm25
     ParamCheck = True
     SQL.Strings = (
       'select * from kart where schet=:sch')
-    Left = 312
-    Top = 56
+    Left = 280
+    Top = 160
     ParamData = <
       item
         DataType = ftUnknown
@@ -612,8 +622,8 @@ object Form25: TForm25
         'left join obor tt2 on (tt2.schet=tt1.schet and tt2.wid=tt1.wid a' +
         'nd tt2.period=dateadd(year, -3, :dat))'
       'where tt1.schet=:sch and tt1.dolg>0 and tt1.period=:dat')
-    Left = 368
-    Top = 56
+    Left = 328
+    Top = 160
     ParamData = <
       item
         DataType = ftUnknown
@@ -655,5 +665,59 @@ object Form25: TForm25
         Name = 'dat'
         ParamType = ptUnknown
       end>
+  end
+  object IBQuery3: TIBQuery
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    ParamCheck = True
+    SQL.Strings = (
+      'select * from'
+      '(select 2 as ord, wid,poslug,schet, fullnach, fullopl,'
+      
+        'case when round((COALESCE(fullnach,0)-COALESCE(fullopl,0)),2)>0 ' +
+        'then round((COALESCE(fullnach,0)-COALESCE(fullopl,0)),2) else 0 ' +
+        'end as dolg'
+      'from'
+      '(select tt1.wid , tt1.poslug, tt1.schet,'
+      'sum(tt1.fullnach) fullnach, sum(tt1.fullopl) fullopl'
+      'from vw_obkr tt1'
+      'where tt1.schet=:sch and tt1.period>=:dat1 and tt1.period<=:dat2'
+      'group by schet, wid, poslug'
+      '))'
+      'where dolg>0')
+    Left = 376
+    Top = 160
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'sch'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+  end
+  object frxDBDataset3: TfrxDBDataset
+    UserName = 'frxDBDataset2'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'ORD=ORD'
+      'WID=WID'
+      'POSLUG=POSLUG'
+      'SCHET=SCHET'
+      'DOLG=DOLG')
+    DataSet = IBQuery3
+    BCDToCurrency = False
+    Left = 372
+    Top = 7
   end
 end

@@ -504,8 +504,7 @@ begin
            end
            else
            begin
-            IBWID.First;
-            if IBWID.Locate('cod',cod,[]) then
+            MsExcel.WorkSheets[1].Cells[i,kolpidtverd]:=0;
             MemoLog.Lines.Add('Рахунок '+sch+' - не знайдено' + #13#10);
            end;
 
@@ -568,7 +567,7 @@ begin
             DeleteFile(DirExtrFile+'\query_36188893.xml');
             DeleteFile(DirExtrFile+'.zip');
             Sleep(1000);
-            cmd:=GetCurrentDir+'\winrar\winrar.exe a -afzip '+DirExtrFile+'.zip '+FileName;
+            cmd:=GetCurrentDir+'\winrar\winrar.exe a -ep -afzip '+DirExtrFile+'.zip '+FileName;
             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_SHOW);
             Sleep(1000);
 //            Arch := CreateOutArchive(CLSID_CFormat7z);

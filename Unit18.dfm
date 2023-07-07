@@ -2,8 +2,8 @@ object Form18: TForm18
   Left = 0
   Top = 0
   Caption = 'Form18'
-  ClientHeight = 689
-  ClientWidth = 782
+  ClientHeight = 536
+  ClientWidth = 661
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,16 +17,19 @@ object Form18: TForm18
   object cxGrid1: TcxGrid
     Left = 0
     Top = 209
-    Width = 782
-    Height = 480
+    Width = 661
+    Height = 327
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 782
+    ExplicitHeight = 480
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
       OnEditValueChanged = cxGrid1DBTableView1EditValueChanged
       DataController.DataSource = DSREP
       DataController.DetailKeyFieldNames = 'SCHET'
+      DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
@@ -44,17 +47,18 @@ object Form18: TForm18
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 782
+    Width = 661
     Height = 209
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 782
     object cxLabel4: TcxLabel
       Left = 138
       Top = 186
       Caption = #1041#1086#1088#1078#1085#1080#1082#1080' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
     end
     object cxGrid2: TcxGrid
-      Left = 375
+      Left = 367
       Top = 22
       Width = 289
       Height = 181
@@ -158,6 +162,7 @@ object Form18: TForm18
         Height = 25
         Caption = #1055#1086#1096#1091#1082
         TabOrder = 5
+        OnClick = cxButton1Click
       end
       object cxCalcEdit2: TcxCalcEdit
         Left = 62
@@ -167,7 +172,7 @@ object Form18: TForm18
         Width = 121
       end
       object cxButton7: TcxButton
-        Left = 242
+        Left = 120
         Top = 14
         Width = 97
         Height = 56
@@ -184,23 +189,14 @@ object Form18: TForm18
         Top = 34
         Caption = '->'
       end
-      object cxButton3: TcxButton
-        Left = 119
-        Top = 14
-        Width = 97
-        Height = 56
-        BiDiMode = bdLeftToRight
-        Caption = #1042#1080#1076#1072#1083#1080#1090#1080' '#1079#1072#1087#1080#1089#1080' '#1073#1077#1079' '#1090#1077#1083'.'
-        ParentBiDiMode = False
-        PopupAlignment = paCenter
-        TabOrder = 9
-        WordWrap = True
-        OnClick = cxButton3Click
-      end
-      object cxLabel14: TcxLabel
+      object cxButton4: TcxButton
         Left = 220
-        Top = 34
-        Caption = '->'
+        Top = 144
+        Width = 74
+        Height = 25
+        Caption = #1042' '#1045#1082#1089#1077#1083#1100
+        TabOrder = 9
+        OnClick = cxButton4Click
       end
     end
     object cxLabel2: TcxLabel
@@ -282,7 +278,7 @@ object Form18: TForm18
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_WID_ID'
     Left = 616
-    Top = 472
+    Top = 264
     object IBWIDWID: TIBStringField
       FieldName = 'WID'
       Origin = '"WID"."WID"'
@@ -306,7 +302,7 @@ object Form18: TForm18
   object DSWID: TDataSource
     DataSet = IBWID
     Left = 616
-    Top = 528
+    Top = 312
   end
   object IBREP: TIBDataSet
     Database = Form1.IBDatabase1
@@ -335,8 +331,8 @@ object Form18: TForm18
       '  KL = :KL')
     SelectSQL.Strings = (
       
-        'select vw_obkr.period,vw_obkr.schet,vw_obkr.fio,vw_obkr.ulnaim,v' +
-        'w_obkr.nomdom,vw_obkr.nomkv,'
+        'select 0 as ch, vw_obkr.period,vw_obkr.schet,vw_obkr.fio,vw_obkr' +
+        '.ulnaim,vw_obkr.nomdom,vw_obkr.nomkv,'
       'aboninf.tel'
       ' from vw_obkr'
       'join aboninf on (aboninf.schet=vw_obkr.schet)'
@@ -369,11 +365,11 @@ object Form18: TForm18
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_OBOR_ID'
     Left = 566
-    Top = 472
+    Top = 264
   end
   object DSREP: TDataSource
     DataSet = IBREP
     Left = 566
-    Top = 520
+    Top = 312
   end
 end

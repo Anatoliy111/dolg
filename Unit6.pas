@@ -37,6 +37,10 @@ type
     cxLabel1: TcxLabel;
     cxLabel2: TcxLabel;
     cxGrid1DBTableView1SMS: TcxGridDBColumn;
+    cxLabel3: TcxLabel;
+    cxDBTextEdit3: TcxDBTextEdit;
+    cxLabel4: TcxLabel;
+    cxDBTextEdit4: TcxDBTextEdit;
     procedure FormShow(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

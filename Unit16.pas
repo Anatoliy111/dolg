@@ -56,10 +56,11 @@ type
     procedure cxButton2Click(Sender: TObject);
   private
     { Private declarations }
-    procedure balans;
+
 
   public
   procedure balanslabel(s:string);
+  procedure balans;
     { Public declarations }
   end;
 
@@ -70,7 +71,7 @@ implementation
 
 {$R *.dfm}
 
-uses Unit1, wsdl, Unit17, mytools, Unit2;
+uses Unit1, wsdl, Unit17, mytools, Unit2, math;
 
 procedure TForm16.balans;
 var ws: ServiceSoap;
@@ -81,6 +82,7 @@ begin
 //  ws.Auth('tsmsb','tsmsb1234');
   try
   ws.Auth(Form1.IBSERVICESSMSLOGIN.Value,Form1.IBSERVICESSMSPW.Value);
+//  ws.Auth('dddsmsddd','Register~99');
   with ws do
     balanslabel(ws.GetCreditBalance);
   except
@@ -91,11 +93,15 @@ begin
 end;
 
 procedure TForm16.balanslabel(s:string);
+var sbal,ssms,sumsend:Double;
 begin
 
     cxLabel2.Caption:=s;
-    Form17.cxLabel2.Caption:=s;
-
+    Form17.cxLabel8.Caption:=s;
+    sbal:=str2float(StringReplace(s,'.',',',[rfReplaceAll, rfIgnoreCase]));
+    Form17.cxLabel2.Caption:='0';
+    if (s<>'--') and (sbal>=Form1.IBSERVICESSMSCENA.Value) then
+         Form17.cxLabel2.Caption:=FloatToStr(Trunc(sbal/Form1.IBSERVICESSMSCENA.Value));
 
 end;
 
@@ -259,11 +265,15 @@ else
 end;
 
 procedure TForm16.cxButton8Click(Sender: TObject);
+var str:string;
 begin
 if not Form17.Showing then
 begin
+  str:='Ви дійсно бажаєте видалити журнал відправлених СМС №'+IntToStr(Form1.IBSMSORDEREDSID.Value)+'?';
+  if application.MessageBox(PWideChar(str),'Підтвердження',MB_YESNO)=IDYES then
   if Form1.IBSMSORDEREDSSEND.Value=0 then
   begin
+
         Form1.IBQuery1.Close;
         Form1.IBQuery1.SQL.Text:='delete from SMSLIST where ID_SMSORDER=:id';
         Form1.IBQuery1.ParamByName('id').Value:=Form1.IBSMSORDEREDSID.Value;

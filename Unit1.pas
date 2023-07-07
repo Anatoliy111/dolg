@@ -64,9 +64,6 @@ type
     IBKONTROLFIO: TIBStringField;
     DSSERVICES: TDataSource;
     IBSERVICES: TIBDataSet;
-    IBSERVICESKL: TIntegerField;
-    IBSERVICESDATA: TDateField;
-    IBSERVICESUPDATES: TIntegerField;
     dxBarManager1: TdxBarManager;
     dxBarManager1Bar1: TdxBar;
     dxBarSubItem2: TdxBarSubItem;
@@ -428,9 +425,6 @@ type
     IBKARTID: TIntegerField;
     HTTPSoapPascalInvoker1: THTTPSoapPascalInvoker;
     cxButton4: TcxButton;
-    IBSERVICESSMSLOGIN: TIBStringField;
-    IBSERVICESSMSPW: TIBStringField;
-    IBSERVICESSMSTRANSLIT: TSmallintField;
     IBSMSORDEREDS: TIBDataSet;
     IBSMSORDEREDSID: TIntegerField;
     IBSMSORDEREDSDATA: TDateTimeField;
@@ -546,6 +540,16 @@ type
     IBREPDNAME: TIBStringField;
     cxGrid1DBTableView1NAME: TcxGridDBColumn;
     cxTextEdit1: TcxTextEdit;
+    IBSMSORDEREDSVID_SMS: TIntegerField;
+    IBSMSORDEREDSTEXT_SMS: TIBStringField;
+    IBSERVICESKL: TIntegerField;
+    IBSERVICESDATA: TDateField;
+    IBSERVICESUPDATES: TIntegerField;
+    IBSERVICESSMSLOGIN: TIBStringField;
+    IBSERVICESSMSPW: TIBStringField;
+    IBSERVICESSMSTRANSLIT: TSmallintField;
+    IBSERVICESSMSALPHA: TIBStringField;
+    IBSERVICESSMSCENA: TFloatField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);

@@ -2,8 +2,8 @@ object Form16: TForm16
   Left = 0
   Top = 0
   Caption = #1046#1091#1088#1085#1072#1083' '#1087#1072#1095#1086#1082' '#1074#1110#1076#1087#1088#1072#1074#1083#1077#1085#1080#1093' SMS'
-  ClientHeight = 587
-  ClientWidth = 967
+  ClientHeight = 513
+  ClientWidth = 925
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,10 +17,12 @@ object Form16: TForm16
   object cxGrid1: TcxGrid
     Left = 0
     Top = 73
-    Width = 967
-    Height = 514
+    Width = 925
+    Height = 440
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 967
+    ExplicitHeight = 514
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       OnCellDblClick = cxGrid1DBTableView1CellDblClick
@@ -178,10 +180,11 @@ object Form16: TForm16
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 967
+    Width = 925
     Height = 73
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 967
     object cxButton9: TcxButton
       Left = 0
       Top = 31
@@ -611,7 +614,7 @@ object Form16: TForm16
     object cxLabel1: TcxLabel
       Left = 128
       Top = 5
-      Caption = #1041#1072#1083#1072#1085#1089' '#1089#1084#1089':'
+      Caption = #1041#1072#1083#1072#1085#1089' '#1075#1088#1085'.:'
     end
     object cxLabel2: TcxLabel
       Left = 196

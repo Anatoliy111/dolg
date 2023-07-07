@@ -635,13 +635,6 @@ object Form12: TForm12
       Width = 203
     end
   end
-  object cxMaskEdit1: TcxMaskEdit
-    Left = 376
-    Top = 24
-    TabOrder = 7
-    Text = 'cxMaskEdit1'
-    Width = 121
-  end
   object IBKART: TIBDataSet
     Database = Form1.IBDatabase1
     Transaction = Form1.IBTransaction1
@@ -1199,8 +1192,12 @@ object Form12: TForm12
     Left = 617
     Top = 169
     object N11: TMenuItem
-      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1110#1079' '#1086#1089#1086#1073#1086#1074#1086#1075#1086' '#1088#1072#1093#1091#1085#1082#1091
+      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1110#1079' '#1086#1089#1086#1073#1086#1074#1086#1075#1086' '#1088#1072#1093#1091#1085#1082#1091' (3 '#1088#1086#1082#1080')'
       OnClick = N11Click
+    end
+    object N1: TMenuItem
+      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1110#1079' '#1086#1089#1086#1073#1086#1074#1086#1075#1086' '#1088#1072#1093#1091#1085#1082#1091' ('#1087#1077#1088#1110#1086#1076')'
+      OnClick = N1Click
     end
   end
   object IBABONINF: TIBDataSet
