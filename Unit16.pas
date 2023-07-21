@@ -307,8 +307,8 @@ begin
               Form1.IBSMSORDEREDS.Edit;
 //              Form1.IBSMSORDEREDSDATA.Value:=now();
               Form1.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
-              if Form1.translit='1' then
-                 Form1.IBSMSORDEREDSTRANSLIT.Value:=1;
+//              if Form1.translit='1' then
+//                 Form1.IBSMSORDEREDSTRANSLIT.Value:=1;
               Form1.IBSMSORDEREDS.Post;
 //              Form1.IBSMSORDEREDS.Close;
 //              Form1.IBSMSORDEREDS.Open;

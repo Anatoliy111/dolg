@@ -21,8 +21,6 @@ object Form16: TForm16
     Height = 440
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 967
-    ExplicitHeight = 514
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       OnCellDblClick = cxGrid1DBTableView1CellDblClick
@@ -184,7 +182,6 @@ object Form16: TForm16
     Height = 73
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 967
     object cxButton9: TcxButton
       Left = 0
       Top = 31

@@ -21,8 +21,6 @@ type
     cxLabel6: TcxLabel;
     cxTextEdit4: TcxTextEdit;
     cxButton1: TcxButton;
-    cxLabel4: TcxLabel;
-    cxLabel9: TcxLabel;
     cxButton5: TcxButton;
     cxButton3: TcxButton;
     cxButton4: TcxButton;
@@ -427,22 +425,22 @@ begin
                    if IBSMSORDEREDSVID_SMS.Value=0 then smstext:=DBMemo1.Text
                    else smstext:=IBSMSLISTTEXTNOTTR.Value;
 
-                   if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
-                   begin
-                     if Length(smstext)>70 then
-                     begin
-                        smstext:=Translit2Lat(smstext);
-                        IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1);
-                     end
-                     else
-                        IBSMSLISTKOL_SMS.Value:=1;
-                   end
-                   else
-                   begin
+//                   if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
+//                   begin
+//                     if Length(smstext)>70 then
+//                     begin
+//                        smstext:=Translit2Lat(smstext);
+//                        IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1);
+//                     end
+//                     else
+//                        IBSMSLISTKOL_SMS.Value:=1;
+//                   end
+//                   else
+//                   begin
 
 
                      IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/70))+1);
-                   end;
+//                   end;
 
                    IBSMSLISTTEXT.Value:=smstext;
                    IBSMSLIST.Post;
@@ -572,7 +570,7 @@ begin
   end;
 
 
-  cxLabel9.Caption:=mon_slovoDt(Form17.IBSMSORDEREDSPERIOD.Value);
+//  cxLabel9.Caption:=mon_slovoDt(Form17.IBSMSORDEREDSPERIOD.Value);
 
   Caption:='Пачка №'+int2str(id_orders);
 
@@ -597,7 +595,7 @@ end;
 procedure TForm17.IBREPFilterRecord(DataSet: TDataSet; var Accept: Boolean);
 begin
 //Accept:=(Pos(cxTextEdit4.Text, DataSet.FieldByName('tel').AsString) > 0);
-Accept:=Length(DataSet.FieldByName('tel').AsString) > 0;
+//Accept:=Length(DataSet.FieldByName('tel').AsString) > 0;
 //Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0) and (Pos(cxTextEdit4.Text, DataSet.FieldByName('schet').AsString) > 0)
 end;
 
@@ -717,22 +715,22 @@ Label4.Caption:=IntToStr(Length(DBMemo1.Text));
 
                    smstext:=DBMemo1.Text;
 
-                   if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
-                   begin
-                     if Length(smstext)>70 then
-                     begin
-                        smstext:=Translit2Lat(smstext);
-                         Label5.Caption:=IntToStr(iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1));
-                     end
-                     else
-                         Label5.Caption:=IntToStr(1);
-                   end
-                   else
-                   begin
+//                   if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
+//                   begin
+//                     if Length(smstext)>70 then
+//                     begin
+//                        smstext:=Translit2Lat(smstext);
+//                         Label5.Caption:=IntToStr(iif(Length(smstext)<=160,1,(Trunc(Length(smstext)/160))+1));
+//                     end
+//                     else
+//                         Label5.Caption:=IntToStr(1);
+//                   end
+//                   else
+//                   begin
 
 
                       Label5.Caption:=IntToStr(iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/70))+1));
-                   end;
+//                   end;
 
 end;
 

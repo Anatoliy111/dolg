@@ -23,7 +23,6 @@ object Form17: TForm17
     Height = 217
     Align = alTop
     TabOrder = 0
-    ExplicitLeft = -1
     object cxGroupBox1: TcxGroupBox
       Left = 8
       Top = 8
@@ -179,6 +178,7 @@ object Form17: TForm17
         Properties.OnChange = cxDBCheckBox1PropertiesChange
         Style.Shadow = False
         TabOrder = 11
+        Visible = False
         Height = 29
         Width = 327
       end
@@ -214,7 +214,7 @@ object Form17: TForm17
         Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
       end
       object cxLabel21: TcxLabel
-        Left = 363
+        Left = 340
         Top = 133
         Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090#1072#1074'. '#1057#1052#1057':'
       end
@@ -263,12 +263,12 @@ object Form17: TForm17
         OnClick = cxButton9Click
       end
       object cxLabel1: TcxLabel
-        Left = 360
+        Left = 337
         Top = 118
         Caption = #1050'-'#1089#1090#1100' '#1074#1110#1076#1087#1088#1072#1074'. '#1057#1052#1057':'
       end
       object cxDBLabel1: TcxDBLabel
-        Left = 467
+        Left = 444
         Top = 118
         DataBinding.DataField = 'KOL_SENDSMS'
         DataBinding.DataSource = DSSMSORDEREDS
@@ -280,7 +280,7 @@ object Form17: TForm17
         AnchorY = 127
       end
       object cxDBLabel2: TcxDBLabel
-        Left = 467
+        Left = 444
         Top = 134
         DataBinding.DataField = 'KOL_DOSTSMS'
         DataBinding.DataSource = DSSMSORDEREDS
@@ -359,23 +359,13 @@ object Form17: TForm17
         OnClick = RadioButton2Click
       end
     end
-    object cxLabel4: TcxLabel
-      Left = 303
-      Top = 186
-      Caption = #1041#1086#1088#1078#1085#1080#1082#1080' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
-    end
-    object cxLabel9: TcxLabel
-      Left = 423
-      Top = 186
-      Caption = #1076#1072#1090#1072' '
-    end
     object cxButton3: TcxButton
       Left = 687
       Top = 186
       Width = 74
       Height = 25
       Caption = #1042' '#1045#1082#1089#1077#1083#1100
-      TabOrder = 3
+      TabOrder = 1
       OnClick = cxButton3Click
     end
     object cxButton8: TcxButton
@@ -517,7 +507,7 @@ object Form17: TForm17
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000}
       OptionsImage.Layout = blGlyphRight
-      TabOrder = 4
+      TabOrder = 2
       OnClick = cxButton8Click
     end
     object cxLabel11: TcxLabel
@@ -533,8 +523,6 @@ object Form17: TForm17
     Height = 407
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 209
-    ExplicitHeight = 415
     object cxGridDBTableView2: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       FilterBox.CustomizeDialog = False

@@ -14,44 +14,13 @@ object Form18: TForm18
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object cxGrid1: TcxGrid
-    Left = 0
-    Top = 209
-    Width = 661
-    Height = 327
-    Align = alClient
-    TabOrder = 0
-    ExplicitWidth = 782
-    ExplicitHeight = 480
-    object cxGrid1DBTableView1: TcxGridDBTableView
-      Navigator.Buttons.CustomButtons = <>
-      OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
-      OnEditValueChanged = cxGrid1DBTableView1EditValueChanged
-      DataController.DataSource = DSREP
-      DataController.DetailKeyFieldNames = 'SCHET'
-      DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsView.Footer = True
-      OptionsView.FooterMultiSummaries = True
-      OptionsView.GroupFooterMultiSummaries = True
-      OptionsView.GroupFooters = gfVisibleWhenExpanded
-      OptionsView.GroupSummaryLayout = gslAlignWithColumns
-      OptionsView.Indicator = True
-    end
-    object cxGrid1Level1: TcxGridLevel
-      GridView = cxGrid1DBTableView1
-    end
-  end
   object Panel1: TPanel
     Left = 0
     Top = 0
     Width = 661
     Height = 209
     Align = alTop
-    TabOrder = 1
-    ExplicitWidth = 782
+    TabOrder = 0
     object cxLabel4: TcxLabel
       Left = 138
       Top = 186
@@ -205,10 +174,87 @@ object Form18: TForm18
       Caption = ' - '#1042#1110#1076#1084#1110#1090#1080#1090#1080' '#1074#1089#1110
     end
     object cxCheckBox1: TcxCheckBox
-      Left = 3
-      Top = 184
+      Left = 8
+      Top = 183
       Properties.OnChange = cxCheckBox1PropertiesChange
       TabOrder = 7
+    end
+  end
+  object cxPageControl1: TcxPageControl
+    Left = 0
+    Top = 209
+    Width = 661
+    Height = 327
+    Align = alClient
+    TabOrder = 1
+    Properties.ActivePage = cxTabSheet1
+    Properties.CustomButtons.Buttons = <>
+    ClientRectBottom = 323
+    ClientRectLeft = 4
+    ClientRectRight = 657
+    ClientRectTop = 24
+    object cxTabSheet1: TcxTabSheet
+      Caption = #1055#1086' '#1072#1073#1086#1085#1077#1085#1090#1072#1084
+      ImageIndex = 0
+      object cxGrid1: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 653
+        Height = 299
+        Align = alClient
+        TabOrder = 0
+        object cxGrid1DBTableView1: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
+          OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
+          OnEditValueChanged = cxGrid1DBTableView1EditValueChanged
+          DataController.DataSource = DSREP
+          DataController.DetailKeyFieldNames = 'SCHET'
+          DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsView.Footer = True
+          OptionsView.FooterMultiSummaries = True
+          OptionsView.GroupFooterMultiSummaries = True
+          OptionsView.GroupFooters = gfVisibleWhenExpanded
+          OptionsView.GroupSummaryLayout = gslAlignWithColumns
+          OptionsView.Indicator = True
+        end
+        object cxGrid1Level1: TcxGridLevel
+          GridView = cxGrid1DBTableView1
+        end
+      end
+    end
+    object cxTabSheet2: TcxTabSheet
+      Caption = #1055#1086' '#1073#1091#1076#1080#1085#1082#1072#1084
+      ImageIndex = 1
+      object cxGrid3: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 653
+        Height = 299
+        Align = alClient
+        TabOrder = 0
+        object cxGridDBTableView2: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
+          OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
+          OnEditValueChanged = cxGrid1DBTableView1EditValueChanged
+          DataController.DataSource = DSREPDOM
+          DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsView.Footer = True
+          OptionsView.FooterMultiSummaries = True
+          OptionsView.GroupFooterMultiSummaries = True
+          OptionsView.GroupFooters = gfVisibleWhenExpanded
+          OptionsView.GroupSummaryLayout = gslAlignWithColumns
+          OptionsView.Indicator = True
+        end
+        object cxGridLevel2: TcxGridLevel
+          GridView = cxGridDBTableView2
+        end
+      end
     end
   end
   object IBWID: TIBDataSet
@@ -330,12 +376,7 @@ object Form18: TForm18
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      
-        'select 0 as ch, vw_obkr.period,vw_obkr.schet,vw_obkr.fio,vw_obkr' +
-        '.ulnaim,vw_obkr.nomdom,vw_obkr.nomkv,'
-      'aboninf.tel'
-      ' from vw_obkr'
-      'join aboninf on (aboninf.schet=vw_obkr.schet)'
+      'select 0 as ch from OBOR'
       '')
     ModifySQL.Strings = (
       'update obor'
@@ -371,5 +412,68 @@ object Form18: TForm18
     DataSet = IBREP
     Left = 566
     Top = 312
+  end
+  object IBREPDOM: TIBDataSet
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      'delete from obor'
+      'where'
+      '  KL = :OLD_KL')
+    InsertSQL.Strings = (
+      'insert into obor'
+      
+        '  (KL, PERIOD, SCHET, WID, N_DOG, D_DOG, TARIF, DOLG, NACH, SUBS' +
+        ', OPL, '
+      '   UDER, KOMP, WZMZ, WOZW, MOVW, PERE, SAL)'
+      'values'
+      
+        '  (:KL, :PERIOD, :SCHET, :WID, :N_DOG, :D_DOG, :TARIF, :DOLG, :N' +
+        'ACH, :SUBS, '
+      '   :OPL, :UDER, :KOMP, :WZMZ, :WOZW, :MOVW, :PERE, :SAL)')
+    RefreshSQL.Strings = (
+      'Select * '
+      'from obor '
+      'where'
+      '  KL = :KL')
+    SelectSQL.Strings = (
+      'select 0 as ch from OBOR'
+      '')
+    ModifySQL.Strings = (
+      'update obor'
+      'set'
+      '  KL = :KL,'
+      '  PERIOD = :PERIOD,'
+      '  SCHET = :SCHET,'
+      '  WID = :WID,'
+      '  N_DOG = :N_DOG,'
+      '  D_DOG = :D_DOG,'
+      '  TARIF = :TARIF,'
+      '  DOLG = :DOLG,'
+      '  NACH = :NACH,'
+      '  SUBS = :SUBS,'
+      '  OPL = :OPL,'
+      '  UDER = :UDER,'
+      '  KOMP = :KOMP,'
+      '  WZMZ = :WZMZ,'
+      '  WOZW = :WOZW,'
+      '  MOVW = :MOVW,'
+      '  PERE = :PERE,'
+      '  SAL = :SAL'
+      'where'
+      '  KL = :OLD_KL')
+    ParamCheck = True
+    UniDirectional = False
+    GeneratorField.Field = 'KL'
+    GeneratorField.Generator = 'GEN_OBOR_ID'
+    Left = 510
+    Top = 264
+  end
+  object DSREPDOM: TDataSource
+    DataSet = IBREPDOM
+    Left = 510
+    Top = 320
   end
 end

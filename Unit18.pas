@@ -10,13 +10,11 @@ uses
   cxCheckBox, Vcl.Menus, IBX.IBCustomDataSet, cxDropDownEdit, cxCalc,
   cxTextEdit, cxMaskEdit, Vcl.StdCtrls, cxButtons, cxGroupBox,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxLabel,
-  Vcl.ExtCtrls, cxGridLevel, cxClasses, cxGridCustomView, cxCurrencyEdit,cxGrid;
+  Vcl.ExtCtrls, cxGridLevel, cxClasses, cxGridCustomView, cxCurrencyEdit,cxGrid,
+  dxBarBuiltInMenu, cxPC;
 
 type
   TForm18 = class(TForm)
-    cxGrid1: TcxGrid;
-    cxGrid1DBTableView1: TcxGridDBTableView;
-    cxGrid1Level1: TcxGridLevel;
     Panel1: TPanel;
     cxLabel4: TcxLabel;
     cxGrid2: TcxGrid;
@@ -48,6 +46,17 @@ type
     IBREP: TIBDataSet;
     DSREP: TDataSource;
     cxButton4: TcxButton;
+    cxPageControl1: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    cxTabSheet2: TcxTabSheet;
+    cxGrid1: TcxGrid;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    IBREPDOM: TIBDataSet;
+    DSREPDOM: TDataSource;
+    cxGrid3: TcxGrid;
+    cxGridDBTableView2: TcxGridDBTableView;
+    cxGridLevel2: TcxGridLevel;
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
@@ -61,15 +70,17 @@ type
     procedure cxCheckBox1PropertiesChange(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
+    procedure IBREPDOMCHChange(Sender: TField);
   private
       function genSQL():string;
+      function genDOMSQL(AbonSQL:string):string;
     { Private declarations }
   public
       id_orders:integer;
     { Public declarations }
         procedure OnTELPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
-        procedure OnCHPropertiesChange(Sender: TObject);
+        procedure OnCHDOMPropertiesChange(Sender: TObject);
         procedure OnCHPropertiesChange1(Sender: TObject);
 
   end;
@@ -87,7 +98,7 @@ function TForm18.genSQL():string;
 var SQL,strSAL,strFIELD,strMAXFIELD,strSUM,strWhere,whereposl:string;
 begin
 
-      SQL:='select 0 as ch,period,schet,fio,ulnaim,nomdom,nomkv,tel,';
+      SQL:='select 0 as ch,period,schet,fio,ulnaim,nomdom,nomkv,case when tel='''' then null else tel end as tel,1 as kol,';
 //      SQL:=SQL+'cast('''+''+''' as varchar(300)) SMS,';
 
       strSAL:='';
@@ -105,7 +116,7 @@ begin
                           posl:=posl+'ass,';
                           strSUM:=strSUM+'COALESCE(max(ass),0)+';
                           strMAXFIELD:=strMAXFIELD+'COALESCE(max(ass),0) ass,';
-                          strFIELD:=strFIELD+'case wid when '''+IBWIDWID.Value+''' then dolg else null end as ass,';
+                          strFIELD:=strFIELD+'case wid when '''+IBWIDWID.Value+''' then sal else null end as ass,';
                           whereposl:=whereposl+'ass'+cxComboBox2.EditValue+'0 or ';
                         end
                       else
@@ -113,7 +124,7 @@ begin
                           posl:=posl+IBWIDWID.Value+',';
                           strSUM:=strSUM+'COALESCE(max('+IBWIDWID.Value+'),0)+';
                           strMAXFIELD:=strMAXFIELD+'COALESCE(max('+IBWIDWID.Value+'),0) '+IBWIDWID.Value+',';
-                          strFIELD:=strFIELD+'case wid when '''+IBWIDWID.Value+''' then dolg else null end as '+IBWIDWID.Value+',';
+                          strFIELD:=strFIELD+'case wid when '''+IBWIDWID.Value+''' then sal else null end as '+IBWIDWID.Value+',';
                           whereposl:=whereposl+IBWIDWID.Value+cxComboBox2.EditValue+'0 or ';
                         end;
                       end;
@@ -144,6 +155,78 @@ begin
 
 end;
 
+procedure TForm18.IBREPDOMCHChange(Sender: TField);
+var rec:integer;
+begin
+
+
+  rec:=IBREP.RecNo;
+  DSREP.Enabled:=false;
+  IBREP.First;
+  if IBREPDOM.FieldByName('ch').Value=0 then
+  begin
+    while not IBREP.Eof do
+    begin
+    if (IBREP.FieldByName('ulnaim').Value=IBREPDOM.FieldByName('ulnaim').Value) and (IBREP.FieldByName('nomdom').Value=IBREPDOM.FieldByName('nomdom').Value) and (IBREP.FieldByName('tel').Value<>null) then
+    begin
+      IBREP.Edit;
+      IBREP.FieldByName('ch').Value:=1;
+      IBREP.Post;
+    end;
+    IBREP.Next;
+    end;
+  end
+  else
+  begin
+    while not IBREP.Eof do
+    begin
+    if (IBREP.FieldByName('ulnaim').Value=IBREPDOM.FieldByName('ulnaim').Value) and (IBREP.FieldByName('nomdom').Value=IBREPDOM.FieldByName('nomdom').Value) and (IBREP.FieldByName('tel').Value<>null) then
+    begin
+      IBREP.Edit;
+      IBREP.FieldByName('ch').Value:=0;
+      IBREP.Post;
+    end;
+    IBREP.Next;
+    end;
+
+  end;
+
+  IBREP.First;
+  IBREP.RecNo:=rec;
+  DSREP.Enabled:=true;
+end;
+
+function TForm18.genDOMSQL(AbonSQL:string):string;
+var SQL,strSAL,strFIELD,strMAXFIELD,strSUM,strWhere,whereposl:string;
+begin
+
+      SQL:='select ch, ulnaim, nomdom, sum(SAL) sal,sum(ot) ot,sum(kol) kol,';
+
+//      SQL:=SQL+'cast('''+''+''' as varchar(300)) SMS,';
+
+                IBWID.First;
+                while not IBWID.eof do
+                begin
+                      if IBWIDCH.Value=1 then
+                      begin
+                      if IBWIDWID.Value='as' then
+                        begin
+                          strFIELD:=strFIELD+'sum(ass) ass,';
+                        end
+                      else
+                        begin
+                          strFIELD:=strFIELD+'sum('+IBWIDWID.Value+') '+IBWIDWID.Value+',';
+                        end;
+                      end;
+
+                IBWID.Next;
+                end;
+
+                SQL:=SQL+strFIELD+'sum(kol) kol from ('+AbonSQL+') '+'where trim(tel)<>'''' group by ch, ulnaim, nomdom';
+     result:=SQL;
+
+end;
+
 procedure TForm18.OnTELPropertiesValidate(Sender: TObject;
   var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
 begin
@@ -168,29 +251,46 @@ begin
       end;
 end;
 
-procedure TForm18.OnCHPropertiesChange(Sender: TObject);
+procedure TForm18.OnCHDOMPropertiesChange(Sender: TObject);
+var rec:integer;
 begin
-  IBREP.FieldByName('tel').Value;
-  IBREP.FieldByName('ch').Value;
-//
 
-//cxGrid1DBTableView1CH.EditValue;
 
-//sender.edit
-//
-//  if (IBREP.FieldByName('ch').Value=1) and (IBREP.FieldByName('tel').Value=null) then
-//  begin
-//    cxGrid1DBTableView1.DataController.Cancel;
-//    ShowMessage('Для позначення запису повинен бути телефон!!!');
-//
-//  end;
-//  else if (DisplayValue=1) and pos('_',VarToStr(IBREP.FieldByName('tel').Value))>0 then
-//  begin
-//
-//    ErrorText:='Для позначення запису повинен бути телефон 10 символів!!!';
-//    Error:=true;
-//
-//  end;
+  rec:=IBREP.RecNo;
+  DSREP.Enabled:=false;
+  IBREP.First;
+  if IBREPDOM.FieldByName('ch').Value=0 then
+  begin
+    while not IBREP.Eof do
+    begin
+    if (IBREP.FieldByName('ulnaim').Value=IBREPDOM.FieldByName('ulnaim').Value) and (IBREP.FieldByName('nomdom').Value=IBREPDOM.FieldByName('nomdom').Value) and (IBREP.FieldByName('tel').Value<>null) then
+    begin
+      IBREP.Edit;
+      IBREP.FieldByName('ch').Value:=1;
+      IBREP.Post;
+    end;
+    IBREP.Next;
+    end;
+  end
+  else
+  begin
+    while not IBREP.Eof do
+    begin
+    if (IBREP.FieldByName('ulnaim').Value=IBREPDOM.FieldByName('ulnaim').Value) and (IBREP.FieldByName('nomdom').Value=IBREPDOM.FieldByName('nomdom').Value) and (IBREP.FieldByName('tel').Value<>null) then
+    begin
+      IBREP.Edit;
+      IBREP.FieldByName('ch').Value:=0;
+      IBREP.Post;
+    end;
+    IBREP.Next;
+    end;
+
+  end;
+
+  IBREP.First;
+  IBREP.RecNo:=rec;
+  DSREP.Enabled:=true;
+
 end;
 
 procedure TForm18.OnCHPropertiesChange1(Sender: TObject);
@@ -243,10 +343,11 @@ procedure TForm18.cxButton2Click(Sender: TObject);
 var
     colum:TcxGridColumn;
     AColumn: TcxGridDBColumn;
-    SQL,strSAL,strFIELD,strMAXFIELD,strSUM,strWhere:string;
+    SQL,sqlDom,strSAL,strFIELD,strMAXFIELD,strSUM,strWhere:string;
     prop:TPersistent;
     ch:integer;
     chh:TcxCheckBoxProperties;
+    MEM:TMemo;
 begin
 
                 ch:=0;
@@ -263,9 +364,17 @@ begin
                   exit;
                 end;
 
+                form2.show;
+                Application.ProcessMessages;
 
-                           IBREP.Close;
-                IBREP.SelectSQL.Text:=genSQL();
+                cxCheckBox1.Checked:=false;
+                DSREP.Enabled:=false;
+                DSREPDOM.Enabled:=false;
+
+                IBREPDOM.Close;
+                IBREP.Close;
+                SQL:=genSQL();
+                IBREP.SelectSQL.Text:=SQL;
                 IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
                 cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
                 repdt:=Form1.IBPERIODPERIOD.Value;
@@ -275,6 +384,7 @@ begin
                 if IBREP.RecordCount=0 then
                    exit;
 
+                DSREP.Enabled:=true;
 //  cxButton3.Enabled:=false;
 
 
@@ -282,8 +392,7 @@ begin
 
       IBREP.Filtered:=false;
 
-      form2.show;
-      Application.ProcessMessages;
+
 
       cxGrid1DBTableView1.ClearItems;
 
@@ -299,7 +408,6 @@ begin
       TcxCheckBoxProperties(acolumn.Properties).DisplayUnchecked:='0';
 
       acolumn.Options.Editing:=true;
-      acolumn.Properties.OnEditValueChanged:=OnCHPropertiesChange;
       acolumn.Properties.OnChange:=OnCHPropertiesChange1;
       AColumn.Summary.GroupFooterKind := skSum;
 
@@ -424,9 +532,13 @@ begin
                               cxGrid1DBTableView1.BeginUpdate;
 
                               if IBWIDWID.Value='as' then
-                                 acolumn.DataBinding.FieldName:='ass'
+                              begin
+                                 acolumn.DataBinding.FieldName:='ass';
+                              end
                               else
+                              begin
                                  acolumn.DataBinding.FieldName:=IBWIDWID.Value;
+                              end;
 
                               acolumn.DataBinding.valuetype:='Currency';
                               acolumn.Width:=70;
@@ -446,6 +558,121 @@ begin
                 IBWID.Next;
                 end;
 
+//---------------------------------------------------------------------------------------------------------------------
+
+      cxGridDBTableView2.ClearItems;
+
+      acolumn:=cxGridDBTableView2.CreateColumn;
+      cxGridDBTableView2.BeginUpdate;
+      acolumn.DataBinding.FieldName:='ch';
+      acolumn.DataBinding.valuetype:='integer';
+      acolumn.Width:=5;
+      acolumn.PropertiesClassName:='TcxCheckBoxProperties';
+      TcxCheckBoxProperties(acolumn.Properties).ValueChecked:=1;
+      TcxCheckBoxProperties(acolumn.Properties).ValueUnchecked:=0;
+      TcxCheckBoxProperties(acolumn.Properties).DisplayChecked:='1';
+      TcxCheckBoxProperties(acolumn.Properties).DisplayUnchecked:='0';
+
+      acolumn.Options.Editing:=true;
+      acolumn.Properties.OnChange:=OnCHDOMPropertiesChange;
+      AColumn.Summary.GroupFooterKind := skSum;
+
+      cxGridDBTableView2.EndUpdate;
+
+      acolumn:=cxGridDBTableView2.CreateColumn;
+      cxGridDBTableView2.BeginUpdate;
+      acolumn.DataBinding.FieldName:='KOL';
+      acolumn.DataBinding.valuetype:='Integer';
+      acolumn.Width:=80;
+      acolumn.Options.Editing:=false;
+      AColumn.Summary.FooterKind := skSum;
+      cxGridDBTableView2.EndUpdate;
+
+
+      acolumn.Caption:='К-ть абон.';
+
+
+      acolumn:=cxGridDBTableView2.CreateColumn;
+      cxGridDBTableView2.BeginUpdate;
+      acolumn.DataBinding.FieldName:='ULNAIM';
+      acolumn.DataBinding.valuetype:='string';
+      acolumn.Width:=200;
+      acolumn.Options.Editing:=false;
+      cxGridDBTableView2.EndUpdate;
+
+      //AColumn.Summary.GroupFooterKind := skSum;
+
+      acolumn.Caption:='Вулиця';
+
+      acolumn:=cxGridDBTableView2.CreateColumn;
+      cxGridDBTableView2.BeginUpdate;
+      acolumn.DataBinding.FieldName:='NOMDOM';
+      acolumn.DataBinding.valuetype:='string';
+      acolumn.Options.Editing:=false;
+      cxGridDBTableView2.EndUpdate;
+
+      //AColumn.Summary.GroupFooterKind := skSum;
+
+      acolumn.Caption:='Будинок';
+
+
+
+
+      acolumn:=cxGridDBTableView2.CreateColumn;
+      cxGridDBTableView2.BeginUpdate;
+      acolumn.DataBinding.FieldName:='SAL';
+      acolumn.DataBinding.valuetype:='Currency';
+      acolumn.Width:=80;
+      acolumn.Options.Editing:=false;
+      acolumn.PropertiesClass:=TcxCurrencyEditProperties;
+      TcxCurrencyEditProperties(acolumn.Properties).DisplayFormat:= ',0.00;-,0.00';
+      AColumn.Summary.FooterKind := skSum;
+      cxGridDBTableView2.EndUpdate;
+
+
+      acolumn.Caption:='Борг';
+
+
+                IBWID.First;
+                while not IBWID.eof do
+                begin
+                      if IBWIDCH.Value=1 then
+                      begin
+
+
+                              acolumn:=cxGridDBTableView2.CreateColumn;
+                              cxGridDBTableView2.BeginUpdate;
+
+                              if IBWIDWID.Value='as' then
+                              begin
+                                 acolumn.DataBinding.FieldName:='ass';
+                              end
+                              else
+                              begin
+                                 acolumn.DataBinding.FieldName:=IBWIDWID.Value;
+                              end;
+
+                              acolumn.DataBinding.valuetype:='Currency';
+                              acolumn.Width:=70;
+                              acolumn.Options.Editing:=false;
+                              acolumn.PropertiesClass:=TcxCurrencyEditProperties;
+                              TcxCurrencyEditProperties(acolumn.Properties).DisplayFormat:= ',0.00;-,0.00';
+                              AColumn.Summary.FooterKind := skSum;
+
+                              cxGridDBTableView2.EndUpdate;
+
+//                              AColumn.Summary.GroupFooterKind := skSum;
+
+                              acolumn.Caption:=IBWIDNAIM.Value;
+
+                      end;
+
+                IBWID.Next;
+                end;
+
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+
 //            acolumn:=cxGrid1DBTableView1.CreateColumn;
 //      cxGridDBTableView1.BeginUpdate;
 //      acolumn.DataBinding.FieldName:='SMS';
@@ -456,6 +683,19 @@ begin
 //
 //     acolumn.Caption:='СМС';
 
+
+
+//                sqlDom:=sqlDom+'sum(kol) kol from ('+SQL+') where trim(tel)<>'' group by ch, ulnaim, nomdom';
+//                Delete(sqlDom, Length(sqlDom)-3, 3);
+//                sqlDom:=sqlDom+') group by schet,ulnaim,nomdom,tel having sum(vw_obkr.sal)'+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+') group by ulnaim,nomdom';
+
+//                sqlDom:='select vw_obkr.schet,vw_obkr.ulnaim,vw_obkr.nomdom, sum(vw_obkr.sal) sal,1 as kol from vw_obkr';
+//                sqlDom:=sqlDom+' where vw_obkr.period=:dt and trim(tel)<>'' and (vw_obkr.wid = ''ot'') group by schet,ulnaim,nomdom,tel having sum(vw_obkr.sal)>=0) group by ulnaim,nomdom';
+
+                IBREPDOM.SelectSQL.Text:=genDOMSQL(SQL);
+                IBREPDOM.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
+                IBREPDOM.Open;
+                DSREPDOM.Enabled:=true;
 
                 cxButton7.Enabled:=true;
 
@@ -682,7 +922,7 @@ begin
           Form17.IBSMSORDEREDSPERIOD.Value:=Form1.IBPERIODPERIOD.Value;
           Form17.IBSMSORDEREDSID_USER.Value:=Form1.ActiveUser;
           Form17.IBSMSORDEREDS.Post;
-              Form17.cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
+//              Form17.cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
         end;
 
         Form18.close;
@@ -693,14 +933,26 @@ begin
 end;
 
 procedure TForm18.cxCheckBox1PropertiesChange(Sender: TObject);
+var recrep,recrepdom:integer;
 begin
+if not IBREP.Active then
+begin
+  cxCheckBox1.checked:=false;
+  exit;
+end;
+
+
                 Form2.Label1.Caption:='Відмітка записів';
                 Form2.cxProgressBar1.Properties.Min:=0;
                 Form2.cxProgressBar1.Properties.Max:=0;
                 Form2.cxProgressBar1.Position:=0;
                 Application.ProcessMessages;
                 form2.SHOW;
+                recrep:=IBREP.RecNo;
+                recrepdom:=IBREPDOM.RecNo;
                 DSREP.Enabled:=false;
+                DSREPDOM.Enabled:=false;
+
 
      if cxCheckBox1.Checked then
      begin
@@ -740,6 +992,42 @@ begin
                 IBREP.First;
 
      end;
+
+
+
+     if cxCheckBox1.Checked then
+     begin
+                IBREPDOM.First;
+                Form2.cxProgressBar1.Properties.Max:=IBREPDOM.RecordCount-1;
+                while not IBREPDOM.eof do
+                begin
+                Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+                Application.ProcessMessages;
+                    IBREPDOM.Edit;
+                    IBREPDOM.FieldByName('ch').Value:=1;
+                    IBREPDOM.Post;
+                IBREPDOM.Next;
+                end;
+     end
+     else
+     begin
+                IBREPDOM.First;
+                Form2.cxProgressBar1.Properties.Max:=IBREPDOM.RecordCount-1;
+                while not IBREPDOM.eof do
+                begin
+                Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
+                Application.ProcessMessages;
+                    IBREPDOM.Edit;
+                    IBREPDOM.FieldByName('ch').Value:=0;
+                    IBREPDOM.Post;
+                IBREPDOM.Next;
+                end;
+
+     end;
+
+     IBREP.RecNo:=recrep;
+     IBREPDOM.RecNo:=recrepdom;
+     DSREPDOM.Enabled:=true;
      DSREP.Enabled:=true;
      form2.Close;
 end;
@@ -855,7 +1143,10 @@ end;
 procedure TForm18.FormShow(Sender: TObject);
 begin
 IBWID.Open;
-IBREP.FetchAll;
+//IBREP.Open;
+//IBREP.FetchAll;
+cxCheckBox3.Checked:=false;
+cxCheckBox1.Checked:=false;
 //if IBREP.RecordCount=0 then
 //begin
 //  cxButton3.Enabled:=false;
