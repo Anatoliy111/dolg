@@ -175,7 +175,7 @@ type
   public
   MsExcel:Variant;
   ExcelWorkbook: Variant;
-  onlysearchposl,Row,startROW,endROW:integer;
+  onlysearchposl,Row,startROW,endROW,maxcolposl:integer;
   newpl,err:boolean;
   regallposl,strprizn:string;
   procedure addopl;
@@ -534,18 +534,18 @@ begin
     fl:=true;
     while fl do
     begin
-      strposl:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+10];
+      strposl:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+maxcolposl+1];
       if Length(strposl)=0 then
       begin
-         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+10]:=nameposl;
+         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+maxcolposl+1]:=nameposl;
       end;
-      strposl:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+10];
+      strposl:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+maxcolposl+1];
       if strposl=nameposl then
       begin
-         sum:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+11];
-         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+11]:=sum+sumposl;
-         sum:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+12];
-         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+12]:=sum+sumposlproc;
+         sum:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+maxcolposl+2];
+         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+maxcolposl+2]:=sum+sumposl;
+         sum:=ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+maxcolposl+3];
+         ExcelWorkbook.WorkSheets[1].Cells[rowanaliz,IBQueryBankCOL_END.Value+maxcolposl+3]:=sum+sumposlproc;
          fl:=false;
       end;
       inc(rowanaliz);
@@ -669,7 +669,7 @@ var cmd:WideString;
 
   Range: OleVariant;
   flrow,fl:boolean;
-  rowa,ii,kk,p1,s1:integer;
+  rowa,ii,kk,p1,s1,m1,m2,m3:integer;
   sums,sumallvip,sumallproc,sumposl1,sumposl,sumvip,procent,allprocent,sumsum,sumavip,sumaproc:Double;
   Cell_1, Cell_2: OLEVariant;
   MyRange: OLEVariant;
@@ -678,19 +678,33 @@ begin
         form2.show;
         Form2.Label1.Caption:='Формування аналізу. Зачекайте!!!';
         Application.ProcessMessages;
+        m1:= maxcolposl;
+        m2:=3;
+        m3:=8;
+        while m1>7 do
+        begin
+           ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+m3]:='Послуга '+IntToStr(m2);
+           ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+m3+1]:='Сума '+IntToStr(m2);
+           inc(m2);
+           m1:=m1-2;
+           m3:=m3+2;
+        end;
+
+
+        maxcolposl:=maxcolposl+1;
 
      //   ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+10]:='Аналіз платежів по послугам';
-        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+10]:='Послуга';
-        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+11]:='Сума по випискі';
-        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+12]:='Сума платежу з %';
+        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+maxcolposl+1]:='Послуга';
+        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+maxcolposl+2]:='Сума по випискі';
+        ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+maxcolposl+3]:='Сума платежу з %';
 
         rowa:=startROW+1;
 
-        while length(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10])<>0 do
+        while length(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+1])<>0 do
         begin
-           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10]:='';
-           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+11]:='';
-           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12]:='';
+           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+1]:='';
+           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+2]:='';
+           ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+3]:='';
            inc(rowa);
         end;
 
@@ -734,7 +748,7 @@ begin
                   begin
                     nameposl:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+p1];
                     strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+s1];
-                    if Length(strs)=0 then sumposl:=0
+                    if Length(nameposl)=0 then sumposl:=0
                     else sumposl:=StrToFloat(strs);
                     if Length(nameposl)<>0 then
                     begin
@@ -775,25 +789,25 @@ begin
         sumavip:=0;
         sumaproc:=0;
         rowa:=startROW+1;
-        strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
+        strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+1];
         while strs<>'' do
         begin
-          strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
-          sumavip:=sumavip+StrToFloat(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+11]);
-          sumaproc:=sumaproc+StrToFloat(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12]);
+          strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+1];
+          sumavip:=sumavip+StrToFloat(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+2]);
+          sumaproc:=sumaproc+StrToFloat(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+3]);
           inc(rowa);
-          strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
+          strs:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+1];
         end;
 
-        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10]:='Всього';
-        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+11]:=sumavip;
-        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12]:=sumaproc;
+        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+1]:='Всього';
+        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+2]:=sumavip;
+        ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+3]:=sumaproc;
 
        // ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+1].Select;
 
-        Cell_1:=ExcelWorkbook.WorkSheets[1].Cells[startROW+1,IBQueryBankCOL_END.Value+10];
+        Cell_1:=ExcelWorkbook.WorkSheets[1].Cells[startROW+1,IBQueryBankCOL_END.Value+maxcolposl+1];
 
-        Cell_2:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12];
+        Cell_2:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+3];
 
         MyRange:=ExcelWorkbook.WorkSheets[1].Range[Cell_1, Cell_2];
 
@@ -803,9 +817,9 @@ begin
 //        MyRange.Borders[xlEdgeBottom].LineStyle := xlContinuous;
 //        MyRange.Borders[xlEdgeRight].LineStyle := xlContinuous;
 
-        Cell_1:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+10];
+        Cell_1:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+1];
 
-        Cell_2:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+12];
+        Cell_2:=ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+maxcolposl+3];
 
         MyRange:=ExcelWorkbook.WorkSheets[1].Range[Cell_1, Cell_2];
 
@@ -1517,6 +1531,7 @@ onlysearchposl:=0;
 
         row:=startROW;
         newpl:=true;
+        maxcolposl:=0;
 
 //        endlistexel;
         startlistexel;
@@ -2250,6 +2265,7 @@ begin
                     ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+countsum]:=Form33.ADOQueryOBORnaim.AsString;
                     countsum:=countsum+1;
                     ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+countsum]:=Form33.ADOQueryOBORsumpl.AsFloat;
+                    if countsum>maxcolposl then maxcolposl:=countsum;
                   end;
                 Form33.ADOQueryOBOR.Next;
                 end;
