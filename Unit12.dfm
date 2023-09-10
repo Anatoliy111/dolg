@@ -895,8 +895,8 @@ object Form12: TForm12
     SelectSQL.Strings = (
       
         'select * from opl where upd=1 and EXTRACT(MONTH FROM opl.dt) = :' +
-        'mes and EXTRACT(YEAR FROM opl.dt) = :year and OPL.schet =:sch or' +
-        'der by dt')
+        'mes and EXTRACT(YEAR FROM opl.dt) = :year and OPL.schet =:sch an' +
+        'd opl.period=:per order by dt')
     ModifySQL.Strings = (
       'update opl'
       'set'

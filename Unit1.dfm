@@ -177,13 +177,6 @@ object Form1: TForm1
       OptionsView.GroupFooters = gfVisibleWhenExpanded
       OptionsView.GroupSummaryLayout = gslAlignWithColumns
       OptionsView.Indicator = True
-      object cxGrid1DBTableView1KONTROL: TcxGridDBColumn
-        Caption = #1050#1086#1085#1090#1088#1086#1083#1077#1088
-        DataBinding.FieldName = 'KONTROL'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.ReadOnly = True
-        Width = 112
-      end
       object cxGrid1DBTableView1WID: TcxGridDBColumn
         Caption = #1055#1086#1089#1083#1091#1075#1072
         DataBinding.FieldName = 'WID'
@@ -987,7 +980,6 @@ object Form1: TForm1
       'vw_obkr.plos_ob,'
       'vw_obkr.priv,'
       'organ.name as orgname,'
-      'vw_obkr.kontrol,'
       'vw_obkr.nach,'
       'vw_obkr.opl,'
       'vw_obkr.subs,'
@@ -1110,11 +1102,6 @@ object Form1: TForm1
       FieldName = 'ORGNAME'
       Origin = '"ORGAN"."NAME"'
       Size = 55
-    end
-    object IBREPDKONTROL: TIBStringField
-      FieldName = 'KONTROL'
-      Origin = '"KONTROL"."FIO"'
-      Size = 40
     end
     object IBREPDNACH: TFloatField
       FieldName = 'NACH'

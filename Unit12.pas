@@ -282,6 +282,7 @@ begin
      DecodeDate(IBPERPERIOD.Value, Year, Month, Day);
      IBKTMPOPL.ParamByName('mes').Value:=Month;
      IBKTMPOPL.ParamByName('year').Value:=Year;
+     IBKTMPOPL.ParamByName('per').Value:=IBPERPERIOD.Value;
      IBKTMPOPL.Open;
 
       cxGridDBTableView1.ClearItems;

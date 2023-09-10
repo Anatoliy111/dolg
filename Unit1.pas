@@ -241,7 +241,6 @@ type
     cxGrid1DBTableView1UL: TcxGridDBColumn;
     cxGrid1DBTableView1DOM: TcxGridDBColumn;
     cxGrid1DBTableView1KV: TcxGridDBColumn;
-    cxGrid1DBTableView1KONTROL: TcxGridDBColumn;
     cxGrid1DBTableView1NACH1: TcxGridDBColumn;
     cxGrid1DBTableView1OPL: TcxGridDBColumn;
     cxGrid1DBTableView1SUBS: TcxGridDBColumn;
@@ -376,7 +375,6 @@ type
     IBREPDKOLI_P: TFloatField;
     IBREPDKOLI_PF: TFloatField;
     IBREPDORGNAME: TIBStringField;
-    IBREPDKONTROL: TIBStringField;
     IBREPDNACH: TFloatField;
     IBREPDOPL: TFloatField;
     IBREPDSUBS: TFloatField;

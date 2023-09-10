@@ -1167,7 +1167,7 @@ end;
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
     stroka,strmes,tempDir:string;
-    dt1,dt2,i,pusto:integer;
+    dt1,dt2,i,pusto,kol:integer;
     f : TextFile;
     MyFile: TFileStream;
   Excel: Variant;
@@ -1176,6 +1176,7 @@ var f1:boolean;
   FileInfo: TSHFileInfo;
     RegularExpression:TRegEx;
     Match : TMatch;
+
 begin
 
 onlysearchposl:=0;
@@ -1531,7 +1532,21 @@ onlysearchposl:=0;
 
         row:=startROW;
         newpl:=true;
-        maxcolposl:=0;
+        kol:=IBQueryBankCOL_END.Value;
+        f1:=true;
+
+        while f1 do
+        begin
+           kol:=kol+1;
+           if length(ExcelWorkbook.WorkSheets[1].Cells[startROW,kol])=0 then
+           begin
+             maxcolposl:=kol-IBQueryBankCOL_END.Value;
+             f1:=false;
+           end;
+        end;
+
+
+
 
 //        endlistexel;
         startlistexel;
