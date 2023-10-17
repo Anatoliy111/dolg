@@ -20,12 +20,12 @@ object Form17: TForm17
     Left = 0
     Top = 0
     Width = 901
-    Height = 217
+    Height = 233
     Align = alTop
     TabOrder = 0
     object cxGroupBox1: TcxGroupBox
-      Left = 8
-      Top = 8
+      Left = 14
+      Top = 0
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080' '#1074#1110#1076#1073#1086#1088#1091
       TabOrder = 0
       Height = 177
@@ -38,31 +38,31 @@ object Form17: TForm17
         Caption = #1064#1072#1073#1083#1086#1085' '#1090#1077#1082#1089#1090#1072' '#1074' '#1089#1084#1089
       end
       object Label2: TLabel
-        Left = 736
-        Top = 116
-        Width = 92
-        Height = 26
+        Left = 347
+        Top = 72
+        Width = 144
+        Height = 13
         Caption = #1050#1110#1083#1100#1082#1110#1089#1090#1100' '#1089#1080#1084#1074#1086#1083#1110#1074' '#1074' '#1096#1072#1073#1083#1086#1085#1110
         WordWrap = True
       end
       object Label3: TLabel
-        Left = 736
-        Top = 143
-        Width = 71
-        Height = 26
+        Left = 347
+        Top = 90
+        Width = 123
+        Height = 13
         Caption = #1050#1110#1083#1100#1082#1110#1089#1090#1100' '#1057#1052#1057' '#1074' '#1096#1072#1073#1083#1086#1085#1110
         WordWrap = True
       end
       object Label4: TLabel
-        Left = 834
-        Top = 122
+        Left = 504
+        Top = 72
         Width = 31
         Height = 13
         Caption = 'Label4'
       end
       object Label5: TLabel
-        Left = 834
-        Top = 148
+        Left = 504
+        Top = 90
         Width = 31
         Height = 13
         Caption = 'Label5'
@@ -73,6 +73,14 @@ object Form17: TForm17
         Width = 87
         Height = 13
         Caption = #1060#1086#1088#1084#1091#1074#1072#1085#1085#1103' '#1057#1052#1057
+      end
+      object Label7: TLabel
+        Left = 646
+        Top = 118
+        Width = 126
+        Height = 13
+        Caption = #1050#1083#1102#1095#1086#1074#1110' '#1089#1083#1086#1074#1072' '#1074' '#1096#1072#1073#1083#1086#1085#1110
+        WordWrap = True
       end
       object cxButton2: TcxButton
         Left = 3
@@ -86,7 +94,7 @@ object Form17: TForm17
       end
       object cxLabel6: TcxLabel
         Left = 14
-        Top = 127
+        Top = 131
         Caption = #1055#1086#1096#1091#1082' '#1087#1086' '#1088#1072#1093#1091#1085#1082#1091
       end
       object cxTextEdit4: TcxTextEdit
@@ -137,11 +145,6 @@ object Form17: TForm17
         WordWrap = True
         OnClick = cxButton6Click
       end
-      object cxLabel2: TcxLabel
-        Left = 313
-        Top = 118
-        Caption = '0'
-      end
       object cxLabel7: TcxLabel
         Left = 216
         Top = 34
@@ -177,50 +180,58 @@ object Form17: TForm17
         Properties.ValueUnchecked = 0
         Properties.OnChange = cxDBCheckBox1PropertiesChange
         Style.Shadow = False
-        TabOrder = 11
+        TabOrder = 10
         Visible = False
         Height = 29
         Width = 327
       end
+      object DBMemo1: TDBMemo
+        Left = 559
+        Top = 27
+        Width = 308
+        Height = 89
+        DataField = 'TEXT_SMS'
+        DataSource = DSSMSORDEREDS
+        ParentShowHint = False
+        ScrollBars = ssVertical
+        ShowHint = False
+        TabOrder = 11
+        OnChange = DBMemo1Change
+      end
+      object cxButton7: TcxButton
+        Left = 456
+        Top = 27
+        Width = 97
+        Height = 24
+        Caption = #1042#1080#1073#1088#1072#1090#1080' '#1096#1072#1073#1083#1086#1085
+        TabOrder = 12
+        WordWrap = True
+        OnClick = cxButton7Click
+      end
       object cxLabel5: TcxLabel
-        Left = 188
-        Top = 133
+        Left = 150
+        Top = 126
         Caption = #1050'-'#1089#1090#1100' '#1079#1092#1086#1088#1084#1086#1074#1072#1085#1086' '#1057#1052#1057':'
         Style.TextColor = clWindowText
       end
-      object cxLabel13: TcxLabel
-        Left = 480
-        Top = 150
-        Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075#1091' '#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
-      end
-      object cxLabel15: TcxLabel
-        Left = 504
-        Top = 118
-        Caption = #1050'-'#1089#1090#1100' '#1074#1110#1076#1087#1088#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
-      end
-      object cxLabel17: TcxLabel
-        Left = 188
-        Top = 118
-        Caption = #1041#1072#1083#1072#1085#1089' '#1076#1086#1089#1090#1091#1087#1085#1080#1093' '#1057#1052#1057':'
-      end
       object cxLabel18: TcxLabel
-        Left = 313
-        Top = 133
+        Left = 281
+        Top = 126
         Caption = '0'
       end
-      object cxLabel19: TcxLabel
-        Left = 509
-        Top = 134
-        Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
+      object cxLabel2: TcxLabel
+        Left = 281
+        Top = 107
+        Caption = '0'
       end
-      object cxLabel21: TcxLabel
-        Left = 340
-        Top = 133
-        Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090#1072#1074'. '#1057#1052#1057':'
+      object cxLabel17: TcxLabel
+        Left = 150
+        Top = 107
+        Caption = #1041#1072#1083#1072#1085#1089' '#1076#1086#1089#1090#1091#1087#1085#1080#1093' '#1057#1052#1057':'
       end
       object cxButton9: TcxButton
-        Left = 132
-        Top = 109
+        Left = 14
+        Top = 104
         Width = 26
         Height = 24
         OptionsImage.Glyph.Data = {
@@ -258,110 +269,19 @@ object Form17: TForm17
           0002000000010000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000}
-        TabOrder = 19
+        TabOrder = 17
         WordWrap = True
         OnClick = cxButton9Click
       end
-      object cxLabel1: TcxLabel
-        Left = 337
-        Top = 118
-        Caption = #1050'-'#1089#1090#1100' '#1074#1110#1076#1087#1088#1072#1074'. '#1057#1052#1057':'
-      end
-      object cxDBLabel1: TcxDBLabel
-        Left = 444
-        Top = 118
-        DataBinding.DataField = 'KOL_SENDSMS'
-        DataBinding.DataSource = DSSMSORDEREDS
-        Properties.Alignment.Horz = taLeftJustify
-        Properties.Alignment.Vert = taVCenter
-        Properties.Orientation = cxoLeft
-        Height = 17
-        Width = 58
-        AnchorY = 127
-      end
-      object cxDBLabel2: TcxDBLabel
-        Left = 444
-        Top = 134
-        DataBinding.DataField = 'KOL_DOSTSMS'
-        DataBinding.DataSource = DSSMSORDEREDS
-        Properties.Alignment.Horz = taLeftJustify
-        Properties.Alignment.Vert = taVCenter
-        Properties.Orientation = cxoLeft
-        Height = 17
-        Width = 59
-        AnchorY = 143
-      end
-      object cxDBLabel3: TcxDBLabel
-        Left = 647
-        Top = 117
-        DataBinding.DataField = 'KOL_SEND'
-        DataBinding.DataSource = DSSMSORDEREDS
-        Properties.Alignment.Horz = taLeftJustify
-        Properties.Alignment.Vert = taVCenter
-        Properties.Orientation = cxoLeft
-        Height = 17
-        Width = 59
-        AnchorY = 126
-      end
-      object cxDBLabel4: TcxDBLabel
-        Left = 647
-        Top = 133
-        DataBinding.DataField = 'KOL_DOST'
-        DataBinding.DataSource = DSSMSORDEREDS
-        Properties.Alignment.Horz = taLeftJustify
-        Properties.Alignment.Vert = taVCenter
-        Properties.Orientation = cxoLeft
-        Height = 17
-        Width = 59
-        AnchorY = 142
-      end
-      object cxDBLabel5: TcxDBLabel
-        Left = 647
-        Top = 149
-        DataBinding.DataField = 'DOLG'
-        DataBinding.DataSource = DSSMSORDEREDS
-        Properties.Alignment.Horz = taLeftJustify
-        Properties.Alignment.Vert = taVCenter
-        Properties.Orientation = cxoLeft
-        Height = 17
-        Width = 59
-        AnchorY = 158
-      end
-      object DBMemo1: TDBMemo
-        Left = 559
-        Top = 27
-        Width = 308
-        Height = 89
-        DataField = 'TEXT_SMS'
-        DataSource = DSSMSORDEREDS
-        ParentShowHint = False
-        ScrollBars = ssVertical
-        ShowHint = False
-        TabOrder = 26
-        OnChange = DBMemo1Change
-      end
-      object RadioButton1: TRadioButton
-        Left = 440
-        Top = 35
-        Width = 113
-        Height = 17
-        Caption = #1090#1077#1082#1089#1090' '#1079' '#1096#1072#1073#1083#1086#1085#1091
-        TabOrder = 27
-        OnClick = RadioButton1Click
-      end
-      object RadioButton2: TRadioButton
-        Left = 440
-        Top = 58
-        Width = 113
-        Height = 17
-        Caption = #1090#1077#1082#1089#1090' '#1079' '#1073#1086#1088#1075#1091
-        TabOrder = 28
-        OnClick = RadioButton2Click
+      object cxLabel4: TcxLabel
+        Left = 312
+        Top = 106
+        Caption = '* '#1084#1072#1082#1089'. '#1082'-'#1089#1090#1100' '#1089#1080#1084#1074#1086#1083#1110#1074' '#1074' '#1086#1076#1085#1086#1084#1091' '#1057#1052#1057' 661 '#1089#1080#1084#1074#1086#1083
       end
     end
     object cxButton3: TcxButton
-      Left = 687
-      Top = 186
+      Left = 14
+      Top = 202
       Width = 74
       Height = 25
       Caption = #1042' '#1045#1082#1089#1077#1083#1100
@@ -371,7 +291,7 @@ object Form17: TForm17
     object cxButton8: TcxButton
       Left = 14
       Top = 183
-      Width = 57
+      Width = 74
       Height = 21
       Hint = #1042#1080#1076#1072#1083#1080#1090#1080
       LookAndFeel.NativeStyle = True
@@ -511,16 +431,125 @@ object Form17: TForm17
       OnClick = cxButton8Click
     end
     object cxLabel11: TcxLabel
-      Left = 71
-      Top = 185
+      Left = 94
+      Top = 183
       Caption = '-- '#1074#1080#1076#1072#1083#1080#1090#1080' '#1079#1072#1087#1080#1089
+    end
+    object cxLabel1: TcxLabel
+      Left = 98
+      Top = 199
+      Caption = #1050'-'#1089#1090#1100' '#1074#1110#1076#1087#1088#1072#1074'. '#1057#1052#1057':'
+    end
+    object cxDBLabel1: TcxDBLabel
+      Left = 205
+      Top = 199
+      DataBinding.DataField = 'KOL_SENDSMS'
+      DataBinding.DataSource = DSSMSORDEREDS
+      Properties.Alignment.Horz = taLeftJustify
+      Properties.Alignment.Vert = taVCenter
+      Properties.Orientation = cxoLeft
+      Height = 17
+      Width = 58
+      AnchorY = 208
+    end
+    object cxLabel21: TcxLabel
+      Left = 101
+      Top = 214
+      Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090#1072#1074'. '#1057#1052#1057':'
+    end
+    object cxDBLabel2: TcxDBLabel
+      Left = 205
+      Top = 215
+      DataBinding.DataField = 'KOL_DOSTSMS'
+      DataBinding.DataSource = DSSMSORDEREDS
+      Properties.Alignment.Horz = taLeftJustify
+      Properties.Alignment.Vert = taVCenter
+      Properties.Orientation = cxoLeft
+      Height = 17
+      Width = 59
+      AnchorY = 224
+    end
+    object cxLabel15: TcxLabel
+      Left = 294
+      Top = 184
+      Caption = #1050'-'#1089#1090#1100' '#1074#1110#1076#1087#1088#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
+    end
+    object cxDBLabel3: TcxDBLabel
+      Left = 437
+      Top = 183
+      DataBinding.DataField = 'KOL_SEND'
+      DataBinding.DataSource = DSSMSORDEREDS
+      Properties.Alignment.Horz = taLeftJustify
+      Properties.Alignment.Vert = taVCenter
+      Properties.Orientation = cxoLeft
+      Height = 17
+      Width = 59
+      AnchorY = 192
+    end
+    object cxLabel19: TcxLabel
+      Left = 299
+      Top = 200
+      Caption = #1050'-'#1089#1090#1100' '#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
+    end
+    object cxDBLabel4: TcxDBLabel
+      Left = 437
+      Top = 199
+      DataBinding.DataField = 'KOL_DOST'
+      DataBinding.DataSource = DSSMSORDEREDS
+      Properties.Alignment.Horz = taLeftJustify
+      Properties.Alignment.Vert = taVCenter
+      Properties.Orientation = cxoLeft
+      Height = 17
+      Width = 59
+      AnchorY = 208
+    end
+    object cxLabel13: TcxLabel
+      Left = 270
+      Top = 216
+      Caption = #1057#1091#1084#1072' '#1073#1086#1088#1075#1091' '#1076#1086#1089#1090#1072#1074#1083#1077#1085#1080#1093' '#1072#1073#1086#1085':'
+    end
+    object cxDBLabel5: TcxDBLabel
+      Left = 437
+      Top = 215
+      DataBinding.DataField = 'DOLG'
+      DataBinding.DataSource = DSSMSORDEREDS
+      Properties.Alignment.Horz = taLeftJustify
+      Properties.Alignment.Vert = taVCenter
+      Properties.Orientation = cxoLeft
+      Height = 17
+      Width = 59
+      AnchorY = 224
+    end
+    object cxMemo1: TcxMemo
+      Left = 573
+      Top = 134
+      Lines.Strings = (
+        '[date] - '#1087#1086#1090#1086#1095#1085#1072' '#1076#1072#1090#1072' "12.01.2020"'
+        '[datefirst] - '#1087#1086#1095#1072#1090#1086#1082' '#1084#1110#1089#1103#1094#1103' '#1086#1073#1083#1110#1082#1091'  "01.01.2020"'
+        '[datemes] - '#1087#1086#1090#1086#1095#1085#1110' '#1095#1080#1089#1083#1086' '#1110' '#1084#1110#1089#1103#1094#1100' "12 '#1089#1110#1095#1085#1103' 2020"'
+        '[datefirstmes] - '#1095#1080#1089#1083#1086' '#1087#1086#1095#1072#1090#1086#1082' '#1110' '#1084#1110#1089#1103#1094#1100' '#1086#1073#1083#1110#1082#1091' "01 '#1089#1110#1095#1085#1103' '
+        '2020"'
+        '[datemesstr] - '#1084#1110#1089#1103#1094#1100' '#1086#1073#1083#1110#1082#1091' "'#1089#1110#1095#1077#1085#1100' 2020"'
+        '[dolg] - '#1079#1072#1075#1072#1083#1100#1085#1080#1081' '#1073#1086#1088#1075' '#1087#1086' '#1074#1080#1073#1088#1072#1085#1080#1084' '#1087#1086#1089#1083#1091#1075#1072#1084' '#1085#1072' '
+        #1087#1086#1090#1086#1095#1085#1091' '#1076#1072#1090#1091
+        '[poslnamsum] - '#1073#1086#1088#1075' '#1087#1086#1089#1083#1091#1075#1072'-'#1089#1091#1084#1072'  "'#1054#1087#1072#1083#1077#1085#1085#1103' - '
+        '1000,00"'
+        '[schet] - '#1086#1089#1086#1073#1086#1074#1080#1081' '#1088#1072#1093#1091#1085#1086#1082' '
+        ''
+        ''
+        '')
+      Properties.ReadOnly = True
+      Properties.ScrollBars = ssVertical
+      TabOrder = 14
+      Height = 93
+      Width = 308
     end
   end
   object cxGrid3: TcxGrid
     Left = 0
-    Top = 217
+    Top = 233
     Width = 901
-    Height = 407
+    Height = 391
     Align = alClient
     TabOrder = 1
     object cxGridDBTableView2: TcxGridDBTableView
@@ -545,6 +574,11 @@ object Form17: TForm17
           Kind = skCount
           OnGetText = cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems2GetText
           Column = cxGridDBTableView2SCHET
+        end
+        item
+          Kind = skMax
+          OnGetText = cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems3GetText
+          Column = cxGridDBTableView2KOL_CHAR
         end>
       DataController.Summary.SummaryGroups = <>
       Filtering.MRUItemsList = False
@@ -552,8 +586,8 @@ object Form17: TForm17
       Filtering.ColumnMRUItemsList = False
       OptionsCustomize.ColumnFiltering = False
       OptionsCustomize.ColumnGrouping = False
+      OptionsData.Appending = True
       OptionsView.CellAutoHeight = True
-      OptionsView.ColumnAutoWidth = True
       OptionsView.Footer = True
       OptionsView.FooterMultiSummaries = True
       OptionsView.GroupByBox = False
@@ -565,56 +599,75 @@ object Form17: TForm17
         DataBinding.FieldName = 'SCHET'
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.ReadOnly = True
-        Width = 50
+        Options.Editing = False
+        Width = 88
       end
       object cxGridDBTableView2FIO: TcxGridDBColumn
         Caption = #1055#1030#1055
         DataBinding.FieldName = 'FIO'
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.ReadOnly = True
-        Width = 54
+        Options.Editing = False
+        Width = 171
       end
       object cxGridDBTableView2ULNAIM: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
         DataBinding.FieldName = 'ULNAIM'
-        Width = 59
+        Options.Editing = False
+        Width = 167
       end
       object cxGridDBTableView2NOMDOM: TcxGridDBColumn
         Caption = #1041#1091#1076#1080#1085#1086#1082
         DataBinding.FieldName = 'NOMDOM'
-        Width = 20
+        Options.Editing = False
+        Width = 35
       end
       object cxGridDBTableView2NOMKV: TcxGridDBColumn
         Caption = #1050#1074'.'
         DataBinding.FieldName = 'NOMKV'
-        Width = 20
+        Options.Editing = False
+        Width = 35
       end
       object cxGridDBTableView2TEL: TcxGridDBColumn
         Caption = #1058#1077#1083#1077#1092#1086#1085
         DataBinding.FieldName = 'TEL'
-        Width = 34
+        Width = 93
       end
       object cxGridDBTableView2DOLG: TcxGridDBColumn
         Caption = #1041#1086#1088#1075
         DataBinding.FieldName = 'DOLG'
-        Width = 22
+        Options.Editing = False
+        Width = 100
       end
       object cxGridDBTableView2STATUS: TcxGridDBColumn
         Caption = #1057#1090#1072#1090#1091#1089
         DataBinding.FieldName = 'STATUS'
-        Width = 93
+        Options.Editing = False
+        Width = 163
       end
       object cxGridDBTableView2KOL_SMS: TcxGridDBColumn
         Caption = #1050'-'#1089#1090#1100' '#1089#1084#1089
         DataBinding.FieldName = 'KOL_SMS'
-        Width = 20
+        Options.Editing = False
+        Width = 68
+      end
+      object cxGridDBTableView2KOL_CHAR: TcxGridDBColumn
+        Caption = #1050'-'#1089#1090#1100' '#1089#1080#1084#1074'.'
+        DataBinding.FieldName = 'KOL_CHAR'
+        Options.Editing = False
+        Width = 68
       end
       object cxGridDBTableView2TEXT: TcxGridDBColumn
         Caption = #1058#1077#1082#1089#1090' '#1057#1052#1057
         DataBinding.FieldName = 'TEXT'
         PropertiesClassName = 'TcxTextEditProperties'
-        Properties.ReadOnly = True
-        Width = 101
+        Properties.Alignment.Vert = taTopJustify
+        Properties.AutoSelect = False
+        Properties.UseLeftAlignmentOnEditing = False
+        Properties.UseNullString = True
+        HeaderAlignmentVert = vaTop
+        Options.AutoWidthSizable = False
+        Width = 500
       end
       object cxGridDBTableView2MESSAGEID: TcxGridDBColumn
         DataBinding.FieldName = 'MESSAGEID'
@@ -627,13 +680,13 @@ object Form17: TForm17
     end
   end
   object cxLabel3: TcxLabel
-    Left = 254
-    Top = 111
+    Left = 54
+    Top = 108
     Caption = #1041#1072#1083#1072#1085#1089' '#1075#1088#1085'.:'
   end
   object cxLabel8: TcxLabel
-    Left = 321
-    Top = 111
+    Left = 121
+    Top = 108
     Caption = '0'
   end
   object IBWID: TIBDataSet
@@ -844,8 +897,8 @@ object Form17: TForm17
         '  (ID, ID_SMSORDER, SCHET, FIO, ULNAIM, NOMDOM, NOMKV, TEL, TEXT' +
         ', TEXTNOTTR, '
       
-        '   ALPHANAME, WAPPUSH, DOLG, STATUS, MESSAGEID, KOL_SMS, KOL_ABO' +
-        'N)'
+        '   ALPHANAME, WAPPUSH, DOLG, STATUS, MESSAGEID, KOL_SMS, KOL_CHA' +
+        'R, KOL_ABON)'
       'values'
       
         '  (:ID, :ID_SMSORDER, :SCHET, :FIO, :ULNAIM, :NOMDOM, :NOMKV, :T' +
@@ -853,7 +906,7 @@ object Form17: TForm17
       
         '   :TEXTNOTTR, :ALPHANAME, :WAPPUSH, :DOLG, :STATUS, :MESSAGEID,' +
         ' :KOL_SMS, '
-      '   :KOL_ABON)')
+      '   :KOL_CHAR, :KOL_ABON)')
     RefreshSQL.Strings = (
       'Select '
       '  ID,'
@@ -872,6 +925,7 @@ object Form17: TForm17
       '  STATUS,'
       '  MESSAGEID,'
       '  KOL_SMS,'
+      '  KOL_CHAR,'
       '  KOL_ABON'
       'from SMSLIST '
       'where'
@@ -897,6 +951,7 @@ object Form17: TForm17
       '  STATUS = :STATUS,'
       '  MESSAGEID = :MESSAGEID,'
       '  KOL_SMS = :KOL_SMS,'
+      '  KOL_CHAR = :KOL_CHAR,'
       '  KOL_ABON = :KOL_ABON'
       'where'
       '  ID = :OLD_ID')
@@ -950,11 +1005,6 @@ object Form17: TForm17
       Origin = '"SMSLIST"."STATUS"'
       Size = 250
     end
-    object IBSMSLISTTEXT: TIBStringField
-      FieldName = 'TEXT'
-      Origin = '"SMSLIST"."TEXT"'
-      Size = 300
-    end
     object IBSMSLISTKOL_SMS: TIntegerField
       FieldName = 'KOL_SMS'
       Origin = '"SMSLIST"."KOL_SMS"'
@@ -974,14 +1024,24 @@ object Form17: TForm17
       Origin = '"SMSLIST"."FIO"'
       Size = 100
     end
-    object IBSMSLISTTEXTNOTTR: TIBStringField
-      FieldName = 'TEXTNOTTR'
-      Origin = '"SMSLIST"."TEXTNOTTR"'
-      Size = 300
-    end
     object IBSMSLISTKOL_ABON: TIntegerField
       FieldName = 'KOL_ABON'
       Origin = '"SMSLIST"."KOL_ABON"'
+    end
+    object IBSMSLISTTEXT: TIBStringField
+      FieldName = 'TEXT'
+      Origin = '"SMSLIST"."TEXT"'
+      OnChange = IBSMSLISTTEXTChange
+      Size = 1000
+    end
+    object IBSMSLISTTEXTNOTTR: TIBStringField
+      FieldName = 'TEXTNOTTR'
+      Origin = '"SMSLIST"."TEXTNOTTR"'
+      Size = 1000
+    end
+    object IBSMSLISTKOL_CHAR: TIntegerField
+      FieldName = 'KOL_CHAR'
+      Origin = '"SMSLIST"."KOL_CHAR"'
     end
   end
   object DSSMSLIST: TDataSource

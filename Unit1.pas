@@ -815,7 +815,8 @@ begin
            sql2:=' and sal'+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase]);
      end;
 
-
+     if Form1.cxLookupComboBox1.EditValue=IBPERIODPERIOD.Value then
+     StrSQL:=StringReplace(StrSQL,'vw_obkr','vw_obkrnow',[rfReplaceAll, rfIgnoreCase]);
 
      Form1.IBREPD.SelectSQL.Text:=StrSQL+sql2+' order by note.schet,note.wid';
      Form1.IBREPD.ParamByName('kluser').Value:=Form1.ActiveUser;

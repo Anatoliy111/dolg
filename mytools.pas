@@ -89,6 +89,7 @@ procedure ReindexTable(Table: TTable);
 function date_slovo(date:TDate):string;
 function mon_slovo(mon:integer):string;
 function mon_slovoDt(date:TDate):string;
+function mon_slovoDt2(date:TDate):string;
 function Translit2Lat(const Str: string): string;
 
 function GetComputerNetName: string;
@@ -1284,6 +1285,33 @@ case strtoint(copy(s,3,2)) of
 end;
 
 result:=s1+' '+copy(s,5,4);
+
+end;
+
+function mon_slovoDt2(date:TDate):string;
+var s,s1,s2:string;
+begin
+
+s:=date2str(date,'ddMMyyyy');
+s1:=inttostr(strtoint(copy(s,1,2)));
+
+case strtoint(copy(s,3,2)) of
+01:s2:='січня';
+02:s2:='лютого';
+03:s2:='березеня';
+04:s2:='квітня';
+05:s2:='травня';
+06:s2:='червня';
+07:s2:='липня';
+08:s2:='серпня';
+09:s2:='вересня';
+10:s2:='жовтня';
+11:s2:='листопада';
+12:s2:='грудня';
+
+end;
+
+result:=s1+' '+s2+' '+copy(s,5,4);
 
 end;
 
