@@ -139,8 +139,8 @@ begin
                 Delete(whereposl, Length(whereposl)-3, 3);
                 strWhere:='where '+strWhere+'('+whereposl+')';
                 strSAL:=strSUM+' as SAL,';
-                SQL:=SQL+strSAL+strMAXFIELD+' from(select vw_obkr.period,vw_obkr.schet,vw_obkr.fio,vw_obkr.ulnaim,vw_obkr.nomdom,vw_obkr.nomkv,aboninf.tel,'+strFIELD;
-                SQL:=SQL+' from vw_obkr join aboninf on (aboninf.schet=vw_obkr.schet) where vw_obkr.period=:dt)';
+                SQL:=SQL+strSAL+strMAXFIELD+' from(select vw_obkrnow.period,vw_obkrnow.schet,vw_obkrnow.fio,vw_obkrnow.ulnaim,vw_obkrnow.nomdom,vw_obkrnow.nomkv,aboninf.tel,'+strFIELD;
+                SQL:=SQL+' from vw_obkrnow join aboninf on (aboninf.schet=vw_obkrnow.schet))';
 //                if cxCheckBox1.Checked then
 //                   SQL:=SQL+strWhere;
                 SQL:=SQL+strWhere;
@@ -200,7 +200,7 @@ function TForm18.genDOMSQL(AbonSQL:string):string;
 var SQL,strSAL,strFIELD,strMAXFIELD,strSUM,strWhere,whereposl:string;
 begin
 
-      SQL:='select ch, ulnaim, nomdom, sum(SAL) sal,sum(ot) ot,sum(kol) kol,';
+      SQL:='select ch, ulnaim, nomdom, sum(SAL) sal,sum(kol) kol,';
 
 //      SQL:=SQL+'cast('''+''+''' as varchar(300)) SMS,';
 
@@ -375,8 +375,8 @@ begin
                 IBREP.Close;
                 SQL:=genSQL();
                 IBREP.SelectSQL.Text:=SQL;
-                IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
-                cxLabel9.Caption:=mon_slovoDt(Form1.IBPERIODPERIOD.Value);
+//                IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
+                cxLabel9.Caption:=mon_slovoDt2(Form1.IBPERIODPERIOD.Value);
                 repdt:=Form1.IBPERIODPERIOD.Value;
 
                 IBREP.Open;
@@ -516,9 +516,7 @@ begin
       TcxCurrencyEditProperties(acolumn.Properties).DisplayFormat:= ',0.00;-,0.00';
       AColumn.Summary.FooterKind := skSum;
       cxGrid1DBTableView1.EndUpdate;
-
-
-                        acolumn.Caption:='Борг';
+      acolumn.Caption:='Борг';
 
 
                 IBWID.First;
@@ -687,13 +685,13 @@ begin
 
 //                sqlDom:=sqlDom+'sum(kol) kol from ('+SQL+') where trim(tel)<>'' group by ch, ulnaim, nomdom';
 //                Delete(sqlDom, Length(sqlDom)-3, 3);
-//                sqlDom:=sqlDom+') group by schet,ulnaim,nomdom,tel having sum(vw_obkr.sal)'+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+') group by ulnaim,nomdom';
+//                sqlDom:=sqlDom+') group by schet,ulnaim,nomdom,tel having sum(vw_obkrnow.sal)'+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase])+') group by ulnaim,nomdom';
 
-//                sqlDom:='select vw_obkr.schet,vw_obkr.ulnaim,vw_obkr.nomdom, sum(vw_obkr.sal) sal,1 as kol from vw_obkr';
-//                sqlDom:=sqlDom+' where vw_obkr.period=:dt and trim(tel)<>'' and (vw_obkr.wid = ''ot'') group by schet,ulnaim,nomdom,tel having sum(vw_obkr.sal)>=0) group by ulnaim,nomdom';
+//                sqlDom:='select vw_obkrnow.schet,vw_obkrnow.ulnaim,vw_obkrnow.nomdom, sum(vw_obkrnow.sal) sal,1 as kol from vw_obkrnow';
+//                sqlDom:=sqlDom+' where vw_obkrnow.period=:dt and trim(tel)<>'' and (vw_obkrnow.wid = ''ot'') group by schet,ulnaim,nomdom,tel having sum(vw_obkrnow.sal)>=0) group by ulnaim,nomdom';
 
                 IBREPDOM.SelectSQL.Text:=genDOMSQL(SQL);
-                IBREPDOM.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
+//                IBREPDOM.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
                 IBREPDOM.Open;
                 DSREPDOM.Enabled:=true;
 
@@ -760,6 +758,12 @@ begin
           if IBREP.RecordCount=0 then
              exit;
 
+          Form17.IBQuery1.SQL.Text:='delete from smslist where id_smsorder=:id_ord';
+          Form17.IBQuery1.ParamByName('id_ord').Value:=id_orders;
+          Form17.IBQuery1.ExecSQL;
+          Form1.IBTransaction1.CommitRetaining;
+          Form17.IBSMSLIST.Close;
+          Form17.IBSMSLIST.Open;
 
 
 //              if id_orders=0 then
@@ -792,7 +796,6 @@ begin
 
                 Form2.Label1.Caption:='Додати відмічені';
                 Form2.cxProgressBar1.Properties.Min:=0;
-                Form2.cxProgressBar1.Properties.Max:=0;
                 Form2.cxProgressBar1.Position:=0;
                 Application.ProcessMessages;
                 form2.SHOW;
@@ -814,34 +817,35 @@ begin
                   Continue;
                 end;
 
-                 kol_pos:=0;
-                 IBWID.First;
-                 while not IBWID.eof do
-                      begin
-                         if IBREP.FindField(IBWIDWID.Value)<>nil then
-                            if IBREP.FindField(IBWIDWID.Value).Value<>0 then
-                            begin
-                             kol_pos:=kol_pos+1;
-                             poslnam1:=trim(IBWIDNAIM.Value);
-                             poslsum1:=FloatToStr(IBREP.FindField(IBWIDWID.Value).Value);
-                            end;
-                      IBWID.Next;
-                      end;
+//                 kol_pos:=0;
+//                 IBWID.First;
+//                 while not IBWID.eof do
+//                      begin
+//                         if IBREP.FindField(IBWIDWID.Value)<>nil then
+//                            if IBREP.FindField(IBWIDWID.Value).Value<>0 then
+//                            begin
+//                             kol_pos:=kol_pos+1;
+//                             poslnam1:=trim(IBWIDNAIM.Value);
+//                             poslsum1:=FloatToStr(IBREP.FindField(IBWIDWID.Value).Value);
+//                            end;
+//                      IBWID.Next;
+//                      end;
+//
+////                 if kol_pos=0 then
+////                 begin
+////                    IBREP.Next;
+////                    Continue;
+////                 end;
+//                 if kol_pos=1 then
+//                    smstext:=Form1.textsms1
+//                 else
+//                    smstext:=Form1.textsms2;
 
-//                 if kol_pos=0 then
-//                 begin
-//                    IBREP.Next;
-//                    Continue;
-//                 end;
-                 if kol_pos=1 then
-                    smstext:=Form1.textsms1
-                 else
-                    smstext:=Form1.textsms2;
+//                 Form17.IBSMSLIST.First;
+//                 if not Form17.IBSMSLIST.Locate('schet',IBREP.FieldByName('schet').AsString,[]) then
+//                     Form17.IBSMSLIST.Insert;
 
-                 Form17.IBSMSLIST.First;
-                 if not Form17.IBSMSLIST.Locate('schet',IBREP.FieldByName('schet').AsString,[]) then
-                     Form17.IBSMSLIST.Insert;
-
+                 Form17.IBSMSLIST.Append;
                  Form17.IBSMSLIST.Edit;
                  Form17.IBSMSLISTID_SMSORDER.Value:=Form17.IBSMSORDEREDSID.Value;
                  Form17.IBSMSLISTSCHET.Value:=IBREP.FieldByName('schet').AsString;
@@ -851,36 +855,46 @@ begin
                  Form17.IBSMSLISTNOMKV.Value:=IBREP.FieldByName('NOMKV').AsString;
                  Form17.IBSMSLISTTEL.Value:='+38'+IBREP.FieldByName('TEL').AsString;
                  Form17.IBSMSLISTDOLG.Value:=IBREP.FieldByName('SAL').AsFloat;
-                 if pos('[period]', smstext)>0 then
-                    smstext:=StringReplace(smstext,'[period]',mon_slovoDt(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
-                 if pos('[schet]', smstext)>0 then
-                    smstext:=StringReplace(smstext,'[schet]',trim(IBREP.FieldByName('schet').AsString),[rfReplaceAll, rfIgnoreCase]);
-                 if kol_pos=1 then
-                 begin
-                   if pos('[poslnam]', smstext)>0 then
-                      smstext:=StringReplace(smstext,'[poslnam]',poslnam1,[rfReplaceAll, rfIgnoreCase]);
-                   if pos('[poslsum]', smstext)>0 then
-                      smstext:=StringReplace(smstext,'[poslsum]',poslsum1,[rfReplaceAll, rfIgnoreCase]);
-                 end
-                 else
-                 begin
-                   if pos('[dolg]', smstext)>0 then
-                      smstext:=StringReplace(smstext,'[dolg]',FloatToStr(IBREP.FieldByName('SAL').AsFloat),[rfReplaceAll, rfIgnoreCase]);
-                   if pos('[poslnamsum]', smstext)>0 then
-                   begin
+//                 if pos('[period]', smstext)>0 then
+//                    smstext:=StringReplace(smstext,'[period]',mon_slovoDt(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
+//                 if pos('[schet]', smstext)>0 then
+//                    smstext:=StringReplace(smstext,'[schet]',trim(IBREP.FieldByName('schet').AsString),[rfReplaceAll, rfIgnoreCase]);
+//                 if kol_pos=1 then
+//                 begin
+//                   if pos('[poslnam]', smstext)>0 then
+//                      smstext:=StringReplace(smstext,'[poslnam]',poslnam1,[rfReplaceAll, rfIgnoreCase]);
+//                   if pos('[poslsum]', smstext)>0 then
+//                      smstext:=StringReplace(smstext,'[poslsum]',poslsum1,[rfReplaceAll, rfIgnoreCase]);
+//                 end
+//                 else
+//                 begin
+//                   if pos('[dolg]', smstext)>0 then
+//                      smstext:=StringReplace(smstext,'[dolg]',FloatToStr(IBREP.FieldByName('SAL').AsFloat),[rfReplaceAll, rfIgnoreCase]);
+//                   if pos('[poslnamsum]', smstext)>0 then
+//                   begin
+//                   strposl:='';
+//                        IBWID.First;
+//                        while not IBWID.eof do
+//                        begin
+//                           if (IBREP.FindField(IBWIDWID.Value)<>nil) and (IBREP.FindField(IBWIDWID.Value).Value<>0) then
+//                              strposl:=strposl+trim(IBWIDSNAIM.Value)+':'+FloatToStr(IBREP.FindField(IBWIDWID.Value).Value)+' ';
+//                        IBWID.Next;
+//                        end;
+//                      smstext:=StringReplace(smstext,'[poslnamsum]',strposl,[rfReplaceAll, rfIgnoreCase]);
+//                   end;
+//                 end;
+
                    strposl:='';
                         IBWID.First;
                         while not IBWID.eof do
                         begin
-                           if (IBREP.FindField(IBWIDWID.Value)<>nil) and (IBREP.FindField(IBWIDWID.Value).Value<>0) then
+                           if (IBREP.FindField(IBWIDWID.Value)<>nil) then
                               strposl:=strposl+trim(IBWIDSNAIM.Value)+':'+FloatToStr(IBREP.FindField(IBWIDWID.Value).Value)+' ';
                         IBWID.Next;
                         end;
-                      smstext:=StringReplace(smstext,'[poslnamsum]',strposl,[rfReplaceAll, rfIgnoreCase]);
-                   end;
-                 end;
 
-                 smstext:=Trim(smstext);
+
+                 smstext:=Trim(strposl);
 
                  Form17.IBSMSLISTTEXTNOTTR.Value:=smstext;
 //

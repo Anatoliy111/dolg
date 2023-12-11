@@ -198,6 +198,7 @@ object Form30: TForm30
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_USERS_ID'
+    Active = True
     Left = 336
     Top = 120
     object IBWIDWID: TIBStringField
@@ -327,6 +328,7 @@ object Form30: TForm30
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_SPR_VIPISKA_ID'
+    Active = True
     Left = 408
     Top = 120
     object IBSPR_VIPISKAKL: TIntegerField

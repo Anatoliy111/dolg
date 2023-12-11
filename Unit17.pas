@@ -11,7 +11,7 @@ uses
   cxClasses, cxGridCustomView, cxGrid, cxDropDownEdit, cxCalc, cxTextEdit,
   cxMaskEdit, cxLabel, Vcl.StdCtrls, cxButtons, cxGroupBox, Vcl.ExtCtrls,
   IBX.IBCustomDataSet,cxCurrencyEdit, IBX.IBQuery, cxDBEdit, cxDBLabel,
-  Vcl.DBCtrls, cxCheckGroup, cxDBCheckGroup;
+  Vcl.DBCtrls, cxCheckGroup, cxDBCheckGroup, cxMemo;
 
 type
   TForm17 = class(TForm)
@@ -32,7 +32,6 @@ type
     IBSEND: TIBDataSet;
     DSSEND: TDataSource;
     cxButton6: TcxButton;
-    cxLabel2: TcxLabel;
     cxGrid3: TcxGrid;
     cxGridDBTableView2: TcxGridDBTableView;
     cxGridLevel2: TcxGridLevel;
@@ -54,14 +53,6 @@ type
     cxLabel11: TcxLabel;
     cxLabel12: TcxLabel;
     cxDBCheckBox1: TcxDBCheckBox;
-    cxLabel5: TcxLabel;
-    cxLabel13: TcxLabel;
-    cxLabel15: TcxLabel;
-    cxLabel17: TcxLabel;
-    cxLabel18: TcxLabel;
-    cxLabel19: TcxLabel;
-    cxLabel21: TcxLabel;
-    cxButton9: TcxButton;
     IBSMSLIST: TIBDataSet;
     IBSMSLISTID: TIntegerField;
     IBSMSLISTID_SMSORDER: TIntegerField;
@@ -73,15 +64,12 @@ type
     IBSMSLISTWAPPUSH: TIBStringField;
     IBSMSLISTDOLG: TFloatField;
     IBSMSLISTSTATUS: TIBStringField;
-    IBSMSLISTTEXT: TIBStringField;
     IBSMSLISTKOL_SMS: TIntegerField;
     IBSMSLISTTEL: TIBStringField;
     IBSMSLISTMESSAGEID: TIBStringField;
     IBSMSLISTFIO: TIBStringField;
-    IBSMSLISTTEXTNOTTR: TIBStringField;
     DSSMSLIST: TDataSource;
     IBSMSLISTKOL_ABON: TIntegerField;
-    cxLabel1: TcxLabel;
     IBSMSORDEREDS: TIBDataSet;
     IBSMSORDEREDSID: TIntegerField;
     IBSMSORDEREDSDATA: TDateTimeField;
@@ -99,11 +87,6 @@ type
     IBSMSORDEREDSKOL_ERR: TIntegerField;
     IBSMSORDEREDSKOL_DOSTSMS: TIntegerField;
     DSSMSORDEREDS: TDataSource;
-    cxDBLabel1: TcxDBLabel;
-    cxDBLabel2: TcxDBLabel;
-    cxDBLabel3: TcxDBLabel;
-    cxDBLabel4: TcxDBLabel;
-    cxDBLabel5: TcxDBLabel;
     cxGridDBTableView2MESSAGEID: TcxGridDBColumn;
     Label1: TLabel;
     Label2: TLabel;
@@ -114,10 +97,31 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    RadioButton1: TRadioButton;
-    RadioButton2: TRadioButton;
+    cxButton7: TcxButton;
+    IBSMSLISTTEXT: TIBStringField;
+    IBSMSLISTTEXTNOTTR: TIBStringField;
     cxLabel3: TcxLabel;
     cxLabel8: TcxLabel;
+    cxLabel5: TcxLabel;
+    cxLabel18: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxLabel17: TcxLabel;
+    cxButton9: TcxButton;
+    cxLabel1: TcxLabel;
+    cxDBLabel1: TcxDBLabel;
+    cxLabel21: TcxLabel;
+    cxDBLabel2: TcxDBLabel;
+    cxLabel15: TcxLabel;
+    cxDBLabel3: TcxDBLabel;
+    cxLabel19: TcxLabel;
+    cxDBLabel4: TcxDBLabel;
+    cxLabel13: TcxLabel;
+    cxDBLabel5: TcxDBLabel;
+    cxMemo1: TcxMemo;
+    Label7: TLabel;
+    IBSMSLISTKOL_CHAR: TIntegerField;
+    cxGridDBTableView2KOL_CHAR: TcxGridDBColumn;
+    cxLabel4: TcxLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -125,10 +129,6 @@ type
     procedure cxButton5Click(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton6Click(Sender: TObject);
-    procedure IBREPFilterRecord(DataSet: TDataSet; var Accept: Boolean);
-    procedure cxGrid1DBTableView1CustomDrawCell(Sender: TcxCustomGridTableView;
-      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
-      var ADone: Boolean);
           procedure cxGrid1DBTableView1TELPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
       procedure visible;
@@ -147,8 +147,11 @@ type
       var ADone: Boolean);
     procedure DBMemo1Change(Sender: TObject);
     procedure cxDBCheckBox1PropertiesChange(Sender: TObject);
-    procedure RadioButton1Click(Sender: TObject);
-    procedure RadioButton2Click(Sender: TObject);
+    procedure cxButton7Click(Sender: TObject);
+    procedure IBSMSLISTTEXTChange(Sender: TField);
+    procedure cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems3GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+      var AText: string);
 
   private
 
@@ -176,7 +179,7 @@ implementation
 
 {$R *.dfm}
 
-uses Unit16, Unit1, mytools, Unit2, wsdl, Unit18;
+uses Unit16, Unit1, mytools, Unit2, wsdl, Unit18, Unit34;
 
 
 {$R *.dfm}
@@ -414,6 +417,7 @@ begin
                 Application.ProcessMessages;
                 form2.SHOW;
        DSSMSLIST.Enabled:=false;
+
        IBSMSLIST.First;
        Form2.cxProgressBar1.Properties.Max:=IBSMSLIST.RecordCount-1;
        while not IBSMSLIST.Eof do
@@ -421,9 +425,11 @@ begin
                        Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
                 Application.ProcessMessages;
 
-                   IBSMSLIST.Edit;
-                   if IBSMSORDEREDSVID_SMS.Value=0 then smstext:=DBMemo1.Text
-                   else smstext:=IBSMSLISTTEXTNOTTR.Value;
+
+//                   if IBSMSORDEREDSVID_SMS.Value=0 then smstext:=DBMemo1.Text
+//                   else smstext:=IBSMSLISTTEXTNOTTR.Value;
+
+                   smstext:=DBMemo1.Text;
 
 //                   if Form17.IBSMSORDEREDSTRANSLIT.Value=1 then
 //                   begin
@@ -438,18 +444,60 @@ begin
 //                   else
 //                   begin
 
+                 if pos('[date]', smstext)>0 then
+                    smstext:=StringReplace(smstext,'[date]',DateToStr(now),[rfReplaceAll, rfIgnoreCase]);
+                 if pos('[datefirst]', smstext)>0 then
+                    smstext:=StringReplace(smstext,'[datefirst]',DateToStr(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
+                 if pos('[datemes]', smstext)>0 then
+                    smstext:=StringReplace(smstext,'[datemes]',mon_slovoDt2(now),[rfReplaceAll, rfIgnoreCase]);
+                 if pos('[datefirstmes]', smstext)>0 then
+                    smstext:=StringReplace(smstext,'[datefirstmes]',mon_slovoDt2(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
+                 if pos('[datemesstr]', smstext)>0 then
+                    smstext:=StringReplace(smstext,'[datemesstr]',mon_slovoDt(Form1.IBPERIODPERIOD.Value),[rfReplaceAll, rfIgnoreCase]);
 
-                     IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/70))+1);
-//                   end;
+                 if pos('[schet]', smstext)>0 then
+                    smstext:=StringReplace(smstext,'[schet]',trim(IBSMSLIST.FieldByName('schet').AsString),[rfReplaceAll, rfIgnoreCase]);
+
+                   if pos('[dolg]', smstext)>0 then
+                      smstext:=StringReplace(smstext,'[dolg]',FloatToStr(IBSMSLIST.FieldByName('DOLG').AsFloat),[rfReplaceAll, rfIgnoreCase]);
+
+                   if pos('[poslnamsum]', smstext)>0 then
+                      smstext:=StringReplace(smstext,'[poslnamsum]',IBSMSLISTTEXTNOTTR.Value,[rfReplaceAll, rfIgnoreCase]);
+
+
+
+
+
+                     IBSMSLIST.Edit;
+//                     IBSMSLISTKOL_SMS.Value:=iif(Length(smstext)<=70,1,(Trunc(Length(smstext)/65))+1);
+//                     IBSMSLISTKOL_CHAR.Value:=Length(smstext);
+
+                     //                   end;
 
                    IBSMSLISTTEXT.Value:=smstext;
-                   IBSMSLIST.Post;
+
+                   if IBSMSLIST.State in [dsInsert,dsEdit] then IBSMSLIST.Post;
+
+
+
 
        IBSMSLIST.Next;
        end;
+
+       Form1.IBTransaction1.CommitRetaining;
+       IBSMSLIST.first;
+
        form2.close;
        DSSMSLIST.Enabled:=true;
 
+end;
+
+procedure TForm17.cxButton7Click(Sender: TObject);
+begin
+Form34.IBQuery1.Close;
+Form34.IBQuery1.ParamByName('id').Value:=id_orders;
+Form34.IBQuery1.Open;
+Form34.Show;
 end;
 
 procedure TForm17.cxButton8Click(Sender: TObject);
@@ -467,18 +515,6 @@ end;
 procedure TForm17.cxDBCheckBox1PropertiesChange(Sender: TObject);
 begin
 DBMemo1Change(Sender);
-
-end;
-
-procedure TForm17.cxGrid1DBTableView1CustomDrawCell(
-  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
-  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
-var
-ARec: TRect;
-val: string;
-n:Int64;
-begin
-
 
 end;
 
@@ -516,23 +552,6 @@ begin
 cxButton4.Enabled:=false;
 cxButton6.Enabled:=false;
   cxDBCheckBox1.Enabled:=true;
-
-  if IBSMSORDEREDSVID_SMS.Value=0 then DBMemo1.Enabled:=true
-  else DBMemo1.Enabled:=false;
-
-  if IBSMSORDEREDSVID_SMS.Value=0 then
-  begin
-     DBMemo1.Enabled:=true;
-     RadioButton1.Checked:=true;
-     RadioButton2.Checked:=false;
-  end
-  else
-  begin
-     DBMemo1.Enabled:=false;
-     RadioButton1.Checked:=false;
-     RadioButton2.Checked:=true;
-  end;
-
 
 if id_orders<>0 then
 begin
@@ -592,35 +611,12 @@ begin
 visible;
 end;
 
-procedure TForm17.IBREPFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+procedure TForm17.IBSMSLISTTEXTChange(Sender: TField);
 begin
-//Accept:=(Pos(cxTextEdit4.Text, DataSet.FieldByName('tel').AsString) > 0);
-//Accept:=Length(DataSet.FieldByName('tel').AsString) > 0;
-//Accept:=(Pos(cxTextEdit3.Text, DataSet.FieldByName('FIO').AsString) > 0) and (Pos(cxTextEdit4.Text, DataSet.FieldByName('schet').AsString) > 0)
-end;
-
-
-procedure TForm17.RadioButton1Click(Sender: TObject);
-begin
-  if RadioButton1.Checked then
-  begin
-     IBSMSORDEREDS.Edit;
-     IBSMSORDEREDSVID_SMS.Value:=0;
-     IBSMSORDEREDS.Post;
-     DBMemo1.Enabled:=true;
-  end;
-end;
-
-procedure TForm17.RadioButton2Click(Sender: TObject);
-begin
-  if RadioButton2.Checked then
-  begin
-     IBSMSORDEREDS.Edit;
-     IBSMSORDEREDSVID_SMS.Value:=1;
-     IBSMSORDEREDS.Post;
-     DBMemo1.Enabled:=false;
-  end;
-
+                     IBSMSLIST.Edit;
+                     IBSMSLISTKOL_SMS.Value:=iif(Length(IBSMSLISTTEXT.Value)<=70,1,(Trunc(Length(IBSMSLISTTEXT.Value)/65))+1);
+                     IBSMSLISTKOL_CHAR.Value:=Length(IBSMSLISTTEXT.Value);
+                     IBSMSLIST.Post;
 end;
 
 procedure TForm17.cxGrid1DBTableView1TELPropertiesValidate(Sender: TObject;
@@ -660,9 +656,17 @@ if IBSMSORDEREDSSEND.Value=1 then
 begin
   if Length(AViewInfo.GridRecord.DisplayTexts[cxGridDBTableView2.GetColumnByFieldName('MESSAGEID').index])=0  then
   ACanvas.Canvas.Brush.Color := $B9B9FF;
+
+
+
+
+
 //  else
 //  ACanvas.Canvas.Brush.Color := $ffffff;
 end;
+  if (AViewInfo.GridRecord.DisplayTexts[cxGridDBTableView2.GetColumnByFieldName('KOL_CHAR').index]<>'') then
+    if (StrToInt(AViewInfo.GridRecord.DisplayTexts[cxGridDBTableView2.GetColumnByFieldName('KOL_CHAR').index])>661) then
+       ACanvas.Canvas.Brush.Color := $ffdce1;
 
 end;
 
@@ -705,6 +709,24 @@ begin
 
        end;
 
+end;
+
+procedure TForm17.cxGridDBTableView2TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems3GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: string);
+begin
+//cxLabel18.Caption:=iif(AText='','0',AText);
+//      AText;
+       if AValue > 661 then
+       begin
+         cxButton5.Enabled:=false;
+         cxLabel4.Style.TextColor:=clRed;
+       end
+       else
+       begin
+         cxButton5.Enabled:=true;
+         cxLabel4.Style.TextColor:=clWindowText;
+       end;
 end;
 
 procedure TForm17.DBMemo1Change(Sender: TObject);

@@ -186,6 +186,7 @@ type
   procedure startlistonlysearchposl;
   procedure CloseData;
   procedure CloseDataOnlySearchPosl;
+  procedure CloseDataNotSave;
   procedure SearchSum;
     { Public declarations }
   end;
@@ -347,15 +348,17 @@ begin
                vipsum:=0;
              Form33.cxCalcEdit2.Value:=vipsum;
 
-          if (not IBQueryBankCOL_EDRPOU.IsNull) and (IBQueryBankCOL_EDRPOU.Value<>0) and (trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])=IBQueryBankSTR_EDRPOU.Value) then
+          if (not IBQueryBankCOL_EDRPOU.IsNull) and (IBQueryBankCOL_EDRPOU.Value<>0) and (Pos(IBQueryBankSTR_EDRPOU.Value,trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value]))>0) then
           begin
-            RegularExpression := TRegEx.Create('[;]\d+(?:[\.,]\d+)?[\w||\W]?$');
+            RegularExpression := TRegEx.Create('[;]\d+(?:[\.,]\d+)?[\w]');
             str:=StringReplace(strprizn,' ','',[rfReplaceAll, rfIgnoreCase]);
-            Match := RegularExpression.Match(str);
-            if Match.Success then
+            MC := RegularExpression.Matches(str);
+            if MC.Count > 0 then
             begin
-              str:=StringReplace(Match.Value,';','',[rfReplaceAll, rfIgnoreCase]);
+//              Match.Groups
+              str:=StringReplace(MC.Item[MC.Count-1].Value,';','',[rfReplaceAll, rfIgnoreCase]);
               str:=StringReplace(str,'.',',',[rfReplaceAll, rfIgnoreCase]);
+              str:=StringReplace(str,'#$A','',[rfReplaceAll, rfIgnoreCase]);
               priznsum:=StrToFloat(str);
               ssum:=priznsum;
               if priznsum<=vipsum then
@@ -660,6 +663,39 @@ begin
 
 end;
 
+procedure TForm27.CloseDataNotSave;
+var     MyFile: TFileStream;
+  Excel: Variant;
+  Workbooks: Variant;
+  Workbook: Variant;
+  FileInfo: TSHFileInfo;
+    i:integer;
+begin
+          row:=0;
+
+          table.Close;
+          table.Free;
+
+          tobor.Close;
+          tobor.Free;
+
+          topl.Close;
+          topl.Free;
+
+         Sleep(100);
+
+        ExcelWorkbook.Close;
+        MsExcel := null;
+
+        DeleteFile(pathtmp);
+
+        form2.Close;
+
+        Application.ProcessMessages;
+
+
+end;
+
 
 procedure TForm27.endlistexel;
 var cmd:WideString;
@@ -681,7 +717,7 @@ begin
         m1:= maxcolposl;
         m2:=3;
         m3:=8;
-        while m1>7 do
+        while m1>8 do
         begin
            ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+m3]:='Послуга '+IntToStr(m2);
            ExcelWorkbook.WorkSheets[1].Cells[startROW,IBQueryBankCOL_END.Value+m3+1]:='Сума '+IntToStr(m2);
@@ -1166,7 +1202,7 @@ end;
 
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
-    stroka,strmes,tempDir:string;
+    stroka,strmes,tempDir, strtmp:string;
     dt1,dt2,i,pusto,kol:integer;
     f : TextFile;
     MyFile: TFileStream;
@@ -1227,6 +1263,7 @@ onlysearchposl:=0;
         finally
           MyFile.Free;
           DeleteFile(pathtmp);
+
         end;
       except
            MyFile.Free;
@@ -1284,7 +1321,7 @@ onlysearchposl:=0;
     end;
 
 
-
+   try
 
        AssignFile(f, Form1.PathKvart+'\cur_date.mem');
        FileMode := fmOpenRead;
@@ -1436,7 +1473,7 @@ onlysearchposl:=0;
               if kolst=3000 then
               begin
                ShowMessage('Кількість записів занадто велика. Не знайдено початок даних!!!');
-               CloseData;
+               CloseDataNotSave;
                exit;
               end;
 
@@ -1445,7 +1482,7 @@ onlysearchposl:=0;
         if startROW=0 then
         begin
           ShowMessage('Початок даних не знайдено');
-               CloseData;
+               CloseDataNotSave;
                exit;
         end;
 
@@ -1469,7 +1506,7 @@ onlysearchposl:=0;
               if kolst=3000 then
               begin
                ShowMessage('Кількість записів занадто велика. Не знайдено кінець даних!!!');
-               CloseData;
+               CloseDataNotSave;
                exit;
               end;
 
@@ -1496,7 +1533,7 @@ onlysearchposl:=0;
               if kolst=3000 then
               begin
                ShowMessage('Кількість записів занадто велика. Не знайдено кінець даних!!!');
-               CloseData;
+               CloseDataNotSave;
                exit;
               end;
 
@@ -1535,6 +1572,26 @@ onlysearchposl:=0;
         kol:=IBQueryBankCOL_END.Value;
         f1:=true;
 
+
+        while f1 do
+        begin
+           kol:=kol+1;
+           strtmp:=ExcelWorkbook.WorkSheets[1].Cells[startROW,kol];
+           if strtmp='Послуга' then ExcelWorkbook.WorkSheets[1].Columns[kol].delete;
+           strtmp:=ExcelWorkbook.WorkSheets[1].Cells[startROW,kol];
+           if strtmp='Сума по випискі' then ExcelWorkbook.WorkSheets[1].Columns[kol].delete;
+           strtmp:=ExcelWorkbook.WorkSheets[1].Cells[startROW,kol];
+           if strtmp='Сума платежу з %' then ExcelWorkbook.WorkSheets[1].Columns[kol].delete;
+           if length(ExcelWorkbook.WorkSheets[1].Cells[startROW,kol])=0 then
+           begin
+             maxcolposl:=kol-IBQueryBankCOL_END.Value;
+             f1:=false;
+           end;
+
+        end;
+
+
+
         while f1 do
         begin
            kol:=kol+1;
@@ -1546,7 +1603,14 @@ onlysearchposl:=0;
         end;
 
 
-
+   except
+               on E : Exception do
+               begin
+                messagedlg('Помилка!!! - '+E.Message,mtError,[mbCancel],0);
+                CloseDataNotSave;
+                exit;
+               end;
+   end;
 
 //        endlistexel;
         startlistexel;
@@ -1655,7 +1719,7 @@ onlysearchposl:=1;
               if kolst=3000 then
               begin
                ShowMessage('Кількість записів занадто велика. Не знайдено початок даних!!!');
-               CloseData;
+               CloseDataNotSave;
                exit;
               end;
 
@@ -1664,7 +1728,7 @@ onlysearchposl:=1;
         if startROW=0 then
         begin
           ShowMessage('Початок даних не знайдено');
-               CloseData;
+               CloseDataNotSave;
                exit;
         end;
 
@@ -1688,7 +1752,7 @@ onlysearchposl:=1;
               if kolst=3000 then
               begin
                ShowMessage('Кількість записів занадто велика. Не знайдено кінець даних!!!');
-               CloseData;
+               CloseDataNotSave;
                exit;
               end;
 
@@ -1715,7 +1779,7 @@ onlysearchposl:=1;
               if kolst=3000 then
               begin
                ShowMessage('Кількість записів занадто велика. Не знайдено кінець даних!!!');
-               CloseData;
+               CloseDataNotSave;
                exit;
               end;
 
@@ -1761,7 +1825,7 @@ IBQueryBank.Open;
 end;
 
 procedure TForm27.startlistexel;
-var sch,sql,str,sp,dtstr,posl2:string;
+var sch,sql,str,strtmp,sp,dtstr,posl2:string;
     RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
@@ -1780,7 +1844,7 @@ begin
               endlistexel;
               exit;
             end;
-
+      try
 //          if newpl then
 //          begin
             Form33.cxTextEdit1.Clear;
@@ -1812,12 +1876,12 @@ begin
           if (not IBQueryBankCOL_DOK.IsNull) and (IBQueryBankCOL_DOK.Value<>0) then
              if Length(ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_DOK.Value])=0 then Continue;  //№ документа не знайдено
 
+          if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then Continue;    //суму не знайдено
+
+
           if Pos('Оброблено',ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1])<>0 then Continue; //Якщо рядок оброблено то перехід на інший рядок
-          if trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value])='' then
-          begin
-            ExcelWorkbook.WorkSheets[1].Cells[Row,IBQueryBankCOL_END.Value+1]:='Оброблено';
-            Continue;
-          end;
+
+
 
           Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+1]:='';
           Form27.ExcelWorkbook.WorkSheets[1].Cells[Form27.Row,Form27.IBQueryBankCOL_END.Value+2]:='';
@@ -1903,10 +1967,31 @@ begin
          SearchSum;
 
          // summa:=0.00;
+
+         if Pos('Ощадбанк', IBQueryBankNAIM.Text)>0 then
+         begin
+         strtmp:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DT.Value];
+         if Pos('прийняття', LowerCase(strtmp))>0 then
+              begin
+              strtmp:=ExcelWorkbook.WorkSheets[1].Cells[row+2,IBQueryBankCOL_DT.Value];
+                 if Pos('валютування', LowerCase(strtmp))>0 then
+                 begin
+                    Match:=RegularExpression.Match(LowerCase(strtmp),'(\d{2}\.\d{2}\.\d{4})',[roIgnoreCase]);
+                    if Match.Success then
+                     begin
+                         dtstr:=Match.value;
+                         dt:=strtodate(dtstr);
+                     end;
+                 end;
+              end;
+         end
+         else
+         begin
          dtstr:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DT.Value];
 //          dtstr:=formatdatetime('ddmmyyyy', strtodate(ExcelWorkbook.WorkSheets[1].Cells[I,IBQueryBankCOL_DT.Value]));
           dt:=strtodate(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_DT.Value]);
 
+         end;
 
 
 
@@ -1937,7 +2022,16 @@ begin
                 Form33.Show;
                 fl:=false;
             end;
+      except
+               on E : Exception do
+               begin
+                messagedlg('Помилка!!! - '+E.Message + #13#10 + ' Звіт буде сформовано до помилки! Всі дані буде збережено',mtError,[mbCancel],0);
+                endlistexel;
+                exit;
+               end;
 
+
+      end;
 
 
 
@@ -2104,7 +2198,7 @@ begin
             exit;
           end;
 
-          if (not IBQueryBankCOL_EDRPOU.IsNull) and (IBQueryBankCOL_EDRPOU.Value<>0) and (trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value])=IBQueryBankSTR_EDRPOU.Value) then
+          if (not IBQueryBankCOL_EDRPOU.IsNull) and (IBQueryBankCOL_EDRPOU.Value<>0) and (Pos(IBQueryBankSTR_EDRPOU.Value,trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value]))>0) then
           begin
              if Form33.cxGridDBTableView1.DataController.Summary.FooterSummaryValues[3]<=Form33.cxCalcEdit2.Value then
              begin

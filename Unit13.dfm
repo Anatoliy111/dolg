@@ -23,7 +23,7 @@ object Form13: TForm13
     Height = 642
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = cxTabSheet3
+    Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 638
     ClientRectLeft = 4
