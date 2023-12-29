@@ -150,7 +150,6 @@ type
     IBQueryBankSTR_PRIZN_STARTDATA: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
@@ -350,7 +349,8 @@ begin
 
           if (not IBQueryBankCOL_EDRPOU.IsNull) and (IBQueryBankCOL_EDRPOU.Value<>0) and (Pos(IBQueryBankSTR_EDRPOU.Value,trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value]))>0) then
           begin
-            RegularExpression := TRegEx.Create('[;]\d+(?:[\.,]\d+)?[\w]');
+//            RegularExpression := TRegEx.Create('[;]\d+(?:[\.,]\d+)?[\w]');
+            RegularExpression := TRegEx.Create('[;]\d+(?:[\.,]\d+)?');
             str:=StringReplace(strprizn,' ','',[rfReplaceAll, rfIgnoreCase]);
             MC := RegularExpression.Matches(str);
             if MC.Count > 0 then
@@ -1105,7 +1105,8 @@ begin
 //    end;
 
 
-
+    IBQueryBank.Close;
+    IBQueryBank.Open;
 
 
 
@@ -1613,6 +1614,7 @@ onlysearchposl:=0;
    end;
 
 //        endlistexel;
+
         startlistexel;
 
 end;
@@ -1816,12 +1818,6 @@ end;
 procedure TForm27.FormCreate(Sender: TObject);
 begin
 strList := TStringList.Create;
-end;
-
-procedure TForm27.FormShow(Sender: TObject);
-begin
-IBQueryBank.Close;
-IBQueryBank.Open;
 end;
 
 procedure TForm27.startlistexel;
@@ -2419,8 +2415,10 @@ begin
             Form33.ADOQueryOBOR.Close;
             Form33.ADOQueryOBOR.SQL.Clear;
             Form33.ADOQueryOBOR.SQL.Append(sql);
+
 //            Form33.ADOQueryOBOR.Parameters.ParamByName('sch').Value:=trim(schet);
             Form33.ADOQueryOBOR.Open;
+
 //            Form33.ADOQueryOBOR.FetchAll;
             if Form33.ADOQueryOBOR.RecordCount<>0 then
                Result:=schet

@@ -535,8 +535,6 @@ type
     IBADRESKRKOL_KV: TIntegerField;
     IBADRESKRKL_UL: TIntegerField;
     IBADRESKRKL_RAION: TSmallintField;
-    IBREPDNAME: TIBStringField;
-    cxGrid1DBTableView1NAME: TcxGridDBColumn;
     cxTextEdit1: TcxTextEdit;
     IBSMSORDEREDSVID_SMS: TIntegerField;
     IBSMSORDEREDSTEXT_SMS: TIBStringField;
@@ -548,6 +546,13 @@ type
     IBSERVICESSMSTRANSLIT: TSmallintField;
     IBSERVICESSMSALPHA: TIBStringField;
     IBSERVICESSMSCENA: TFloatField;
+    dxBarButton137: TdxBarButton;
+    IBREPDRAION: TIBStringField;
+    IBREPDKL_NTAR: TFloatField;
+    cxGrid1DBTableView1RAION: TcxGridDBColumn;
+    cxGrid1DBTableView1KL_NTAR: TcxGridDBColumn;
+    IBREPDKOEF: TFloatField;
+    cxGrid1DBTableView1KOEF: TcxGridDBColumn;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -588,6 +593,7 @@ type
     procedure cxTextEdit3KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxTextEdit3PropertiesChange(Sender: TObject);
+    procedure dxBarButton137Click(Sender: TObject);
   private
     { Private declarations }
     procedure AddFilter(column:TcxGridDBColumn;text:string);
@@ -621,7 +627,7 @@ implementation
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
   Unit16, Unit19, Unit20, Unit21, Unit22, Unit23, Unit26, Unit27, Unit28,
-  Unit29, Unit30, Unit31, Unit32;
+  Unit29, Unit30, Unit31, Unit32, Unit33, Unit35;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -755,6 +761,12 @@ Form32.show;
 
 end;
 
+procedure TForm1.dxBarButton137Click(Sender: TObject);
+begin
+Form35.show;
+Form35.cxLookupComboBox1.EditValue:=IBPERIODPERIOD.Value;
+end;
+
 procedure TForm1.dxBarButton19Click(Sender: TObject);
 begin
 Form1.close;
@@ -815,8 +827,8 @@ begin
            sql2:=' and sal'+cxComboBox2.EditValue+StringReplace(FloatToStr(cxCalcEdit2.EditValue),',','.',[rfReplaceAll, rfIgnoreCase]);
      end;
 
-     if Form1.cxLookupComboBox1.EditValue=IBPERIODPERIOD.Value then
-     StrSQL:=StringReplace(StrSQL,'vw_obkr','vw_obkrnow',[rfReplaceAll, rfIgnoreCase]);
+   //  if Form1.cxLookupComboBox1.EditValue=IBPERIODPERIOD.Value then
+   //  StrSQL:=StringReplace(StrSQL,'vw_obkr','vw_obkrnow',[rfReplaceAll, rfIgnoreCase]);
 
      Form1.IBREPD.SelectSQL.Text:=StrSQL+sql2+' order by note.schet,note.wid';
      Form1.IBREPD.ParamByName('kluser').Value:=Form1.ActiveUser;

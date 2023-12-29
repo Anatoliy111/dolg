@@ -227,11 +227,9 @@ object Form1: TForm1
         Caption = #1044#1072#1090#1072' '#1076#1086#1075#1086#1074'.'
         DataBinding.FieldName = 'D_DOG'
       end
-      object cxGrid1DBTableView1NAME: TcxGridDBColumn
+      object cxGrid1DBTableView1RAION: TcxGridDBColumn
         Caption = #1056#1072#1081#1086#1085
-        DataBinding.FieldName = 'NAME'
-        Options.Editing = False
-        Width = 110
+        DataBinding.FieldName = 'RAION'
       end
       object cxGrid1DBTableView1UL: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
@@ -252,6 +250,14 @@ object Form1: TForm1
         DataBinding.FieldName = 'KV'
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.ReadOnly = True
+      end
+      object cxGrid1DBTableView1KOEF: TcxGridDBColumn
+        Caption = #1050#1086#1077#1092#1110#1094#1110#1108#1085#1090
+        DataBinding.FieldName = 'KOEF'
+      end
+      object cxGrid1DBTableView1KL_NTAR: TcxGridDBColumn
+        Caption = #1050#1083#1102#1095' '#1090#1072#1088#1080#1092#1091
+        DataBinding.FieldName = 'KL_NTAR'
       end
       object cxGrid1DBTableView1IDCOD: TcxGridDBColumn
         Caption = #1030#1076#1077#1085#1090'.'#1082#1086#1076
@@ -632,13 +638,14 @@ object Form1: TForm1
   end
   object IBDatabase1: TIBDatabase
     Connected = True
-    DatabaseName = 'D:\WORK\KOMUN\DOLG\DOLG.GDB'
+    DatabaseName = 'D:\WORK\KOMUN\dolg\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'
       'password=masterkey')
     LoginPrompt = False
     DefaultTransaction = IBTransaction1
     ServerType = 'IBServer'
+    AllowStreamedConnected = False
     Left = 24
     Top = 240
   end
@@ -970,7 +977,7 @@ object Form1: TForm1
       'vw_obkr.n_dog,'
       'vw_obkr.d_dog,'
       'vw_obkr.idcod,'
-      'spr_raion.name,'
+      'vw_obkr.raion,'
       'vw_obkr.ulnaim ul,'
       'vw_obkr.nomdom dom,'
       'vw_obkr.nomkv kv,'
@@ -979,7 +986,9 @@ object Form1: TForm1
       'vw_obkr.plos_bb,'
       'vw_obkr.plos_ob,'
       'vw_obkr.priv,'
-      'organ.name as orgname,'
+      'vw_obkr.orgname,'
+      'vw_obkr.kl_ntar,'
+      'vw_obkr.koef,'
       'vw_obkr.nach,'
       'vw_obkr.opl,'
       'vw_obkr.subs,'
@@ -994,13 +1003,6 @@ object Form1: TForm1
       
         ' inner join vw_obkr on (note.wid = vw_obkr.wid) and (note.schet ' +
         '= vw_obkr.schet) and (vw_obkr.period=:dt)'
-      
-        ' left outer join organ on (vw_obkr.org = organ.org) and (organ.u' +
-        'pd = 1)'
-      
-        ' left join adres on (vw_obkr.ulnaim = adres.ul) and (vw_obkr.nom' +
-        'dom = adres.dom)'
-      ' left join spr_raion on (adres.kl_raion = spr_raion.kl)'
       ' where note.kl_users =:kluser'
       '')
     ModifySQL.Strings = (
@@ -1166,10 +1168,18 @@ object Form1: TForm1
       Origin = '"VW_OBKR"."PRIV"'
       Size = 1
     end
-    object IBREPDNAME: TIBStringField
-      FieldName = 'NAME'
-      Origin = '"SPR_RAION"."NAME"'
+    object IBREPDRAION: TIBStringField
+      FieldName = 'RAION'
+      Origin = '"VW_OBKR"."RAION"'
       Size = 30
+    end
+    object IBREPDKL_NTAR: TFloatField
+      FieldName = 'KL_NTAR'
+      Origin = '"VW_OBKR"."KL_NTAR"'
+    end
+    object IBREPDKOEF: TFloatField
+      FieldName = 'KOEF'
+      Origin = '"VW_OBKR"."KOEF"'
     end
   end
   object IBQuery1: TIBQuery
@@ -2771,6 +2781,10 @@ object Form1: TForm1
         item
           Visible = True
           ItemName = 'dxBarButton127'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton137'
         end>
     end
     object dxBarButton120: TdxBarButton
@@ -2915,6 +2929,13 @@ object Form1: TForm1
       Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1088#1072#1081#1086#1085#1110#1074
       Visible = ivAlways
       OnClick = dxBarButton136Click
+    end
+    object dxBarButton137: TdxBarButton
+      Caption = #1058#1072#1088#1080#1092#1080' '#1087#1086' '#1074#1091#1083#1080#1094#1103#1084
+      Category = 0
+      Hint = #1058#1072#1088#1080#1092#1080' '#1087#1086' '#1074#1091#1083#1080#1094#1103#1084
+      Visible = ivAlways
+      OnClick = dxBarButton137Click
     end
   end
   object IBPERIOD: TIBDataSet

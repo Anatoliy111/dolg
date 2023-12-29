@@ -14,7 +14,6 @@ object Form27: TForm27
   Position = poDesktopCenter
   OnClose = FormClose
   OnCreate = FormCreate
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object cxTextEdit1: TcxTextEdit

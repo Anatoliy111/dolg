@@ -182,8 +182,8 @@ object Form33: TForm33
     Width = 121
   end
   object cxButton3: TcxButton
-    Left = 458
-    Top = 344
+    Left = 471
+    Top = 296
     Width = 119
     Height = 49
     Caption = #1044#1086#1076#1072#1090#1080' '#1087#1088#1080#1079#1085#1072#1082' '#1087#1086#1089#1083#1091#1075#1080
@@ -256,7 +256,7 @@ object Form33: TForm33
   object ADOQueryOBOR: TADOQuery
     ConnectionString = 
       'Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Dat' +
-      'a Source=dBASE Files;Mode=ReadWrite;Initial Catalog=C:\TEMP'
+      'a Source=dBASE Files;Mode=ReadWrite;Initial Catalog=c:\TEMP\'
     CursorType = ctStatic
     LockType = ltBatchOptimistic
     ParamCheck = False
