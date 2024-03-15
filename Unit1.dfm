@@ -227,10 +227,6 @@ object Form1: TForm1
         Caption = #1044#1072#1090#1072' '#1076#1086#1075#1086#1074'.'
         DataBinding.FieldName = 'D_DOG'
       end
-      object cxGrid1DBTableView1RAION: TcxGridDBColumn
-        Caption = #1056#1072#1081#1086#1085
-        DataBinding.FieldName = 'RAION'
-      end
       object cxGrid1DBTableView1UL: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
         DataBinding.FieldName = 'UL'
@@ -252,7 +248,6 @@ object Form1: TForm1
         Properties.ReadOnly = True
       end
       object cxGrid1DBTableView1KOEF: TcxGridDBColumn
-        Caption = #1050#1086#1077#1092#1110#1094#1110#1108#1085#1090
         DataBinding.FieldName = 'KOEF'
       end
       object cxGrid1DBTableView1KL_NTAR: TcxGridDBColumn
@@ -295,13 +290,6 @@ object Form1: TForm1
         DataBinding.FieldName = 'PRIV'
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.ReadOnly = True
-      end
-      object cxGrid1DBTableView1ORGNAME: TcxGridDBColumn
-        Caption = #1054#1088#1075#1072#1085#1110#1079#1072#1094#1110#1103
-        DataBinding.FieldName = 'ORGNAME'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.ReadOnly = True
-        Width = 191
       end
       object cxGrid1DBTableView1DOLG: TcxGridDBColumn
         Caption = #1057#1072#1083#1100#1076#1086' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
@@ -637,7 +625,6 @@ object Form1: TForm1
     OnClick = cxButton7Click
   end
   object IBDatabase1: TIBDatabase
-    Connected = True
     DatabaseName = 'D:\WORK\KOMUN\dolg\DOLG.GDB'
     Params.Strings = (
       'user_name=sysdba'
@@ -977,7 +964,6 @@ object Form1: TForm1
       'vw_obkr.n_dog,'
       'vw_obkr.d_dog,'
       'vw_obkr.idcod,'
-      'vw_obkr.raion,'
       'vw_obkr.ulnaim ul,'
       'vw_obkr.nomdom dom,'
       'vw_obkr.nomkv kv,'
@@ -986,7 +972,6 @@ object Form1: TForm1
       'vw_obkr.plos_bb,'
       'vw_obkr.plos_ob,'
       'vw_obkr.priv,'
-      'vw_obkr.orgname,'
       'vw_obkr.kl_ntar,'
       'vw_obkr.koef,'
       'vw_obkr.nach,'
@@ -1100,11 +1085,6 @@ object Form1: TForm1
       FieldName = 'KOLI_PF'
       Origin = '"VW_OBKR"."KOLI_PF"'
     end
-    object IBREPDORGNAME: TIBStringField
-      FieldName = 'ORGNAME'
-      Origin = '"ORGAN"."NAME"'
-      Size = 55
-    end
     object IBREPDNACH: TFloatField
       FieldName = 'NACH'
       Origin = '"VW_OBKR"."NACH"'
@@ -1167,11 +1147,6 @@ object Form1: TForm1
       FieldName = 'PRIV'
       Origin = '"VW_OBKR"."PRIV"'
       Size = 1
-    end
-    object IBREPDRAION: TIBStringField
-      FieldName = 'RAION'
-      Origin = '"VW_OBKR"."RAION"'
-      Size = 30
     end
     object IBREPDKL_NTAR: TFloatField
       FieldName = 'KL_NTAR'
@@ -3420,7 +3395,6 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
-    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (

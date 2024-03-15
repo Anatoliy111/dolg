@@ -329,12 +329,12 @@ end;
 
 
 procedure TForm27.SearchSum;
-var str,posl2:string;
+var str,posl2,strtmp:string;
     RegularExpression : TRegEx;
     Match : TMatch;
     MC: TMatchCollection;
     ssum,ssum1,allsum,riznsum,allsumposl,sumposl1,sumposl2,vipsum,priznsum:Double;
-    k:integer;
+    k,tmpint:integer;
     exitsum:boolean;
 begin
              ssum:=0;
@@ -346,6 +346,9 @@ begin
              else
                vipsum:=0;
              Form33.cxCalcEdit2.Value:=vipsum;
+
+    //      strtmp:=trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value]);
+      //    tmpint:=Pos(IBQueryBankSTR_EDRPOU.Value,strtmp);
 
           if (not IBQueryBankCOL_EDRPOU.IsNull) and (IBQueryBankCOL_EDRPOU.Value<>0) and (Pos(IBQueryBankSTR_EDRPOU.Value,trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_EDRPOU.Value]))>0) then
           begin

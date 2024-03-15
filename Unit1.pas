@@ -269,7 +269,6 @@ type
     IBORGAN: TIBDataSet;
     DSORGAN: TDataSource;
     cxGrid1DBTableView1DOLG: TcxGridDBColumn;
-    cxGrid1DBTableView1ORGNAME: TcxGridDBColumn;
     cxTextEdit3: TcxTextEdit;
     cxLabel5: TcxLabel;
     cxLabel6: TcxLabel;
@@ -374,7 +373,6 @@ type
     IBREPDKV: TIBStringField;
     IBREPDKOLI_P: TFloatField;
     IBREPDKOLI_PF: TFloatField;
-    IBREPDORGNAME: TIBStringField;
     IBREPDNACH: TFloatField;
     IBREPDOPL: TFloatField;
     IBREPDSUBS: TFloatField;
@@ -547,12 +545,10 @@ type
     IBSERVICESSMSALPHA: TIBStringField;
     IBSERVICESSMSCENA: TFloatField;
     dxBarButton137: TdxBarButton;
-    IBREPDRAION: TIBStringField;
     IBREPDKL_NTAR: TFloatField;
-    cxGrid1DBTableView1RAION: TcxGridDBColumn;
     cxGrid1DBTableView1KL_NTAR: TcxGridDBColumn;
-    IBREPDKOEF: TFloatField;
     cxGrid1DBTableView1KOEF: TcxGridDBColumn;
+    IBREPDKOEF: TFloatField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
