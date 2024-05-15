@@ -128,6 +128,8 @@ type
     cxLabel34: TcxLabel;
     cxGridDBTableView1NAIM: TcxGridDBColumn;
     cxGridDBTableView1CH: TcxGridDBColumn;
+    cxLabel35: TcxLabel;
+    cxCheckBox28: TcxCheckBox;
     procedure cxButton2Click(Sender: TObject);
     procedure cxCheckBox3PropertiesChange(Sender: TObject);
     procedure IBREPFilterRecord(DataSet: TDataSet; var Accept: Boolean);
@@ -401,6 +403,22 @@ begin
         acolumn.Caption:='Квартира';
 
         group:=group+'NOMKV,';
+      end;
+
+      if cxCheckBox28.Checked then
+      begin
+        acolumn:=cxGrid1DBTableView1.CreateColumn;
+        cxGridDBTableView1.BeginUpdate;
+        acolumn.DataBinding.FieldName:='TEL';
+        acolumn.DataBinding.valuetype:='string';
+        acolumn.Options.Editing:=false;
+        cxGridDBTableView1.EndUpdate;
+
+        //AColumn.Summary.GroupFooterKind := skSum;
+
+        acolumn.Caption:='Телефон';
+
+        group:=group+'TEL,';
       end;
 
 //        if cxCheckBox28.Checked then

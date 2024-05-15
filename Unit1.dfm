@@ -219,6 +219,10 @@ object Form1: TForm1
         Properties.ReadOnly = True
         Width = 232
       end
+      object cxGrid1DBTableView1TEL: TcxGridDBColumn
+        Caption = #1058#1077#1083#1077#1092#1086#1085
+        DataBinding.FieldName = 'TEL'
+      end
       object cxGrid1DBTableView1N_DOG: TcxGridDBColumn
         Caption = #8470' '#1076#1086#1075#1086#1074'.'
         DataBinding.FieldName = 'N_DOG'
@@ -959,6 +963,7 @@ object Form1: TForm1
       'note.note3,'
       'note.kl_users,'
       'vw_obkr.poslug,'
+      'vw_obkr.tel,'
       'vw_obkr.dolg as dolg,'
       'vw_obkr.fio,'
       'vw_obkr.n_dog,'
@@ -1155,6 +1160,11 @@ object Form1: TForm1
     object IBREPDKOEF: TFloatField
       FieldName = 'KOEF'
       Origin = '"VW_OBKR"."KOEF"'
+    end
+    object IBREPDTEL: TIBStringField
+      FieldName = 'TEL'
+      Origin = '"VW_OBKR"."TEL"'
+      Size = 10
     end
   end
   object IBQuery1: TIBQuery

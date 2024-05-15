@@ -689,6 +689,16 @@ object Form14: TForm14
         Top = 46
         Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1082#1074#1072#1088#1090#1080#1088#1091
       end
+      object cxLabel35: TcxLabel
+        Left = 554
+        Top = 66
+        Caption = #1042#1110#1076#1086#1073#1088#1072#1078#1072#1090#1080' '#1090#1077#1083#1077#1092#1086#1085
+      end
+      object cxCheckBox28: TcxCheckBox
+        Left = 524
+        Top = 65
+        TabOrder = 69
+      end
     end
   end
   object cxGrid1: TcxGrid

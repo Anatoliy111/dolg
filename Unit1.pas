@@ -549,6 +549,8 @@ type
     cxGrid1DBTableView1KL_NTAR: TcxGridDBColumn;
     cxGrid1DBTableView1KOEF: TcxGridDBColumn;
     IBREPDKOEF: TFloatField;
+    IBREPDTEL: TIBStringField;
+    cxGrid1DBTableView1TEL: TcxGridDBColumn;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);

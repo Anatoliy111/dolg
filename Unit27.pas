@@ -638,6 +638,8 @@ begin
 
         DeleteFile(pathtmp);
 
+        Form33.ADOQueryOBOR.Close;
+
         form2.Close;
 
         Application.ProcessMessages;
@@ -658,6 +660,8 @@ begin
 
         ExcelWorkbook.Close;
         MsExcel := null;
+
+        Form33.ADOQueryOBOR.Close;
 
         form2.Close;
 
@@ -691,6 +695,8 @@ begin
         MsExcel := null;
 
         DeleteFile(pathtmp);
+
+        Form33.ADOQueryOBOR.Close;
 
         form2.Close;
 
@@ -1395,6 +1401,7 @@ onlysearchposl:=0;
     twid.AddIndex('wids', 'wid', [ixCaseInsensitive]);
 
     //tobor.Free;
+    twid.close;
     twid.Free;
    // table.Free;
 
