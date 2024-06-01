@@ -428,7 +428,7 @@ begin
           Application.ProcessMessages;
           MsExcel.WorkSheets[1].Cells[i,kolpidtverd]:='';
           MsExcel.WorkSheets[1].Cells[i,koltarif]:='';
-          MsExcel.WorkSheets[1].Cells[i,kolborg]:='';
+          MsExcel.WorkSheets[1].Cells[i,kolborg]:=0;
 //          IBWID.First;
 //          if not IBWID.Locate('cod',trim(MsExcel.WorkSheets[1].Cells[i,kolcod]),[]) then
 //          begin
@@ -514,7 +514,7 @@ begin
             begin
                for ii := stsch to i-1 do
                begin
-                 MsExcel.WorkSheets[1].Cells[ii,kolborg]:='';
+                 MsExcel.WorkSheets[1].Cells[ii,kolborg]:=0;
                end;
             end;
 
@@ -534,7 +534,7 @@ begin
             begin
                for ii := stsch to i do
                begin
-                 MsExcel.WorkSheets[1].Cells[ii,kolborg]:='';
+                 MsExcel.WorkSheets[1].Cells[ii,kolborg]:=0;
                end;
             end;
 

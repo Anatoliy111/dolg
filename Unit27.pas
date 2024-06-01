@@ -1257,6 +1257,9 @@ onlysearchposl:=0;
     if DirectoryExists('c:\temp') then
       filepath:='c:\temp\'
     else
+    if DirectoryExists('c:\TEMP') then
+      filepath:='c:\TEMP\'
+    else
     if DirectoryExists(Form1.PathTMP) then
       filepath:=Form1.PathTMP+'\';
 
