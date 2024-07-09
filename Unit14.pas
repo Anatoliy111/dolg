@@ -158,7 +158,7 @@ implementation
 
 {$R *.dfm}
 
-uses Unit1, mytools;
+uses Unit1, mytools, Unit2;
 
 procedure TForm14.cxButton1Click(Sender: TObject);
 begin
@@ -234,7 +234,15 @@ begin
 
 
 
+      Form2.Show;
+      Form2.Label1.Caption:='Формування звіту.Зачекайте...';
+      Application.ProcessMessages;
+      Form2.cxProgressBar1.Position:=0;
+      Form2.cxProgressBar1.Properties.Min:=0;
+      Form2.cxProgressBar1.Properties.Max:=100;
 
+    //    Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+10;
+        Application.ProcessMessages;
 
       cxGrid1DBTableView1.ClearItems;
 
@@ -539,6 +547,9 @@ begin
         acolumn.Caption:='Борг на кін.';
         end;
 
+        Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+10;
+        Application.ProcessMessages;
+
                 IBWID.First;
                 while not IBWID.eof do
                 begin
@@ -634,7 +645,8 @@ begin
 
 
 
-
+            Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+10;
+        Application.ProcessMessages;
 
 
 
@@ -695,7 +707,8 @@ begin
                       end;
                 IBWID.Next;
                 end;
-
+              Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+10;
+        Application.ProcessMessages;
 //                if chwid=0 then
 //                begin
 //                  IBWID.First;
@@ -763,13 +776,13 @@ begin
                   if cxCheckBox20.Checked then
                   begin
                     SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from (select wid,'+group+strSUMFIELD+' from(select wid,organ.name as '+group+strFIELD;
-                    SQL:=SQL+' from vw_obkr left outer join organ on (vw_obkr.org = organ.org) and (organ.upd = 1) where period>=:dt1 and period<=:dt2)';
+                    SQL:=SQL+' from vw_obkr2 left outer join organ on (vw_obkr.org = organ.org) and (organ.upd = 1) where period>=:dt1 and period<=:dt2)';
                     SQL:=SQL+' group by wid,'+group;
                   end
                   else
                   begin
                     SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from (select wid,'+group+strSUMFIELD+' from(select wid,'+group+strFIELD;
-                    SQL:=SQL+' from vw_obkr where period>=:dt1 and period<=:dt2)';
+                    SQL:=SQL+' from vw_obkr2 where period>=:dt1 and period<=:dt2)';
                     SQL:=SQL+' group by wid,'+group;
 
                   end;
@@ -798,7 +811,8 @@ begin
 
                   end;
 
-
+                Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+10;
+        Application.ProcessMessages;
                 if Length(having)<>0 then
                 begin
                 Delete(having, Length(having)-4, 4);
@@ -845,7 +859,8 @@ begin
                 Delete(having, Length(having)-4, 4);
                 SQL:=SQL+' having '+having;
                 end;
-
+                Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+10;
+        Application.ProcessMessages;
                 IBREP.Close;
                 IBREP.SelectSQL.Text:=SQL;
                 IBREP.ParamByName('dt1').Value:=cxLookupComboBox1.EditValue;
@@ -861,11 +876,15 @@ begin
                 IBREP.ParamByName('dtn1').Value:=cxLookupComboBox5.EditValue;
                 IBREP.ParamByName('dtn2').Value:=cxLookupComboBox6.EditValue;
                 end;
-
+               Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+10;
+        Application.ProcessMessages;
                 repdt:=cxLookupComboBox1.EditValue;
                 IBREP.Open;
-
+               Form2.cxProgressBar1.Position:=100;
+        Application.ProcessMessages;
+Form2.close;
 ShowMessage('Звіт зформовано за '+mon_slovoDt(cxLookupComboBox1.EditValue)+' по '+mon_slovoDt(cxLookupComboBox2.EditValue));
+
 end;
 
 procedure TForm14.cxButton3Click(Sender: TObject);

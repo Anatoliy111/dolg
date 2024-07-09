@@ -178,6 +178,7 @@ type
     IBABONINFSCHET: TIBStringField;
     IBABONINFTEL: TIBStringField;
     N1: TMenuItem;
+    IBPERSTRPERIOD: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);

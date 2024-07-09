@@ -99,6 +99,9 @@ function _GetSystemDirectory: String;
 function _GetWindowsDirectory: String;
 function _GetTempDirectory: String;
 function GetCountTextInStr(pStr, pText: string): integer;
+function StrToDateNoDelimiter(const S: string; const Formats: array of string): TDateTime;
+function TryParseDate(const S, Format: string; out Year, Month, Day: Word): Boolean;
+function GenerateCode: Integer;
 
 
 
@@ -106,6 +109,92 @@ implementation
 
 uses DateUtils,Windows,Dialogs,activex,comobj,variants,math,Registry;
 
+function GenerateCode: Integer;
+var
+  Year, Month, Day, Hour, Minute, Second, MilliSecond: Word;
+  Code: Integer;
+begin
+  // Отримати поточну дату та час
+  DecodeDateTime(Now, Year, Month, Day, Hour, Minute, Second, MilliSecond);
+
+  // Використати рік, місяць, день, годину, хвилину та секунду для генерації коду
+  // В даному прикладі беремо останні дві цифри року і додаємо інші компоненти дати та часу
+  Code := (Year mod 100) * 10000 + Month * 100 + Day + Hour + Minute + Second;
+
+  // Зробити так, щоб код був п'ятизначним
+  Code := Code mod 100000;
+
+  Result := Code;
+end;
+
+
+//ddmmyyyy,yymmdd
+function TryParseDate(const S, Format: string; out Year, Month, Day: Word): Boolean;
+  var
+    YearStr, MonthStr, DayStr: string;
+    I:integer;
+  begin
+    Result := False;
+    if Length(S) <> Length(Format) then
+      Exit;
+
+    YearStr := '';
+    MonthStr := '';
+    DayStr := '';
+
+    for I := 1 to Length(Format) do
+    begin
+      case Format[I] of
+        'y': YearStr := YearStr + S[I];
+        'm': MonthStr := MonthStr + S[I];
+        'd': DayStr := DayStr + S[I];
+      else
+        Exit;
+      end;
+    end;
+
+    if (YearStr = '') or (MonthStr = '') or (DayStr = '') then
+      Exit;
+
+    try
+      if Length(YearStr)=4 then
+         Year := StrToInt(YearStr);
+      if Length(YearStr)=2 then
+         Year := StrToInt('20'+YearStr);
+
+      Month := StrToInt(MonthStr);
+      Day := StrToInt(DayStr);
+      Result := True;
+    except
+      on E: Exception do
+        Exit;
+    end;
+  end;
+
+
+function StrToDateNoDelimiter(const S: string; const Formats: array of string): TDateTime;
+var
+  Year, Month, Day: Word;
+  Format: string;
+  IsValidFormat: Boolean;
+  I: Integer;
+begin
+  IsValidFormat := False;
+
+  for Format in Formats do
+  begin
+    if TryParseDate(S, Format, Year, Month, Day) then
+    begin
+      IsValidFormat := True;
+      Break;
+    end;
+  end;
+
+  if not IsValidFormat then
+    raise Exception.Create('Invalid date format.');
+
+  Result := EncodeDate(Year, Month, Day);
+end;
 
 function GetCountTextInStr(pStr, pText: string): integer;
 var

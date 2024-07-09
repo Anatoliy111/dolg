@@ -1,4 +1,0 @@
-script.exe export.ibb
-
-
-

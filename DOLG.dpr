@@ -37,7 +37,8 @@ uses
   dprocess in 'dprocess\dprocess.pas',
   dpipes in 'dprocess\dpipes.pas',
   Unit34 in 'Unit34.pas' {Form34},
-  Unit35 in 'Unit35.pas' {Form35};
+  Unit35 in 'Unit35.pas' {Form35},
+  Unit36 in 'Unit36.pas' {Form36};
 
 {$R *.res}
 
@@ -77,5 +78,6 @@ begin
   Application.CreateForm(TForm33, Form33);
   Application.CreateForm(TForm34, Form34);
   Application.CreateForm(TForm35, Form35);
+  Application.CreateForm(TForm36, Form36);
   Application.Run;
 end.

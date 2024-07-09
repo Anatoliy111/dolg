@@ -265,7 +265,7 @@ object Form33: TForm33
       
         'select wids.wid, wids.naim, wids.abonpl, obor.fio, obor.schet, o' +
         'bor.sal, 0 as ch, su_dolg as sumpl from wids,obor where wids.wid' +
-        '=obor.wid and obor.schet='#39'0123133'#1072#39' order by wids.npp')
+        '=obor.wid and obor.schet='#39'0014001'#39' order by wids.npp')
     Left = 472
     Top = 464
     object ADOQueryOBORwid: TWideStringField

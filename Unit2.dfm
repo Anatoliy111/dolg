@@ -80,14 +80,15 @@ object Form2: TForm2
       '  KL = :OLD_KL')
     InsertSQL.Strings = (
       'insert into PERIOD'
-      '  (AKTIV, KL, PERIOD)'
+      '  (KL, PERIOD, AKTIV, STRPERIOD)'
       'values'
-      '  (:AKTIV, :KL, :PERIOD)')
+      '  (:KL, :PERIOD, :AKTIV, :STRPERIOD)')
     RefreshSQL.Strings = (
       'Select '
       '  KL,'
       '  PERIOD,'
-      '  AKTIV'
+      '  AKTIV,'
+      '  STRPERIOD'
       'from PERIOD '
       'where'
       '  KL = :KL')
@@ -96,9 +97,10 @@ object Form2: TForm2
     ModifySQL.Strings = (
       'update PERIOD'
       'set'
-      '  AKTIV = :AKTIV,'
       '  KL = :KL,'
-      '  PERIOD = :PERIOD'
+      '  PERIOD = :PERIOD,'
+      '  AKTIV = :AKTIV,'
+      '  STRPERIOD = :STRPERIOD'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -119,6 +121,11 @@ object Form2: TForm2
     object IBPERIODAKTIV: TIntegerField
       FieldName = 'AKTIV'
       Origin = '"PERIOD"."AKTIV"'
+    end
+    object IBPERIODSTRPERIOD: TIBStringField
+      FieldName = 'STRPERIOD'
+      Origin = '"PERIOD"."STRPERIOD"'
+      Size = 30
     end
   end
   object DSPERIOD: TDataSource

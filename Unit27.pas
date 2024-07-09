@@ -881,11 +881,11 @@ begin
          CloseData;
 
          cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_opl '+filepath+' '+Form1.PathKvart;
-//         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
 
-     //    WinExec(PANsiChar(cmd), SW_HIDE);
+        // WinExec(PANsiChar(cmd), SW_HIDE);
 
-         RunProcessCmd(cmd);
+   //      RunProcessCmd(cmd);
 
 //        MsExcel.Application.Quit;
 //        MsExcel := null;
@@ -1142,11 +1142,14 @@ begin
                  begin
                     str:=Match.value;
                     Format.DateSeparator:=Match.value[1];
-                   vDateTime := StrToDate(strDate,Format);
-                   cxDateEdit1.Date:=vDateTime;
+                    vDateTime := StrToDate(strDate,Format);
+                    cxDateEdit1.Date:=vDateTime;
                  end
                  else
                  begin
+                   vDateTime := StrToDateNoDelimiter(strDate, [IBQueryBankFORMAT_DATE_SEPARATOR.Value]);
+                   cxDateEdit1.Date:=vDateTime;
+
 //                    str1:=Copy(strDate, 1, 2);
 //                    str2:=Copy(strDate, 3, 2);
 //                    str3:=Copy(strDate, 5, 4);
@@ -1157,11 +1160,11 @@ begin
 //                      StrToInt(str1)
 //                    );
 
-                    cxDateEdit1.Date := EncodeDate(
-                      StrToInt(Copy(strDate, pos('y',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'y'))),
-                      StrToInt(Copy(strDate, pos('m',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'m'))),
-                      StrToInt(Copy(strDate, pos('d',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'d')))
-                    );
+//                    cxDateEdit1.Date := EncodeDate(
+//                      StrToInt(Copy(strDate, pos('y',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'y'))),
+//                      StrToInt(Copy(strDate, pos('m',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'m'))),
+//                      StrToInt(Copy(strDate, pos('d',IBQueryBankFORMAT_DATE_SEPARATOR.Value), GetCountTextInStr(IBQueryBankFORMAT_DATE_SEPARATOR.Value,'d')))
+//                    );
                  end;
 
 
@@ -1206,10 +1209,6 @@ begin
 end;
 
 
-
-
-
-
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
     stroka,strmes,tempDir, strtmp:string;
@@ -1226,6 +1225,15 @@ var f1:boolean;
 begin
 
 onlysearchposl:=0;
+kolst:=0;
+startROW:=0;
+pusto:=0;
+kol:=0;
+//row:=0;
+endROW:=0;
+//error:=0;
+maxcolposl:=0;
+
 
 
 
@@ -1605,7 +1613,7 @@ onlysearchposl:=0;
         end;
 
 
-
+        f1:=true;
         while f1 do
         begin
            kol:=kol+1;
@@ -2012,7 +2020,9 @@ begin
             Form33.Memo1.Text:=strprizn;
 
             Form33.cxDateEdit1.Date:=dt;
-            Form33.Memo2.Text:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_KONTR.Value];
+
+            if (not IBQueryBankCOL_KONTR.IsNull) and (IBQueryBankCOL_KONTR.Value<>0) then
+                Form33.Memo2.Text:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_KONTR.Value];
 
             if CheckBox2.Checked then
             begin

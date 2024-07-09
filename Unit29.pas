@@ -141,9 +141,9 @@ begin
 //         st1:=st1+st[ns]
 //      else st1:='';
 //    end;
-      if Pos('query_36188893',StartFileName)=0 then
+      if Pos('query_'+Form1.edrpou+'',StartFileName)=0 then
          begin
-            ShowMessage('Неправильний файл !!! Файл повинен мати назву query_36188893');
+            ShowMessage('Неправильний файл !!! Файл повинен мати назву query_'+Form1.edrpou);
           cxTextEdit1.Text:='';
           st1:='';
           Application.ProcessMessages;
@@ -179,9 +179,9 @@ begin
        // nfile:=trim(OpenDialog1.FileName);
        // Delete(nfile, Length(nfile)-3, 3);
 
-       if not FileExists(DirExtrFile+'\query_36188893.csv') then
+       if not FileExists(DirExtrFile+'\query_'+Form1.edrpou+'.csv') then
        begin
-          ShowMessage('Файл реєстру query_36188893.csv не знайдено!!!');
+          ShowMessage('Файл реєстру query_'+Form1.edrpou+'.csv не знайдено!!!');
           TDirectory.Delete(DirExtrFile, True);
           cxTextEdit1.Text:='';
           st1:='';
@@ -190,8 +190,8 @@ begin
        end;
            MsExcel := CreateOleObject('Excel.Application');
     //    MsExcel.Workbooks.Add;
-    MsExcel.Workbooks.Open[DirExtrFile+'\query_36188893.csv'];
-    MemoLog.Lines.Add('  Файл реєстру:'+DirExtrFile+'\query_36188893.csv');
+    MsExcel.Workbooks.Open[DirExtrFile+'\query_'+Form1.edrpou+'.csv'];
+    MemoLog.Lines.Add('  Файл реєстру:'+DirExtrFile+'\query_'+Form1.edrpou+'.csv');
 
     end
     else
@@ -364,8 +364,8 @@ begin
 
     MsExcel := CreateOleObject('Excel.Application');
     //    MsExcel.Workbooks.Add;
-    MsExcel.Workbooks.Open[DirExtrFile+'\query_36188893.csv'];
-    FileName:=DirExtrFile+'\query_36188893.csv';
+    MsExcel.Workbooks.Open[DirExtrFile+'\query_'+Form1.edrpou+'.csv'];
+    FileName:=DirExtrFile+'\query_'+Form1.edrpou+'.csv';
    end
    else
    begin
@@ -564,7 +564,7 @@ begin
 //            MsExcel := null;
 //               MsExcel.Free;
            // DeleteFile(DirExtrFile+'\query_36188893.csv');
-            DeleteFile(DirExtrFile+'\query_36188893.xml');
+            DeleteFile(DirExtrFile+'\query_'+Form1.edrpou+'.xml');
             DeleteFile(DirExtrFile+'.zip');
             Sleep(1000);
             cmd:=GetCurrentDir+'\winrar\winrar.exe a -ep -afzip '+DirExtrFile+'.zip '+FileName;

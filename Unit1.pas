@@ -233,9 +233,6 @@ type
     IBTransaction1: TIBTransaction;
     dxBarButton118: TdxBarButton;
     cxGrid1DBTableView1SCHET: TcxGridDBColumn;
-    cxGrid1DBTableView1NOTE1: TcxGridDBColumn;
-    cxGrid1DBTableView1NOTE2: TcxGridDBColumn;
-    cxGrid1DBTableView1NOTE3: TcxGridDBColumn;
     cxGrid1DBTableView1FIO: TcxGridDBColumn;
     cxGrid1DBTableView1IDCOD: TcxGridDBColumn;
     cxGrid1DBTableView1UL: TcxGridDBColumn;
@@ -357,32 +354,6 @@ type
     FloatField18: TFloatField;
     FloatField19: TFloatField;
     DataSource1: TDataSource;
-    IBREPDKL: TIntegerField;
-    IBREPDWID: TIBStringField;
-    IBREPDSCHET: TIBStringField;
-    IBREPDNOTE1: TIntegerField;
-    IBREPDNOTE2: TIntegerField;
-    IBREPDNOTE3: TIBStringField;
-    IBREPDKL_USERS: TIntegerField;
-    IBREPDPOSLUG: TIBStringField;
-    IBREPDDOLG: TFloatField;
-    IBREPDFIO: TIBStringField;
-    IBREPDIDCOD: TIBStringField;
-    IBREPDUL: TIBStringField;
-    IBREPDDOM: TIBStringField;
-    IBREPDKV: TIBStringField;
-    IBREPDKOLI_P: TFloatField;
-    IBREPDKOLI_PF: TFloatField;
-    IBREPDNACH: TFloatField;
-    IBREPDOPL: TFloatField;
-    IBREPDSUBS: TFloatField;
-    IBREPDUDER: TFloatField;
-    IBREPDKOMP: TFloatField;
-    IBREPDWZMZ: TFloatField;
-    IBREPDWOZW: TFloatField;
-    IBREPDMOVW: TFloatField;
-    IBREPDPERE: TFloatField;
-    IBREPDENDDOLG: TFloatField;
     cxCalcEdit1: TcxCalcEdit;
     cxCalcEdit2: TcxCalcEdit;
     Label16: TLabel;
@@ -471,8 +442,6 @@ type
     dxBarButton123: TdxBarButton;
     cxButton10: TcxButton;
     cxButton6: TcxButton;
-    IBREPDN_DOG: TIBStringField;
-    IBREPDD_DOG: TIBStringField;
     cxGrid1DBTableView1N_DOG: TcxGridDBColumn;
     cxGrid1DBTableView1D_DOG: TcxGridDBColumn;
     cxLocalizer1: TcxLocalizer;
@@ -480,9 +449,6 @@ type
     dxBarSubItem28: TdxBarSubItem;
     dxBarButton125: TdxBarButton;
     dxBarButton126: TdxBarButton;
-    IBREPDPLOS_BB: TFloatField;
-    IBREPDPLOS_OB: TFloatField;
-    IBREPDPRIV: TIBStringField;
     cxGrid1DBTableView1PLOS_BB: TcxGridDBColumn;
     cxGrid1DBTableView1PLOS_OB: TcxGridDBColumn;
     cxGrid1DBTableView1PRIV: TcxGridDBColumn;
@@ -545,12 +511,60 @@ type
     IBSERVICESSMSALPHA: TIBStringField;
     IBSERVICESSMSCENA: TFloatField;
     dxBarButton137: TdxBarButton;
-    IBREPDKL_NTAR: TFloatField;
     cxGrid1DBTableView1KL_NTAR: TcxGridDBColumn;
     cxGrid1DBTableView1KOEF: TcxGridDBColumn;
+    dxBarButton138: TdxBarButton;
+    IBPERIODSTRPERIOD: TIBStringField;
+    dxBarButton139: TdxBarButton;
+    IBREPDKL: TIntegerField;
+    IBREPDPERIOD: TDateField;
+    IBREPDSCHET: TIBStringField;
+    IBREPDWID: TIBStringField;
+    IBREPDCOD: TIBStringField;
+    IBREPDPOSLUG: TIBStringField;
+    IBREPDVID: TIBStringField;
+    IBREPDNPP: TFloatField;
+    IBREPDED_IZMPFU: TIBStringField;
+    IBREPDFIO: TIBStringField;
+    IBREPDFFF: TIBStringField;
+    IBREPDIM: TIBStringField;
+    IBREPDOT: TIBStringField;
+    IBREPDULNAIM: TIBStringField;
+    IBREPDNOMDOM: TIBStringField;
+    IBREPDNOMKV: TIBStringField;
+    IBREPDORG: TFloatField;
+    IBREPDIDCOD: TIBStringField;
+    IBREPDKOLI_P: TFloatField;
+    IBREPDKOLI_PF: TFloatField;
+    IBREPDPLOS_BB: TFloatField;
+    IBREPDPLOS_OB: TFloatField;
+    IBREPDPRIV: TIBStringField;
+    IBREPDLGOTA: TIBStringField;
     IBREPDKOEF: TFloatField;
-    IBREPDTEL: TIBStringField;
-    cxGrid1DBTableView1TEL: TcxGridDBColumn;
+    IBREPDN_DOG: TIBStringField;
+    IBREPDD_DOG: TIBStringField;
+    IBREPDTARIF: TFloatField;
+    IBREPDTARSUBS: TFloatField;
+    IBREPDKL_NTAR: TFloatField;
+    IBREPDDOLG: TFloatField;
+    IBREPDNACH: TFloatField;
+    IBREPDSUBS: TFloatField;
+    IBREPDOPL: TFloatField;
+    IBREPDUDER: TFloatField;
+    IBREPDKOMP: TFloatField;
+    IBREPDWZMZ: TFloatField;
+    IBREPDWOZW: TFloatField;
+    IBREPDMOVW: TFloatField;
+    IBREPDPERE: TFloatField;
+    IBREPDSAL: TFloatField;
+    IBREPDBGST: TFloatField;
+    IBREPDPRST: TFloatField;
+    IBREPDBGEND: TFloatField;
+    IBREPDPREND: TFloatField;
+    IBREPDFULLNACH: TFloatField;
+    IBREPDFULLOPL: TFloatField;
+    IBREPDOPLNOTSUBS: TFloatField;
+    IBREPDENDDOLG: TFloatField;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton101Click(Sender: TObject);
@@ -592,10 +606,13 @@ type
       Shift: TShiftState);
     procedure cxTextEdit3PropertiesChange(Sender: TObject);
     procedure dxBarButton137Click(Sender: TObject);
+    procedure dxBarButton138Click(Sender: TObject);
+    procedure dxBarButton139Click(Sender: TObject);
   private
     { Private declarations }
     procedure AddFilter(column:TcxGridDBColumn;text:string);
     procedure DelFilter(col:TcxGridDBColumn;s:string);
+    function GetAppVersionStr:string;
 
 
   public
@@ -604,7 +621,7 @@ type
     DateKVART:TDate;
     UpdateBase:Boolean;
     iniFile:TIniFile;
-    PathKvart,StartSQL,PathFox,ORG,PathTMP,orgpoint:string;
+    PathKvart,StartSQL,PathFox,ORG,PathTMP,orgpoint,edrpou:string;
     translit,textsms1,textsms2,urlsend:string;
     posl:TStrings;
 
@@ -625,7 +642,7 @@ implementation
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
   Unit16, Unit19, Unit20, Unit21, Unit22, Unit23, Unit26, Unit27, Unit28,
-  Unit29, Unit30, Unit31, Unit32, Unit33, Unit35;
+  Unit29, Unit30, Unit31, Unit32, Unit33, Unit35, Unit36;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -762,7 +779,19 @@ end;
 procedure TForm1.dxBarButton137Click(Sender: TObject);
 begin
 Form35.show;
-Form35.cxLookupComboBox1.EditValue:=IBPERIODPERIOD.Value;
+Form35.cxLookupComboBox1.EditValue:=IBPERIODSTRPERIOD.Value;
+end;
+
+procedure TForm1.dxBarButton138Click(Sender: TObject);
+begin
+Form36.Caption:=dxBarButton138.Caption;
+Form36.show;
+end;
+
+procedure TForm1.dxBarButton139Click(Sender: TObject);
+begin
+Form36.Caption:=dxBarButton139.Caption;
+Form36.show;
 end;
 
 procedure TForm1.dxBarButton19Click(Sender: TObject);
@@ -798,6 +827,9 @@ end;
 
 procedure TForm1.cxButton2Click(Sender: TObject);
 begin
+     IBPERIOD.Close;
+     IBPERIOD.Open;
+     Form1.DSPERIOD.Enabled:=true;
  Form1.REPORT;
  ShowMessage('Звіт зформовано за '+mon_slovoDt(cxLookupComboBox1.EditValue));
 end;
@@ -810,6 +842,7 @@ FilterDATE:TDate;
 begin
      IBPERIOD.Close;
      IBPERIOD.Open;
+     Form1.DSPERIOD.Enabled:=true;
      Form1.DSREPD.Enabled:=false;
      Form1.IBREPD.close;
 
@@ -828,8 +861,8 @@ begin
    //  if Form1.cxLookupComboBox1.EditValue=IBPERIODPERIOD.Value then
    //  StrSQL:=StringReplace(StrSQL,'vw_obkr','vw_obkrnow',[rfReplaceAll, rfIgnoreCase]);
 
-     Form1.IBREPD.SelectSQL.Text:=StrSQL+sql2+' order by note.schet,note.wid';
-     Form1.IBREPD.ParamByName('kluser').Value:=Form1.ActiveUser;
+     Form1.IBREPD.SelectSQL.Text:=StrSQL+sql2+' order by schet,wid';
+    // Form1.IBREPD.ParamByName('kluser').Value:=Form1.ActiveUser;
      Form1.IBREPD.ParamByName('dt').Value:=Form1.cxLookupComboBox1.EditValue;
      Form1.IBREPD.open;
      Form1.DSREPD.Enabled:=true;
@@ -1051,6 +1084,7 @@ begin
   pw:=iniFile.ReadString('Data','PW','');
   ORG:=iniFile.ReadString('Data','org','');
   orgpoint:=iniFile.ReadString('Data','orgpoint','');
+  edrpou:=iniFile.ReadString('Data','edrpou','');
   PathKvart:=iniFile.ReadString('DBF','base','');
   PathFOX:=iniFile.ReadString('DBF','fox','');
   PathTMP:=iniFile.ReadString('TMP','tmp','');
@@ -1113,6 +1147,8 @@ begin
   IBPERIOD.open;
   IBVIBER_SEND.Open;
 
+  IBPERIOD.Open;
+
 
     IBWID.open;
   IBWID.First;
@@ -1133,6 +1169,9 @@ begin
 
      IBREPD.close;
      DSREPD.Enabled:=false;
+
+
+  Form1.Caption:=Form1.Caption+' '+GetAppVersionStr;
 
 
      except
@@ -1159,6 +1198,29 @@ Form1.IBQuery1.ParamByName('kll').Value:=IBKONTROLKL.Value;
 Form1.IBQuery1.ExecSQL;
 Form1.IBTransaction1.CommitRetaining;
 Form1.IBQuery1.close;
+end;
+
+function TForm1.GetAppVersionStr: string;
+var
+  Exe: string;
+  Size, Handle: DWORD;
+  Buffer: TBytes;
+  FixedPtr: PVSFixedFileInfo;
+begin
+  Exe := ParamStr(0);
+  Size := GetFileVersionInfoSize(PChar(Exe), Handle);
+  if Size = 0 then
+    RaiseLastOSError;
+  SetLength(Buffer, Size);
+  if not GetFileVersionInfo(PChar(Exe), Handle, Size, Buffer) then
+    RaiseLastOSError;
+  if not VerQueryValue(Buffer, '\', Pointer(FixedPtr), Size) then
+    RaiseLastOSError;
+  // major
+  Result := Format('%d.%d.%d.%d', [LongRec(FixedPtr.dwFileVersionMS).Hi,
+    LongRec(FixedPtr.dwFileVersionMS).Lo, // minor
+    LongRec(FixedPtr.dwFileVersionLS).Hi, // release
+    LongRec(FixedPtr.dwFileVersionLS).Lo]) // build
 end;
 
 procedure TForm1.IBREPDFilterRecord(DataSet: TDataSet; var Accept: Boolean);

@@ -11,6 +11,7 @@ object Form29: TForm29
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDesktopCenter
   OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
@@ -70,6 +71,11 @@ object Form29: TForm29
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
       item
+        FieldName = 'STRPERIOD'
+      end
+      item
+        MinWidth = 0
+        Width = 0
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
@@ -200,8 +206,8 @@ object Form29: TForm29
         '                        left join vw_obor vo on vo.wid=t2.wid an' +
         'd vo.schet=t2.schet and vo.period=:d0'
       
-        '                        left join obor oo on oo.wid=t2.wid and o' +
-        'o.schet=t2.schet and oo.period=:d4'
+        '                        left join vw_obkr oo on oo.wid=t2.wid an' +
+        'd oo.schet=t2.schet and oo.period=:d4'
       '                        where wid.cod is not null'
       '                        order by t2.schet, t2.wid')
     Left = 415

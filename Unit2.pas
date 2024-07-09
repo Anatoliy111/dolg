@@ -22,6 +22,7 @@ type
     IBPERIODPERIOD: TDateField;
     IBPERIODAKTIV: TIntegerField;
     DSPERIOD: TDataSource;
+    IBPERIODSTRPERIOD: TIBStringField;
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -40,7 +41,7 @@ var
 
 implementation
 
-uses Unit1, Unit3, mytools, Unit14, Unit13;
+uses Unit1, Unit3, mytools, Unit13, Unit14;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
@@ -282,16 +283,17 @@ begin
 
        if Form1.cxLookupComboBox1.EditValue = null then
        begin
+//          Form1.cxLookupComboBox1.EditValue:=Form1.cxLookupComboBox1.Properties.DataController.DataSet.FieldByName('period').Value;
           Form1.cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
        end;
 
-       Form14.cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+       Form14.cxLookupComboBox1.EditValue:=Form1.IBPERIODSTRPERIOD.Value;
        Form14.IBWID.Open;
 
-               cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
 
-       Form13.cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
+        Form13.cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
         Form13.cxLookupComboBox2.EditValue:=Form1.IBPERIODPERIOD.Value;
         Form13.cxLookupComboBox3.EditValue:=Form1.IBPERIODPERIOD.Value;
         Form13.cxLookupComboBox4.EditValue:=Form1.IBPERIODPERIOD.Value;
@@ -305,6 +307,7 @@ begin
 //
 //        Form1.IBTransaction2.CommitRetaining;
 //        Form1.IBTransaction1.CommitRetaining;
+
         Form1.IBVIBER_SEND.Open;
 
         cxProgressBar1.Position:=cxProgressBar1.Position+1;
@@ -314,9 +317,9 @@ begin
         Label2.Visible:=false;
 
 
-  Form1.REPORT;
+        Form1.REPORT;
 
-          cxProgressBar1.Position:=cxProgressBar1.Position+1;
+        cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
 
 Timer2.Enabled:=true;

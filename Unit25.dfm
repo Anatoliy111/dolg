@@ -25,6 +25,12 @@ object Form25: TForm25
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
       item
+        FieldName = 'STRPERIOD'
+      end
+      item
+        MinWidth = 0
+        Sorting = False
+        Width = 0
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD

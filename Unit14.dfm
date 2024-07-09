@@ -95,6 +95,12 @@ object Form14: TForm14
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
           item
+            FieldName = 'STRPERIOD'
+          end
+          item
+            MinWidth = 0
+            Sorting = False
+            Width = 0
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
@@ -147,6 +153,12 @@ object Form14: TForm14
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
           item
+            FieldName = 'STRPERIOD'
+          end
+          item
+            MinWidth = 0
+            Sorting = False
+            Width = 0
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
@@ -330,6 +342,12 @@ object Form14: TForm14
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
           item
+            FieldName = 'STRPERIOD'
+          end
+          item
+            MinWidth = 0
+            Sorting = False
+            Width = 0
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
@@ -343,6 +361,12 @@ object Form14: TForm14
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
           item
+            FieldName = 'STRPERIOD'
+          end
+          item
+            MinWidth = 0
+            Sorting = False
+            Width = 0
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
@@ -356,6 +380,12 @@ object Form14: TForm14
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
           item
+            FieldName = 'STRPERIOD'
+          end
+          item
+            MinWidth = 0
+            Sorting = False
+            Width = 0
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
@@ -369,6 +399,12 @@ object Form14: TForm14
         Properties.KeyFieldNames = 'PERIOD'
         Properties.ListColumns = <
           item
+            FieldName = 'STRPERIOD'
+          end
+          item
+            MinWidth = 0
+            Sorting = False
+            Width = 0
             FieldName = 'PERIOD'
           end>
         Properties.ListSource = Form1.DSPERIOD
@@ -964,8 +1000,8 @@ object Form14: TForm14
         'hen '#39'ot'#39' then sal else null end,0) as ot,COALESCE(case wid when ' +
         #39'hv'#39' then sal else null end,0) as hv,COALESCE(case wid when '#39'sn'#39 +
         ' then sal else null end,0) as sn,COALESCE(case wid when '#39'ub'#39' the' +
-        'n sal else null end,0) as ub from vw_obkr where period=:dt) grou' +
-        'p by period,schet,fio,ulnaim,nomdom,nomkv')
+        'n sal else null end,0) as ub from vw_obkr2 where period=:dt) gro' +
+        'up by period,schet,fio,ulnaim,nomdom,nomkv')
     ModifySQL.Strings = (
       'update obor'
       'set'

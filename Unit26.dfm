@@ -17,7 +17,7 @@ object Form26: TForm26
     Left = 299
     Top = 11
     Width = 12
-    Height = 14
+    Height = 13
     Caption = #1087#1086
   end
   object cxButton1: TcxButton
@@ -89,6 +89,12 @@ object Form26: TForm26
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
       item
+        FieldName = 'STRPERIOD'
+      end
+      item
+        MinWidth = 0
+        Sorting = False
+        Width = 0
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
@@ -101,6 +107,12 @@ object Form26: TForm26
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
       item
+        FieldName = 'STRPERIOD'
+      end
+      item
+        MinWidth = 0
+        Sorting = False
+        Width = 0
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
