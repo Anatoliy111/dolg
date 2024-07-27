@@ -328,6 +328,8 @@ begin
 end;
 
 
+
+
 procedure TForm27.SearchSum;
 var str,posl2,strtmp:string;
     RegularExpression : TRegEx;
@@ -340,9 +342,16 @@ begin
              ssum:=0;
              priznsum:=0;
              vipsum:=0;
-             str:=ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value];
+             str:=trim(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value]);
+
+//                str:=StringReplace(str,',',DecimalSeparator,[rfReplaceAll]);
+//                str:= StringReplace(str,'.',DecimalSeparator,[rfReplaceAll]);
+//                if TryStrToFloat(str) then
+//                vipsum:=StrToFloat(StringReplace(str,'.',',',[]))
+
+
              if str<>'' then
-                vipsum:=StrToFloat(StringReplace(ExcelWorkbook.WorkSheets[1].Cells[row,IBQueryBankCOL_SUM.Value],'.',',',[]))
+                vipsum:=MyStrToFloat(str)
              else
                vipsum:=0;
              Form33.cxCalcEdit2.Value:=vipsum;
@@ -709,7 +718,7 @@ end;
 procedure TForm27.endlistexel;
 var cmd:WideString;
     procParam: TStringList;
-    proc,ColumnName,posl,nameposl1,nameposl,strs:string;
+    proc,ColumnName,posl,nameposl1,nameposl,strs,strsum:string;
 
 
   Range: OleVariant;
@@ -771,10 +780,31 @@ begin
                 Continue;
               end;
 
-              strs:=iif(Length(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_SUM.Value])=0,'0',ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_SUM.Value]);
-              sumallvip:=StrToFloat(StringReplace(strs,'.',',',[]));
-              strs:=iif(Length(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+3])=0,'0',ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+3]);
-              sumallproc:=StrToFloat(strs);
+
+              strsum:=trim(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_SUM.Value]);
+              strs:=iif(Length(strsum)=0,'0',strsum);
+              try
+                 sumallvip:=MyStrToFloat(strs);
+              except
+                 begin
+                 ShowMessage('Помилка в сумі '+strsum);
+                 sumallvip:=0;
+                 Form27.CloseDataNotSave;
+                 exit;
+                 end;
+              end;
+              strsum:=trim(ExcelWorkbook.WorkSheets[1].Cells[rowa,IBQueryBankCOL_END.Value+3]);
+              strs:=iif(Length(strsum)=0,'0',strsum);
+              try
+                sumallproc:=StrToFloat(strs);
+              except
+                begin
+                ShowMessage('Помилка в сумі '+strsum);
+                sumallproc:=0;
+                Form27.CloseDataNotSave;
+                exit;
+                end;
+              end;
 
               if (sumallproc<>0) then
               begin
@@ -2046,6 +2076,7 @@ begin
                begin
                 messagedlg('Помилка!!! - '+E.Message + #13#10 + ' Звіт буде сформовано до помилки! Всі дані буде збережено',mtError,[mbCancel],0);
                 endlistexel;
+              //  Form27.CloseDataOnlySearchPosl;
                 exit;
                end;
 

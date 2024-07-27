@@ -338,7 +338,8 @@ end;
 
 filename:='';
 filenamenew:=LowerCase(filepath+'\query_'+Form1.edrpou+'.xlsx');
-filenamezip:=LowerCase(filepath+'\query_'+Form1.edrpou+'_'+IntToStr(Date2YearMon(cxLookupComboBox1.EditValue))+'.zip');
+//filenamezip:=LowerCase(filepath+'\query_'+Form1.edrpou+'_'+IntToStr(Date2YearMon(cxLookupComboBox1.EditValue))+'.zip');
+filenamezip:=LowerCase('query_'+Form1.edrpou+'_'+IntToStr(Date2YearMon(cxLookupComboBox1.EditValue))+'.zip');
 curdir:=LowerCase(GetCurrentDir);
 
 if FileExists(curdir+'\pfu.xlsx') then
@@ -515,7 +516,7 @@ begin
           MsExcel.WorkSheets[1].Cells[row,TARIF]:=StringReplace(FloatToStr(IBQuery2TARSUBS.Value),',','.',[rfReplaceAll, rfIgnoreCase]);
 
           MsExcel.WorkSheets[1].Cells[row,UNITS]:=trim(IBQuery2ED_IZMPFU.Value);
-          MsExcel.WorkSheets[1].Cells[row,PERIN]:=StrToDate(cxLookupComboBox1.EditValue);
+          MsExcel.WorkSheets[1].Cells[row,PERIN]:=cxLookupComboBox1.EditValue;
           MsExcel.WorkSheets[1].Cells[row,PEROFF]:=DateToStr(LastDayMon(StrToDate(cxLookupComboBox1.EditValue)));
           MsExcel.WorkSheets[1].Cells[row,POST_INDEX]:='28500';
 

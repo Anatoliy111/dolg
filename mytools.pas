@@ -102,12 +102,23 @@ function GetCountTextInStr(pStr, pText: string): integer;
 function StrToDateNoDelimiter(const S: string; const Formats: array of string): TDateTime;
 function TryParseDate(const S, Format: string; out Year, Month, Day: Word): Boolean;
 function GenerateCode: Integer;
+function MyStrToFloat(const S: string): Extended;
 
 
 
 implementation
 
 uses DateUtils,Windows,Dialogs,activex,comobj,variants,math,Registry;
+
+
+function MyStrToFloat(const S: string): Extended;
+const
+  Komma: TFormatSettings = (DecimalSeparator: ',');
+  Dot: TFormatSettings = (DecimalSeparator: '.');
+begin
+  if not TryStrToFloat(S, Result, Komma) then
+    Result := StrToFloat(S, Dot);
+end;
 
 function GenerateCode: Integer;
 var

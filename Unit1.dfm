@@ -4425,8 +4425,8 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_ADRES_ID'
-    Left = 256
-    Top = 272
+    Left = 280
+    Top = 264
     object IBADRESKL: TIntegerField
       FieldName = 'KL'
       Origin = '"ADRES"."KL"'
@@ -4493,8 +4493,8 @@ object Form1: TForm1
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_SPR_RAION_ID'
-    Left = 312
-    Top = 272
+    Left = 328
+    Top = 264
     object IBRAIONKL: TIntegerField
       FieldName = 'KL'
       Origin = '"SPR_RAION"."KL"'
