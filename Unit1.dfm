@@ -168,6 +168,10 @@ object Form1: TForm1
         end
         item
           Kind = skCount
+        end
+        item
+          Kind = skCount
+          Column = cxGrid1DBTableView1SCHET
         end>
       DataController.Summary.SummaryGroups = <>
       OptionsView.Footer = True

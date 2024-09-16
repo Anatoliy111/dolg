@@ -52,6 +52,7 @@ object Form11: TForm11
   object cxMaskEdit1: TcxMaskEdit
     Left = 56
     Top = 112
+    Properties.EchoMode = eemPassword
     TabOrder = 2
     OnKeyPress = cxMaskEdit1KeyPress
     Width = 193
