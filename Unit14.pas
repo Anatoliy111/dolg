@@ -773,19 +773,19 @@ begin
 
                   //SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from(select '+group+strFIELD;
                   //if chwid=0 then Delete(SQL, Length(SQL), 1);
-                  if cxCheckBox20.Checked then
-                  begin
-                    SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from (select wid,'+group+strSUMFIELD+' from(select wid,organ.name as '+group+strFIELD;
-                    SQL:=SQL+' from vw_obkr2 left outer join organ on (vw_obkr.org = organ.org) and (organ.upd = 1) where period>=:dt1 and period<=:dt2)';
-                    SQL:=SQL+' group by wid,'+group;
-                  end
-                  else
-                  begin
+//                  if cxCheckBox20.Checked then
+//                  begin
+//                    SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from (select wid,'+group+strSUMFIELD+' from(select wid,organ.name as '+group+strFIELD;
+//                    SQL:=SQL+' from vw_obkr2 left outer join organ on (vw_obkr2.org = organ.org) and (organ.upd = 1) where period>=:dt1 and period<=:dt2)';
+//                    SQL:=SQL+' group by wid,'+group;
+//                  end
+//                  else
+//                  begin
                     SQL:=SQL+strDOLG+strNACH+strOPL+strSAL+strMAXFIELD+' from (select wid,'+group+strSUMFIELD+' from(select wid,'+group+strFIELD;
                     SQL:=SQL+' from vw_obkr2 where period>=:dt1 and period<=:dt2)';
                     SQL:=SQL+' group by wid,'+group;
 
-                  end;
+//                  end;
 
 
                 if chwid<>0 then
