@@ -516,7 +516,8 @@ begin
           MsExcel.WorkSheets[1].Cells[row,TARIF]:=StringReplace(FloatToStr(IBQuery2TARSUBS.Value),',','.',[rfReplaceAll, rfIgnoreCase]);
 
           MsExcel.WorkSheets[1].Cells[row,UNITS]:=trim(IBQuery2ED_IZMPFU.Value);
-          MsExcel.WorkSheets[1].Cells[row,PERIN]:=cxLookupComboBox1.EditValue;
+        //  MsExcel.WorkSheets[1].Cells[row,PERIN]:=cxLookupComboBox1.EditValue;
+          MsExcel.WorkSheets[1].Cells[row,PERIN]:=DateToStr(FirstDayMon(StrToDate(cxLookupComboBox1.EditValue)));
           MsExcel.WorkSheets[1].Cells[row,PEROFF]:=DateToStr(LastDayMon(StrToDate(cxLookupComboBox1.EditValue)));
           MsExcel.WorkSheets[1].Cells[row,POST_INDEX]:='28500';
 
