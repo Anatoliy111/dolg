@@ -311,8 +311,8 @@ xlCenter = -4108;
 xlHAlignRight=-4152;
 xlVAlignBottom=-4107;
 var i,nn,kolst,kk,stsch,ii,kolsch:integer;
-    sum,sumExcel,allsum,tar:currency;
-    cod,sss1,sch,str,nam,klasf,vid_rob,n_kres,gost,dekada,sss,ppsch,codschet:string;
+    sum,sumExcel,allsum,tar,sssf:currency;
+    cod,sss1,sch,str,nam,klasf,vid_rob,n_kres,gost,dekada,sss,ppsch,codschet,tmp:string;
     kolwith,rowh,rowh1:Variant;
     f1:boolean;
     pathDBF,Path:string;
@@ -427,7 +427,7 @@ begin
           Form2.cxProgressBar1.Position:=Form2.cxProgressBar1.Position+1;
           Application.ProcessMessages;
           MsExcel.WorkSheets[1].Cells[i,kolpidtverd]:='';
-          MsExcel.WorkSheets[1].Cells[i,koltarif]:='';
+          MsExcel.WorkSheets[1].Cells[i,koltarif]:=0;
           MsExcel.WorkSheets[1].Cells[i,kolborg]:=0;
 //          IBWID.First;
 //          if not IBWID.Locate('cod',trim(MsExcel.WorkSheets[1].Cells[i,kolcod]),[]) then
@@ -480,16 +480,22 @@ begin
                    IBQuery2.ParamByName('wid').AsString:=IBQuery1.FieldByName('wid').Value;
                    IBQuery2.Open;
                    if IBQuery2.RecordCount<>0 then
+                   begin
                       sss1:=VarToStr(IBQuery2.FieldByName('tarsubs').Value);
+                      sssf:=IBQuery2.FieldByName('tarsubs').Value;
+                   end;
 
                 end
                 else
-                sss1:=VarToStr(IBQuery1.FieldByName('tarsubs').Value);
+                begin
+                  sss1:=VarToStr(IBQuery1.FieldByName('tarsubs').Value);
+                  sssf:=IBQuery1.FieldByName('tarsubs').Value;
+                end;
 
 
 
-                MsExcel.WorkSheets[1].Cells[i,koltarif]:=sss1;
-
+                MsExcel.WorkSheets[1].Cells[i,koltarif]:=sssf;
+               // tmp:=MsExcel.WorkSheets[1].Cells[i,koltarif];
 
 
 
