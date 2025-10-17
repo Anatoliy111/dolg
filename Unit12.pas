@@ -172,11 +172,6 @@ type
     cxButton4: TcxButton;
     Label16: TLabel;
     cxDBMaskEdit1: TcxDBMaskEdit;
-    IBABONINF: TIBDataSet;
-    DSABONINF: TDataSource;
-    IBABONINFID: TIntegerField;
-    IBABONINFSCHET: TIBStringField;
-    IBABONINFTEL: TIBStringField;
     N1: TMenuItem;
     IBPERSTRPERIOD: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
@@ -185,7 +180,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure N11Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxDBMaskEdit1PropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
@@ -258,18 +252,6 @@ begin
      IBKOBOR.Close;
      IBPER.Close;
      IBPER.Open;
-
-     IBABONINF.Close;
-     IBABONINF.Open;
-     if not IBABONINF.Locate('schet',IBKARTSCHET.Value,[loCaseInsensitive, loPartialKey]) then
-     begin
-       IBABONINF.Append;
-       IBABONINFSCHET.Value:=IBKARTSCHET.Value;
-       IBABONINF.Post;
-     end;
-
-
-
 
 
      IBKOBORMES.ParamByName('sch').Value:=IBKARTSCHET.Value;
@@ -361,12 +343,6 @@ end
 else
    ShowMessage('¬вед≥ть рахунок!');
 
-end;
-
-procedure TForm12.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
- if IBABONINF.State in [dsInsert,dsEdit] then IBABONINF.Post;
-Form1.IBTransaction1.CommitRetaining;
 end;
 
 procedure TForm12.FormCreate(Sender: TObject);

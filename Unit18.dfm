@@ -228,6 +228,10 @@ object Form18: TForm18
     object cxTabSheet2: TcxTabSheet
       Caption = #1055#1086' '#1073#1091#1076#1080#1085#1082#1072#1084
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid3: TcxGrid
         Left = 0
         Top = 0

@@ -3054,28 +3054,66 @@ object Form1: TForm1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
-      'delete from aboninf'
+      'delete from kart'
       'where'
-      '  ID = :OLD_ID')
+      '  SCHET = :OLD_SCHET')
     InsertSQL.Strings = (
-      'insert into aboninf'
-      '  (TEL)'
+      'insert into kart'
+      '  (SCHET, IDCOD, LG_NOFAM, KOLI_LG, KOLI_P, KOLI_PF, KOLI_K, '
+      
+        '   PLOS_BB, PLOS_OB, PRIV, ETAG, LGOTA, LG_POSV, LG_SER, LG_FIO,' +
+        ' LG_DATE, '
+      
+        '   LG_KAT, FL_NOLIFT, ORG, FLAG, TELEF, KL_UL, ULNAIM, NOMDOM, N' +
+        'OMKV, LIFT)'
       'values'
-      '  (:TEL)')
+      '  (:SCHET, :IDCOD, :LG_NOFAM, :KOLI_LG, :KOLI_P, :KOLI_PF, '
+      
+        '   :KOLI_K, :PLOS_BB, :PLOS_OB, :PRIV, :ETAG, :LGOTA, :LG_POSV, ' +
+        ':LG_SER, '
+      
+        '   :LG_FIO, :LG_DATE, :LG_KAT, :FL_NOLIFT, :ORG, :FLAG, :TELEF, ' +
+        ':KL_UL, '
+      '   :ULNAIM, :NOMDOM, :NOMKV, :LIFT)')
     RefreshSQL.Strings = (
-      'select vw_kart.*,aboninf.id,aboninf.tel from aboninf '
-      'inner join vw_kart on (vw_kart.schet=aboninf.schet)'
+      'Select * '
+      'from vw_kart '
       'where'
-      '  aboninf.ID = :ID')
+      '  SCHET = :SCHET')
     SelectSQL.Strings = (
-      'select vw_kart.*,aboninf.id,aboninf.tel from aboninf '
-      'inner join vw_kart on (vw_kart.schet=aboninf.schet)')
+      'select * from vw_kart '
+      '')
     ModifySQL.Strings = (
-      'update aboninf'
+      'update kart'
       'set'
-      '  TEL = :TEL'
+      '  SCHET = :SCHET,'
+      '  IDCOD = :IDCOD,'
+      '  LG_NOFAM = :LG_NOFAM,'
+      '  KOLI_LG = :KOLI_LG,'
+      '  KOLI_P = :KOLI_P,'
+      '  KOLI_PF = :KOLI_PF,'
+      '  KOLI_K = :KOLI_K,'
+      '  PLOS_BB = :PLOS_BB,'
+      '  PLOS_OB = :PLOS_OB,'
+      '  PRIV = :PRIV,'
+      '  ETAG = :ETAG,'
+      '  LGOTA = :LGOTA,'
+      '  LG_POSV = :LG_POSV,'
+      '  LG_SER = :LG_SER,'
+      '  LG_FIO = :LG_FIO,'
+      '  LG_DATE = :LG_DATE,'
+      '  LG_KAT = :LG_KAT,'
+      '  FL_NOLIFT = :FL_NOLIFT,'
+      '  ORG = :ORG,'
+      '  FLAG = :FLAG,'
+      '  TELEF = :TELEF,'
+      '  KL_UL = :KL_UL,'
+      '  ULNAIM = :ULNAIM,'
+      '  NOMDOM = :NOMDOM,'
+      '  NOMKV = :NOMKV,'
+      '  LIFT = :LIFT'
       'where'
-      '  ID = :OLD_ID')
+      '  SCHET = :OLD_SCHET')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
@@ -3193,6 +3231,10 @@ object Form1: TForm1
       Origin = '"VW_KART"."FLAG"'
       Size = 1
     end
+    object IBKARTTELEF: TIBStringField
+      FieldName = 'TELEF'
+      Origin = '"VW_KART"."TELEF"'
+    end
     object IBKARTKL_UL: TFloatField
       FieldName = 'KL_UL'
       Origin = '"VW_KART"."KL_UL"'
@@ -3215,21 +3257,6 @@ object Form1: TForm1
     object IBKARTLIFT: TFloatField
       FieldName = 'LIFT'
       Origin = '"VW_KART"."LIFT"'
-    end
-    object IBKARTTEL: TIBStringField
-      FieldName = 'TEL'
-      Origin = '"ABONINF"."TEL"'
-      Size = 10
-    end
-    object IBKARTTELEF: TIBStringField
-      FieldName = 'TELEF'
-      Origin = '"VW_KART"."TELEF"'
-    end
-    object IBKARTID: TIntegerField
-      FieldName = 'ID'
-      Origin = '"ABONINF"."ID"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
     end
   end
   object DSKART: TDataSource
@@ -3473,6 +3500,7 @@ object Form1: TForm1
     Top = 520
   end
   object IBTransaction1: TIBTransaction
+    Active = True
     DefaultDatabase = IBDatabase1
     DefaultAction = TACommitRetaining
     Params.Strings = (
@@ -4074,65 +4102,6 @@ object Form1: TForm1
     DataSet = IBSMSORDEREDS
     Left = 472
     Top = 312
-  end
-  object IBABONINF: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from ABONINF'
-      'where'
-      '  ID = :OLD_ID')
-    InsertSQL.Strings = (
-      'insert into ABONINF'
-      '  (ID, SCHET, TEL)'
-      'values'
-      '  (:ID, :SCHET, :TEL)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  ID,'
-      '  SCHET,'
-      '  TEL'
-      'from ABONINF '
-      'where'
-      '  ID = :ID')
-    SelectSQL.Strings = (
-      'select * from  ABONINF')
-    ModifySQL.Strings = (
-      'update ABONINF'
-      'set'
-      '  ID = :ID,'
-      '  SCHET = :SCHET,'
-      '  TEL = :TEL'
-      'where'
-      '  ID = :OLD_ID')
-    ParamCheck = True
-    UniDirectional = False
-    Left = 896
-    Top = 400
-    object IBABONINFID: TIntegerField
-      FieldName = 'ID'
-      Origin = '"ABONINF"."ID"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object IBABONINFSCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"ABONINF"."SCHET"'
-      Required = True
-      Size = 10
-    end
-    object IBABONINFTEL: TIBStringField
-      FieldName = 'TEL'
-      Origin = '"ABONINF"."TEL"'
-      Size = 10
-    end
-  end
-  object DSABONINF: TDataSource
-    DataSet = IBABONINF
-    Left = 896
-    Top = 448
   end
   object IBSMSLIST: TIBDataSet
     Database = IBDatabase1

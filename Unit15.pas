@@ -44,6 +44,8 @@ type
     cxLabel6: TcxLabel;
     cxButton1: TcxButton;
     cxTextEdit1: TcxTextEdit;
+    cxGrid1DBTableView1TELEF: TcxGridDBColumn;
+    cxGrid1DBTableView1Column2: TcxGridDBColumn;
     procedure cxButton3Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
@@ -51,6 +53,8 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxButton1Click(Sender: TObject);
+    procedure cxGrid1DBTableView1TELEFPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   private
     { Private declarations }
   public
@@ -89,6 +93,35 @@ begin
 end;
 
 
+
+procedure TForm15.cxGrid1DBTableView1TELEFPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+var editstr:string;
+begin
+
+//   editstr:=TcxTextEdit(Sender.ToString).Text;
+  if (VarToStr(DisplayValue)[2]<>'0') and (VarToStr(DisplayValue)<>'(___)___-____') then
+  begin
+//    ShowMessage('Телефон має починатися з 0  - напр.(066)');
+    ErrorText:='Телефон має починатися з 0  - напр.(066)';
+    Error:=true;
+//    cxGrid1DBTableView1.DataController.Cancel;
+  end;
+  if VarToStr(DisplayValue)='(___)___-____' then
+  begin
+    Error:=false;
+  end
+  else
+      if pos('_',VarToStr(DisplayValue))>0 then
+      begin
+    //    ShowMessage('Телефон має починатися з 0  - напр.(066)');
+        ErrorText:='Телефон має бути 10 символів';
+        Error:=true;
+    //    Error:=false;
+      end;
+
+
+end;
 
 procedure TForm15.cxGrid1DBTableView1TELPropertiesValidate(Sender: TObject;
   var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);

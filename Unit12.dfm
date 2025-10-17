@@ -11,7 +11,6 @@ object Form12: TForm12
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -625,8 +624,8 @@ object Form12: TForm12
     object cxDBMaskEdit1: TcxDBMaskEdit
       Left = 573
       Top = 118
-      DataBinding.DataField = 'TEL'
-      DataBinding.DataSource = DSABONINF
+      DataBinding.DataField = 'TELEF'
+      DataBinding.DataSource = DSKART
       Properties.EditMask = '!\(999\)000-0000;0;_'
       Properties.Nullstring = '0'
       Properties.UseNullString = True
@@ -1196,8 +1195,8 @@ object Form12: TForm12
     Top = 112
   end
   object PopupMenu1: TPopupMenu
-    Left = 617
-    Top = 169
+    Left = 793
+    Top = 177
     object N11: TMenuItem
       Caption = #1042#1080#1087#1080#1089#1082#1072' '#1110#1079' '#1086#1089#1086#1073#1086#1074#1086#1075#1086' '#1088#1072#1093#1091#1085#1082#1091' (3 '#1088#1086#1082#1080')'
       OnClick = N11Click
@@ -1206,66 +1205,5 @@ object Form12: TForm12
       Caption = #1042#1080#1087#1080#1089#1082#1072' '#1110#1079' '#1086#1089#1086#1073#1086#1074#1086#1075#1086' '#1088#1072#1093#1091#1085#1082#1091' ('#1087#1077#1088#1110#1086#1076')'
       OnClick = N1Click
     end
-  end
-  object IBABONINF: TIBDataSet
-    Database = Form1.IBDatabase1
-    Transaction = Form1.IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from ABONINF'
-      'where'
-      '  ID = :OLD_ID')
-    InsertSQL.Strings = (
-      'insert into ABONINF'
-      '  (ID, SCHET, TEL)'
-      'values'
-      '  (:ID, :SCHET, :TEL)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  ID,'
-      '  SCHET,'
-      '  TEL'
-      'from ABONINF '
-      'where'
-      '  ID = :ID')
-    SelectSQL.Strings = (
-      'select *  from ABONINF')
-    ModifySQL.Strings = (
-      'update ABONINF'
-      'set'
-      '  ID = :ID,'
-      '  SCHET = :SCHET,'
-      '  TEL = :TEL'
-      'where'
-      '  ID = :OLD_ID')
-    ParamCheck = False
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_ABONINF_ID'
-    Left = 640
-    Top = 8
-    object IBABONINFID: TIntegerField
-      FieldName = 'ID'
-      Origin = '"ABONINF"."ID"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object IBABONINFSCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"ABONINF"."SCHET"'
-      Required = True
-      Size = 10
-    end
-    object IBABONINFTEL: TIBStringField
-      FieldName = 'TEL'
-      Origin = '"ABONINF"."TEL"'
-      Size = 10
-    end
-  end
-  object DSABONINF: TDataSource
-    DataSet = IBABONINF
-    Left = 640
-    Top = 56
   end
 end

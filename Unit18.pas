@@ -139,8 +139,8 @@ begin
                 Delete(whereposl, Length(whereposl)-3, 3);
                 strWhere:='where '+strWhere+'('+whereposl+')';
                 strSAL:=strSUM+' as SAL,';
-                SQL:=SQL+strSAL+strMAXFIELD+' from(select vw_obkrnow.period,vw_obkrnow.schet,vw_obkrnow.fio,vw_obkrnow.ulnaim,vw_obkrnow.nomdom,vw_obkrnow.nomkv,aboninf.tel,'+strFIELD;
-                SQL:=SQL+' from vw_obkrnow join aboninf on (aboninf.schet=vw_obkrnow.schet))';
+                SQL:=SQL+strSAL+strMAXFIELD+' from(select vw_obkrnow.period,vw_obkrnow.schet,vw_obkrnow.fio,vw_obkrnow.ulnaim,vw_obkrnow.nomdom,vw_obkrnow.nomkv,vw_obkrnow.telef,'+strFIELD;
+                SQL:=SQL+' from vw_obkrnow';
 //                if cxCheckBox1.Checked then
 //                   SQL:=SQL+strWhere;
                 SQL:=SQL+strWhere;
@@ -1135,15 +1135,15 @@ procedure TForm18.cxGrid1DBTableView1EditValueChanged(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem);
 var editstr:string;
 begin
-if cxGrid1DBTableView1.Items[AItem.ID].DataBinding.FilterFieldName='TEL' then
+if cxGrid1DBTableView1.Items[AItem.ID].DataBinding.FilterFieldName='TELEF' then
 begin
   editstr:=trim(TcxTextEdit(Sender.Controller.EditingController.Edit).Text);
-  Form1.IBABONINF.First;
-  if Form1.IBABONINF.Locate('schet',cxGrid1DBTableView1.GetColumnByFieldName('schet').EditValue,[]) then
+  Form1.IBKART.First;
+  if Form1.IBKART.Locate('schet',cxGrid1DBTableView1.GetColumnByFieldName('schet').EditValue,[]) then
     begin
-      Form1.IBABONINF.Edit;
-      Form1.IBABONINFTEL.Value:=editstr;
-      Form1.IBABONINF.Post;
+      Form1.IBKART.Edit;
+      Form1.IBKARTTELEF.Value:=editstr;
+      Form1.IBKART.Post;
 //      Form1.IBTransaction1.CommitRetaining;
     end;
 end;

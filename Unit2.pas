@@ -163,7 +163,6 @@ begin
   Form1.IBSP_ADRES.open;
   Form1.IBSERVICES.open;
   Form1.IBPERIOD.open;
-  Form1.IBABONINF.open;
           cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
       Form1.IBSMSORDEREDS.Open;

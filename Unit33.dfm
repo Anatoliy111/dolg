@@ -237,7 +237,7 @@ object Form33: TForm33
     Top = 192
     DataBinding.DataField = 'fio'
     DataBinding.DataSource = DSADOQueryOBOR
-    Height = 21
+    Height = 17
     Width = 198
   end
   object cxLabel8: TcxLabel
