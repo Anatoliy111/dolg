@@ -182,10 +182,11 @@ object Form16: TForm16
     Height = 73
     Align = alTop
     TabOrder = 1
+    ExplicitTop = -6
     object cxButton9: TcxButton
-      Left = 0
+      Left = 1
       Top = 31
-      Width = 40
+      Width = 43
       Height = 39
       Hint = #1044#1086#1076#1072#1090#1080
       LookAndFeel.NativeStyle = True

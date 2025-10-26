@@ -145,13 +145,6 @@ begin
   Form1.IBADRES.open;
           cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;
-  Form1.IBNOTE.open;
-          cxProgressBar1.Position:=cxProgressBar1.Position+1;
-        Application.ProcessMessages;
-  Form1.IBNOTE1.open;
-  Form1.IBNOTE2.open;
-          cxProgressBar1.Position:=cxProgressBar1.Position+1;
-        Application.ProcessMessages;
   Form1.IBKART.open;
           cxProgressBar1.Position:=cxProgressBar1.Position+1;
         Application.ProcessMessages;

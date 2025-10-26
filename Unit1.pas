@@ -32,30 +32,14 @@ type
     DSUSER: TDataSource;
     DSADRESKR: TDataSource;
     IBADRESKR: TIBDataSet;
-    DSNOTE: TDataSource;
-    IBNOTE: TIBDataSet;
     DSSPRADRES: TDataSource;
     IBSPRADRES: TIBDataSet;
     DSREPD: TDataSource;
     IBREPD: TIBDataSet;
     IBQuery1: TIBQuery;
     DSQuery1: TDataSource;
-    IBNOTEWID: TIBStringField;
-    IBNOTESCHET: TIBStringField;
-    IBNOTEKL: TIntegerField;
     DSSP_ADRES: TDataSource;
     IBSP_ADRES: TIBDataSet;
-    IBNOTENOTE1: TIntegerField;
-    IBNOTENOTE2: TIntegerField;
-    IBNOTENOTE3: TIBStringField;
-    IBNOTE1: TIBDataSet;
-    DSNOTE1: TDataSource;
-    IBNOTE2: TIBDataSet;
-    DSNOTE2: TDataSource;
-    IBNOTE1KL: TIntegerField;
-    IBNOTE1NOTE: TIBStringField;
-    IBNOTE2KL: TIntegerField;
-    IBNOTE2NOTE: TIBStringField;
     cxPropertiesStore1: TcxPropertiesStore;
     IBDatabaseInfo1: TIBDatabaseInfo;
     DSKONTROL: TDataSource;
@@ -223,7 +207,6 @@ type
     IBPERIODPERIOD: TDateField;
     IBPERIODAKTIV: TIntegerField;
     IBUSERPW: TIBStringField;
-    IBNOTEKL_USERS: TIntegerField;
     IBKART: TIBDataSet;
     DSKART: TDataSource;
     IBOBOR: TIBDataSet;
@@ -558,9 +541,10 @@ type
     IBKARTNOMDOM: TIBStringField;
     IBKARTNOMKV: TIBStringField;
     IBKARTLIFT: TFloatField;
+    IBREPDNOTE: TIBStringField;
+    cxGrid1DBTableView1NOTE: TcxGridDBColumn;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
-    procedure dxBarButton101Click(Sender: TObject);
     procedure dxBarButton4Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure IBUSERAfterInsert(DataSet: TDataSet);
@@ -641,11 +625,6 @@ uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
 
 
 
-
-procedure TForm1.dxBarButton101Click(Sender: TObject);
-begin
-Form5.Show;
-end;
 
 procedure TForm1.dxBarButton114Click(Sender: TObject);
 begin
@@ -1125,9 +1104,6 @@ begin
   IBKONTROL.open;
   IBUSER.open;
   IBADRESKR.open;
-  IBNOTE.open;
-  IBNOTE1.open;
-  IBNOTE2.open;
   IBKART.open;
   IBOBOR.open;
 

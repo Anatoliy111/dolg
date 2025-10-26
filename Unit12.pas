@@ -180,10 +180,12 @@ type
     procedure FormCreate(Sender: TObject);
     procedure N11Click(Sender: TObject);
     procedure cxButton4Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure cxDBMaskEdit1PropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure N1Click(Sender: TObject);
+    procedure IBKARTTELEFChange(Sender: TField);
   private
     { Private declarations }
   public
@@ -215,6 +217,15 @@ procedure TForm12.cxDBMaskEdit1PropertiesValidate(Sender: TObject;
   var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   var vv:integer;
 begin
+
+  if (VarToStr(DisplayValue)[2]<>'0') and (VarToStr(DisplayValue)<>'(___)___-____') then
+  begin
+
+    ErrorText:='Телефон має починатися з 0  - напр.(066)';
+    Error:=true;
+
+  end;
+
    if Length(DisplayValue) = 0 then
       Error:=false;
 
@@ -252,7 +263,6 @@ begin
      IBKOBOR.Close;
      IBPER.Close;
      IBPER.Open;
-
 
      IBKOBORMES.ParamByName('sch').Value:=IBKARTSCHET.Value;
      IBKOBORMES.ParamByName('dt').Value:=IBPERPERIOD.Value;
@@ -345,6 +355,11 @@ else
 
 end;
 
+procedure TForm12.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+Form1.IBTransaction1.CommitRetaining;
+end;
+
 procedure TForm12.FormCreate(Sender: TObject);
 begin
 cxLookupComboBox1.EditValue:=Form1.IBPERIODPERIOD.Value;
@@ -354,6 +369,11 @@ end;
 procedure TForm12.FormShow(Sender: TObject);
 begin
 cxDBTextEdit10.SetFocus;
+end;
+
+procedure TForm12.IBKARTTELEFChange(Sender: TField);
+begin
+IBKARTTELEF.Value;
 end;
 
 procedure TForm12.N11Click(Sender: TObject);

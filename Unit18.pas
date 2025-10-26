@@ -139,8 +139,8 @@ begin
                 Delete(whereposl, Length(whereposl)-3, 3);
                 strWhere:='where '+strWhere+'('+whereposl+')';
                 strSAL:=strSUM+' as SAL,';
-                SQL:=SQL+strSAL+strMAXFIELD+' from(select vw_obkrnow.period,vw_obkrnow.schet,vw_obkrnow.fio,vw_obkrnow.ulnaim,vw_obkrnow.nomdom,vw_obkrnow.nomkv,vw_obkrnow.telef,'+strFIELD;
-                SQL:=SQL+' from vw_obkrnow';
+                SQL:=SQL+strSAL+strMAXFIELD+' from(select vw_obkr.period,vw_obkr.schet,vw_obkr.fio,vw_obkr.ulnaim,vw_obkr.nomdom,vw_obkr.nomkv,vw_obkr.telef tel,'+strFIELD;
+                SQL:=SQL+' from vw_obkr where vw_obkr.period=:per) ';
 //                if cxCheckBox1.Checked then
 //                   SQL:=SQL+strWhere;
                 SQL:=SQL+strWhere;
@@ -375,7 +375,7 @@ begin
                 IBREP.Close;
                 SQL:=genSQL();
                 IBREP.SelectSQL.Text:=SQL;
-//                IBREP.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
+                IBREP.ParamByName('per').Value:=Form1.IBPERIODPERIOD.Value;
                 cxLabel9.Caption:=mon_slovoDt2(Form1.IBPERIODPERIOD.Value);
                 repdt:=Form1.IBPERIODPERIOD.Value;
 
@@ -492,6 +492,7 @@ begin
       acolumn.DataBinding.FieldName:='TEL';
       acolumn.DataBinding.valuetype:='string';
       acolumn.Width:=100;
+      acolumn.Options.Editing:=false;
       acolumn.PropertiesClassName:='TcxMaskEditProperties';
       TcxMaskEditProperties(acolumn.Properties).EditMask:= '!\(999\)000-0000;0;_';
 //      TcxMaskEditProperties(acolumn.Properties).DisplayFormat:= '!\(999\)000-0000;0;_';
@@ -691,8 +692,9 @@ begin
 //                sqlDom:=sqlDom+' where vw_obkrnow.period=:dt and trim(tel)<>'' and (vw_obkrnow.wid = ''ot'') group by schet,ulnaim,nomdom,tel having sum(vw_obkrnow.sal)>=0) group by ulnaim,nomdom';
 
                 IBREPDOM.SelectSQL.Text:=genDOMSQL(SQL);
-//                IBREPDOM.ParamByName('dt').Value:=Form1.IBPERIODPERIOD.Value;
+                IBREPDOM.ParamByName('per').Value:=Form1.IBPERIODPERIOD.Value;
                 IBREPDOM.Open;
+                IBREPDOM.RecordCount;
                 DSREPDOM.Enabled:=true;
 
                 cxButton7.Enabled:=true;
@@ -1135,22 +1137,22 @@ procedure TForm18.cxGrid1DBTableView1EditValueChanged(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem);
 var editstr:string;
 begin
-if cxGrid1DBTableView1.Items[AItem.ID].DataBinding.FilterFieldName='TELEF' then
-begin
-  editstr:=trim(TcxTextEdit(Sender.Controller.EditingController.Edit).Text);
-  Form1.IBKART.First;
-  if Form1.IBKART.Locate('schet',cxGrid1DBTableView1.GetColumnByFieldName('schet').EditValue,[]) then
-    begin
-      Form1.IBKART.Edit;
-      Form1.IBKARTTELEF.Value:=editstr;
-      Form1.IBKART.Post;
-//      Form1.IBTransaction1.CommitRetaining;
-    end;
-end;
-if cxGrid1DBTableView1.Items[AItem.ID].DataBinding.FilterFieldName='CH' then
-begin
-  //ShowMessage(VarToStr(sender.DataController.Values[sender.DataController.EditingRecordIndex, AItem.Index]));
-end;
+//if cxGrid1DBTableView1.Items[AItem.ID].DataBinding.FilterFieldName='TEL' then
+//begin
+//  editstr:=trim(TcxTextEdit(Sender.Controller.EditingController.Edit).Text);
+//  Form1.IBABONINF.First;
+//  if Form1.IBABONINF.Locate('schet',cxGrid1DBTableView1.GetColumnByFieldName('schet').EditValue,[]) then
+//    begin
+//      Form1.IBABONINF.Edit;
+//      Form1.IBABONINFTEL.Value:=editstr;
+//      Form1.IBABONINF.Post;
+////      Form1.IBTransaction1.CommitRetaining;
+//    end;
+//end;
+//if cxGrid1DBTableView1.Items[AItem.ID].DataBinding.FilterFieldName='CH' then
+//begin
+//  //ShowMessage(VarToStr(sender.DataController.Values[sender.DataController.EditingRecordIndex, AItem.Index]));
+//end;
 
 end;
 

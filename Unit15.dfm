@@ -61,6 +61,7 @@ object Form15: TForm15
     Height = 593
     Align = alClient
     TabOrder = 1
+    ExplicitTop = 46
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       FilterBox.Visible = fvAlways
@@ -193,7 +194,7 @@ object Form15: TForm15
         DataBinding.FieldName = 'NOMKV'
       end
       object cxGrid1DBTableView1TEL: TcxGridDBColumn
-        Caption = #1058#1077#1083#1077#1092#1086#1085'1'
+        Caption = #1058#1077#1083#1077#1092#1086#1085
         DataBinding.FieldName = 'TEL'
         PropertiesClassName = 'TcxMaskEditProperties'
         Properties.EditMask = '!\(999\)000-0000;0;_'
@@ -201,14 +202,15 @@ object Form15: TForm15
         Width = 169
       end
       object cxGrid1DBTableView1TELEF: TcxGridDBColumn
-        Caption = #1058#1077#1083#1077#1092#1086#1085
         DataBinding.FieldName = 'TELEF'
-        PropertiesClassName = 'TcxMaskEditProperties'
-        Properties.EditMask = '!\(999\)000-0000;0;_'
-        Properties.OnValidate = cxGrid1DBTableView1TELEFPropertiesValidate
+        MinWidth = 10
       end
       object cxGrid1DBTableView1Column2: TcxGridDBColumn
         DataBinding.FieldName = 'TELEF'
+        PropertiesClassName = 'TcxMaskEditProperties'
+        Properties.EditMask = '!\(999\)000-0000;0;_'
+        Properties.MaxLength = 0
+        MinWidth = 10
       end
       object cxGrid1DBTableView1IDCOD: TcxGridDBColumn
         Caption = #1030#1076#1077#1085#1090'.'#1082#1086#1076

@@ -225,10 +225,14 @@ object Form1: TForm1
       object cxGrid1DBTableView1N_DOG: TcxGridDBColumn
         Caption = #8470' '#1076#1086#1075#1086#1074'.'
         DataBinding.FieldName = 'N_DOG'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = False
       end
       object cxGrid1DBTableView1D_DOG: TcxGridDBColumn
         Caption = #1044#1072#1090#1072' '#1076#1086#1075#1086#1074'.'
         DataBinding.FieldName = 'D_DOG'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = False
       end
       object cxGrid1DBTableView1UL: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
@@ -252,10 +256,16 @@ object Form1: TForm1
       end
       object cxGrid1DBTableView1KOEF: TcxGridDBColumn
         DataBinding.FieldName = 'KOEF'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.AutoSelect = False
+        Properties.BeepOnError = True
+        Properties.ReadOnly = False
       end
       object cxGrid1DBTableView1KL_NTAR: TcxGridDBColumn
         Caption = #1050#1083#1102#1095' '#1090#1072#1088#1080#1092#1091
         DataBinding.FieldName = 'KL_NTAR'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.ReadOnly = False
       end
       object cxGrid1DBTableView1IDCOD: TcxGridDBColumn
         Caption = #1030#1076#1077#1085#1090'.'#1082#1086#1076
@@ -366,6 +376,11 @@ object Form1: TForm1
         Properties.DisplayFormat = ',0.00;-,0.00'
         Properties.ReadOnly = True
         Width = 89
+      end
+      object cxGrid1DBTableView1NOTE: TcxGridDBColumn
+        Caption = #1055#1088#1080#1084#1110#1090#1082#1080
+        DataBinding.FieldName = 'NOTE'
+        Width = 400
       end
     end
     object cxGrid1Level1: TcxGridLevel
@@ -777,90 +792,6 @@ object Form1: TForm1
       Origin = '"ADRES"."KL_RAION"'
     end
   end
-  object DSNOTE: TDataSource
-    DataSet = IBNOTE
-    Left = 280
-    Top = 424
-  end
-  object IBNOTE: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from NOTE'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into NOTE'
-      '  (KL, KL_USERS, NOTE1, NOTE2, NOTE3, SCHET, WID)'
-      'values'
-      '  (:KL, :KL_USERS, :NOTE1, :NOTE2, :NOTE3, :SCHET, :WID)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  WID,'
-      '  SCHET,'
-      '  NOTE1,'
-      '  NOTE2,'
-      '  NOTE3,'
-      '  KL_USERS'
-      'from NOTE '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      'select *  from NOTE order by schet,wid')
-    ModifySQL.Strings = (
-      'update NOTE'
-      'set'
-      '  KL = :KL,'
-      '  KL_USERS = :KL_USERS,'
-      '  NOTE1 = :NOTE1,'
-      '  NOTE2 = :NOTE2,'
-      '  NOTE3 = :NOTE3,'
-      '  SCHET = :SCHET,'
-      '  WID = :WID'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_NOTE_ID'
-    Left = 280
-    Top = 376
-    object IBNOTEWID: TIBStringField
-      FieldName = 'WID'
-      Origin = '"NOTE"."WID"'
-      Size = 10
-    end
-    object IBNOTESCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"NOTE"."SCHET"'
-      Size = 10
-    end
-    object IBNOTEKL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"NOTE"."KL"'
-      Required = True
-    end
-    object IBNOTENOTE1: TIntegerField
-      FieldName = 'NOTE1'
-      Origin = '"NOTE"."NOTE1"'
-    end
-    object IBNOTENOTE2: TIntegerField
-      FieldName = 'NOTE2'
-      Origin = '"NOTE"."NOTE2"'
-    end
-    object IBNOTENOTE3: TIBStringField
-      FieldName = 'NOTE3'
-      Origin = '"NOTE"."NOTE3"'
-      Size = 200
-    end
-    object IBNOTEKL_USERS: TIntegerField
-      FieldName = 'KL_USERS'
-      Origin = '"NOTE"."KL_USERS"'
-    end
-  end
   object DSSPRADRES: TDataSource
     DataSet = IBSPRADRES
     Left = 656
@@ -916,17 +847,84 @@ object Form1: TForm1
     Transaction = IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
+    InsertSQL.Strings = (
+      '')
     RefreshSQL.Strings = (
-      'Select * '
-      'from vw_obkr '
+      'Select *'
+      'from obor '
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
-      'select vw_obkr.*, vw_obkr.sal as enddolg from vw_obkr'
-      'where vw_obkr.period=:dt'
+      'select'
+      '    obor.kl,'
+      '    obor.period,'
+      '    obor.schet,'
+      '    obor.wid,'
+      '    wid.cod,'
+      '    wid.naim poslug,'
+      '    wid.vid,'
+      '    wid.npp,'
+      '    wid.ed_izmpfu,'
+      
+        '    coalesce(trim(kart.fio),'#39#39') || '#39' '#39' || coalesce(trim(kart.im)' +
+        ','#39#39') || '#39' '#39' || coalesce(trim(kart.ot),'#39#39') fio,'
+      '    kart.fio fff,'
+      '    kart.im,'
+      '    kart.ot,'
+      '    kart.ulnaim,'
+      '    kart.nomdom,'
+      '    kart.nomkv,'
+      '    kart.org,'
+      '    kart.idcod,'
+      '    kart.koli_p,'
+      '    kart.koli_pf,'
+      '    kart.plos_bb,'
+      '    kart.plos_ob,'
+      '    kart.priv,'
+      '    kart.lgota,'
+      '    obor.koef,'
+      '    obor.n_dog,'
+      '    obor.d_dog,'
+      '    obor.tarif,'
+      '    obor.tarsubs,'
+      '    obor.kl_ntar,'
+      '    obor.note,'
+      '    iif(obor.dolg is null, 0, obor.dolg) dolg,'
+      '    iif(obor.nach is null, 0, obor.nach) nach,'
+      '    iif(obor.subs is null, 0, obor.subs) subs,'
+      '    iif(obor.opl is null, 0, obor.opl) opl,'
+      '    iif(obor.uder is null, 0, obor.uder) uder,'
+      '    iif(obor.komp is null, 0, obor.komp) komp,'
+      '    iif(obor.wzmz is null, 0, obor.wzmz) wzmz,'
+      '    iif(obor.wozw is null, 0, obor.wozw) wozw,'
+      '    iif(obor.movw is null, 0, obor.movw) movw,'
+      '    iif(obor.pere is null, 0, obor.pere) pere,'
+      '    iif(obor.sal is null, 0, obor.sal) sal,'
+      '    iif(obor.sal is null, 0, obor.sal) enddolg,'
+      '    case when obor.dolg > 0  then obor.dolg else 0 end AS bgst,'
+      '    case when obor.dolg < 0  then obor.dolg else 0 end AS prst,'
+      '    case when obor.sal > 0  then obor.sal else 0 end AS bgend,'
+      '    case when obor.sal < 0  then obor.sal else 0 end AS prend,'
+      
+        '    iif(obor.nach+obor.pere+obor.wozw is null, 0, obor.nach+obor' +
+        '.pere+obor.wozw) fullnach,'
+      
+        '    iif(obor.SUBS+obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ is null' +
+        ', 0, obor.SUBS+obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ) fullopl,'
+      
+        '    iif(obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ is null, 0, obor.' +
+        'OPL+obor.UDER+obor.KOMP+obor.WZMZ) oplnotsubs'
+      'from obor'
+      'left join kart on (obor.schet=kart.schet) and (kart.upd=1)'
+      'left join wid on (obor.wid=wid.wid)'
+      'where obor.upd=1 and obor.period=:dt'
       '')
     ModifySQL.Strings = (
-      '')
+      'update obor'
+      'set'
+      '  NOTE = :NOTE'
+      'where'
+      '  KL = :OLD_KL')
     ParamCheck = True
     UniDirectional = False
     OnFilterRecord = IBREPDFilterRecord
@@ -1205,6 +1203,11 @@ object Form1: TForm1
       Origin = '"VW_OBKR"."SAL"'
       ReadOnly = True
     end
+    object IBREPDNOTE: TIBStringField
+      FieldName = 'NOTE'
+      Origin = '"VW_OBKR"."NOTE"'
+      Size = 200
+    end
   end
   object IBQuery1: TIBQuery
     Database = IBDatabase1
@@ -1295,110 +1298,6 @@ object Form1: TForm1
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-  end
-  object IBNOTE1: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from NOTE1'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into NOTE1'
-      '  (KL, NOTE)'
-      'values'
-      '  (:KL, :NOTE)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  NOTE'
-      'from NOTE1 '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      'select *  from NOTE1')
-    ModifySQL.Strings = (
-      'update NOTE1'
-      'set'
-      '  KL = :KL,'
-      '  NOTE = :NOTE'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_NOTE1_ID'
-    Left = 544
-    Top = 360
-    object IBNOTE1KL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"NOTE1"."KL"'
-      Required = True
-    end
-    object IBNOTE1NOTE: TIBStringField
-      FieldName = 'NOTE'
-      Origin = '"NOTE1"."NOTE"'
-      Size = 100
-    end
-  end
-  object DSNOTE1: TDataSource
-    DataSet = IBNOTE1
-    Left = 544
-    Top = 416
-  end
-  object IBNOTE2: TIBDataSet
-    Database = IBDatabase1
-    Transaction = IBTransaction1
-    BufferChunks = 1000
-    CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from NOTE2'
-      'where'
-      '  KL = :OLD_KL')
-    InsertSQL.Strings = (
-      'insert into NOTE2'
-      '  (KL, NOTE)'
-      'values'
-      '  (:KL, :NOTE)')
-    RefreshSQL.Strings = (
-      'Select '
-      '  KL,'
-      '  NOTE'
-      'from NOTE2 '
-      'where'
-      '  KL = :KL')
-    SelectSQL.Strings = (
-      'select *  from NOTE2')
-    ModifySQL.Strings = (
-      'update NOTE2'
-      'set'
-      '  KL = :KL,'
-      '  NOTE = :NOTE'
-      'where'
-      '  KL = :OLD_KL')
-    ParamCheck = True
-    UniDirectional = False
-    GeneratorField.Field = 'KL'
-    GeneratorField.Generator = 'GEN_NOTE2_ID'
-    Left = 600
-    Top = 360
-    object IBNOTE2KL: TIntegerField
-      FieldName = 'KL'
-      Origin = '"NOTE2"."KL"'
-      Required = True
-    end
-    object IBNOTE2NOTE: TIBStringField
-      FieldName = 'NOTE'
-      Origin = '"NOTE2"."NOTE"'
-      Size = 100
-    end
-  end
-  object DSNOTE2: TDataSource
-    DataSet = IBNOTE2
-    Left = 600
-    Top = 416
   end
   object cxPropertiesStore1: TcxPropertiesStore
     Components = <>
@@ -1647,10 +1546,6 @@ object Form1: TForm1
         item
           Visible = True
           ItemName = 'dxBarButton136'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarButton101'
         end
         item
           Visible = True
@@ -2558,7 +2453,6 @@ object Form1: TForm1
       Category = 0
       Hint = #1044#1086#1074#1110#1076#1085#1080#1082' '#1053#1086#1090#1072#1090#1082#1080
       Visible = ivAlways
-      OnClick = dxBarButton101Click
     end
     object dxBarButton102: TdxBarButton
       Caption = #1044#1086#1074#1110#1076#1085#1080#1082' '#1082#1086#1088#1080#1089#1090#1091#1074#1072#1095#1110
@@ -3076,13 +2970,12 @@ object Form1: TForm1
         ':KL_UL, '
       '   :ULNAIM, :NOMDOM, :NOMKV, :LIFT)')
     RefreshSQL.Strings = (
-      'Select * '
-      'from vw_kart '
+      'Select *'
+      'from kart '
       'where'
       '  SCHET = :SCHET')
     SelectSQL.Strings = (
-      'select * from vw_kart '
-      '')
+      'select vw_kart.* from vw_kart')
     ModifySQL.Strings = (
       'update kart'
       'set'
@@ -3232,6 +3125,7 @@ object Form1: TForm1
       Size = 1
     end
     object IBKARTTELEF: TIBStringField
+      DisplayWidth = 20
       FieldName = 'TELEF'
       Origin = '"VW_KART"."TELEF"'
     end

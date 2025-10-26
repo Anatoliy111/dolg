@@ -2,8 +2,8 @@ object Form18: TForm18
   Left = 0
   Top = 0
   Caption = 'Form18'
-  ClientHeight = 536
-  ClientWidth = 661
+  ClientHeight = 468
+  ClientWidth = 672
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,18 +17,19 @@ object Form18: TForm18
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 661
+    Width = 672
     Height = 209
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 661
     object cxLabel4: TcxLabel
       Left = 138
       Top = 186
       Caption = #1041#1086#1088#1078#1085#1080#1082#1080' '#1085#1072' '#1087#1086#1095#1072#1090#1086#1082
     end
     object cxGrid2: TcxGrid
-      Left = 367
-      Top = 22
+      Left = 375
+      Top = 28
       Width = 289
       Height = 181
       TabOrder = 1
@@ -80,7 +81,7 @@ object Form18: TForm18
       TabOrder = 4
     end
     object cxGroupBox1: TcxGroupBox
-      Left = 8
+      Left = 16
       Top = 8
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080' '#1074#1110#1076#1073#1086#1088#1091
       TabOrder = 5
@@ -174,7 +175,7 @@ object Form18: TForm18
       Caption = ' - '#1042#1110#1076#1084#1110#1090#1080#1090#1080' '#1074#1089#1110
     end
     object cxCheckBox1: TcxCheckBox
-      Left = 8
+      Left = 4
       Top = 183
       Properties.OnChange = cxCheckBox1PropertiesChange
       TabOrder = 7
@@ -183,26 +184,31 @@ object Form18: TForm18
   object cxPageControl1: TcxPageControl
     Left = 0
     Top = 209
-    Width = 661
-    Height = 327
+    Width = 672
+    Height = 259
     Align = alClient
     TabOrder = 1
     Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 323
+    ExplicitWidth = 661
+    ExplicitHeight = 327
+    ClientRectBottom = 255
     ClientRectLeft = 4
-    ClientRectRight = 657
+    ClientRectRight = 668
     ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
       Caption = #1055#1086' '#1072#1073#1086#1085#1077#1085#1090#1072#1084
       ImageIndex = 0
+      ExplicitWidth = 653
+      ExplicitHeight = 299
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
-        Width = 653
-        Height = 299
+        Width = 664
+        Height = 231
         Align = alClient
         TabOrder = 0
+        ExplicitLeft = 3
         object cxGrid1DBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
@@ -228,17 +234,17 @@ object Form18: TForm18
     object cxTabSheet2: TcxTabSheet
       Caption = #1055#1086' '#1073#1091#1076#1080#1085#1082#1072#1084
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 653
+      ExplicitHeight = 299
       object cxGrid3: TcxGrid
         Left = 0
         Top = 0
-        Width = 653
-        Height = 299
+        Width = 664
+        Height = 231
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 653
+        ExplicitHeight = 299
         object cxGridDBTableView2: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell

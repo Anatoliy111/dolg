@@ -11,6 +11,7 @@ object Form12: TForm12
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -642,14 +643,19 @@ object Form12: TForm12
     InsertSQL.Strings = (
       '')
     RefreshSQL.Strings = (
-      'Select * '
-      'from vw_kart '
+      'Select vw_kart.*'
+      'from kart '
+      'inner join vw_kart on (kart.kl=vw_kart.kl)'
       'where'
-      '  SCHET = :SCHET')
+      '  kart.KL = :KL')
     SelectSQL.Strings = (
       'select *  from vw_kart')
     ModifySQL.Strings = (
-      '')
+      'update kart'
+      'set'
+      '  TELEF = :TELEF'
+      'where'
+      '  KL = :OLD_KL')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
@@ -760,6 +766,7 @@ object Form12: TForm12
     object IBKARTTELEF: TIBStringField
       FieldName = 'TELEF'
       Origin = '"VW_KART"."TELEF"'
+      OnChange = IBKARTTELEFChange
     end
     object IBKARTKL_UL: TFloatField
       FieldName = 'KL_UL'
