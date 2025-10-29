@@ -101,32 +101,6 @@ type
     cxLookupComboBox1: TcxLookupComboBox;
     cxLookupComboBox2: TcxLookupComboBox;
     cxDBTextEdit12: TcxDBTextEdit;
-    IBKARTSCHET: TIBStringField;
-    IBKARTFIO: TIBStringField;
-    IBKARTIDCOD: TIBStringField;
-    IBKARTLG_NOFAM: TIBStringField;
-    IBKARTKOLI_LG: TIBStringField;
-    IBKARTKOLI_P: TFloatField;
-    IBKARTKOLI_PF: TFloatField;
-    IBKARTKOLI_K: TFloatField;
-    IBKARTPLOS_BB: TFloatField;
-    IBKARTPLOS_OB: TFloatField;
-    IBKARTPRIV: TIBStringField;
-    IBKARTETAG: TFloatField;
-    IBKARTLGOTA: TIBStringField;
-    IBKARTLG_POSV: TIBStringField;
-    IBKARTLG_SER: TIBStringField;
-    IBKARTLG_FIO: TIBStringField;
-    IBKARTLG_DATE: TIBStringField;
-    IBKARTLG_KAT: TIBStringField;
-    IBKARTFL_NOLIFT: TIBStringField;
-    IBKARTORG: TFloatField;
-    IBKARTFLAG: TIBStringField;
-    IBKARTTELEF: TIBStringField;
-    IBKARTKL_UL: TFloatField;
-    IBKARTULNAIM: TIBStringField;
-    IBKARTNOMDOM: TIBStringField;
-    IBKARTNOMKV: TIBStringField;
     IBKOBORKL: TIntegerField;
     IBKOBORPERIOD: TDateField;
     IBKOBORSCHET: TIBStringField;
@@ -174,6 +148,45 @@ type
     cxDBMaskEdit1: TcxDBMaskEdit;
     N1: TMenuItem;
     IBPERSTRPERIOD: TIBStringField;
+    Label20: TLabel;
+    cxDBMaskEdit2: TcxDBMaskEdit;
+    Label21: TLabel;
+    Label22: TLabel;
+    cxDBTextEdit13: TcxDBTextEdit;
+    cxDBTextEdit14: TcxDBTextEdit;
+    IBKARTKL: TIntegerField;
+    IBKARTKONTROL: TIBStringField;
+    IBKARTSCHET: TIBStringField;
+    IBKARTFIO: TIBStringField;
+    IBKARTIDCOD: TIBStringField;
+    IBKARTORGAN: TIBStringField;
+    IBKARTLG_NOFAM: TIBStringField;
+    IBKARTKOLI_LG: TIBStringField;
+    IBKARTKOLI_P: TFloatField;
+    IBKARTKOLI_PF: TFloatField;
+    IBKARTKOLI_K: TFloatField;
+    IBKARTPLOS_BB: TFloatField;
+    IBKARTPLOS_OB: TFloatField;
+    IBKARTPRIV: TIBStringField;
+    IBKARTETAG: TFloatField;
+    IBKARTLGOTA: TIBStringField;
+    IBKARTLG_POSV: TIBStringField;
+    IBKARTLG_SER: TIBStringField;
+    IBKARTLG_FIO: TIBStringField;
+    IBKARTLG_DATE: TIBStringField;
+    IBKARTLG_KAT: TIBStringField;
+    IBKARTFL_NOLIFT: TIBStringField;
+    IBKARTORG: TFloatField;
+    IBKARTFLAG: TIBStringField;
+    IBKARTTELEF: TIBStringField;
+    IBKARTKL_UL: TFloatField;
+    IBKARTULNAIM: TIBStringField;
+    IBKARTNOMDOM: TIBStringField;
+    IBKARTNOMKV: TIBStringField;
+    IBKARTLIFT: TFloatField;
+    IBKARTTELEF2: TIBStringField;
+    IBKARTNOTETEL: TIBStringField;
+    IBKARTNOTETEL2: TIBStringField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -186,6 +199,8 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure N1Click(Sender: TObject);
     procedure IBKARTTELEFChange(Sender: TField);
+    procedure cxDBMaskEdit2PropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   private
     { Private declarations }
   public
@@ -195,10 +210,11 @@ type
 
 var
   Form12: TForm12;
+  filepath:string;
 
 implementation
 
-uses Unit1, MyTools, Unit25;
+uses Unit1, MyTools, Unit25, ShellAPI;
 
 {$R *.dfm}
 
@@ -218,6 +234,24 @@ procedure TForm12.cxDBMaskEdit1PropertiesValidate(Sender: TObject;
   var vv:integer;
 begin
 
+  if (VarToStr(DisplayValue)[2]<>'0') and (VarToStr(DisplayValue)<>'(___)___-____') then
+  begin
+
+    ErrorText:='Телефон має починатися з 0  - напр.(066)';
+    Error:=true;
+
+  end;
+
+   if Length(DisplayValue) = 0 then
+      Error:=false;
+
+   if DisplayValue = '(___)___-____' then
+      Error:=false;
+end;
+
+procedure TForm12.cxDBMaskEdit2PropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+begin
   if (VarToStr(DisplayValue)[2]<>'0') and (VarToStr(DisplayValue)<>'(___)___-____') then
   begin
 
@@ -372,8 +406,16 @@ cxDBTextEdit10.SetFocus;
 end;
 
 procedure TForm12.IBKARTTELEFChange(Sender: TField);
+var cmd:WideString;
 begin
-IBKARTTELEF.Value;
+if Form1.DirFoxKvart then
+begin
+IBKART.Cancel;
+exit;
+end;
+
+         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_tel '+IBKARTSCHET.Value+' telef '+IBKARTTELEF.Value;
+         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
 end;
 
 procedure TForm12.N11Click(Sender: TObject);

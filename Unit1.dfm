@@ -2948,39 +2948,49 @@ object Form1: TForm1
     BufferChunks = 1000
     CachedUpdates = False
     DeleteSQL.Strings = (
-      'delete from kart'
+      'delete from vw_kart'
       'where'
-      '  SCHET = :OLD_SCHET')
+      '  KL = :OLD_KL')
     InsertSQL.Strings = (
-      'insert into kart'
-      '  (SCHET, IDCOD, LG_NOFAM, KOLI_LG, KOLI_P, KOLI_PF, KOLI_K, '
+      'insert into vw_kart'
       
-        '   PLOS_BB, PLOS_OB, PRIV, ETAG, LGOTA, LG_POSV, LG_SER, LG_FIO,' +
-        ' LG_DATE, '
+        '  (KL, KONTROL, SCHET, IDCOD, ORGAN, LG_NOFAM, KOLI_LG, KOLI_P, ' +
+        'KOLI_PF, '
       
-        '   LG_KAT, FL_NOLIFT, ORG, FLAG, TELEF, KL_UL, ULNAIM, NOMDOM, N' +
-        'OMKV, LIFT)'
+        '   KOLI_K, PLOS_BB, PLOS_OB, PRIV, ETAG, LGOTA, LG_POSV, LG_SER,' +
+        ' LG_FIO, '
+      
+        '   LG_DATE, LG_KAT, FL_NOLIFT, ORG, FLAG, TELEF, TELEF2, NOTETEL' +
+        ', NOTETEL2, '
+      '   KL_UL, ULNAIM, NOMDOM, NOMKV, LIFT)'
       'values'
-      '  (:SCHET, :IDCOD, :LG_NOFAM, :KOLI_LG, :KOLI_P, :KOLI_PF, '
       
-        '   :KOLI_K, :PLOS_BB, :PLOS_OB, :PRIV, :ETAG, :LGOTA, :LG_POSV, ' +
-        ':LG_SER, '
+        '  (:KL, :KONTROL, :SCHET, :IDCOD, :ORGAN, :LG_NOFAM, :KOLI_LG, :' +
+        'KOLI_P, '
       
-        '   :LG_FIO, :LG_DATE, :LG_KAT, :FL_NOLIFT, :ORG, :FLAG, :TELEF, ' +
-        ':KL_UL, '
-      '   :ULNAIM, :NOMDOM, :NOMKV, :LIFT)')
+        '   :KOLI_PF, :KOLI_K, :PLOS_BB, :PLOS_OB, :PRIV, :ETAG, :LGOTA, ' +
+        ':LG_POSV, '
+      
+        '   :LG_SER, :LG_FIO, :LG_DATE, :LG_KAT, :FL_NOLIFT, :ORG, :FLAG,' +
+        ' :TELEF, '
+      
+        '   :TELEF2, :NOTETEL, :NOTETEL2, :KL_UL, :ULNAIM, :NOMDOM, :NOMK' +
+        'V, :LIFT)')
     RefreshSQL.Strings = (
-      'Select *'
-      'from kart '
+      'Select '
+      'from vw_kart '
       'where'
-      '  SCHET = :SCHET')
+      '  KL = :KL')
     SelectSQL.Strings = (
       'select vw_kart.* from vw_kart')
     ModifySQL.Strings = (
-      'update kart'
+      'update vw_kart'
       'set'
+      '  KL = :KL,'
+      '  KONTROL = :KONTROL,'
       '  SCHET = :SCHET,'
       '  IDCOD = :IDCOD,'
+      '  ORGAN = :ORGAN,'
       '  LG_NOFAM = :LG_NOFAM,'
       '  KOLI_LG = :KOLI_LG,'
       '  KOLI_P = :KOLI_P,'
@@ -3000,13 +3010,16 @@ object Form1: TForm1
       '  ORG = :ORG,'
       '  FLAG = :FLAG,'
       '  TELEF = :TELEF,'
+      '  TELEF2 = :TELEF2,'
+      '  NOTETEL = :NOTETEL,'
+      '  NOTETEL2 = :NOTETEL2,'
       '  KL_UL = :KL_UL,'
       '  ULNAIM = :ULNAIM,'
       '  NOMDOM = :NOMDOM,'
       '  NOMKV = :NOMKV,'
       '  LIFT = :LIFT'
       'where'
-      '  SCHET = :OLD_SCHET')
+      '  KL = :OLD_KL')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'

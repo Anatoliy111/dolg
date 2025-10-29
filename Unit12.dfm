@@ -20,7 +20,7 @@ object Form12: TForm12
     Left = 0
     Top = 0
     Width = 897
-    Height = 49
+    Height = 43
     Align = alTop
     TabOrder = 0
     object Label1: TLabel
@@ -67,9 +67,9 @@ object Form12: TForm12
   end
   object cxGrid1: TcxGrid
     Left = 0
-    Top = 217
+    Top = 193
     Width = 897
-    Height = 120
+    Height = 160
     Align = alTop
     TabOrder = 2
     object cxGrid1DBTableView1: TcxGridDBTableView
@@ -142,11 +142,12 @@ object Form12: TForm12
   end
   object Panel3: TPanel
     Left = 0
-    Top = 337
+    Top = 353
     Width = 897
     Height = 111
     Align = alTop
     TabOrder = 3
+    ExplicitTop = 337
     object cxGrid2: TcxGrid
       Left = 1
       Top = 14
@@ -188,11 +189,12 @@ object Form12: TForm12
   end
   object Panel4: TPanel
     Left = 0
-    Top = 448
+    Top = 464
     Width = 897
     Height = 33
     Align = alTop
     TabOrder = 4
+    ExplicitTop = 448
     object Label13: TLabel
       Left = 15
       Top = 14
@@ -213,11 +215,13 @@ object Form12: TForm12
   end
   object cxGrid4: TcxGrid
     Left = 0
-    Top = 481
+    Top = 497
     Width = 897
-    Height = 257
+    Height = 241
     Align = alClient
     TabOrder = 5
+    ExplicitTop = 496
+    ExplicitHeight = 242
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSKOBOR
@@ -348,30 +352,30 @@ object Form12: TForm12
   end
   object Panel2: TPanel
     Left = 0
-    Top = 49
+    Top = 43
     Width = 897
-    Height = 168
+    Height = 150
     Align = alTop
     TabOrder = 6
     object Label2: TLabel
       Left = 241
-      Top = 8
+      Top = 2
       Width = 17
       Height = 13
       Alignment = taCenter
       Caption = #1055#1030#1041
     end
     object Label3: TLabel
-      Left = 24
-      Top = 54
+      Left = 15
+      Top = 40
       Width = 52
       Height = 13
       Alignment = taCenter
       Caption = #1030#1076#1077#1085#1090'.'#1082#1086#1076
     end
     object Label6: TLabel
-      Left = 84
-      Top = 99
+      Left = 78
+      Top = 79
       Width = 92
       Height = 13
       Alignment = taCenter
@@ -379,7 +383,7 @@ object Form12: TForm12
     end
     object Label4: TLabel
       Left = 510
-      Top = 7
+      Top = 1
       Width = 36
       Height = 13
       Alignment = taCenter
@@ -387,7 +391,7 @@ object Form12: TForm12
     end
     object Label5: TLabel
       Left = 672
-      Top = 7
+      Top = 1
       Width = 43
       Height = 13
       Alignment = taCenter
@@ -395,31 +399,31 @@ object Form12: TForm12
     end
     object Label7: TLabel
       Left = 727
-      Top = 7
+      Top = 1
       Width = 49
       Height = 13
       Alignment = taCenter
       Caption = #1050#1074#1072#1088#1090#1080#1088#1072
     end
     object Label8: TLabel
-      Left = 24
-      Top = 99
+      Left = 18
+      Top = 79
       Width = 36
       Height = 13
       Alignment = taCenter
       Caption = #1051#1100#1075#1086#1090#1072
     end
     object Label9: TLabel
-      Left = 268
-      Top = 99
+      Left = 262
+      Top = 79
       Width = 83
       Height = 13
       Alignment = taCenter
       Caption = #1055#1083#1086#1097#1072' '#1079#1072#1075#1072#1083#1100#1085#1072
     end
     object Label10: TLabel
-      Left = 357
-      Top = 99
+      Left = 351
+      Top = 79
       Width = 106
       Height = 13
       Alignment = taCenter
@@ -427,7 +431,7 @@ object Form12: TForm12
     end
     object Label11: TLabel
       Left = 15
-      Top = 149
+      Top = 128
       Width = 148
       Height = 13
       Alignment = taCenter
@@ -435,15 +439,15 @@ object Form12: TForm12
     end
     object Label15: TLabel
       Left = 24
-      Top = 8
+      Top = 2
       Width = 42
       Height = 13
       Alignment = taCenter
       Caption = #1056#1072#1093#1091#1085#1086#1082
     end
     object Label14: TLabel
-      Left = 181
-      Top = 99
+      Left = 175
+      Top = 79
       Width = 79
       Height = 13
       Alignment = taCenter
@@ -451,7 +455,7 @@ object Form12: TForm12
     end
     object Label17: TLabel
       Left = 181
-      Top = 146
+      Top = 125
       Width = 40
       Height = 19
       Alignment = taCenter
@@ -465,7 +469,7 @@ object Form12: TForm12
     end
     object Label18: TLabel
       Left = 656
-      Top = 53
+      Top = 40
       Width = 100
       Height = 13
       Alignment = taCenter
@@ -473,16 +477,40 @@ object Form12: TForm12
       Visible = False
     end
     object Label16: TLabel
-      Left = 573
-      Top = 99
-      Width = 44
+      Left = 555
+      Top = 83
+      Width = 24
       Height = 13
       Alignment = taCenter
-      Caption = #1058#1077#1083#1077#1092#1086#1085
+      Caption = #1058#1077#1083'1'
+    end
+    object Label20: TLabel
+      Left = 555
+      Top = 110
+      Width = 24
+      Height = 13
+      Alignment = taCenter
+      Caption = #1058#1077#1083'2'
+    end
+    object Label21: TLabel
+      Left = 691
+      Top = 83
+      Width = 31
+      Height = 13
+      Alignment = taCenter
+      Caption = #1055#1088#1080#1084'1'
+    end
+    object Label22: TLabel
+      Left = 691
+      Top = 110
+      Width = 31
+      Height = 13
+      Alignment = taCenter
+      Caption = #1055#1088#1080#1084'2'
     end
     object cxDBTextEdit1: TcxDBTextEdit
       Left = 135
-      Top = 26
+      Top = 17
       DataBinding.DataField = 'FIO'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -490,8 +518,8 @@ object Form12: TForm12
       Width = 289
     end
     object cxDBTextEdit2: TcxDBTextEdit
-      Left = 24
-      Top = 72
+      Left = 15
+      Top = 56
       DataBinding.DataField = 'IDCOD'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -499,8 +527,8 @@ object Form12: TForm12
       Width = 289
     end
     object cxDBTextEdit5: TcxDBTextEdit
-      Left = 84
-      Top = 118
+      Left = 78
+      Top = 98
       DataBinding.DataField = 'KOLI_P'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -509,7 +537,7 @@ object Form12: TForm12
     end
     object cxDBTextEdit3: TcxDBTextEdit
       Left = 441
-      Top = 26
+      Top = 17
       DataBinding.DataField = 'ULNAIM'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -517,8 +545,8 @@ object Form12: TForm12
       Width = 216
     end
     object cxDBTextEdit4: TcxDBTextEdit
-      Left = 24
-      Top = 118
+      Left = 18
+      Top = 98
       DataBinding.DataField = 'LGOTA'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -527,7 +555,7 @@ object Form12: TForm12
     end
     object cxDBTextEdit6: TcxDBTextEdit
       Left = 672
-      Top = 26
+      Top = 17
       DataBinding.DataField = 'NOMDOM'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -535,8 +563,8 @@ object Form12: TForm12
       Width = 49
     end
     object cxDBTextEdit8: TcxDBTextEdit
-      Left = 268
-      Top = 118
+      Left = 262
+      Top = 98
       DataBinding.DataField = 'PLOS_OB'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -544,8 +572,8 @@ object Form12: TForm12
       Width = 83
     end
     object cxDBTextEdit9: TcxDBTextEdit
-      Left = 357
-      Top = 118
+      Left = 351
+      Top = 98
       DataBinding.DataField = 'PLOS_BB'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -553,8 +581,8 @@ object Form12: TForm12
       Width = 106
     end
     object cxDBTextEdit11: TcxDBTextEdit
-      Left = 181
-      Top = 120
+      Left = 170
+      Top = 98
       DataBinding.DataField = 'KOLI_PF'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -563,7 +591,7 @@ object Form12: TForm12
     end
     object cxLookupComboBox1: TcxLookupComboBox
       Left = 561
-      Top = 72
+      Top = 56
       Properties.KeyFieldNames = 'PERIOD'
       Properties.ListColumns = <
         item
@@ -575,7 +603,7 @@ object Form12: TForm12
     end
     object cxLookupComboBox2: TcxLookupComboBox
       Left = 715
-      Top = 72
+      Top = 56
       Properties.KeyFieldNames = 'PERIOD'
       Properties.ListColumns = <
         item
@@ -587,7 +615,7 @@ object Form12: TForm12
     end
     object cxDBTextEdit12: TcxDBTextEdit
       Left = 727
-      Top = 26
+      Top = 17
       DataBinding.DataField = 'NOMKV'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -596,16 +624,16 @@ object Form12: TForm12
     end
     object cxButton2: TcxButton
       Left = 792
-      Top = 24
+      Top = 15
       Width = 75
-      Height = 25
+      Height = 24
       Caption = #1044#1088#1091#1082
       TabOrder = 12
       Visible = False
     end
     object cxDBTextEdit10: TcxDBTextEdit
       Left = 15
-      Top = 27
+      Top = 17
       DataBinding.DataField = 'SCHET'
       DataBinding.DataSource = DSKART
       Properties.ReadOnly = True
@@ -613,8 +641,8 @@ object Form12: TForm12
       Width = 114
     end
     object cxButton3: TcxButton
-      Left = 480
-      Top = 118
+      Left = 474
+      Top = 94
       Width = 75
       Height = 25
       Caption = #1047#1074#1110#1090#1080
@@ -623,8 +651,8 @@ object Form12: TForm12
       TabOrder = 14
     end
     object cxDBMaskEdit1: TcxDBMaskEdit
-      Left = 573
-      Top = 118
+      Left = 585
+      Top = 80
       DataBinding.DataField = 'TELEF'
       DataBinding.DataSource = DSKART
       Properties.EditMask = '!\(999\)000-0000;0;_'
@@ -632,7 +660,35 @@ object Form12: TForm12
       Properties.UseNullString = True
       Properties.OnValidate = cxDBMaskEdit1PropertiesValidate
       TabOrder = 15
-      Width = 203
+      Width = 100
+    end
+    object cxDBMaskEdit2: TcxDBMaskEdit
+      Left = 585
+      Top = 107
+      DataBinding.DataField = 'TELEF2'
+      DataBinding.DataSource = DSKART
+      Properties.EditMask = '!\(999\)000-0000;0;_'
+      Properties.Nullstring = '0'
+      Properties.UseNullString = True
+      Properties.OnValidate = cxDBMaskEdit2PropertiesValidate
+      TabOrder = 16
+      Width = 100
+    end
+    object cxDBTextEdit13: TcxDBTextEdit
+      Left = 728
+      Top = 82
+      DataBinding.DataField = 'NOTETEL'
+      DataBinding.DataSource = DSKART
+      TabOrder = 17
+      Width = 161
+    end
+    object cxDBTextEdit14: TcxDBTextEdit
+      Left = 728
+      Top = 109
+      DataBinding.DataField = 'NOTETEL2'
+      DataBinding.DataSource = DSKART
+      TabOrder = 18
+      Width = 161
     end
   end
   object IBKART: TIBDataSet
@@ -640,7 +696,7 @@ object Form12: TForm12
     Transaction = Form1.IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
-    InsertSQL.Strings = (
+    DeleteSQL.Strings = (
       '')
     RefreshSQL.Strings = (
       'Select vw_kart.*'
@@ -653,7 +709,10 @@ object Form12: TForm12
     ModifySQL.Strings = (
       'update kart'
       'set'
-      '  TELEF = :TELEF'
+      '  TELEF = :TELEF,'
+      '  TELEF2 = :TELEF2,'
+      '  NOTETEL = :NOTETEL, '
+      '  NOTETEL2 = :NOTETEL2'
       'where'
       '  KL = :OLD_KL')
     ParamCheck = True
@@ -662,16 +721,20 @@ object Form12: TForm12
     GeneratorField.Generator = 'GEN_KART_ID'
     Left = 368
     Top = 8
+    object IBKARTKL: TIntegerField
+      FieldName = 'KL'
+    end
+    object IBKARTKONTROL: TIBStringField
+      FieldName = 'KONTROL'
+      Size = 40
+    end
     object IBKARTSCHET: TIBStringField
       FieldName = 'SCHET'
-      Origin = '"VW_KART"."SCHET"'
       Size = 10
     end
     object IBKARTFIO: TIBStringField
       FieldKind = fkInternalCalc
       FieldName = 'FIO'
-      Origin = '"VW_KART"."FIO"'
-      ProviderFlags = []
       ReadOnly = True
       Size = 77
     end
@@ -679,6 +742,11 @@ object Form12: TForm12
       FieldName = 'IDCOD'
       Origin = '"VW_KART"."IDCOD"'
       Size = 32
+    end
+    object IBKARTORGAN: TIBStringField
+      FieldName = 'ORGAN'
+      Origin = '"VW_KART"."ORGAN"'
+      Size = 55
     end
     object IBKARTLG_NOFAM: TIBStringField
       FieldName = 'LG_NOFAM'
@@ -767,6 +835,7 @@ object Form12: TForm12
       FieldName = 'TELEF'
       Origin = '"VW_KART"."TELEF"'
       OnChange = IBKARTTELEFChange
+      Size = 10
     end
     object IBKARTKL_UL: TFloatField
       FieldName = 'KL_UL'
@@ -786,6 +855,25 @@ object Form12: TForm12
       FieldName = 'NOMKV'
       Origin = '"VW_KART"."NOMKV"'
       Size = 5
+    end
+    object IBKARTLIFT: TFloatField
+      FieldName = 'LIFT'
+      Origin = '"VW_KART"."LIFT"'
+    end
+    object IBKARTTELEF2: TIBStringField
+      FieldName = 'TELEF2'
+      Origin = '"VW_KART"."TELEF2"'
+      Size = 10
+    end
+    object IBKARTNOTETEL: TIBStringField
+      FieldName = 'NOTETEL'
+      Origin = '"VW_KART"."NOTETEL"'
+      Size = 25
+    end
+    object IBKARTNOTETEL2: TIBStringField
+      FieldName = 'NOTETEL2'
+      Origin = '"VW_KART"."NOTETEL2"'
+      Size = 25
     end
   end
   object DSKART: TDataSource
@@ -1198,8 +1286,8 @@ object Form12: TForm12
     BufferChunks = 1000
     CachedUpdates = False
     ParamCheck = True
-    Left = 536
-    Top = 112
+    Left = 856
+    Top = 8
   end
   object PopupMenu1: TPopupMenu
     Left = 793

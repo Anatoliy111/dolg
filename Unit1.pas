@@ -598,7 +598,7 @@ type
     DateKVART:TDate;
     UpdateBase:Boolean;
     iniFile:TIniFile;
-    PathKvart,StartSQL,PathFox,ORG,PathTMP,orgpoint,edrpou:string;
+    PathKvart,StartSQL,PathFox,ORG,PathTMP,orgpoint,edrpou,DiskK:string;
     translit,textsms1,textsms2,urlsend:string;
     posl:TStrings;
 
@@ -606,6 +606,8 @@ type
 
     procedure REPORT;
     procedure ExportGrid(AGrid: TcxGrid;Filename:string='Table.xls');
+    procedure CheckK;
+    function DirFoxKvart:boolean;
 
   end;
 
@@ -619,16 +621,53 @@ implementation
 uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit5, Unit6, Unit4, Unit11, Unit12, IOUtils, Unit13, Unit14, Unit15, wsdl,
   Unit16, Unit19, Unit20, Unit21, Unit22, Unit23, Unit26, Unit27, Unit28,
-  Unit29, Unit30, Unit31, Unit32, Unit33, Unit35, Unit36;
+  Unit29, Unit30, Unit31, Unit32, Unit33, Unit35, Unit36, ShellAPI;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
 
 
+function TForm1.DirFoxKvart:boolean;
+begin
+  if DirectoryExists(Form1.PathFox) then
+  begin
+  ShowMessage('Не знайдено папку '+Form1.PathFox+' Запис не можливий. Зверніться до адміністратора!');
+  Result:=false;
+  exit;
+  end;
+
+  if DirectoryExists(Form1.PathKvart) then
+  begin
+  ShowMessage('Не знайдено папку '+Form1.PathFox+' Запис не можливий. Зверніться до адміністратора!');
+  Result:=false;
+  exit;
+  end;
+
+  Result:=true;
+end;
 
 
 procedure TForm1.dxBarButton114Click(Sender: TObject);
 begin
 Form6.Show;
+end;
+
+procedure TForm1.CheckK;
+var cmd:WideString;
+begin
+if Pos(UpperCase(PathKvart), 'K:') > 0 then
+begin
+    if GetDriveType('K:\') <> DRIVE_NO_ROOT_DIR then
+    begin
+             cmd:='net use K: \\main\kvart /yes';
+             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+             cmd:='reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoDrives /t REG_DWORD /d 1024 /f';
+             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+             cmd:='taskkill /f /im explorer.exe';
+             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+             cmd:='start explorer.exe';
+             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+    end;
+end;
 end;
 
 procedure TForm1.dxBarButton118Click(Sender: TObject);
@@ -1060,6 +1099,7 @@ begin
   PathKvart:=iniFile.ReadString('DBF','base','');
   PathFOX:=iniFile.ReadString('DBF','fox','');
   PathTMP:=iniFile.ReadString('TMP','tmp','');
+  DiskK:=iniFile.ReadString('TMP','diskk','');
   urlsend:=iniFile.ReadString('site','urlsend','');
 
   posl := TStringList.Create;
@@ -1081,6 +1121,7 @@ begin
     textsms2:=iniFile.ReadString('SMS','textsms2',extractfilepath(paramstr(0)));
     translit:=iniFile.ReadString('SMS','translit',extractfilepath(paramstr(0)));
 
+  CheckK;
 
 //  cur:=iniFile.ReadString('DBF','cur_date',extractfilepath(paramstr(0))+);
 
