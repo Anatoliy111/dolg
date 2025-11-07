@@ -69,6 +69,12 @@ object Form25: TForm25
     Properties.KeyFieldNames = 'PERIOD'
     Properties.ListColumns = <
       item
+        FieldName = 'STRPERIOD'
+      end
+      item
+        MinWidth = 0
+        Sorting = False
+        Width = 0
         FieldName = 'PERIOD'
       end>
     Properties.ListSource = Form1.DSPERIOD
@@ -85,7 +91,7 @@ object Form25: TForm25
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 43425.596407557900000000
-    ReportOptions.LastChange = 45099.688815254630000000
+    ReportOptions.LastChange = 45968.779850266200000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'function dt2str(dt:TDateTime):string;'
@@ -190,9 +196,10 @@ object Form25: TForm25
       '  '
       '  if (<frxDBDataset2."ORD">=2) then'
       
-        '    Memo4.Text:='#39#1047#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1090#1100' '#1079#1072' '#1087#1077#1088#1110#1086#1076'  '#1079' '#39'+DateToPropis(<dat' +
-        'emes2>)+'#39' '#1087#1086' '#39'+DateToPropis(<datemes1>)+'#39' '#1074' '#1089#1091#1084#1110' '#39'+Format('#39'%2.2f' +
-        #39',[Get(<frxDBDataset2."ORD">)])+'#39' '#1075#1088#1085'., '#1074' '#1090#1086#1084#1091' '#1095#1080#1089#1083#1110':'#39';    '
+        '    Memo4.Text:='#39#1047#1072#1073#1086#1088#1075#1086#1074#1072#1085#1110#1089#1090#1100' ('#1085#1072#1088#1072#1093#1091#1074#1072#1085#1085#1103'  '#1086#1087#1083#1072#1090#1072') '#1079#1072' '#1087#1077#1088#1110#1086#1076' ' +
+        ' '#1079' '#39'+DateToPropis(<datemes2>)+'#39' '#1087#1086' '#39'+DateToPropis(<datemes1>)+'#39' ' +
+        #1074' '#1089#1091#1084#1110' '#39'+Format('#39'%2.2f'#39',[Get(<frxDBDataset2."ORD">)])+'#39' '#1075#1088#1085'., '#1074' ' +
+        #1090#1086#1084#1091' '#1095#1080#1089#1083#1110':'#39';    '
       ''
       '  if (<frxDBDataset2."ORD">=3) then'
       
@@ -281,7 +288,7 @@ object Form25: TForm25
         Width = 718.110700000000000000
         object Memo1: TfrxMemoView
           Left = 147.401670000000000000
-          Top = 34.015770000000010000
+          Top = 34.015770000000000000
           Width = 427.086890000000000000
           Height = 22.677180000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -418,7 +425,7 @@ object Form25: TForm25
         Width = 718.110700000000000000
         object Memo27: TfrxMemoView
           Left = 34.015770000000000000
-          Top = 11.338590000000010000
+          Top = 11.338590000000000000
           Width = 374.173470000000000000
           Height = 18.897650000000000000
           DataSet = frxDBDataset1
@@ -434,7 +441,7 @@ object Form25: TForm25
         end
         object Memo30: TfrxMemoView
           Left = 34.015770000000000000
-          Top = 41.574830000000020000
+          Top = 41.574830000000000000
           Width = 200.315090000000000000
           Height = 18.897650000000000000
           DataSet = frxDBDataset1
@@ -450,7 +457,7 @@ object Form25: TForm25
         end
         object Memo37: TfrxMemoView
           Left = 34.015770000000000000
-          Top = 64.252009999999990000
+          Top = 64.252010000000000000
           Width = 200.315090000000000000
           Height = 18.897650000000000000
           DataSet = frxDBDataset1
@@ -681,10 +688,7 @@ object Form25: TForm25
     SQL.Strings = (
       'select * from'
       '(select 2 as ord, wid,poslug,schet, fullnach, fullopl,'
-      
-        'case when round((COALESCE(fullnach,0)-COALESCE(fullopl,0)),2)>0 ' +
-        'then round((COALESCE(fullnach,0)-COALESCE(fullopl,0)),2) else 0 ' +
-        'end as dolg'
+      ' round((COALESCE(fullnach,0)-COALESCE(fullopl,0)),2)  as dolg'
       'from'
       '(select tt1.wid , tt1.poslug, tt1.schet,'
       'sum(tt1.fullnach) fullnach, sum(tt1.fullopl) fullopl'
@@ -692,7 +696,7 @@ object Form25: TForm25
       'where tt1.schet=:sch and tt1.period>=:dat1 and tt1.period<=:dat2'
       'group by schet, wid, poslug'
       '))'
-      'where dolg>0')
+      '')
     Left = 376
     Top = 160
     ParamData = <

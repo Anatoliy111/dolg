@@ -80,21 +80,13 @@ IBQuery1.Close;
 IBQuery1.ParamByName('sch').Value:=trim(sch);
 IBQuery1.Open;
 
-if Date2YearMon(cxLookupComboBox1.EditValue)=Date2YearMon(cxLookupComboBox2.EditValue) then
-begin
+
 IBQuery3.Close;
 IBQuery3.ParamByName('sch').Value:=trim(sch);
 IBQuery3.ParamByName('dat1').Value:=cxLookupComboBox2.EditValue;
 IBQuery3.ParamByName('dat2').Value:=cxLookupComboBox1.EditValue;
 IBQuery3.Open;
-end
-else
-begin
-IBQuery3.Close;
-IBQuery3.ParamByName('sch').Value:=trim(sch);
-IBQuery3.ParamByName('dat1').Value:=cxLookupComboBox2.EditValue;
-IBQuery3.ParamByName('dat2').Value:=cxLookupComboBox1.EditValue;
-IBQuery3.Open;
+
 end;
 
 

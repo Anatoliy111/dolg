@@ -21,7 +21,7 @@ object Form18: TForm18
     Height = 209
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 661
+    ExplicitTop = -6
     object cxLabel4: TcxLabel
       Left = 138
       Top = 186
@@ -82,7 +82,7 @@ object Form18: TForm18
     end
     object cxGroupBox1: TcxGroupBox
       Left = 16
-      Top = 8
+      Top = 5
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1080' '#1074#1110#1076#1073#1086#1088#1091
       TabOrder = 5
       Height = 172
@@ -190,8 +190,6 @@ object Form18: TForm18
     TabOrder = 1
     Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
-    ExplicitWidth = 661
-    ExplicitHeight = 327
     ClientRectBottom = 255
     ClientRectLeft = 4
     ClientRectRight = 668
@@ -199,8 +197,6 @@ object Form18: TForm18
     object cxTabSheet1: TcxTabSheet
       Caption = #1055#1086' '#1072#1073#1086#1085#1077#1085#1090#1072#1084
       ImageIndex = 0
-      ExplicitWidth = 653
-      ExplicitHeight = 299
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -208,7 +204,6 @@ object Form18: TForm18
         Height = 231
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 3
         object cxGrid1DBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
@@ -234,8 +229,6 @@ object Form18: TForm18
     object cxTabSheet2: TcxTabSheet
       Caption = #1055#1086' '#1073#1091#1076#1080#1085#1082#1072#1084
       ImageIndex = 1
-      ExplicitWidth = 653
-      ExplicitHeight = 299
       object cxGrid3: TcxGrid
         Left = 0
         Top = 0
@@ -243,8 +236,6 @@ object Form18: TForm18
         Height = 231
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 653
-        ExplicitHeight = 299
         object cxGridDBTableView2: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
