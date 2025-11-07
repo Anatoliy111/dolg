@@ -72,6 +72,7 @@ function numtostr(numb:double):string;overload;
 function BoundCurrCell(grid:TDBGrid):TRect;
 function dos2win(s:string):string;
 function win2dos(s:string):string;
+function win22dos(s: string): string;
 function strFromDelimiter(s:string;delimiter:char;num:integer=1):string;
 function iif(f:boolean;val1,val2:variant):variant;
 procedure StartWait;
@@ -336,12 +337,17 @@ var c:STRING;
     I:INTEGeR;
     l:byte;
     dd:char;
+    sc:char;
+    AnsiS: AnsiString;
 begin
  i:=1;
  c:='';
+  // AnsiS := AnsiString(TEncoding.GetEncoding(1251).GetBytes(s));
+ // AnsiS := AnsiString(AnsiString(s));
  while i< length(s)+1 do
  begin
-   l:=ord(s[i]);
+   sc:=s[i];
+   l:=ord(sc);
    inc(i);
    if (l>=192) and (l<240)then l:=l-64 else
    if (l>=240) and (l<256) then l:=l-16 else
@@ -352,6 +358,74 @@ begin
  end;
  result:=c;
 end;
+
+function win22dos(s: string): string;
+var
+  i: Integer;
+  WinCode: Byte;
+  DosCode: Byte;
+  c: Char;
+  ResultString: string;
+  AnsiS: AnsiString;
+begin
+  ResultString := '';
+
+  // Якщо ви використовуєте сучасний Delphi (2009+), потрібно явно привести до AnsiString
+  // s := AnsiString(s);
+   AnsiS := AnsiString(TEncoding.GetEncoding(1251).GetBytes(s));
+
+  for i := 1 to Length(s)-1 do
+  begin
+    // Беремо порядковий номер (код) символу в кодовій сторінці Windows-1251
+    WinCode := Ord(AnsiS[i]);
+
+    // Перевіряємо діапазон, який потрібно перекодувати (Кирилиця у Win-1251)
+    if (WinCode >= 192) and (WinCode <= 255) then
+    begin
+      // Спеціальні випадки (часто необхідні для української/білоруської)
+      case WinCode of
+        // І велика (U+0406) -> код Ї
+        178: DosCode := 179; // 'І' (Win 178) -> 'І' (DOS 179)
+        // і мала (U+0456)
+        179: DosCode := 178; // 'і' (Win 179) -> 'і' (DOS 178)
+        // Є велика (U+0404)
+        170: DosCode := 244; // 'Є' (Win 170) -> 'Є' (DOS 244)
+        // є мала (U+0454)
+        186: DosCode := 243; // 'є' (Win 186) -> 'є' (DOS 243)
+        // Ї велика (U+0407)
+        175: DosCode := 241; // 'Ї' (Win 175) -> 'Ї' (DOS 241)
+        // ї мала (U+0457)
+        191: DosCode := 242; // 'ї' (Win 191) -> 'ї' (DOS 242)
+        // Ґ велика (U+0490)
+        165: DosCode := 245; // 'Ґ' (Win 165) -> 'Ґ' (DOS 245)
+        // ґ мала (U+0491)
+        180: DosCode := 246; // 'ґ' (Win 180) -> 'ґ' (DOS 246)
+
+        // Основний діапазон кирилиці (А-Я, а-п)
+        192..223: DosCode := WinCode - 64; // А (192) -> А (128)
+        // Основний діапазон кирилиці (р-я)
+        224..239: DosCode := WinCode - 16; // р (224) -> р (208)
+
+        // Спеціальні символи для DOS, які не потрапили у case (наприклад, ґ, Ї, Ґ)
+        else
+          DosCode := WinCode; // Залишаємо без змін, якщо немає точного відповідника
+      end;
+    end
+    else
+    begin
+      // ASCII символи (0-127) не змінюються
+      DosCode := WinCode;
+    end;
+
+    // Перетворюємо код DOS назад у символ і додаємо до результату
+    c := Chr(DosCode);
+    ResultString := ResultString + c;
+  end;
+
+  Result := ResultString;
+end;
+
+
 
 {
 const win='ІіЇїЄєАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя|++++++|++++++++-++++++++-+++++++++++++';

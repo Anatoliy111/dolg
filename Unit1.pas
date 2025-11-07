@@ -512,6 +512,9 @@ type
     IBREPDFULLOPL: TFloatField;
     IBREPDOPLNOTSUBS: TFloatField;
     IBREPDENDDOLG: TFloatField;
+    IBREPDNOTE: TIBStringField;
+    cxGrid1DBTableView1NOTE: TcxGridDBColumn;
+    IBKARTKL: TIntegerField;
     IBKARTKONTROL: TIBStringField;
     IBKARTSCHET: TIBStringField;
     IBKARTFIO: TIBStringField;
@@ -536,13 +539,14 @@ type
     IBKARTORG: TFloatField;
     IBKARTFLAG: TIBStringField;
     IBKARTTELEF: TIBStringField;
+    IBKARTTELEF2: TIBStringField;
+    IBKARTNOTETEL: TIBStringField;
+    IBKARTNOTETEL2: TIBStringField;
     IBKARTKL_UL: TFloatField;
     IBKARTULNAIM: TIBStringField;
     IBKARTNOMDOM: TIBStringField;
     IBKARTNOMKV: TIBStringField;
     IBKARTLIFT: TFloatField;
-    IBREPDNOTE: TIBStringField;
-    cxGrid1DBTableView1NOTE: TcxGridDBColumn;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton4Click(Sender: TObject);
@@ -627,17 +631,26 @@ uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
 
 
 function TForm1.DirFoxKvart:boolean;
+var s:string;
 begin
-  if DirectoryExists(Form1.PathFox) then
+s:=Form1.PathFox;
+if (Length(s) > 0) and (s[Length(s)] = '\') then
+  s := Copy(s, 1, Length(s) - 1);
+
+  if not DirectoryExists(Form1.PathFox) then
   begin
   ShowMessage('Не знайдено папку '+Form1.PathFox+' Запис не можливий. Зверніться до адміністратора!');
   Result:=false;
   exit;
   end;
 
-  if DirectoryExists(Form1.PathKvart) then
+  s:=Form1.PathKvart;
+if (Length(s) > 0) and (s[Length(s)] = '\') then
+  s := Copy(s, 1, Length(s) - 1);
+
+  if not DirectoryExists(Form1.PathKvart) then
   begin
-  ShowMessage('Не знайдено папку '+Form1.PathFox+' Запис не можливий. Зверніться до адміністратора!');
+  ShowMessage('Не знайдено папку '+Form1.PathKvart+' Запис не можливий. Зверніться до адміністратора!');
   Result:=false;
   exit;
   end;

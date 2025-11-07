@@ -2947,85 +2947,26 @@ object Form1: TForm1
     Transaction = IBTransaction1
     BufferChunks = 1000
     CachedUpdates = False
-    DeleteSQL.Strings = (
-      'delete from vw_kart'
-      'where'
-      '  KL = :OLD_KL')
     InsertSQL.Strings = (
-      'insert into vw_kart'
-      
-        '  (KL, KONTROL, SCHET, IDCOD, ORGAN, LG_NOFAM, KOLI_LG, KOLI_P, ' +
-        'KOLI_PF, '
-      
-        '   KOLI_K, PLOS_BB, PLOS_OB, PRIV, ETAG, LGOTA, LG_POSV, LG_SER,' +
-        ' LG_FIO, '
-      
-        '   LG_DATE, LG_KAT, FL_NOLIFT, ORG, FLAG, TELEF, TELEF2, NOTETEL' +
-        ', NOTETEL2, '
-      '   KL_UL, ULNAIM, NOMDOM, NOMKV, LIFT)'
-      'values'
-      
-        '  (:KL, :KONTROL, :SCHET, :IDCOD, :ORGAN, :LG_NOFAM, :KOLI_LG, :' +
-        'KOLI_P, '
-      
-        '   :KOLI_PF, :KOLI_K, :PLOS_BB, :PLOS_OB, :PRIV, :ETAG, :LGOTA, ' +
-        ':LG_POSV, '
-      
-        '   :LG_SER, :LG_FIO, :LG_DATE, :LG_KAT, :FL_NOLIFT, :ORG, :FLAG,' +
-        ' :TELEF, '
-      
-        '   :TELEF2, :NOTETEL, :NOTETEL2, :KL_UL, :ULNAIM, :NOMDOM, :NOMK' +
-        'V, :LIFT)')
+      '')
     RefreshSQL.Strings = (
-      'Select '
+      'Select *'
       'from vw_kart '
       'where'
       '  KL = :KL')
     SelectSQL.Strings = (
       'select vw_kart.* from vw_kart')
-    ModifySQL.Strings = (
-      'update vw_kart'
-      'set'
-      '  KL = :KL,'
-      '  KONTROL = :KONTROL,'
-      '  SCHET = :SCHET,'
-      '  IDCOD = :IDCOD,'
-      '  ORGAN = :ORGAN,'
-      '  LG_NOFAM = :LG_NOFAM,'
-      '  KOLI_LG = :KOLI_LG,'
-      '  KOLI_P = :KOLI_P,'
-      '  KOLI_PF = :KOLI_PF,'
-      '  KOLI_K = :KOLI_K,'
-      '  PLOS_BB = :PLOS_BB,'
-      '  PLOS_OB = :PLOS_OB,'
-      '  PRIV = :PRIV,'
-      '  ETAG = :ETAG,'
-      '  LGOTA = :LGOTA,'
-      '  LG_POSV = :LG_POSV,'
-      '  LG_SER = :LG_SER,'
-      '  LG_FIO = :LG_FIO,'
-      '  LG_DATE = :LG_DATE,'
-      '  LG_KAT = :LG_KAT,'
-      '  FL_NOLIFT = :FL_NOLIFT,'
-      '  ORG = :ORG,'
-      '  FLAG = :FLAG,'
-      '  TELEF = :TELEF,'
-      '  TELEF2 = :TELEF2,'
-      '  NOTETEL = :NOTETEL,'
-      '  NOTETEL2 = :NOTETEL2,'
-      '  KL_UL = :KL_UL,'
-      '  ULNAIM = :ULNAIM,'
-      '  NOMDOM = :NOMDOM,'
-      '  NOMKV = :NOMKV,'
-      '  LIFT = :LIFT'
-      'where'
-      '  KL = :OLD_KL')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_KART_ID'
+    Active = True
     Left = 96
     Top = 472
+    object IBKARTKL: TIntegerField
+      FieldName = 'KL'
+      Origin = '"VW_KART"."KL"'
+    end
     object IBKARTKONTROL: TIBStringField
       FieldName = 'KONTROL'
       Origin = '"VW_KART"."KONTROL"'
@@ -3138,9 +3079,24 @@ object Form1: TForm1
       Size = 1
     end
     object IBKARTTELEF: TIBStringField
-      DisplayWidth = 20
       FieldName = 'TELEF'
       Origin = '"VW_KART"."TELEF"'
+      Size = 10
+    end
+    object IBKARTTELEF2: TIBStringField
+      FieldName = 'TELEF2'
+      Origin = '"VW_KART"."TELEF2"'
+      Size = 10
+    end
+    object IBKARTNOTETEL: TIBStringField
+      FieldName = 'NOTETEL'
+      Origin = '"VW_KART"."NOTETEL"'
+      Size = 25
+    end
+    object IBKARTNOTETEL2: TIBStringField
+      FieldName = 'NOTETEL2'
+      Origin = '"VW_KART"."NOTETEL2"'
+      Size = 25
     end
     object IBKARTKL_UL: TFloatField
       FieldName = 'KL_UL'

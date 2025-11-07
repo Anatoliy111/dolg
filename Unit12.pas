@@ -187,6 +187,7 @@ type
     IBKARTTELEF2: TIBStringField;
     IBKARTNOTETEL: TIBStringField;
     IBKARTNOTETEL2: TIBStringField;
+    N2: TMenuItem;
     procedure cxButton1Click(Sender: TObject);
     procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -201,7 +202,11 @@ type
     procedure IBKARTTELEFChange(Sender: TField);
     procedure cxDBMaskEdit2PropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure IBKARTTELEF2Change(Sender: TField);
+    procedure IBKARTNOTETELChange(Sender: TField);
+    procedure IBKARTNOTETEL2Change(Sender: TField);
   private
+  procedure expkvart(schet,val,field:string);
     { Private declarations }
   public
   procedure Find();
@@ -405,17 +410,67 @@ begin
 cxDBTextEdit10.SetFocus;
 end;
 
-procedure TForm12.IBKARTTELEFChange(Sender: TField);
+procedure TForm12.expkvart(schet,val,field:string);
 var cmd:WideString;
+    s:string;
 begin
-if Form1.DirFoxKvart then
+  s:=Form1.PathKvart;
+if (Length(s) > 0) and (s[Length(s)] = '\') then
+  s := Copy(s, 1, Length(s) - 1);
+         val := StringReplace(val, '³', 'i', [rfReplaceAll]);
+         val := StringReplace(val, '²', 'I', [rfReplaceAll]);
+//         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_tel '+Win2Dos(trim(schet))+' '+field+' '+Win2Dos(trim(Val))+' '+s;
+         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_tel '+trim(schet)+' '+field+' '+s+' '+trim(Val);
+         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+end;
+
+procedure TForm12.IBKARTNOTETEL2Change(Sender: TField);
+begin
+if not Form1.DirFoxKvart then
 begin
 IBKART.Cancel;
 exit;
 end;
+   expkvart(IBKARTSCHET.Value,IBKARTNOTETEL2.Value,'notetel2');
 
-         cmd:=Form1.PathFox+'foxprox.exe -t '+Form1.PathKvart+'imp_tel '+IBKARTSCHET.Value+' telef '+IBKARTTELEF.Value;
-         ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+end;
+
+
+
+procedure TForm12.IBKARTNOTETELChange(Sender: TField);
+var cmd:WideString;
+    s:string;
+begin
+if not Form1.DirFoxKvart then
+begin
+IBKART.Cancel;
+exit;
+end;
+expkvart(IBKARTSCHET.Value,IBKARTNOTETEL.Value,'notetel');
+end;
+
+procedure TForm12.IBKARTTELEF2Change(Sender: TField);
+var cmd:WideString;
+    s:string;
+begin
+if not Form1.DirFoxKvart then
+begin
+IBKART.Cancel;
+exit;
+end;
+expkvart(IBKARTSCHET.Value,IBKARTTELEF2.Value,'telef2');
+end;
+
+procedure TForm12.IBKARTTELEFChange(Sender: TField);
+var cmd:WideString;
+    s:string;
+begin
+if not Form1.DirFoxKvart then
+begin
+IBKART.Cancel;
+exit;
+end;
+expkvart(IBKARTSCHET.Value,IBKARTTELEF.Value,'telef');
 end;
 
 procedure TForm12.N11Click(Sender: TObject);

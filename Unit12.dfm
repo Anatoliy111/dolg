@@ -147,7 +147,6 @@ object Form12: TForm12
     Height = 111
     Align = alTop
     TabOrder = 3
-    ExplicitTop = 337
     object cxGrid2: TcxGrid
       Left = 1
       Top = 14
@@ -194,7 +193,6 @@ object Form12: TForm12
     Height = 33
     Align = alTop
     TabOrder = 4
-    ExplicitTop = 448
     object Label13: TLabel
       Left = 15
       Top = 14
@@ -220,8 +218,6 @@ object Form12: TForm12
     Height = 241
     Align = alClient
     TabOrder = 5
-    ExplicitTop = 496
-    ExplicitHeight = 242
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSKOBOR
@@ -642,7 +638,7 @@ object Form12: TForm12
     end
     object cxButton3: TcxButton
       Left = 474
-      Top = 94
+      Top = 98
       Width = 75
       Height = 25
       Caption = #1047#1074#1110#1090#1080
@@ -863,16 +859,21 @@ object Form12: TForm12
     object IBKARTTELEF2: TIBStringField
       FieldName = 'TELEF2'
       Origin = '"VW_KART"."TELEF2"'
+      OnChange = IBKARTTELEF2Change
       Size = 10
     end
     object IBKARTNOTETEL: TIBStringField
+      DisplayWidth = 20
       FieldName = 'NOTETEL'
       Origin = '"VW_KART"."NOTETEL"'
+      OnChange = IBKARTNOTETELChange
       Size = 25
     end
     object IBKARTNOTETEL2: TIBStringField
+      DisplayWidth = 20
       FieldName = 'NOTETEL2'
       Origin = '"VW_KART"."NOTETEL2"'
+      OnChange = IBKARTNOTETEL2Change
       Size = 25
     end
   end
@@ -1292,12 +1293,15 @@ object Form12: TForm12
   object PopupMenu1: TPopupMenu
     Left = 793
     Top = 177
+    object N2: TMenuItem
+      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1087#1086' '#1086#1089#1086#1073#1086#1074#1086#1084#1091' '#1088#1072#1093#1091#1085#1082#1091
+    end
     object N11: TMenuItem
-      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1110#1079' '#1086#1089#1086#1073#1086#1074#1086#1075#1086' '#1088#1072#1093#1091#1085#1082#1091' (3 '#1088#1086#1082#1080')'
+      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1086#1089#1090#1110' (3 '#1088#1086#1082#1080')'
       OnClick = N11Click
     end
     object N1: TMenuItem
-      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1110#1079' '#1086#1089#1086#1073#1086#1074#1086#1075#1086' '#1088#1072#1093#1091#1085#1082#1091' ('#1087#1077#1088#1110#1086#1076')'
+      Caption = #1042#1080#1087#1080#1089#1082#1072' '#1079#1072#1073#1086#1088#1075#1086#1074#1072#1085#1086#1089#1090#1110' ('#1087#1077#1088#1110#1086#1076')'
       OnClick = N1Click
     end
   end
