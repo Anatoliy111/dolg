@@ -3,7 +3,7 @@ object Form33: TForm33
   Top = 0
   Caption = #1054#1073#1088#1086#1073#1082#1072' '#1087#1083#1072#1090#1110#1078#1082#1080
   ClientHeight = 591
-  ClientWidth = 598
+  ClientWidth = 594
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -84,7 +84,7 @@ object Form33: TForm33
   end
   object cxLabel2: TcxLabel
     Left = 31
-    Top = 211
+    Top = 215
     Caption = #1054#1089#1086#1073#1086#1074#1080#1081' '#1088#1072#1093#1091#1085#1086#1082
   end
   object cxGrid2: TcxGrid

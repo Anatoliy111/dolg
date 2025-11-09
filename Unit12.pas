@@ -205,6 +205,7 @@ type
     procedure IBKARTTELEF2Change(Sender: TField);
     procedure IBKARTNOTETELChange(Sender: TField);
     procedure IBKARTNOTETEL2Change(Sender: TField);
+    procedure N2Click(Sender: TObject);
   private
   procedure expkvart(schet,val,field:string);
     { Private declarations }
@@ -219,7 +220,7 @@ var
 
 implementation
 
-uses Unit1, MyTools, Unit25, ShellAPI;
+uses Unit1, MyTools, Unit25, ShellAPI, Unit37;
 
 {$R *.dfm}
 
@@ -491,6 +492,11 @@ Form25.cxLabel1.Caption:=Form12.N1.Caption+' '+cxTextEdit1.Text;
 Form25.cxLookupComboBox2.Visible:=true;
 Form25.vid:=2;
 Form25.Show;
+end;
+
+procedure TForm12.N2Click(Sender: TObject);
+begin
+Form37.show;
 end;
 
 end.
