@@ -1431,8 +1431,6 @@ maxcolposl:=0;
 
     tobor:=TDbf.Create(self);
     tobor.TableName:=filepath+'obor.dbf';
-    tobor.Open;
-
     tobor.AddIndex('obor', 'schet', [ixCaseInsensitive]);
 
     twid:=TDbf.Create(self);

@@ -10,7 +10,7 @@ uses
   cxDropDownEdit, cxCalc, cxTextEdit, cxMaskEdit, Vcl.StdCtrls, cxButtons,
   cxGroupBox, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxLabel, Vcl.ExtCtrls,
-  dbf,dbf_common,Data.Win.ADODB,System.RegularExpressions;
+  dbf,dbf_common,Data.Win.ADODB,System.RegularExpressions, IBX.IBCustomDataSet;
 
 type
   TForm37 = class(TForm)
@@ -19,32 +19,26 @@ type
     cxButton3: TcxButton;
     cxGrid2: TcxGrid;
     cxGridDBTableView1: TcxGridDBTableView;
-    cxGridDBTableView1schet: TcxGridDBColumn;
-    cxGridDBTableView1ch: TcxGridDBColumn;
-    cxGridDBTableView1naim: TcxGridDBColumn;
-    cxGridDBTableView1sal: TcxGridDBColumn;
-    cxGridDBTableView1sumpl: TcxGridDBColumn;
     cxGridLevel1: TcxGridLevel;
     cxLabel1: TcxLabel;
     cxLabel3: TcxLabel;
     cxCheckBox1: TcxCheckBox;
-    ADOQueryOBOR: TADOQuery;
-    ADOQueryOBORwid: TWideStringField;
-    ADOQueryOBORnaim: TWideStringField;
-    ADOQueryOBORschet: TWideStringField;
-    ADOQueryOBORsal: TFloatField;
-    ADOQueryOBORch: TIntegerField;
-    ADOQueryOBORsumpl: TFloatField;
-    ADOQueryOBORfio: TStringField;
-    ADOQueryOBORabonpl: TStringField;
-    DSADOQueryOBOR: TDataSource;
+    cxLabel4: TcxLabel;
+    IBOBOR: TIBDataSet;
+    DSOBOR: TDataSource;
+    cxGridDBTableView1SAL: TcxGridDBColumn;
+    cxGridDBTableView1SALREP: TcxGridDBColumn;
+    cxGridDBTableView1CH: TcxGridDBColumn;
+    cxGridDBTableView1NAIM: TcxGridDBColumn;
+    IBOBORSAL: TFloatField;
+    IBOBORSALREP: TFloatField;
+    IBOBORNAIM: TIBStringField;
+    IBOBORCH: TIntegerField;
     procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     procedure start;
-    procedure dataclose;
-    function SearchSchet(schet:string):string;
+    function SearchSchet2(schet:string):string;
   public
     { Public declarations }
   end;
@@ -57,27 +51,9 @@ implementation
 
 {$R *.dfm}
 
-uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, DateUtils, math, dprocess;
+uses comobj, Unit1, StrUtils, ShellAPI, Unit2, mytools, ExcelXP, DateUtils, math, dprocess,
+  Unit12;
 
-
-procedure TForm37.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-    tobor.Close;
-    tobor.Free;
-    Sleep(100);
-    ADOQueryOBOR.Close;
-    Application.ProcessMessages;
-end;
-
-procedure TForm37.FormShow(Sender: TObject);
-begin
-  start;
-end;
-
-procedure TForm37.dataclose;
-begin
-
-end;
 
 procedure TForm37.start;
 var f1:boolean;
@@ -124,11 +100,6 @@ begin
 //      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(filepath+'\opltmp.dbf'), false);
 //      CopyFile(PChar(Form1.PathKvart+'dbf\opl.dbf'), PChar(filepath+'\opl.dbf'), false);
 
-    ADOQueryOBOR.Close;
-//    Form33.ADOQueryOBOR.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;User ID=Admin;Data Source='+filepath+';Mode=Read;Jet OLEDB:System database="";Jet OLEDB:Registry Path="";Jet OLEDB:Database Password="";Jet OLEDB:Engine Type=16;Jet OLEDB:Database Locking Mode=0;Jet OLEDB:Global Partial Bulk Ops=2;';
-//    Form33.ADOQueryOBOR.ConnectionString:='Provider=Microsoft.Jet.OLEDB.4.0;Password="";Data Source=c:\temp\;Mode=ReadWrite;Jet OLEDB:Engine Type=16';
-   // Form33.ADOQueryOBOR.ConnectionString:='Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Data Source=dBASE Files;Mode=ReadWrite;Initial Catalog='+filepath;
-    ADOQueryOBOR.ConnectionString:='Provider=MSDASQL.1;Persist Security Info=False;User ID=Admin;Data Source=dBASE Files;Mode=ReadWrite;Initial Catalog='+filepath;
 
     DeleteFile(filepath+'obor.mdx');
     DeleteFile(filepath+'wids.mdx');
@@ -191,16 +162,25 @@ begin
 //        endlistexel;
 
 
-        if SearchSchet(Form1.IBREPDSCHET.Value)='' then
+        if SearchSchet2(Form1.IBREPDSCHET.Value)='' then
         begin
            messagedlg('Помилка!!! - рахунок '+Form1.IBREPDSCHET.Value+' не знайдено!',mtError,[mbCancel],0);
            close;
         end;
 
         cxLabel3.Caption:=Form1.IBREPDSCHET.Value;
+        cxLabel4.Caption:=Form1.IBREPDFIO.Value;
 end;
 
-function TForm37.SearchSchet(schet:string):string;
+procedure TForm37.FormShow(Sender: TObject);
+begin
+IBOBOR.Close;
+     IBOBOR.ParamByName('sch').Value:=trim(Form12.IBKARTSCHET.Value);
+     IBOBOR.ParamByName('dt').Value:=Form12.IBPERPERIOD.Value;
+     IBOBOR.open;
+end;
+
+function TForm37.SearchSchet2(schet:string):string;
 var s,sql:string;
     RegularExpression : TRegEx;
     Match : TMatch;
@@ -217,19 +197,11 @@ begin
               if LowerCase(s)='x' then schet:=LeftStr(schet,Length(schet)-1)+'х';
               if LowerCase(s)='m' then schet:=LeftStr(schet,Length(schet)-1)+'м';
             end;
+            tobor.close;
+//            tobor.Filter := +format('schet=''%s''',[trim(schet)]);
+//            tobor.Filtered:=true;
+            tobor.Open;
 
-            sql:='select wids.wid, wids.naim, wids.abonpl, obor.fio, obor.schet, obor.sal, 0 as ch, su_dolg as sumpl from wids,obor where wids.wid=obor.wid and obor.schet='''+trim(schet)+''' order by wids.npp';
-            ADOQueryOBOR.Close;
-            ADOQueryOBOR.SQL.Clear;
-            ADOQueryOBOR.SQL.Append(sql);
-
-//            Form33.ADOQueryOBOR.Parameters.ParamByName('sch').Value:=trim(schet);
-            ADOQueryOBOR.Open;
-
-//            Form33.ADOQueryOBOR.FetchAll;
-            if ADOQueryOBOR.RecordCount<>0 then
-               Result:=schet
-            else Result:='';
 
 end;
 

@@ -188,6 +188,8 @@ type
     IBKARTNOTETEL: TIBStringField;
     IBKARTNOTETEL2: TIBStringField;
     N2: TMenuItem;
+    IBKOBORMESSALREP: TFloatField;
+    IBKOBORMESCH: TIntegerField;
     procedure cxButton1Click(Sender: TObject);
     procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);

@@ -906,7 +906,8 @@ object Form12: TForm12
       'opl,'
       'subs,'
       'uder,'
-      'sal'
+      'sal,'
+      'sal salrep, 1 as ch'
       ' from vw_obkr '
       'where schet=:sch and period=:dt')
     ModifySQL.Strings = (
@@ -955,6 +956,16 @@ object Form12: TForm12
     object IBKOBORMESSAL: TFloatField
       FieldName = 'SAL'
       Origin = '"OBOR"."SAL"'
+    end
+    object IBKOBORMESSALREP: TFloatField
+      FieldKind = fkInternalCalc
+      FieldName = 'SALREP'
+      Origin = '"VW_OBKR"."SAL"'
+      ReadOnly = True
+    end
+    object IBKOBORMESCH: TIntegerField
+      FieldName = 'CH'
+      ProviderFlags = []
     end
   end
   object DSKOBORMES: TDataSource
