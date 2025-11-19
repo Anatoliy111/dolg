@@ -226,13 +226,13 @@ object Form1: TForm1
         Caption = #8470' '#1076#1086#1075#1086#1074'.'
         DataBinding.FieldName = 'N_DOG'
         PropertiesClassName = 'TcxTextEditProperties'
-        Properties.ReadOnly = False
+        Properties.ReadOnly = True
       end
       object cxGrid1DBTableView1D_DOG: TcxGridDBColumn
         Caption = #1044#1072#1090#1072' '#1076#1086#1075#1086#1074'.'
         DataBinding.FieldName = 'D_DOG'
         PropertiesClassName = 'TcxTextEditProperties'
-        Properties.ReadOnly = False
+        Properties.ReadOnly = True
       end
       object cxGrid1DBTableView1UL: TcxGridDBColumn
         Caption = #1042#1091#1083#1080#1094#1103
@@ -4348,5 +4348,16 @@ object Form1: TForm1
     DataSet = IBRAION
     Left = 312
     Top = 328
+  end
+  object IBQuery2: TIBQuery
+    Database = IBDatabase1
+    Transaction = IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    ParamCheck = True
+    SQL.Strings = (
+      '')
+    Left = 840
+    Top = 312
   end
 end

@@ -76,6 +76,7 @@ function win2dos(s:string):string;
 function win22dos(const s: string): string;
 function Win1251toDos(const S: string): AnsiString;
 function WinToDos866(const S: string): AnsiString;
+function Dos866ToWin(const S: AnsiString): string;
 function strFromDelimiter(s:string;delimiter:char;num:integer=1):string;
 function iif(f:boolean;val1,val2:variant):variant;
 procedure StartWait;
@@ -440,40 +441,36 @@ begin
   Result := DosBuf;
 end;
 
-
-
-{
-const win='ІіЇїЄєАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя|++++++|++++++++-++++++++-+++++++++++++';
-const dos='IiфхтуЂЃ‚ѓ„…†‡€‰Љ‹ЊЌЋЏђ‘’“”•–—™љ›њќћџ ЎўЈ¤Ґ¦§Ё©Є«¬­®Їабвгдежзийклмнопіґµ¶·ё№є»ЅѕїАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪ';
-
-function dos2win(s:string):string;
+function Dos866ToWin(const S: AnsiString): string;
 var
-  i,j:integer;
-  c:char;
+  DosBytes: TBytes;
+  WinBuf: AnsiString;
+  str: string;
 begin
-  for j:=1 to length(s) do
+  // OEM866 → CP1251
+  if Length(S) > 0 then
   begin
-    c:=s[j];
-    i:=pos(c,dos);
-    if i<>0 then s[j]:=win[i];
-  end;
-  result :=s;
-end;
+    SetLength(WinBuf, Length(S));
+    OemToCharBuffA(@S[1], @WinBuf[1], Length(S));
+  end
+  else
+    WinBuf := '';
 
-function win2dos(s:string):string;
-var
-  i,j:integer;
-  c:char;
-begin
-  for j:=1 to length(s) do
-  begin
-    c:=s[j];
-    i:=pos(c,win);
-    if i<>0 then s[j]:=dos[i];
-  end;
-  result :=s;
+  // КОПІЮЄМО байти CORRECT!
+  SetLength(DosBytes, Length(WinBuf));
+  if Length(WinBuf) > 0 then
+    Move(WinBuf[1], DosBytes[0], Length(WinBuf));
+
+  // CP1251 → Unicode
+  str := TEncoding.GetEncoding(1251).GetString(DosBytes);
+
+  // твої заміни
+  str := Trim(str);
+  str := StringReplace(str, 'i', 'і', [rfReplaceAll]);
+  str := StringReplace(str, 'I', 'І', [rfReplaceAll]);
+
+  Result := str;
 end;
-}
 
 
 function ckDate(const s:string;curr:TDate):string;

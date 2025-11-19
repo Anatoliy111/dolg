@@ -209,6 +209,7 @@ type
     procedure IBKARTNOTETELChange(Sender: TField);
     procedure IBKARTNOTETEL2Change(Sender: TField);
     procedure N2Click(Sender: TObject);
+    procedure cxButton5Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -240,6 +241,23 @@ end;
 procedure TForm12.cxButton4Click(Sender: TObject);
 begin
 Form1.ExportGrid(cxGrid4,Label13.Caption+' '+cxTextEdit1.Text);
+end;
+
+procedure TForm12.cxButton5Click(Sender: TObject);
+begin
+      Form2.Show;
+      Form2.Label1.Caption:='Зачекайте, оновлення даних!!!';
+      Application.ProcessMessages;
+      Form2.cxProgressBar1.Position:=0;
+      Form2.cxProgressBar1.Properties.Min:=0;
+      Form2.cxProgressBar1.Properties.Max:=0;
+
+  Form1.UpdateSchetDBF(WinToDos866(cxTextEdit1.Text),'kart');
+  Form1.UpdateSchetDBF(WinToDos866(cxTextEdit1.Text),'obor');
+  Form1.UpdateSchetDBF(WinToDos866(cxTextEdit1.Text),'opl');
+  Form12.Find();
+
+  Form2.close;
 end;
 
 procedure TForm12.UpdateKart;
@@ -283,7 +301,7 @@ begin
   tobor.first;
   while not tobor.eof do
   begin
-    if IBKOBORMES.Locate('wid;schet',VarArrayOf([tobor.FieldByName('wid').Value,obor.FieldByName('schet').Value]),[loPartialKey]) then
+//    if IBKOBORMES.Locate('wid;schet',VarArrayOf([tobor.FieldByName('wid').Value,tobor.FieldByName('schet').Value]),[loPartialKey]) then
 
   tobor.Next;
   end;
@@ -350,10 +368,11 @@ var sql:string;
 begin
 if cxTextEdit1.EditValue <> null then
 begin
-
+     IBKART.close;
      IBKART.Open;
+     IBKART.FetchAll;
      IBKART.First;
-     if IBKART.Locate('schet',cxTextEdit1.EditValue,[loCaseInsensitive, loPartialKey]) then
+     if IBKART.Locate('schet',trim(cxTextEdit1.EditValue),[loCaseInsensitive, loPartialKey]) then
      begin
      IBKOBORMES.Close;
      IBKTMPOPL.Close;

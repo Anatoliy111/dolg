@@ -17,7 +17,7 @@ uses
   Data.DBXPool, Data.SqlExpr, Soap.InvokeRegistry, Soap.WSDLIntf,
   Soap.SOAPPasInv, Soap.SOAPHTTPPasInv, Soap.SOAPHTTPDisp, Soap.WebBrokerSOAP,
   Soap.SOAPDomConv, Soap.OPToSOAPDomConv, Datasnap.DBClient, Soap.SOAPConn,
-  cxLocalization,cxGridDBDataDefinitions;
+  cxLocalization,cxGridDBDataDefinitions,dbf,dbf_common;
 
 type
   TForm1 = class(TForm)
@@ -547,6 +547,7 @@ type
     IBKARTNOMDOM: TIBStringField;
     IBKARTNOMKV: TIBStringField;
     IBKARTLIFT: TFloatField;
+    IBQuery2: TIBQuery;
     procedure dxBarButton19Click(Sender: TObject);
     procedure dxBarButton114Click(Sender: TObject);
     procedure dxBarButton4Click(Sender: TObject);
@@ -607,7 +608,7 @@ type
     posl:TStrings;
 
 
-
+    procedure UpdateSchetDBF(schet:string;tabname:string);
     procedure REPORT;
     procedure ExportGrid(AGrid: TcxGrid;Filename:string='Table.xls');
     procedure CheckK;
@@ -619,6 +620,7 @@ var
   Form1: TForm1;
   CLOSING:Boolean;
   ExB:DWORD;
+  tbldbf:TDbf;
 
 implementation
 
@@ -628,6 +630,149 @@ uses registry, cxGridExportLink, comobj, dateutils, MyTools, Unit2, Unit3,
   Unit29, Unit30, Unit31, Unit32, Unit33, Unit35, Unit36, ShellAPI;
 //IOUtils - для компонента TDirectory
 {$R *.dfm}
+
+procedure TForm1.UpdateSchetDBF(schet:string;tabname:string);
+var s,sqlt:string;
+    i: Integer;
+    FieldList: string;
+    ParamList: string;
+    fl_period:boolean;
+    per:TDate;
+begin
+
+      fl_period:=false;
+      filepath:=Form1.PathTMP+'\';
+      DeleteFile(filepath+tabname+'.mdx');
+      CopyFile(PChar(Form1.PathKvart+'dbf\'+tabname+'.dbf'), PChar(filepath+'\'+tabname+'.dbf'), false);
+
+
+   try
+    tbldbf:=TDbf.Create(self);
+    tbldbf.TableName:=filepath+tabname+'.dbf';
+    tbldbf.Open;
+    tbldbf.AddIndex(tabname, 'schet', [ixCaseInsensitive]);
+      tbldbf.Filtered:=false;
+      s:=  format('schet=''%s''',[WinToDos866(schet)]);
+      tbldbf.Filter := s;
+      tbldbf.Filtered:=true;
+//      tobor.First;
+
+       except
+       on E : Exception do
+       begin
+        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+        exit;
+       end;
+   end;
+
+    FieldList := '';
+    ParamList := '';
+
+    for i := 0 to tbldbf.FieldCount - 1 do
+    begin
+      if FieldList <> '' then
+      begin
+        FieldList := FieldList + ', ';
+        ParamList := ParamList + ', ';
+      end;
+
+      FieldList := FieldList + tbldbf.Fields[i].FieldName;
+      ParamList := ParamList + ':' + tbldbf.Fields[i].FieldName;
+    end;
+
+  sqlt := 'INSERT INTO '+tabname+' (' + FieldList + ') VALUES (' + ParamList + ')';
+  IBQuery2.Close;
+  IBQuery2.SQL.Text:=sqlt;
+  tbldbf.first;
+  while not tbldbf.eof do
+  begin
+//      IBQuery2.Params.Clear;
+
+      // передаємо всі дані автоматично
+      for i := 0 to tbldbf.FieldCount - 1 do
+      begin
+        if tbldbf.Fields[i].DataType=ftString then
+           IBQuery2.ParamByName(tbldbf.Fields[i].FieldName).AsString := Dos866ToWin(tbldbf.Fields[i].AsString)
+        else
+           IBQuery2.ParamByName(tbldbf.Fields[i].FieldName).Value := tbldbf.Fields[i].Value;
+      end;
+
+      IBQuery2.ExecSQL;
+
+  tbldbf.Next;
+  end;
+
+  tbldbf.close;
+  tbldbf.free;
+
+
+
+      IBQuery2.Close;
+      sqlt := 'select * from '+tabname+' where 1=2';
+      IBQuery2.SQL.Text:=sqlt;
+      IBQuery2.open;
+
+
+
+
+
+      if IBQuery2.FindField('period')<>nil then
+      begin
+      fl_period:=true;
+      IBQuery2.Close;
+      IBQuery2.SQL.Text:='select period from PERIOD order by PERIOD desc';
+      IBQuery2.open;
+      per:=IBQuery2.FieldByName('period').Value;
+      end;
+
+
+      if fl_period then
+      begin
+        if tabname='obor' then
+        begin
+          IBQuery2.Close;
+          sqlt := 'update obor set note=(select note from obor ob1 where ob1.schet=:schet and ob1.wid=obor.wid and ob1.period=:per and ob1.upd=1) where schet=:schet and upd is null and period is null';
+          IBQuery2.SQL.Text:=sqlt;
+          IBQuery2.ParamByName('schet').AsString :=schet;
+          IBQuery2.ParamByName('per').AsDate := per;
+          IBQuery2.ExecSQL;
+        end;
+        IBQuery2.Close;
+        sqlt := 'delete from '+tabname+' where schet=:schet and upd=1 and period=:per';
+        IBQuery2.SQL.Text:=sqlt;
+        IBQuery2.ParamByName('schet').AsString := schet;
+        IBQuery2.ParamByName('per').AsDate := per;
+        IBQuery2.ExecSQL;
+
+        IBQuery2.Close;
+        sqlt := 'update '+tabname+' set upd=1,period=:per where schet=:schet and upd is null and period is null';
+        IBQuery2.SQL.Text:=sqlt;
+        IBQuery2.ParamByName('schet').AsString := schet;
+        IBQuery2.ParamByName('per').AsDate := per;
+        IBQuery2.ExecSQL;
+      end
+      else
+      begin
+        IBQuery2.Close;
+        sqlt := 'delete from '+tabname+' where schet=:schet and upd=1';
+        IBQuery2.SQL.Text:=sqlt;
+        IBQuery2.ParamByName('schet').AsString := schet;
+        IBQuery2.ExecSQL;
+
+        IBQuery2.Close;
+        sqlt := 'update '+tabname+' set upd=1 where schet=:schet and upd is null';
+        IBQuery2.SQL.Text:=sqlt;
+        IBQuery2.ParamByName('schet').AsString := schet;
+        IBQuery2.ExecSQL;
+
+      end;
+
+
+
+
+  Form1.IBTransaction1.CommitRetaining;
+
+end;
 
 
 function TForm1.DirFoxKvart:boolean;
