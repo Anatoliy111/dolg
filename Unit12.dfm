@@ -55,6 +55,15 @@ object Form12: TForm12
       TabOrder = 1
       OnClick = cxButton1Click
     end
+    object cxButton5: TcxButton
+      Left = 752
+      Top = 13
+      Width = 75
+      Height = 24
+      Caption = #1054#1085#1086#1074#1080#1090#1080
+      TabOrder = 2
+      Visible = False
+    end
   end
   object cxDBTextEdit7: TcxDBTextEdit
     Left = 647

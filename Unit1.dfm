@@ -3091,12 +3091,10 @@ object Form1: TForm1
     object IBKARTNOTETEL: TIBStringField
       FieldName = 'NOTETEL'
       Origin = '"VW_KART"."NOTETEL"'
-      Size = 25
     end
     object IBKARTNOTETEL2: TIBStringField
       FieldName = 'NOTETEL2'
       Origin = '"VW_KART"."NOTETEL2"'
-      Size = 25
     end
     object IBKARTKL_UL: TFloatField
       FieldName = 'KL_UL'

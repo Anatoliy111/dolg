@@ -22,7 +22,6 @@ object Form6: TForm6
     Height = 161
     Align = alTop
     TabOrder = 0
-    ExplicitTop = -6
     object DBNavigator1: TDBNavigator
       Left = 10
       Top = 122
@@ -180,6 +179,15 @@ object Form6: TForm6
       GridView = cxGridDBTableView1
     end
   end
+  object cxButton1: TcxButton
+    Left = 319
+    Top = 18
+    Width = 114
+    Height = 25
+    Caption = 'ExpTel'
+    TabOrder = 3
+    OnClick = cxButton1Click
+  end
   object OpenDialog1: TOpenDialog
     Filter = #1060#1072#1081#1083#1099' DBF|*.dbf'
     Left = 456
@@ -227,5 +235,196 @@ object Form6: TForm6
     Datasets = <>
     Variables = <>
     Style = <>
+  end
+  object IBKART: TIBDataSet
+    Database = Form1.IBDatabase1
+    Transaction = Form1.IBTransaction1
+    BufferChunks = 1000
+    CachedUpdates = False
+    DeleteSQL.Strings = (
+      '')
+    RefreshSQL.Strings = (
+      'Select vw_kart.*'
+      'from kart '
+      'inner join vw_kart on (kart.kl=vw_kart.kl)'
+      'where'
+      '  kart.KL = :KL')
+    SelectSQL.Strings = (
+      'select *  from vw_kart')
+    ModifySQL.Strings = (
+      'update kart'
+      'set'
+      '  TELEF = :TELEF,'
+      '  TELEF2 = :TELEF2,'
+      '  NOTETEL = :NOTETEL, '
+      '  NOTETEL2 = :NOTETEL2'
+      'where'
+      '  KL = :OLD_KL')
+    ParamCheck = True
+    UniDirectional = False
+    GeneratorField.Field = 'KL'
+    GeneratorField.Generator = 'GEN_KART_ID'
+    Left = 376
+    Top = 64
+    object IBKARTKL: TIntegerField
+      FieldName = 'KL'
+    end
+    object IBKARTKONTROL: TIBStringField
+      FieldName = 'KONTROL'
+      Size = 40
+    end
+    object IBKARTSCHET: TIBStringField
+      FieldName = 'SCHET'
+      Size = 10
+    end
+    object IBKARTFIO: TIBStringField
+      FieldKind = fkInternalCalc
+      FieldName = 'FIO'
+      ReadOnly = True
+      Size = 77
+    end
+    object IBKARTIDCOD: TIBStringField
+      FieldName = 'IDCOD'
+      Origin = '"VW_KART"."IDCOD"'
+      Size = 32
+    end
+    object IBKARTORGAN: TIBStringField
+      FieldName = 'ORGAN'
+      Origin = '"VW_KART"."ORGAN"'
+      Size = 55
+    end
+    object IBKARTLG_NOFAM: TIBStringField
+      FieldName = 'LG_NOFAM'
+      Origin = '"VW_KART"."LG_NOFAM"'
+      Size = 1
+    end
+    object IBKARTKOLI_LG: TIBStringField
+      FieldName = 'KOLI_LG'
+      Origin = '"VW_KART"."KOLI_LG"'
+      Size = 8
+    end
+    object IBKARTKOLI_P: TFloatField
+      FieldName = 'KOLI_P'
+      Origin = '"VW_KART"."KOLI_P"'
+    end
+    object IBKARTKOLI_PF: TFloatField
+      FieldName = 'KOLI_PF'
+      Origin = '"VW_KART"."KOLI_PF"'
+    end
+    object IBKARTKOLI_K: TFloatField
+      FieldName = 'KOLI_K'
+      Origin = '"VW_KART"."KOLI_K"'
+    end
+    object IBKARTPLOS_BB: TFloatField
+      FieldName = 'PLOS_BB'
+      Origin = '"VW_KART"."PLOS_BB"'
+    end
+    object IBKARTPLOS_OB: TFloatField
+      FieldName = 'PLOS_OB'
+      Origin = '"VW_KART"."PLOS_OB"'
+    end
+    object IBKARTPRIV: TIBStringField
+      FieldName = 'PRIV'
+      Origin = '"VW_KART"."PRIV"'
+      Size = 1
+    end
+    object IBKARTETAG: TFloatField
+      FieldName = 'ETAG'
+      Origin = '"VW_KART"."ETAG"'
+    end
+    object IBKARTLGOTA: TIBStringField
+      FieldName = 'LGOTA'
+      Origin = '"VW_KART"."LGOTA"'
+      Size = 9
+    end
+    object IBKARTLG_POSV: TIBStringField
+      FieldName = 'LG_POSV'
+      Origin = '"VW_KART"."LG_POSV"'
+      Size = 25
+    end
+    object IBKARTLG_SER: TIBStringField
+      FieldName = 'LG_SER'
+      Origin = '"VW_KART"."LG_SER"'
+      Size = 12
+    end
+    object IBKARTLG_FIO: TIBStringField
+      FieldName = 'LG_FIO'
+      Origin = '"VW_KART"."LG_FIO"'
+      Size = 45
+    end
+    object IBKARTLG_DATE: TIBStringField
+      FieldName = 'LG_DATE'
+      Origin = '"VW_KART"."LG_DATE"'
+      Size = 33
+    end
+    object IBKARTLG_KAT: TIBStringField
+      FieldName = 'LG_KAT'
+      Origin = '"VW_KART"."LG_KAT"'
+      Size = 12
+    end
+    object IBKARTFL_NOLIFT: TIBStringField
+      FieldName = 'FL_NOLIFT'
+      Origin = '"VW_KART"."FL_NOLIFT"'
+      Size = 1
+    end
+    object IBKARTORG: TFloatField
+      FieldName = 'ORG'
+      Origin = '"VW_KART"."ORG"'
+    end
+    object IBKARTFLAG: TIBStringField
+      FieldName = 'FLAG'
+      Origin = '"VW_KART"."FLAG"'
+      Size = 1
+    end
+    object IBKARTTELEF: TIBStringField
+      FieldName = 'TELEF'
+      Origin = '"VW_KART"."TELEF"'
+      Size = 10
+    end
+    object IBKARTKL_UL: TFloatField
+      FieldName = 'KL_UL'
+      Origin = '"VW_KART"."KL_UL"'
+    end
+    object IBKARTULNAIM: TIBStringField
+      FieldName = 'ULNAIM'
+      Origin = '"VW_KART"."ULNAIM"'
+      Size = 64
+    end
+    object IBKARTNOMDOM: TIBStringField
+      FieldName = 'NOMDOM'
+      Origin = '"VW_KART"."NOMDOM"'
+      Size = 5
+    end
+    object IBKARTNOMKV: TIBStringField
+      FieldName = 'NOMKV'
+      Origin = '"VW_KART"."NOMKV"'
+      Size = 5
+    end
+    object IBKARTLIFT: TFloatField
+      FieldName = 'LIFT'
+      Origin = '"VW_KART"."LIFT"'
+    end
+    object IBKARTTELEF2: TIBStringField
+      FieldName = 'TELEF2'
+      Origin = '"VW_KART"."TELEF2"'
+      Size = 10
+    end
+    object IBKARTNOTETEL: TIBStringField
+      DisplayWidth = 20
+      FieldName = 'NOTETEL'
+      Origin = '"VW_KART"."NOTETEL"'
+      Size = 25
+    end
+    object IBKARTNOTETEL2: TIBStringField
+      DisplayWidth = 20
+      FieldName = 'NOTETEL2'
+      Origin = '"VW_KART"."NOTETEL2"'
+      Size = 25
+    end
+  end
+  object DSKART: TDataSource
+    DataSet = IBKART
+    Left = 376
+    Top = 112
   end
 end

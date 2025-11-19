@@ -10,7 +10,7 @@ uses
   cxDataStorage, cxDBData, cxGridLevel, cxClasses, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
   cxCurrencyEdit, cxDBLookupComboBox, cxNavigator, IBX.IBQuery, cxMaskEdit,
-  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit;
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,dbf,dbf_common;
 
 type
   TForm12 = class(TForm)
@@ -190,6 +190,7 @@ type
     N2: TMenuItem;
     IBKOBORMESSALREP: TFloatField;
     IBKOBORMESCH: TIntegerField;
+    cxButton5: TcxButton;
     procedure cxButton1Click(Sender: TObject);
     procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -209,20 +210,24 @@ type
     procedure IBKARTNOTETEL2Change(Sender: TField);
     procedure N2Click(Sender: TObject);
   private
-  procedure expkvart(schet,val,field:string);
     { Private declarations }
   public
   procedure Find();
+  procedure expkvart(schet,val,field:string);
+  procedure UpdateKart;
     { Public declarations }
   end;
 
 var
   Form12: TForm12;
   filepath:string;
+  tkart:TDbf;
+  tobor:TDbf;
+  topl:TDbf;
 
 implementation
 
-uses Unit1, MyTools, Unit25, ShellAPI, Unit37;
+uses Unit1, MyTools, Unit25, ShellAPI, Unit37, Unit2;
 
 {$R *.dfm}
 
@@ -235,6 +240,57 @@ end;
 procedure TForm12.cxButton4Click(Sender: TObject);
 begin
 Form1.ExportGrid(cxGrid4,Label13.Caption+' '+cxTextEdit1.Text);
+end;
+
+procedure TForm12.UpdateKart;
+var s:string;
+begin
+      Form2.Show;
+      Form2.Label1.Caption:='Зачекайте, оновлення даних!!!';
+      Application.ProcessMessages;
+      Form2.cxProgressBar1.Position:=0;
+      Form2.cxProgressBar1.Properties.Min:=0;
+      Form2.cxProgressBar1.Properties.Max:=0;
+
+      filepath:=Form1.PathTMP+'\';
+      DeleteFile(filepath+'obor.mdx');
+      CopyFile(PChar(Form1.PathKvart+'dbf\obor.dbf'), PChar(filepath+'\obor.dbf'), false);
+
+
+   try
+    tobor:=TDbf.Create(self);
+    tobor.TableName:=filepath+'obor.dbf';
+    tobor.Open;
+    tobor.AddIndex('obor', 'schet', [ixCaseInsensitive]);
+      tobor.Filtered:=false;
+      s:=  format('schet=''%s''',[WinToDos866(cxTextEdit1.Text)]);
+      tobor.Filter := s;
+      tobor.Filtered:=true;
+//      tobor.First;
+
+       except
+       on E : Exception do
+       begin
+        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
+        exit;
+       end;
+   end;
+
+
+
+
+
+  tobor.first;
+  while not tobor.eof do
+  begin
+    if IBKOBORMES.Locate('wid;schet',VarArrayOf([tobor.FieldByName('wid').Value,obor.FieldByName('schet').Value]),[loPartialKey]) then
+
+  tobor.Next;
+  end;
+
+
+
+
 end;
 
 procedure TForm12.cxDBMaskEdit1PropertiesValidate(Sender: TObject;
@@ -399,6 +455,7 @@ end;
 
 procedure TForm12.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+if IBKART.State in [dsInsert,dsEdit] then IBKART.Post;
 Form1.IBTransaction1.CommitRetaining;
 end;
 
@@ -502,3 +559,4 @@ Form37.show;
 end;
 
 end.
+

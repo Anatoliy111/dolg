@@ -26,11 +26,11 @@ type
     { Private declarations }
   public
     { Public declarations }
+    iniFile:TIniFile;
   end;
 
 var
   Form11: TForm11;
-  iniFile:TIniFile;
 
 implementation
 

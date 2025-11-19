@@ -1115,6 +1115,7 @@ begin
   DiskK:=iniFile.ReadString('TMP','diskk','');
   urlsend:=iniFile.ReadString('site','urlsend','');
 
+
   posl := TStringList.Create;
 
           if not DirectoryExists(PathTMP) then
