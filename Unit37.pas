@@ -28,11 +28,6 @@ type
     DSOBOR: TDataSource;
     cxGridDBTableView1CH: TcxGridDBColumn;
     cxGridDBTableView1NAIM: TcxGridDBColumn;
-    IBOBORPERIOD: TDateField;
-    IBOBORSCHET: TIBStringField;
-    IBOBORUPD: TIntegerField;
-    IBOBORNAIM: TIBStringField;
-    IBOBORCH: TIntegerField;
     frxReport1: TfrxReport;
     frxDBDataset1: TfrxDBDataset;
     cxLabel5: TcxLabel;
@@ -42,27 +37,26 @@ type
     cxLabel9: TcxLabel;
     cxLabel10: TcxLabel;
     cxDateEdit1: TcxDateEdit;
-    cxLabel11: TcxLabel;
-    cxDateEdit2: TcxDateEdit;
-    cxLabel12: TcxLabel;
     cxLabel13: TcxLabel;
     cxDateEdit3: TcxDateEdit;
     cxLabel14: TcxLabel;
     cxTextEdit2: TcxTextEdit;
     cxLabel15: TcxLabel;
     cxTextEdit3: TcxTextEdit;
-    IBOBORDOLG: TFloatField;
-    IBOBORDOLGREP: TFloatField;
-    cxGridDBTableView1DOLG: TcxGridDBColumn;
     cxGridDBTableView1DOLGREP: TcxGridDBColumn;
     IBQuery1: TIBQuery;
-    IBQuery1SCHET: TIBStringField;
-    IBQuery1MAXDT: TDateField;
-    IBQuery1SUM: TFloatField;
-    cxCalcEdit1: TcxCalcEdit;
     cxLabel16: TcxLabel;
     cxLabel17: TcxLabel;
     frxDesigner1: TfrxDesigner;
+    IBOBORSCHET: TIBStringField;
+    IBOBORDOLGREP: TFloatField;
+    IBOBORNAIM: TIBStringField;
+    IBOBOROPLREP: TIBBCDField;
+    IBOBORCH: TIntegerField;
+    cxGridDBTableView1OPLREP: TcxGridDBColumn;
+    IBOBORWID: TIBStringField;
+    IBOBORDATEREP: TDateField;
+    cxGridDBTableView1DATEREP: TcxGridDBColumn;
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxButton3Click(Sender: TObject);
@@ -254,8 +248,8 @@ frxReport1.Variables['koli_k']:=Form12.IBKARTKOLI_K.Value;
 frxReport1.Variables['plos_ob']:=Form12.IBKARTPLOS_OB.Value;
 frxReport1.Variables['koli_p']:=Form12.IBKARTKOLI_P.Value;
 frxReport1.Variables['dolg_dt']:=''''+mon_slovoDt2(cxDateEdit1.Date)+'''';
-frxReport1.Variables['opl_dt']:=''''+DateToStr(cxDateEdit2.Date)+'''';
-frxReport1.Variables['opl']:=cxCalcEdit1.Value;
+frxReport1.Variables['opl_dt']:=cxGridDBTableView1.DataController.Summary.FooterSummaryValues[9];
+frxReport1.Variables['opl']:=cxGridDBTableView1.DataController.Summary.FooterSummaryValues[8];
 frxReport1.Variables['nach']:=''''+cxTextEdit2.Text+'''';
 frxReport1.Variables['buhg']:=''''+cxTextEdit3.Text+'''';
 frxReport1.Variables['dt']:=''''+DateToStr(cxDateEdit3.Date)+'''';
@@ -297,13 +291,28 @@ procedure TForm37.cxGridDBTableView1DataControllerSummaryFooterSummaryItemsSumma
   ASender: TcxDataSummaryItems; Arguments: TcxSummaryEventArguments;
   var OutArguments: TcxSummaryEventOutArguments);
 var
-  si: TcxGridDBTableSummaryItem;
-  AValue: Variant;
+  si1: TcxGridDBTableSummaryItem;
+  AValue1: Variant;
+  si2: TcxGridDBTableSummaryItem;
+  AValue2: Variant;
+  si3: TcxGridDBTableSummaryItem;
+  AValue3: Variant;
 begin
-  AValue := cxGridDBTableView1.DataController.Values[Arguments.RecordIndex, cxGridDBTableView1ch.Index];
-  si := Arguments.SummaryItem as TcxGridDBTableSummaryItem;
-  if si.Column = cxGridDBTableView1DOLGREP then
-    OutArguments.Done := AValue = 0;   //not OutArguments.Value;
+  AValue1 := cxGridDBTableView1.DataController.Values[Arguments.RecordIndex, cxGridDBTableView1ch.Index];
+  si1 := Arguments.SummaryItem as TcxGridDBTableSummaryItem;
+  if si1.Column = cxGridDBTableView1OPLREP then
+    OutArguments.Done := AValue1 = 0;
+
+
+  AValue2 := cxGridDBTableView1.DataController.Values[Arguments.RecordIndex, cxGridDBTableView1ch.Index];
+  si2 := Arguments.SummaryItem as TcxGridDBTableSummaryItem;
+  if si2.Column = cxGridDBTableView1DOLGREP then
+    OutArguments.Done := AValue2 = 0;   //not OutArguments.Value;
+
+  AValue3 := cxGridDBTableView1.DataController.Values[Arguments.RecordIndex, cxGridDBTableView1ch.Index];
+  si3 := Arguments.SummaryItem as TcxGridDBTableSummaryItem;
+  if si3.Column = cxGridDBTableView1DATEREP then
+    OutArguments.Done := AValue3 = 0;   //not OutArguments.Value;
 end;
 
 procedure TForm37.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -324,15 +333,40 @@ begin
      IBOBOR.ParamByName('sch').Value:=trim(Form12.IBKARTSCHET.Value);
      IBOBOR.ParamByName('dt').Value:=Form12.IBPERPERIOD.Value;
      IBOBOR.open;
+     IBOBOR.FetchAll;
 
      IBQuery1.Close;
+     IBQuery1.SQL.Text:='select * from opl where period=:dt and schet=:sch';
      IBQuery1.ParamByName('sch').Value:=trim(Form12.IBKARTSCHET.Value);
      IBQuery1.ParamByName('dt').Value:=Form12.IBPERPERIOD.Value;
      IBQuery1.open;
-     cxCalcEdit1.Value:=IBQuery1SUM.AsCurrency;
-     cxDateEdit2.Date:=IBQuery1MAXDT.AsDateTime;
+
+     IBOBOR.Edit;
+     while not IBOBOR.Eof do
+     begin
+        IBQuery1.First;
+        while not IBQuery1.Eof do
+        begin
+          if IBQuery1.FieldByName('opl_'+IBOBORWID.Value).AsCurrency<>0 then
+          begin
+          IBOBOR.Edit;
+          IBOBOROPLREP.Value:=IBOBOROPLREP.AsCurrency+IBQuery1.FieldByName('opl_'+IBOBORWID.Value).AsCurrency;
+          if IBOBORDATEREP.AsDateTime<IBQuery1.FieldByName('DT').AsDateTime then
+             IBOBORDATEREP.AsDateTime:=IBQuery1.FieldByName('DT').AsDateTime;
+          IBOBOR.Post;
+          end;
+          IBQuery1.Next;
+        end;
+     IBOBOR.Next;
+     end;
+
+
+
+     IBOBOR.First;
+
+
      cxDateEdit1.Date:=Form12.IBPERPERIOD.Value;
-     cxDateEdit3.Date:=Now;
+     cxDateEdit3.Date:=Int(Now);
      cxLabel3.Caption:=trim(Form12.IBKARTSCHET.Value);
      cxLabel4.Caption:=trim(Form12.IBKARTFIO.Value);
      cxLabel5.Caption:=trim(Form12.IBKARTULNAIM.AsString)+' буд.'+trim(Form12.IBKARTNOMDOM.AsString)+iif(trim(Form12.IBKARTNOMKV.AsString)<>'',' кв.'+trim(Form12.IBKARTNOMKV.AsString),'');

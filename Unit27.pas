@@ -1241,7 +1241,7 @@ end;
 
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
-    stroka,strmes,tempDir, strtmp:string;
+    stroka,strmes,tempDir, strtmp, tblopen:string;
     dt1,dt2,i,pusto,kol:integer;
     f : TextFile;
     MyFile: TFileStream;
@@ -1412,48 +1412,54 @@ maxcolposl:=0;
     DeleteFile(filepath+'wids.mdx');
     DeleteFile(filepath+'opltmp.mdx');
 
-   try
-    table:=TDbf.Create(self);
-   // table.TableLevel := 25;
-    table.TableName:=filepath+'opltmp.dbf';
-    // table.ReadOnly:=false;
-  //  table.Active:=true;
-    table.Open;
-    table.TryExclusive;
-    table.CanModify;
-    table.EmptyTable;
-    table.PackTable;
-//    table.OpenIndexFile('opl.cdx');
+     try
+      table:=TDbf.Create(self);
+     // table.TableLevel := 25;
+      table.TableName:=filepath+'opltmp.dbf';
+      // table.ReadOnly:=false;
+    //  table.Active:=true;
+      table.Open;
+      table.TryExclusive;
+      table.CanModify;
+      table.EmptyTable;
+      table.PackTable;
+      tblopen:='opltmp';
+  //    table.OpenIndexFile('opl.cdx');
 
-    topl:=TDbf.Create(self);
-    topl.TableName:=filepath+'opl.dbf';
-    topl.Open;
+      topl:=TDbf.Create(self);
+      topl.TableName:=filepath+'opl.dbf';
+      topl.Open;
 
-    tobor:=TDbf.Create(self);
-    tobor.TableName:=filepath+'obor.dbf';
-    tobor.AddIndex('obor', 'schet', [ixCaseInsensitive]);
+      tblopen:=tblopen+' opl';
 
-    twid:=TDbf.Create(self);
-    twid.TableName:=filepath+'wids.dbf';
-    twid.Open;
+      tobor:=TDbf.Create(self);
+      tobor.TableName:=filepath+'obor.dbf';
+      tobor.Open;
+      tobor.AddIndex('obor', 'schet', [ixCaseInsensitive]);
 
-    twid.AddIndex('wids', 'wid', [ixCaseInsensitive]);
+      tblopen:=tblopen+' obor';
 
-    //tobor.Free;
-    twid.close;
-    twid.Free;
-   // table.Free;
+      twid:=TDbf.Create(self);
+      twid.TableName:=filepath+'wids.dbf';
+      twid.Open;
+      tblopen:=tblopen+' wids';
+      twid.AddIndex('wids', 'wid', [ixCaseInsensitive]);
+
+      //tobor.Free;
+      twid.close;
+      twid.Free;
+     // table.Free;
 
 
 
-//    table.Exclusive := True;
-       except
-       on E : Exception do
-       begin
-        messagedlg('Помилка при підключенні до бази даних!!! - '+E.Message,mtError,[mbCancel],0);
-        exit;
-       end;
-   end;
+  //    table.Exclusive := True;
+         except
+         on E : Exception do
+         begin
+          messagedlg('Помилка при підключенні до бази даних!!! - '+filepath+' '+tblopen+' '+E.Message,mtError,[mbCancel],0);
+          exit;
+         end;
+     end;
 
 
 

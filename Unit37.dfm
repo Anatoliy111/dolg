@@ -2,8 +2,8 @@ object Form37: TForm37
   Left = 0
   Top = 0
   Caption = #1042#1080#1087#1080#1089#1082#1072' '#1087#1086' '#1086#1089#1086#1073#1086#1074#1086#1084#1091' '#1088#1072#1093#1091#1085#1082#1091
-  ClientHeight = 420
-  ClientWidth = 515
+  ClientHeight = 485
+  ClientWidth = 514
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,8 +18,8 @@ object Form37: TForm37
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 515
-    Height = 185
+    Width = 514
+    Height = 161
     Align = alTop
     TabOrder = 0
     object cxButton3: TcxButton
@@ -121,61 +121,38 @@ object Form37: TForm37
       TabOrder = 10
       Width = 121
     end
-    object cxLabel11: TcxLabel
-      Left = 22
-      Top = 108
-      Caption = #1076#1072#1090#1072' '#1086#1087#1083#1072#1090#1080
-    end
-    object cxDateEdit2: TcxDateEdit
-      Left = 96
-      Top = 107
-      TabOrder = 12
-      Width = 121
-    end
-    object cxLabel12: TcxLabel
-      Left = 227
-      Top = 108
-      Caption = #1089#1091#1084#1072' '#1086#1087#1083#1072#1090#1080
-    end
     object cxLabel13: TcxLabel
       Left = 22
-      Top = 131
+      Top = 109
       Caption = #1076#1072#1090#1072' '#1074#1080#1087#1080#1089#1082#1080
     end
     object cxDateEdit3: TcxDateEdit
       Left = 96
-      Top = 131
-      TabOrder = 15
+      Top = 109
+      TabOrder = 12
       Width = 121
     end
     object cxLabel14: TcxLabel
       Left = 227
-      Top = 134
+      Top = 112
       Caption = #1053#1072#1095#1072#1083#1100#1085#1080#1082
     end
     object cxTextEdit2: TcxTextEdit
       Left = 301
-      Top = 130
-      TabOrder = 17
+      Top = 108
+      TabOrder = 14
       Width = 204
     end
     object cxLabel15: TcxLabel
       Left = 228
-      Top = 154
+      Top = 132
       Caption = #1041#1091#1093#1075#1072#1083#1090#1077#1088
     end
     object cxTextEdit3: TcxTextEdit
       Left = 301
-      Top = 153
-      TabOrder = 19
+      Top = 131
+      TabOrder = 16
       Width = 204
-    end
-    object cxCalcEdit1: TcxCalcEdit
-      Left = 301
-      Top = 107
-      EditValue = 0.000000000000000000
-      TabOrder = 20
-      Width = 121
     end
     object cxLabel16: TcxLabel
       Left = 334
@@ -197,12 +174,15 @@ object Form37: TForm37
   end
   object cxGrid2: TcxGrid
     Left = 0
-    Top = 185
-    Width = 515
-    Height = 235
+    Top = 161
+    Width = 514
+    Height = 324
     Align = alClient
     TabOrder = 1
     LookAndFeel.NativeStyle = False
+    ExplicitTop = 185
+    ExplicitWidth = 635
+    ExplicitHeight = 300
     object cxGridDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       OnCellClick = cxGridDBTableView1CellClick
@@ -231,12 +211,20 @@ object Form37: TForm37
         end
         item
           Kind = skSum
-          Column = cxGridDBTableView1DOLG
         end
         item
           Kind = skSum
           FieldName = 'DOLGREP'
           Column = cxGridDBTableView1DOLGREP
+        end
+        item
+          Kind = skSum
+          FieldName = 'OPLREP'
+          Column = cxGridDBTableView1OPLREP
+        end
+        item
+          Kind = skMax
+          Column = cxGridDBTableView1DATEREP
         end>
       DataController.Summary.SummaryGroups = <>
       OptionsView.ColumnAutoWidth = True
@@ -252,21 +240,31 @@ object Form37: TForm37
         Properties.ImmediatePost = True
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
-        Width = 31
+        Width = 45
       end
       object cxGridDBTableView1NAIM: TcxGridDBColumn
         Caption = #1055#1086#1089#1083#1091#1075#1072
         DataBinding.FieldName = 'NAIM'
         Options.Editing = False
+        Width = 136
       end
-      object cxGridDBTableView1DOLG: TcxGridDBColumn
-        Caption = #1041#1086#1088#1075
-        DataBinding.FieldName = 'DOLG'
-        Options.Editing = False
+      object cxGridDBTableView1DATEREP: TcxGridDBColumn
+        Caption = #1044#1072#1090#1072' '#1086#1087#1083#1072#1090#1080
+        DataBinding.FieldName = 'DATEREP'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Width = 102
+      end
+      object cxGridDBTableView1OPLREP: TcxGridDBColumn
+        Caption = #1054#1087#1083#1072#1090#1072
+        DataBinding.FieldName = 'OPLREP'
+        PropertiesClassName = 'TcxCalcEditProperties'
+        Width = 108
       end
       object cxGridDBTableView1DOLGREP: TcxGridDBColumn
-        Caption = #1047#1084#1110#1085#1080#1090#1080' '#1073#1086#1088#1075
+        Caption = #1041#1086#1088#1075
         DataBinding.FieldName = 'DOLGREP'
+        PropertiesClassName = 'TcxCalcEditProperties'
+        Width = 109
       end
     end
     object cxGridLevel1: TcxGridLevel
@@ -282,45 +280,21 @@ object Form37: TForm37
     DeleteSQL.Strings = (
       'delete from obor'
       'where'
-      '  KL = :OLD_KL')
+      '  SCHET = :OLD_SCHET')
     InsertSQL.Strings = (
       'insert into obor'
-      
-        '  (SCHET, WID, FIO, KOEF, TARIF, BL, SU_DT, SU_DOLG0, SU_DOLG, S' +
-        'U_DTR, '
-      
-        '   SU_NR, SU_PERIOD, SU_VIDM, N_DOG, D_DOG, DOLG, NACH, NACH_FUL' +
-        'L, WOZB, '
-      
-        '   SUBS, KOMP, FL1, OPL, OPL_UD, OPL_DT, UDER, WOZW, WOZW_KAS, W' +
-        'ZMZ, PERE, '
-      
-        '   PLOMB, MOVW, NORMA, NEWREC, SAL, KL_NTAR, NACH_OLD, TARSUBS, ' +
-        'TARIFNEW, '
-      '   KL, PERIOD, UPD, NOTE)'
+      '  (SCHET, WID)'
       'values'
-      
-        '  (:SCHET, :WID, :FIO, :KOEF, :TARIF, :BL, :SU_DT, :SU_DOLG0, :S' +
-        'U_DOLG, '
-      
-        '   :SU_DTR, :SU_NR, :SU_PERIOD, :SU_VIDM, :N_DOG, :D_DOG, :DOLG,' +
-        ' :NACH, '
-      
-        '   :NACH_FULL, :WOZB, :SUBS, :KOMP, :FL1, :OPL, :OPL_UD, :OPL_DT' +
-        ', :UDER, '
-      
-        '   :WOZW, :WOZW_KAS, :WZMZ, :PERE, :PLOMB, :MOVW, :NORMA, :NEWRE' +
-        'C, :SAL, '
-      
-        '   :KL_NTAR, :NACH_OLD, :TARSUBS, :TARIFNEW, :KL, :PERIOD, :UPD,' +
-        ' :NOTE)')
+      '  (:SCHET, :WID)')
     RefreshSQL.Strings = (
       'Select *'
       'from obor '
       'where'
-      '  KL = :KL')
+      '  SCHET = :SCHET')
     SelectSQL.Strings = (
-      'select obor.*, obor.dolg dolgrep,wid.naim, '
+      
+        'select obor.schet,  obor.wid, obor.dolg dolgrep,wid.naim, 0.00 a' +
+        's oplrep, CAST(NULL AS DATE) AS daterep,'
       'case when (COALESCE(obor.dolg,0)<>0) then 1 else 0 end as ch '
       'from obor'
       'left join wid on (wid.wid=obor.wid) '
@@ -329,85 +303,47 @@ object Form37: TForm37
       'update obor'
       'set'
       '  SCHET = :SCHET,'
-      '  WID = :WID,'
-      '  FIO = :FIO,'
-      '  KOEF = :KOEF,'
-      '  TARIF = :TARIF,'
-      '  BL = :BL,'
-      '  SU_DT = :SU_DT,'
-      '  SU_DOLG0 = :SU_DOLG0,'
-      '  SU_DOLG = :SU_DOLG,'
-      '  SU_DTR = :SU_DTR,'
-      '  SU_NR = :SU_NR,'
-      '  SU_PERIOD = :SU_PERIOD,'
-      '  SU_VIDM = :SU_VIDM,'
-      '  N_DOG = :N_DOG,'
-      '  D_DOG = :D_DOG,'
-      '  DOLG = :DOLG,'
-      '  NACH = :NACH,'
-      '  NACH_FULL = :NACH_FULL,'
-      '  WOZB = :WOZB,'
-      '  SUBS = :SUBS,'
-      '  KOMP = :KOMP,'
-      '  FL1 = :FL1,'
-      '  OPL = :OPL,'
-      '  OPL_UD = :OPL_UD,'
-      '  OPL_DT = :OPL_DT,'
-      '  UDER = :UDER,'
-      '  WOZW = :WOZW,'
-      '  WOZW_KAS = :WOZW_KAS,'
-      '  WZMZ = :WZMZ,'
-      '  PERE = :PERE,'
-      '  PLOMB = :PLOMB,'
-      '  MOVW = :MOVW,'
-      '  NORMA = :NORMA,'
-      '  NEWREC = :NEWREC,'
-      '  SAL = :SAL,'
-      '  KL_NTAR = :KL_NTAR,'
-      '  NACH_OLD = :NACH_OLD,'
-      '  TARSUBS = :TARSUBS,'
-      '  TARIFNEW = :TARIFNEW,'
-      '  KL = :KL,'
-      '  PERIOD = :PERIOD,'
-      '  UPD = :UPD,'
-      '  NOTE = :NOTE'
+      '  WID = :WID'
       'where'
-      '  KL = :OLD_KL')
+      '  SCHET = :OLD_SCHET')
     ParamCheck = True
     UniDirectional = False
     GeneratorField.Field = 'KL'
     GeneratorField.Generator = 'GEN_OBOR_ID'
     Left = 208
     Top = 177
-    object IBOBORPERIOD: TDateField
-      FieldName = 'PERIOD'
-      Origin = '"OBOR"."PERIOD"'
-    end
     object IBOBORSCHET: TIBStringField
       FieldName = 'SCHET'
       Origin = '"OBOR"."SCHET"'
       Size = 10
     end
-    object IBOBORUPD: TIntegerField
-      FieldName = 'UPD'
-      Origin = '"OBOR"."UPD"'
+    object IBOBORDOLGREP: TFloatField
+      FieldName = 'DOLGREP'
+      Origin = '"OBOR"."DOLG"'
     end
     object IBOBORNAIM: TIBStringField
       FieldName = 'NAIM'
       Origin = '"WID"."NAIM"'
       Size = 15
     end
+    object IBOBOROPLREP: TIBBCDField
+      FieldName = 'OPLREP'
+      ProviderFlags = []
+      Precision = 18
+      Size = 2
+    end
     object IBOBORCH: TIntegerField
       FieldName = 'CH'
       ProviderFlags = []
     end
-    object IBOBORDOLG: TFloatField
-      FieldName = 'DOLG'
-      Origin = '"OBOR"."DOLG"'
+    object IBOBORWID: TIBStringField
+      FieldName = 'WID'
+      Origin = '"OBOR"."WID"'
+      Size = 2
     end
-    object IBOBORDOLGREP: TFloatField
-      FieldName = 'DOLGREP'
-      Origin = '"OBOR"."DOLG"'
+    object IBOBORDATEREP: TDateField
+      FieldName = 'DATEREP'
+      ProviderFlags = []
     end
   end
   object DSOBOR: TDataSource
@@ -1863,20 +1799,6 @@ object Form37: TForm37
         Name = 'sch'
         ParamType = ptUnknown
       end>
-    object IBQuery1SCHET: TIBStringField
-      FieldName = 'SCHET'
-      Origin = '"OPL"."SCHET"'
-      Size = 10
-    end
-    object IBQuery1MAXDT: TDateField
-      FieldName = 'MAXDT'
-      ProviderFlags = []
-    end
-    object IBQuery1SUM: TFloatField
-      FieldName = 'SUM'
-      ProviderFlags = []
-      ReadOnly = True
-    end
   end
   object frxDesigner1: TfrxDesigner
     DefaultScriptLanguage = 'PascalScript'

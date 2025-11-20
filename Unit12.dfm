@@ -2,8 +2,8 @@ object Form12: TForm12
   Left = 0
   Top = 0
   Caption = #1050#1072#1088#1090#1082#1072' '#1072#1073#1086#1085#1077#1085#1090#1072
-  ClientHeight = 738
-  ClientWidth = 897
+  ClientHeight = 685
+  ClientWidth = 977
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,10 +19,11 @@ object Form12: TForm12
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 897
+    Width = 977
     Height = 43
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 897
     object Label1: TLabel
       Left = 24
       Top = 14
@@ -77,8 +78,8 @@ object Form12: TForm12
   object cxGrid1: TcxGrid
     Left = 0
     Top = 193
-    Width = 897
-    Height = 160
+    Width = 977
+    Height = 173
     Align = alTop
     TabOrder = 2
     object cxGrid1DBTableView1: TcxGridDBTableView
@@ -149,59 +150,16 @@ object Form12: TForm12
       GridView = cxGrid1DBTableView1
     end
   end
-  object Panel3: TPanel
-    Left = 0
-    Top = 353
-    Width = 897
-    Height = 111
-    Align = alTop
-    TabOrder = 3
-    object cxGrid2: TcxGrid
-      Left = 1
-      Top = 14
-      Width = 895
-      Height = 96
-      Align = alClient
-      TabOrder = 0
-      object cxGridDBTableView1: TcxGridDBTableView
-        Navigator.Buttons.CustomButtons = <>
-        DataController.DataSource = DSKTMPOPL
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        OptionsData.Editing = False
-        OptionsView.CellAutoHeight = True
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.GroupByBox = False
-      end
-      object cxGridLevel1: TcxGridLevel
-        GridView = cxGridDBTableView1
-      end
-    end
-    object Panel5: TPanel
-      Left = 1
-      Top = 1
-      Width = 895
-      Height = 13
-      Align = alTop
-      TabOrder = 1
-      object Label12: TLabel
-        Left = 17
-        Top = -1
-        Width = 38
-        Height = 13
-        Alignment = taCenter
-        Caption = #1054#1087#1083#1072#1090#1072
-      end
-    end
-  end
   object Panel4: TPanel
     Left = 0
-    Top = 464
-    Width = 897
+    Top = 516
+    Width = 977
     Height = 33
     Align = alTop
-    TabOrder = 4
+    TabOrder = 3
+    ExplicitLeft = 40
+    ExplicitTop = 481
+    ExplicitWidth = 897
     object Label13: TLabel
       Left = 15
       Top = 14
@@ -222,11 +180,15 @@ object Form12: TForm12
   end
   object cxGrid4: TcxGrid
     Left = 0
-    Top = 497
-    Width = 897
-    Height = 241
+    Top = 549
+    Width = 977
+    Height = 136
     Align = alClient
-    TabOrder = 5
+    TabOrder = 4
+    ExplicitLeft = 24
+    ExplicitTop = 568
+    ExplicitWidth = 897
+    ExplicitHeight = 218
     object cxGridDBTableView3: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = DSKOBOR
@@ -358,10 +320,11 @@ object Form12: TForm12
   object Panel2: TPanel
     Left = 0
     Top = 43
-    Width = 897
+    Width = 977
     Height = 150
     Align = alTop
-    TabOrder = 6
+    TabOrder = 5
+    ExplicitWidth = 897
     object Label2: TLabel
       Left = 241
       Top = 2
@@ -694,6 +657,44 @@ object Form12: TForm12
       DataBinding.DataSource = DSKART
       TabOrder = 18
       Width = 161
+    end
+  end
+  object cxGrid2: TcxGrid
+    Left = 0
+    Top = 387
+    Width = 977
+    Height = 129
+    Align = alTop
+    TabOrder = 6
+    object cxGridDBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.DataSource = DSKTMPOPL
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsData.Editing = False
+      OptionsView.CellAutoHeight = True
+      OptionsView.ColumnAutoWidth = True
+      OptionsView.GroupByBox = False
+    end
+    object cxGridLevel1: TcxGridLevel
+      GridView = cxGridDBTableView1
+    end
+  end
+  object Panel5: TPanel
+    Left = 0
+    Top = 366
+    Width = 977
+    Height = 21
+    Align = alTop
+    TabOrder = 7
+    object Label12: TLabel
+      Left = 17
+      Top = 2
+      Width = 38
+      Height = 13
+      Alignment = taCenter
+      Caption = #1054#1087#1083#1072#1090#1072
     end
   end
   object IBKART: TIBDataSet
