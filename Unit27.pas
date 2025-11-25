@@ -1241,7 +1241,7 @@ end;
 
 procedure TForm27.cxButton2Click(Sender: TObject);
 var f1:boolean;
-    stroka,strmes,tempDir, strtmp, tblopen:string;
+    stroka,strmes,tempDir, strtmp, tblopen, spath:string;
     dt1,dt2,i,pusto,kol:integer;
     f : TextFile;
     MyFile: TFileStream;
@@ -1373,8 +1373,8 @@ maxcolposl:=0;
 
 
    try
-
-       AssignFile(f, Form1.PathKvart+'\cur_date.mem');
+       spath:=Form1.PathKvart+'\cur_date.mem';
+       AssignFile(f, spath);
        FileMode := fmOpenRead;
        Reset(f);
        Readln(f, stroka);

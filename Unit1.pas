@@ -595,7 +595,7 @@ type
     procedure AddFilter(column:TcxGridDBColumn;text:string);
     procedure DelFilter(col:TcxGridDBColumn;s:string);
     function GetAppVersionStr:string;
-
+    function DirExists(const Dir: string): Boolean;
 
   public
     { Public declarations }
@@ -812,20 +812,26 @@ end;
 procedure TForm1.CheckK;
 var cmd:WideString;
 begin
-if Pos(UpperCase(PathKvart), 'K:') > 0 then
+if Pos('K:',UpperCase(PathKvart)) > 0 then
 begin
-    if GetDriveType('K:\') <> DRIVE_NO_ROOT_DIR then
+    if not DirExists('K:\') then
     begin
-             cmd:='net use K: \\main\kvart /yes';
+             cmd:='net use K: '+diskk+' /yes';
              ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
              cmd:='reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoDrives /t REG_DWORD /d 1024 /f';
              ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
-             cmd:='taskkill /f /im explorer.exe';
-             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
-             cmd:='start explorer.exe';
-             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+//             cmd:='taskkill /f /im explorer.exe';
+//             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
+//             cmd:='start explorer.exe';
+//             ShellExecute(0, 'open', 'cmd.exe', PChar('/C '+cmd), nil, SW_HIDE);
     end;
 end;
+end;
+
+function TForm1.DirExists(const Dir: string): Boolean;
+begin
+  Result := (GetFileAttributes(PChar(Dir)) <> INVALID_FILE_ATTRIBUTES) and
+            ((GetFileAttributes(PChar(Dir)) and FILE_ATTRIBUTE_DIRECTORY) <> 0);
 end;
 
 procedure TForm1.dxBarButton118Click(Sender: TObject);
