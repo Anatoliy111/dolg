@@ -92,7 +92,8 @@ begin
 
 
         frxReport1.LoadFromFile('report/vipiska2.fr3');
-        frxReport1.Variables['datemes1']:=IncDaY(cxLookupComboBox1.EditValue,-1);
+//        frxReport1.Variables['datemes1']:=IncDaY(cxLookupComboBox1.EditValue,-1);
+        frxReport1.Variables['datemes1']:=IncDaY(IncMonth(cxLookupComboBox1.EditValue,1),-1);
         frxReport1.Variables['datemes2']:=cxLookupComboBox2.EditValue;
         //frxReport1.Variables['datemes3']:=IncYear(IncDaY(cxLookupComboBox1.EditValue,-1),-3);
         //frxReport1.Variables['datemes4']:=IncYear(cxLookupComboBox1.EditValue,-5);
